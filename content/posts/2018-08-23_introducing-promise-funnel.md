@@ -1,4 +1,14 @@
-# Introducing Promise-Funnel
+---
+author: "Justin Fuller"
+date: 2018-08-23
+linktitle: "Introducing Promise-Funnel"
+menu:
+  main:
+    parent: posts
+next: /posts/introducing-promise-funnel
+title: "Introducing Promise-Funnel"
+weight: 1
+---
 
 Today I’d like to give a quick overview of a new library that is made to help you manage the flow of your application.
 

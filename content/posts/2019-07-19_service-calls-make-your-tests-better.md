@@ -1,4 +1,14 @@
-# Service calls make your tests better
+---
+author: "Justin Fuller"
+date: 2019-07-19
+linktitle: "Service calls make your tests better"
+menu:
+  main:
+    parent: posts
+next: /posts/service-calls-make-your-tests-better
+title: "Service calls make your tests better"
+weight: 1
+---
 
 **TL;DR:** If all tests are mocked, you don’t know if your code works, you only know that, theoretically, it is supposed to work if the integrations adhere to the contract you expect.
 

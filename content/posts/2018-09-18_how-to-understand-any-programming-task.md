@@ -1,4 +1,14 @@
-# How to understand any programming task
+---
+author: "Justin Fuller"
+date: 2018-09-18
+linktitle: "How to understand any programming task"
+menu:
+  main:
+    parent: posts
+next: /posts/how-to-understand-any-programming-task
+title: "How to understand any programming task"
+weight: 1
+---
 
 The day has finally arrived. Is it your first day on your job, or have you been doing this for ten years? It doesn’t matter. We all eventually find ourselves with a task that we simply do not understand.
 

@@ -1,4 +1,14 @@
-# Let’s Compose Promises!
+---
+author: "Justin Fuller"
+date: 2017-11-13
+linktitle: "Let’s Compose Promises!"
+menu:
+  main:
+    parent: posts
+next: /posts/lets-compose-promises
+title: "Let’s Compose Promises!"
+weight: 1
+---
 
 Today we’re going to combine two of the most useful tools that a JavaScript developer has in his or her tool belt. Promises and Function Composition.
 

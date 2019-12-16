@@ -1,4 +1,14 @@
-# Function Composition with Lodash
+---
+author: "Justin Fuller"
+date: 2017-11-09
+linktitle: "Function Composition with Lodash"
+menu:
+  main:
+    parent: posts
+next: /posts/function-composition-with-lodash
+title: "Function Composition with Lodash"
+weight: 1
+---
 
 Have you been reading JavaScript posts lately? Maybe you’ve noticed that functional programming is really popular right now. It’s a really powerful way to program, but can be overwhelming to get started with. Thankfully the most popular NPM package (with 48 million downloads this month) has a very useful functional programming package to help us get started!
 

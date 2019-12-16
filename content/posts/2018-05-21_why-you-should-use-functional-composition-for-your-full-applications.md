@@ -1,7 +1,14 @@
-
-# Why you should use functional composition for your full applications
-
-
+---
+author: "Justin Fuller"
+date: 2018-05-21
+linktitle: "Why you should use functional composition for your full applications"
+menu:
+  main:
+    parent: posts
+next: /posts/why-you-should-use-functional-composition-for-your-full-applications
+title: "Why you should use functional composition for your full applications"
+weight: 1
+---
 
 Function composition is growing in popularity, so I say it’s about time we considered composing full applications. Give me a few minutes of your time, and we’ll see if you agree!
 

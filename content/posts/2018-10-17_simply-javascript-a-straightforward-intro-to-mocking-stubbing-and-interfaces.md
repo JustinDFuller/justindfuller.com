@@ -1,4 +1,14 @@
-# Simply JavaScript: a straightforward intro to Mocking, Stubbing, and Interfaces
+---
+author: "Justin Fuller"
+date: 2018-10-17
+linktitle: "Simply JavaScript: a straightforward intro to Mocking, Stubbing, and Interfaces"
+menu:
+  main:
+    parent: posts
+next: /posts/simply-javascript-a-straightforward-intro-to-mocking-stubbing-and-interfaces
+title: "Simply JavaScript: a straightforward intro to Mocking, Stubbing, and Interfaces"
+weight: 1
+---
 
 I like to think that I’m a simple guy, I like simple things. So whenever I sense complexity, my first reaction is to wonder if I can make things easier.
 

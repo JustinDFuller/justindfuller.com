@@ -1,5 +1,14 @@
-
-# Easily create an HTML editor with DesignMode and ContentEditable
+---
+author: "Justin Fuller"
+date: 2017-01-27
+linktitle: "Easily create an HTML editor with DesignMode and ContentEditable"
+menu:
+  main:
+    parent: posts
+next: /posts/easily-create-an-html-editor-with-designmode-and-contenteditable
+title: "Easily create an HTML editor with DesignMode and ContentEditable"
+weight: 1
+---
 
 Have you ever wondered how hard it would be to recreate a text editor like the one we use right here on Medium?
 

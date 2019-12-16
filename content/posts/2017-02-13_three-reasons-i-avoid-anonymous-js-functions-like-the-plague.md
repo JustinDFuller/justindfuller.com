@@ -1,4 +1,14 @@
-# Three reasons I avoid anonymous JS functions like the plague
+---
+author: "Justin Fuller"
+date: 2017-02-13
+linktitle: "Three reasons I avoid anonymous JS functions like the plague"
+menu:
+  main:
+    parent: posts
+next: /posts/three-reasons-i-avoid-anonymous-js-functions-like-the-plague
+title: "Three reasons I avoid anonymous JS functions like the plague"
+weight: 1
+---
 
 You’re bound to see an anonymous function whenever your read code. Sometimes they are called lambdas, sometimes anonymous functions, either way, I think they’re bad.
 

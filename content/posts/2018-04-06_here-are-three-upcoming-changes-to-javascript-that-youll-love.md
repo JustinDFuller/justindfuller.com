@@ -1,4 +1,14 @@
-# Here are three upcoming changes to JavaScript that you’ll love
+---
+author: "Justin Fuller"
+date: 2018-04-06
+linktitle: "Here are three upcoming changes to JavaScript that you’ll love"
+menu:
+  main:
+    parent: posts
+next: /posts/here-are-three-upcoming-changes-to-javascript-that-youll-love
+title: "Here are three upcoming changes to JavaScript that you’ll love"
+weight: 1
+---
 
 Let’s take a look at some useful upcoming features in JavaScript. You’ll see their syntax, links to keep up to date with their progress, and we’ll write a small test suite to show how to begin using these proposals today!
 

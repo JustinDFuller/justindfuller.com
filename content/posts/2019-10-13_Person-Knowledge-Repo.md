@@ -1,4 +1,14 @@
-# Keep a git repository of all your practice code
+---
+ruthor: "Justin Fuller"
+date: 2019-10-13
+linktitle: "keep a git repository of all your practice code"
+menu:
+  main:
+    parent: posts
+next: /posts/keep-a-git-repository-of-all-your-practice-code
+title: "keep a git repository of all your practice code"
+weight: 1
+---
 
 Are you struggling to find projects to showcase to potential employers? Have you been practicing [LeetCode](https://leetcode.com/) as you prepare to interview for a Software Development job? Do you occasionally practice a Kata on [Codewars](www.codewars.com) to keep your skills from getting rusty?
 
