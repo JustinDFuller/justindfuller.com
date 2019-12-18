@@ -2,8 +2,8 @@
 #
 baseurl = "https://inspiring-archimedes-2b17ce.netlify.com/"
 languageCode = "en-us"
-title = "Justin Fuller, Software Engineer - Go, JavaScript, Node.js, React."
-theme = "hugo-theme-bootstrap4-blog"
+title = "Justin Fuller, Software Engineer"
+theme = "hugo-theme"
 # number of posts to show on home/category/tag pages (Default: 10)
 paginate = 5
 # optionally override the site's footer with custom copyright text
@@ -35,7 +35,7 @@ paginate = 5
   author = "Justin Fuller"
 
   # Description/subtitle for homepage (can be Markdown)
-  description = "Justin Fuller's blog about being a Software Engineer."
+  description = "Justin Fuller's blog about being a Software Engineer. Go, JavaScript, Node.js, React."
 
   # Show header (default: true)
   #header_visible = true
@@ -71,7 +71,7 @@ paginate = 5
 
   [params.sidebar]
     # Optional about block for sidebar (can be Markdown)
-    about = "Justin Fuller is a Software Engineer at [The New York Times](open.nytimes.com). He works with Go, JavaScript, Node.js, and React."
+    about = "Justin Fuller is a Software Engineer at [The New York Times](https://open.nytimes.com). He works with Go, JavaScript, Node.js, and React."
 
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2
