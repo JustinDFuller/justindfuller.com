@@ -12,9 +12,11 @@ weight: 1
 
 Let’s take a look at some useful upcoming features in JavaScript. You’ll see their syntax, links to keep up to date with their progress, and we’ll write a small test suite to show how to begin using these proposals today!
 
-## How JavaScript Changes
-
 ![](https://cdn-images-1.medium.com/max/2000/0*_ttLRUUBsYYoQS5u.)
+
+<!--more-->
+
+## How JavaScript Changes
 
 *Feel free to skip this part if you are already familiar with how the [Ecma TC39](http://www.ecma-international.org/memento/TC39.htm) committee decides on and processes changes to the JavaScript language.*
 

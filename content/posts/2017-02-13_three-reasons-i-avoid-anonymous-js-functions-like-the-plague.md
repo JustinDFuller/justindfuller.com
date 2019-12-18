@@ -12,6 +12,10 @@ weight: 1
 
 You’re bound to see an anonymous function whenever your read code. Sometimes they are called lambdas, sometimes anonymous functions, either way, I think they’re bad.
 
+![](https://cdn-images-1.medium.com/max/2000/1*EKIOEDfIunCnzQxo85NrRg.jpeg)
+
+<!--more-->
+
 In case you don’t know what an anonymous function is, here’s a quote:
 
 > Anonymous functions are functions that are dynamically declared at runtime. They’re called anonymous functions because they aren’t given a name in the same way as normal functions. — Helen Emerson, Helephant.com
@@ -25,8 +29,6 @@ function () { ... code ... }
 
 (args) => { ... code .. }
 ```
-
-![](https://cdn-images-1.medium.com/max/2000/1*EKIOEDfIunCnzQxo85NrRg.jpeg)
 
 I’d like to try to make the case to you today that, in general, you should only use an anonymous function when necessary. They should not be your go-to, and you should understand why. Once you do, your code will be cleaner, easier to maintain, and bugs will become simpler to track down. Let's start with three reasons to avoid them:
 

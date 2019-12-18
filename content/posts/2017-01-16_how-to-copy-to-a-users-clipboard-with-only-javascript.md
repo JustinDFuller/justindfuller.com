@@ -14,6 +14,8 @@ Put your learning hats on, we’re diving into another API that you might not ha
 
 ![It will test your head… and your mind… and your brain, too.](https://cdn-images-1.medium.com/max/2000/1*kHNjCsoI9rHJJoXgbJ15kQ.png)*It will test your head… and your mind… and your brain, too.*
 
+<!--more-->
+
 ## I need to be honest, this isn’t really one API.
 
 The clipboard API is made up of multiple API’s. But more than that, we’re going to need to pull in some more Web API’s that don’t directly relate to the clipboard and its utilities in order to completely take full advantage of the browser’s clipboard abilities. By the end you should have several new tools that make it easier to work with text on your websites and apps!

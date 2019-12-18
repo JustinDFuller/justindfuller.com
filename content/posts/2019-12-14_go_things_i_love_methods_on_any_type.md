@@ -15,6 +15,8 @@ I want to explore some of my favorite features of the language. I don't intend t
 
 ![Go Things I Love](https://raw.githubusercontent.com/JustinDFuller/blog-posts/master/media/SOLID-single-responsibility-principle/go-things-i-love.png)
 
+<!--more-->
+
 ## Methods
 
 Typically a method is defined as a function that belongs to an object or class. This means you wouldn't necessarily add a method

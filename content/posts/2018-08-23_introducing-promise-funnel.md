@@ -14,6 +14,8 @@ Today I’d like to give a quick overview of a new library that is made to help 
 
 ![](https://cdn-images-1.medium.com/max/2000/1*tZhpkuhrEQagrdZdZJ5WVQ.png)
 
+<!--more-->
+
 The use case was inspired by two particular problems I had recently.
 
 In problem one I had a React App that authenticates both immediately, and on a regular interval. During each authentication the requests to retrieve data needed to wait. I did not want to receive or show unauthenticated response errors during this time.
