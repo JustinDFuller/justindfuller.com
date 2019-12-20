@@ -8,9 +8,15 @@ menu:
 next: /posts/javascript-apis-video
 title: "JavaScript APIs: Video API"
 weight: 1
+images:
+  - /learning-javascript.jpeg
 ---
 
 In this series, I will be exploring the different JavaScript APIs that are available for use in a browser environment. Some will be well known, others may be completely new to you. Hopefully, each section will present you with some new information and useful real-world tips! So, let’s get started.
+
+<!--more-->
+
+![Learning JavaScript](/learning-javascript.jpeg)
 
 **Not Just For YouTube**
 

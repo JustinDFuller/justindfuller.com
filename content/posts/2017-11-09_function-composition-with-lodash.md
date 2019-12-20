@@ -8,11 +8,17 @@ menu:
 next: /posts/function-composition-with-lodash
 title: "Function Composition with Lodash"
 weight: 1
+images:
+  - /learning-javascript.jpeg
 ---
 
 Have you been reading JavaScript posts lately? Maybe you’ve noticed that functional programming is really popular right now. It’s a really powerful way to program, but can be overwhelming to get started with. Thankfully the most popular NPM package (with 48 million downloads this month) has a very useful functional programming package to help us get started!
 
+<!--more-->
+
 In this post we’ll look at how to use Lodash/fp to compose both our own functions, and the Lodash functions that you may already be using today!
+
+![Learning JavaScript](/learning-javascript.jpeg)
 
 Before we start coding — lets be sure that we know what we’re talking about!
 

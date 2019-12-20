@@ -8,7 +8,8 @@ menu:
 next: /posts/go-things-i-love-methods-on-any-type
 title: "Go Things I Love: Methods On Any Type"
 weight: 1
-img: https://raw.githubusercontent.com/JustinDFuller/blog-posts/master/media/SOLID-single-responsibility-principle/go-things-i-love.png
+images:
+  - /go-things-i-love.png
 ---
 
 Now that I am working with [Go](https://golang.org/) as my primary language at [The New York Times](https://open.nytimes.com/), 
@@ -16,7 +17,7 @@ I want to explore some of my favorite features of the language. I don't intend t
 
 <!--more-->
 
-![Go Things I Love](https://raw.githubusercontent.com/JustinDFuller/blog-posts/master/media/SOLID-single-responsibility-principle/go-things-i-love.png)
+![Go Things I Love](/go-things-i-love.png)
 
 ## Methods
 

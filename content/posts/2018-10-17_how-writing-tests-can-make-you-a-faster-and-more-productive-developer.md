@@ -8,6 +8,8 @@ menu:
 next: /posts/writing-tests-can-make-you-a-faster-and-more-productive-developer
 title: "Writing tests can make you a faster, more productive developer"
 weight: 1
+images:
+  - /learning-javascript.jpeg
 ---
 
 Most of us have heard of “writer’s block”, but have you heard of “developer’s block”? Just like a writer, a software developer can sit staring at a screen, not knowing where to begin. Sometimes that blank screen can be too intimidating and the code just doesn’t come to you.

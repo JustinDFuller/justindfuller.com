@@ -8,13 +8,15 @@ menu:
 next: /posts/here-are-three-upcoming-changes-to-javascript-that-youll-love
 title: "Here are three upcoming changes to JavaScript that you’ll love"
 weight: 1
+images:
+  - /learning-javascript.jpeg
 ---
 
 Let’s take a look at some useful upcoming features in JavaScript. You’ll see their syntax, links to keep up to date with their progress, and we’ll write a small test suite to show how to begin using these proposals today!
 
-![](https://cdn-images-1.medium.com/max/2000/0*_ttLRUUBsYYoQS5u.)
-
 <!--more-->
+
+![Learning JavaScript](/learning-javascript.jpeg)
 
 ## How JavaScript Changes
 

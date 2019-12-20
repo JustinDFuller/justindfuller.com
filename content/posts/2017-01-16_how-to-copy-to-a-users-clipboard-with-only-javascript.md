@@ -8,13 +8,17 @@ menu:
 next: /posts/how-to-copy-to-a-users-clipboard-with-only-javascript
 title: "How to copy to a user’s clipboard with only JavaScript"
 weight: 1
+images:
+  - /learning-javascript.jpeg
 ---
 
 Put your learning hats on, we’re diving into another API that you might not have known existed before today!
 
-![It will test your head… and your mind… and your brain, too.](https://cdn-images-1.medium.com/max/2000/1*kHNjCsoI9rHJJoXgbJ15kQ.png)*It will test your head… and your mind… and your brain, too.*
-
 <!--more-->
+
+![It will test your head… and your mind… and your brain, too.](/board.png)
+
+*It will test your head… and your mind… and your brain, too.*
 
 ## I need to be honest, this isn’t really one API.
 

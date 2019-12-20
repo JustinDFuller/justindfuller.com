@@ -8,13 +8,15 @@ menu:
 next: /posts/continuous-deployment-for-nodejs-on-digitalocean
 title: "Continuous deployment for Node.js on DigitalOcean"
 weight: 1
+images:
+  - /continuous-deployment.png
 ---
 
 Continuous Integration and Deployment have become important parts of the software development cycle. It’s important to spend your time creating features, and you don’t want to worry about deploying your code. Plus, the more you are manually deploying code, the more likely you are to make an error. Today we will automate the process of running our tests and deploying our Node.js app to DigitalOcean.
 
-![](https://cdn-images-1.medium.com/max/2186/1*9fGCe-oMWWl4AygOmtMPSw.png)
-
 <!--more-->
+
+![Codeship, Node.js, DigitalOcean](/continuous-deployment.png)
 
 By following this guide you should be set up with continuous integration and deployment of your Node.js app within just a few minutes. It makes a few assumptions: The first is that you are hosting your application on DigitalOcean and the second is that you have your repository stored on Github, Bitbucket, or Gitlab. It also assumes you have a pretty good grasp of Node.js, NPM, and the command line.
 

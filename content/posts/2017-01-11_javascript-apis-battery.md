@@ -8,9 +8,15 @@ menu:
 next: /posts/javascript-apis-battery
 title: "JavaScript APIs: Battery"
 weight: 1
+images:
+  - /learning-javascript.jpeg
 ---
 
 Yes, you heard me right, the Battery API! As the web expands, so does the number of devices we expect to use our programs. This API can be particularly useful for protecting our mobile users and their precious battery life! So before we look at the API lets think of some reasons why we might need such a thing:
+
+<!--more-->
+
+![Learning JavaScript](/learning-javascript.jpeg)
 
 * Decreasing processing and requests when the battery is low.
 
