@@ -1,12 +1,12 @@
 ---
 ruthor: "Justin Fuller"
 date: 2019-10-13
-linktitle: "keep a git repository of all your practice code"
+linktitle: "Keep a git repository of all your practice code"
 menu:
   main:
     parent: posts
 next: /posts/keep-a-git-repository-of-all-your-practice-code
-title: "keep a git repository of all your practice code"
+title: "Keep a git repository of all your practice code"
 weight: 1
 ---
 
