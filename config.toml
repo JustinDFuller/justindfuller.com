@@ -8,7 +8,7 @@ theme = "hugo-theme"
 paginate = 5
 # optionally override the site's footer with custom copyright text
 # copyright = "Except where otherwise noted, content on this site is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/)."
-#googleAnalytics = "UA-123-45"
+googleAnalytics = "UA-57389891-8"
 #disqusShortname = "XYW"
 
 [permalinks]
@@ -29,13 +29,12 @@ paginate = 5
 
 
 # Theme variables
-#
 [params]
   # Site author
   author = "Justin Fuller"
 
   # Description/subtitle for homepage (can be Markdown)
-  description = "Justin Fuller's blog about being a Software Engineer. Go, JavaScript, Node.js, React."
+  description = "Justin Fuller's blog about being a Software Engineer."
 
   # Show header (default: true)
   #header_visible = true
