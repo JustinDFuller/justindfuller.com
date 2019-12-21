@@ -1,6 +1,6 @@
 # Hugo variables
 #
-baseurl = "https://justindfuller.com/"
+baseurl = "https://www.justindfuller.com/"
 languageCode = "en-us"
 title = "Justin Fuller, Software Engineer"
 theme = "hugo-theme"
