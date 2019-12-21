@@ -10,6 +10,8 @@ title: "Introducing Promise-Funnel"
 weight: 1
 images:
   - /promise-funnel.png
+aliases:
+  - /posts/2018-08-23_introducing-promise-funnel
 ---
 
 Today I’d like to give a quick overview of a new library that is made to help you manage the flow of your application.

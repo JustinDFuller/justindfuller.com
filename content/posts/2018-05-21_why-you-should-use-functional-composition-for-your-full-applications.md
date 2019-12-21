@@ -10,6 +10,8 @@ title: "Why you should use functional composition for your full applications"
 weight: 1
 images:
   - /learning-javascript.jpeg
+aliases:
+  - /posts/2018-05-21_why-you-should-use-functional-composition-for-your-full-applications
 ---
 
 Function composition is growing in popularity, so I say it’s about time we considered composing full applications. Give me a few minutes of your time, and we’ll see if you agree!

@@ -10,6 +10,8 @@ title: "Refactoring — oops, I’ve been doing it wrong."
 weight: 1
 images:
   - /learning-javascript.jpeg
+aliases:
+  - /posts/2019-01-24_refactoring-oops-ive-been-doing-it-backwards
 ---
 
 Welcome to my intervention. I’m a refactoring addict and I’m not afraid to admit it, but there’s only one problem: I’ve been doing it backward. You see, what I’ve been doing could be more accurately described as premature code abstraction.

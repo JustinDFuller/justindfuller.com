@@ -10,6 +10,8 @@ title: "How to copy to a user’s clipboard with only JavaScript"
 weight: 1
 images:
   - /learning-javascript.jpeg
+aliases:
+  - /posts/2017-01-16_how-to-copy-to-a-users-clipboard-with-only-javascript
 ---
 
 Put your learning hats on, we’re diving into another API that you might not have known existed before today!

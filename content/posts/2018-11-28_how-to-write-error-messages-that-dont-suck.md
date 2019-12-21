@@ -10,6 +10,8 @@ title: "How To Write Error Messages That Don’t Suck"
 weight: 1
 images:
   - /learning-javascript.jpeg
+aliases:
+  - /posts/2018-11-28_how-to-write-error-messages-that-dont-suck
 ---
 
 “A validation error occurred.” Yep. Thanks!

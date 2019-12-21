@@ -10,6 +10,8 @@ title: "Go Things I Love: Methods On Any Type"
 weight: 1
 images:
   - /go-things-i-love.png
+aliases: 
+  - /posts/2019-12-14_Go-Things-I-Love-Methods-On-Any-Type
 ---
 
 Now that I am working with [Go](https://golang.org/) as my primary language at [The New York Times](https://open.nytimes.com/), 

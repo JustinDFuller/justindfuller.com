@@ -10,6 +10,8 @@ title: "Let’s Compose Promises!"
 weight: 1
 images:
   - /compose-promises.jpeg
+aliases:
+  - /posts/2017-11-13_lets-compose-promises
 ---
 
 Today we’re going to combine two of the most useful tools that a JavaScript developer has in his or her tool belt. Promises and Function Composition.

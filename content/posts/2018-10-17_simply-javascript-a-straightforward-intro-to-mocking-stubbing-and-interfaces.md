@@ -10,11 +10,17 @@ title: "Simply JavaScript: a straightforward intro to Mocking, Stubbing, and Int
 weight: 1
 images:
   - /learning-javascript.jpeg
+aliases:
+  - /posts/2018-10-17_simply-javascript-a-straightforward-intro-to-mocking-stubbing-and-interfaces
 ---
 
 I like to think that I’m a simple guy, I like simple things. So whenever I sense complexity, my first reaction is to wonder if I can make things easier.
 
 Before I transitioned to software development, I spent time as a sound engineer. I was recording bands and mixing live shows. I was even recording and mixing live shows for broadcast. During that time I talked with too many people who would always attempt to solve problems by purchasing some expensive, more complex equipment. Sadly the return on investment never seemed to be all it promised.
+
+<!--more-->
+
+![Learning JavaScript](/learning-javascript.jpeg)
 
 Instead of buying into the “more expensive, more complex is better” philosophy, I spent every evening learning the basics. I focused on fundamental skills. I learned how to use an equalizer to make a voice sound natural. I learned how to use a compressor to soften quick and loud sounds or to beef up thin sounds. It turned out that the return on investment for those hours was more than I ever hoped for!
 

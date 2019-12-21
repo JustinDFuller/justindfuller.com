@@ -10,6 +10,8 @@ title: "Easily create an HTML editor with DesignMode and ContentEditable"
 weight: 1
 images:
   - /learning-javascript.jpeg
+aliases:
+  - /posts/2017-01-27_easily-create-an-html-editor-with-designmode-and-contenteditable
 ---
 
 Have you ever wondered how hard it would be to recreate a text editor like the one we use right here on Medium?
