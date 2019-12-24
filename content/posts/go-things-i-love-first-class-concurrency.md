@@ -12,18 +12,6 @@ images:
   - /go-things-i-love.png
 ---
 
-# Go Things I Love: First Class Concurrency
-
-Things I want to talk about:
-* Go's first class support of channels in select statements and for loops.
-* Read and write only channels
-* Channel generators
-* Channel timeouts
-  * Limiting to responses under 100ms: https://play.golang.org/p/XnBSfTeeCX7
-* Ordering channel responses
-  * Unordered responses: https://play.golang.org/p/p_3YPw9LrgC
-  * Ordered responses: https://play.golang.org/p/EkYf-YSsErW
-
 Concurrency, in some form, is one of the most important building blocks of performant software. For developers, depending on the programming language they choose, this can become either a point of pain or joy. Go, in my estimation, provides one of the most delightful ways to achieve concurrency. 
 
 This post, _First Class Concurrency_, will demonstrate a few of the neat concurrency patterns in Go.
@@ -92,3 +80,22 @@ for i := range channel {
 
 fmt.Printf("Ints %v", ints)
 ```
+
+---
+
+Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
+
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
+or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!
+
+---
+
+Things I want to talk about:
+* Go's first class support of channels in select statements and for loops.
+* Read and write only channels
+* Channel generators
+* Channel timeouts
+  * Limiting to responses under 100ms: https://play.golang.org/p/XnBSfTeeCX7
+* Ordering channel responses
+  * Unordered responses: https://play.golang.org/p/p_3YPw9LrgC
+  * Ordered responses: https://play.golang.org/p/EkYf-YSsErW
