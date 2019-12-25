@@ -10,11 +10,15 @@ title: "How to understand any programming task"
 weight: 1
 aliases:
   - /posts/2018-09-18_how-to-understand-any-programming-task
+images:
+  - /learning-to-code.png
 ---
 
 The day has finally arrived. Is it your first day on your job, or have you been doing this for ten years? It doesn’t matter. We all eventually find ourselves with a task that we simply do not understand.
 
 <!--more-->
+
+![Learning To Code](/learning-to-code.png)
 
 So what should you do? Should you just get started and hope it works? Should you immediately tell your boss that you can’t do this because you don’t understand?
 

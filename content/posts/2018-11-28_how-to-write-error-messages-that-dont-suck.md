@@ -9,7 +9,7 @@ next: /posts/how-to-write-error-messages-that-dont-suck
 title: "How To Write Error Messages That Don’t Suck"
 weight: 1
 images:
-  - /learning-javascript.jpeg
+  - /learning-to-code.png
 aliases:
   - /posts/2018-11-28_how-to-write-error-messages-that-dont-suck
 ---
@@ -17,6 +17,10 @@ aliases:
 “A validation error occurred.” Yep. Thanks!
 
 The release is imminent; this is the last update that needs to be verified, and I get an error message that’s as useful as the close button on an elevator.
+
+<!--more-->
+
+![Learning To Code](/learning-to-code.png)
 
 It turns out that it *is* a validation error, kind of. The input I am giving is a duplicate. It’s valid, it just already exists!
 
