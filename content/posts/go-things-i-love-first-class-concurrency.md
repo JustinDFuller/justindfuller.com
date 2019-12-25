@@ -63,6 +63,7 @@ Yes, it technically works, but this is not the most idiomatic Go and it's not th
 Here's one idea of how to convert the bad example to idiomatic Go that communicates through channels.
 
 ```go
+func main() {
 var ints []int
 channel := make(chan int, 10)
 
@@ -79,8 +80,10 @@ for i := range channel {
 }
 
 fmt.Printf("Ints %v", ints)
+}
 ```
 
+Now, only one goroutine can modify the `ints` slice. Each routine communicates through a channel. They're sharing memory by communicating, instead of directly modifying shared memory.
 ---
 
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
