@@ -20,7 +20,7 @@ This post, _First Class Concurrency_, will demonstrate a few of the neat concurr
 
 ![Go Things I Love](/go-things-i-love.png)
 
-In order to get the most out of this post I suggest you familiarize yourself with the fundamentals of Go concurency, a great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
+In order to get the most out of this post I suggest you familiarize yourself with the fundamentals of Go concurency; a great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
 
 ## First Class
 
@@ -63,27 +63,38 @@ Yes, it technically works, but this is not the most idiomatic Go and it's not th
 Here's one idea of how to convert the bad example to idiomatic Go that communicates through channels.
 
 ```go
+// WriteOnly serves the purpose of demonstrating
+// a method that writes to a write-only channel.
+func WriteOnly(channel chan<-int, order int) {
+	channel <- order
+}
+
 func main() {
-var ints []int
-channel := make(chan int, 10)
+	var ints []int
+	channel := make(chan int, 10)
 
-for i := 0; i < 10; i++ {
-  go WriteOnly(channel, i)
-}
+	for i := 0; i < 10; i++ {
+		go WriteOnly(channel, i)
+	}
 
-for i := range channel {
-  ints = append(ints, i)
+	for i := range channel {
+		ints = append(ints, i)
 
-  if len(ints) == 10 {
-    break
-  }
-}
+		if len(ints) == 10 {
+			break
+		}
+	}
 
-fmt.Printf("Ints %v", ints)
+	fmt.Printf("Ints %v", ints)
 }
 ```
 
+[See this example in the Go playground.](https://play.golang.org/p/gi8zyZH7KMd)
+
 Now, only one goroutine can modify the `ints` slice. Each routine communicates through a channel. They're sharing memory by communicating, instead of directly modifying shared memory.
+
+The general advice is that [a channel receiver never closes a channel](https://tour.golang.org/concurrency/4), only a sending channel should close it. In this example there is an interesting situation where the Sending channels don't know if they can safely close the channel, yet we need a way to break out of the loop. 
+
 ---
 
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
