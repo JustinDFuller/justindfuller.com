@@ -2,7 +2,7 @@
 #
 baseurl = "https://www.justindfuller.com/"
 languageCode = "en-us"
-title = "Justin Fuller, Software Engineer"
+title = "Justin Fuller — Software Engineer"
 theme = "hugo-theme"
 # number of posts to show on home/category/tag pages (Default: 10)
 paginate = 5
@@ -22,6 +22,10 @@ googleAnalytics = "UA-57389891-8"
 [[menu.sidebar]]
   name = "LinkedIn"
   url = "https://linkedin.com/in/justin-fuller-8726b2b1"
+
+[[menu.sidebar]]
+  name = "Twitter"
+  url = "https://twitter.com/justin_d_fuller"
 
 #[[menu.navbar]]
 #  name = "Link 1"
