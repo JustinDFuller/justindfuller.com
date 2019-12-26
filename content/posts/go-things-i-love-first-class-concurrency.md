@@ -20,23 +20,23 @@ This post, _First Class Concurrency_, will demonstrate a few of the neat concurr
 
 ![Go Things I Love](/go-things-i-love.png)
 
-In order to get the most out of this post I suggest you familiarize yourself with the fundamentals of Go concurency; a great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
+To get the most out of this post you should familiarize yourself with the fundamentals of Go concurency. A great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
 
 ## First Class
 
-To be first class is to have full support and consideration in all things. For concurrency to be a first class citizen of Go, it must be a part of the language itself, not simply an API bolted on the side.
+To be first class is to have full support and consideration in all things. For concurrency to be a first class citizen of Go, it must be a part of the language itself, not an API bolted on the side.
 
-To demonstrate how concurrency is part of the language, see these type declarations:
+To show how concurrency is part of the language, see these type declarations:
 
 ```go
 type (
-	ReadOnly(<-chan int)
 	WriteOnly(chan<- int)
+	ReadOnly(<-chan int)
 	ReadAndWrite(chan int)
 )
 ```
 
-Notice the `chan` keyword in the function argument definitions. A `chan` is a channel. In Go, channels are a mechanism for goroutines to communicate. You'll run across a common phrase when working with go: "Do not communicate by sharing memory; instead, share memory by communicating." This means that, instead of multiple goroutines accessing the same variable or property, the goroutines should communicate changes through channels.
+Notice the `chan` keyword in the function argument definitions. A `chan` is a channel. In Go, channels are a mechanism for goroutines to communicate. You'll run across a common phrase when working with go: "Do not communicate by sharing memory; instead, share memory by communicating." This means that goroutines should communicate changes through channels. Channels are a much safer way to share memory.
 
 Here's an example of bad Go code that communicates by sharing memory.
 
@@ -58,7 +58,7 @@ wg.Wait()
 fmt.Printf("Ints %v", ints)
 ```
 
-Yes, it technically works, but this is not the most idiomatic Go and it's not the safest way to write this program. In this example there are 11 goroutines with access to the `ints` slice (one running this functions, ten more spawned by the loop). In this simple example nothing bad happens but when the codebase grows to thousands or millions of lines of code there's no longer any guarantee that things will behave as expected.
+Yes, it works, but this is not the most idiomatic Go and it's not the safest way to write this program. In this example there are 11 goroutines with access to the `ints` slice (one running this functions, ten more spawned by the loop). In this simple example nothing bad happens but when the codebase grows to thousands or millions of lines of code there's no longer any guarantee that things will behave as expected.
 
 Here's one idea of how to convert the bad example to idiomatic Go that communicates through channels.
 
@@ -91,9 +91,79 @@ func main() {
 
 [See this example in the Go playground.](https://play.golang.org/p/gi8zyZH7KMd)
 
-Now, only one goroutine can modify the `ints` slice. Each routine communicates through a channel. They're sharing memory by communicating, instead of directly modifying shared memory.
+Now, only one goroutine can modify the `ints` slice. Each goroutine communicates through a channel. They're sharing memory by communicating through a channel, instead of modifying shared memory.
 
-The general advice is that [a channel receiver never closes a channel](https://tour.golang.org/concurrency/4), only a sending channel should close it. In this example there is an interesting situation where the Sending channels don't know if they can safely close the channel, yet we need a way to break out of the loop. 
+The example here shows two important ways that concurrency (goroutines and channels) are first class citizens of the Go programming language. First, we used a write-only channel argument. This guaranteed that the method won't accidentally read from the channel, altering the functionality in an unexpected way. Second, we see that the `for range` loop works on channels.
+
+These are just a few ways that Go makes concurrency a first class citizen. Next, let's see what we can accomplish with goroutines and channels.
+
+## Timeout
+
+We're going to write a simple Go program that fetches results from three [New York Times endpoints](https://developer.nytimes.com/) to create a simple news UI. Generally, the NYT API responds very quickly. However, it's vital that our page responds as quickly as possible. So, for this reason, we're going to serve whatever responses we can get within 80 milliseconds.
+
+Here are the URLs that we'll be fetching from:
+
+```go
+var urls = [...]string{
+	"https://api.nytimes.com/svc/topstories/v2/home.json",
+	"https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json",
+	"https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json",
+}
+```
+
+They've been declared as an array of strings so that we can iterate over them later.
+
+For demonstration purposes we'll be using a fake `Fetch` function.
+
+```go
+func Fetch(url string, channel chan string) {
+	// important note if you are using this in the go playground
+	// the playground is deterministic, meaning there will be no
+	// random number, it will be the same every time.
+	source := rand.NewSource(time.Now().UnixNano())
+	random := rand.New(source)
+
+	time.Sleep(time.Duration(random.Intn(150)) * time.Millisecond)
+	channel <- url
+}
+```
+
+This `Fetch` will respond with a string (the url) some time between 0 and 150 milliseconds after it's called. This function is intended to mock the results of an actual API, which could have response times varying from 60-150ms.
+
+Now, the main program:
+
+```go
+func main() {
+	start := time.Now()
+
+	channel := make(chan string)
+	for _, url := range urls {
+		go Fetch(url, channel)
+	}
+
+	var results []string
+	timeout := time.After(time.Duration(80) * time.Millisecond)
+
+Loop:
+	for {
+		select {
+		case url := <-channel:
+			results = append(results, url)
+
+			if len(results) == len(urls) {
+				fmt.Println("Got all results")
+				break Loop
+			}
+		case <-timeout:
+			fmt.Println("Timeout!")
+			break Loop
+		}
+	}
+
+	fmt.Printf("Took %s\n", time.Now().Sub(start))
+	fmt.Printf("Results: %v\n", results)
+}
+```
 
 ---
 
@@ -113,3 +183,4 @@ Things I want to talk about:
 * Ordering channel responses
   * Unordered responses: https://play.golang.org/p/p_3YPw9LrgC
   * Ordered responses: https://play.golang.org/p/EkYf-YSsErW
+
