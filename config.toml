@@ -34,6 +34,7 @@ googleAnalytics = "UA-57389891-8"
 
 # Theme variables
 [params]
+  email_subscribe = "https://eepurl.com/gOmcFP"
   # Site author
   author = "Justin Fuller"
 
