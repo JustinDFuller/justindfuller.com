@@ -26,7 +26,7 @@ To get the most out of this post you should familiarize yourself with the fundam
 
 To be first class is to have full support and consideration in all things. For concurrency to be a first class citizen of Go, it must be a part of the language itself, not an API bolted on the side.
 
-To show how concurrency is part of the language, see these type declarations:
+A few type declarations will serve to show how concurrency is built in to the language itself.
 
 ```go
 type (
@@ -36,9 +36,19 @@ type (
 )
 ```
 
-Notice the `chan` keyword in the function argument definitions. A `chan` is a channel. In Go, channels are a mechanism for goroutines to communicate. You'll run across a common phrase when working with go: "Do not communicate by sharing memory; instead, share memory by communicating." This means that goroutines should communicate changes through channels. Channels are a much safer way to share memory.
+Notice the `chan` keyword in the function argument definitions. A `chan` is a channel. 
 
-Here's an example of bad Go code that communicates by sharing memory.
+Next comes the arrow `<-` that shows which way the data flows in relation to the channel. The `WriteOnly` function receives a channel that can only be written to. The `ReadOnly` function receives a channel that can only be read from. Being able to declare the flow of the data in relation to a channel is an important way in which channels are first-class members of the Go programming language.
+
+In Go, channels are a mechanism for goroutines to communicate. You'll run across a common phrase when working with go:
+
+> Do not communicate by sharing memory; instead, share memory by communicating.
+
+This means that goroutines should communicate changes through channels. In Go, channels are a safer and idiomatic way to share memory.
+
+## Communicating by sharing memory
+
+Here's an example of Go code that communicates by sharing memory.
 
 ```go
 var ints []int
@@ -54,13 +64,23 @@ for i := 0; i < 10; i++ {
 }
 
 wg.Wait()
-
-fmt.Printf("Ints %v", ints)
 ```
 
-Yes, it works, but this is not the most idiomatic Go and it's not the safest way to write this program. In this example there are 11 goroutines with access to the `ints` slice (one running this functions, ten more spawned by the loop). In this simple example nothing bad happens but when the codebase grows to thousands or millions of lines of code there's no longer any guarantee that things will behave as expected.
+This piece of code creates a goroutine for each integer that is appended to the array. It's trivial and not realistic but it serves an important demonstrative purpose.
 
-Here's one idea of how to convert the bad example to idiomatic Go that communicates through channels.
+Each goroutine shares memory, the `ints` array, then appends an integer to it.
+
+Clearly this code communicates by sharing memory, it does not share memory by communicating.
+
+Yes it works but this is not the most idiomatic Go and it's not the safest way to write this program. In this example there are 11 goroutines with access to the `ints` slice (one running this functions, ten more spawned by the loop). 
+
+What happens when the codebase grows to thousands or millions of lines of code? There's no longer any guarantee that things will behave as expected if many functions and goroutines are sharing memory.
+
+# Share memory by communicating
+
+The first sign that this code is not sharing memory by communicating is the use of `sync.WaitGroup`. To be clear, WaitGroups are not always bad, however they may indicate a code smell that your code _could_ instead use a channel.
+
+Here's one idea of how to convert the bad example to idiomatic Go: replace the `WaitGroup` with a channel.
 
 ```go
 // WriteOnly serves the purpose of demonstrating
