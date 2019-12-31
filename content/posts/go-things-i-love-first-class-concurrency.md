@@ -99,7 +99,7 @@ These are just a few ways that Go makes concurrency a first class citizen. Next,
 
 ## Timeout
 
-We're going to write a simple Go program that fetches results from three [New York Times endpoints](https://developer.nytimes.com/) to create a simple news UI. Generally, the NYT API responds very quickly. However, it's vital that our page responds as quickly as possible. So, for this reason, we're going to serve whatever responses we can get within 80 milliseconds.
+One of the best ways to demonstrate the power of goroutines and channels is with a simple Go program that fetches results from three [New York Times endpoints](https://developer.nytimes.com/). One can imagine that the endpoint provides data for a news UI. Generally, the NYT API responds very quickly. However, it's vital that our page responds as quickly as possible. So, for this reason, we're going to serve whichever responses come within 80 milliseconds.
 
 Here are the URLs that we'll be fetching from:
 
@@ -111,22 +111,82 @@ var urls = [...]string{
 }
 ```
 
-They've been declared as an array of strings so that we can iterate over them later.
-
-For demonstration purposes we'll be using a fake `Fetch` function.
+They've been declared as an array of strings, this will allow them to be iterated. Another neat feature of Go is how you can declare `const` blocks. Like this:
 
 ```go
-func Fetch(url string, channel chan string) {
-	// important note if you are using this in the go playground
-	// the playground is deterministic, meaning there will be no
-	// random number, it will be the same every time.
+const (
+	urlTopStories              = "https://api.nytimes.com/svc/topstories/v2/home.json"
+	urlMostPopular             = "https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json"
+	urlHardcoverFictionReviews = "https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction.json"
+)
+```
+
+Now the `urls` array can be more expressive by using the const declarations.
+
+```go
+var urls = [...]string{
+	urlTopStories,
+	urlMostPopular,
+	urlHardcoverFictionReviews,
+}
+```
+
+Clearly, the urls are for top stories, most popular stories, and the current hardcover fiction reviews. 
+
+Instead of a real `http.Get` I will substitute a fake `Fetch` function. This will provide a clearer demonstration of the timeout.
+
+```go
+func fetch(url string, channel chan<- string) {
 	source := rand.NewSource(time.Now().UnixNano())
 	random := rand.New(source)
-
-	time.Sleep(time.Duration(random.Intn(150)) * time.Millisecond)
+	duration := time.Duration(random.Intn(150)) * time.Millisecond
+	time.Sleep(duration)
 	channel <- url
 }
 ```
+
+There's already several concepts to unpack in this helper function and we haven't even gotten to the main body yet. 
+
+### Deterministic Randomness (See: oxymorons)
+
+In Go, the random number generator is, by default, determinstic.
+
+> In mathematics, computer science and physics, a deterministic system is a system in which no randomness is involved in the development of future states of the system. - [The Encyclopedia of Science](https://www.daviddarling.info/encyclopedia/D/deterministic_system.html)
+
+This means that we have to seed the randomizer with something that changes; if not, the randomizer will always produce the same value. So we create a source, typically based on the current time. 
+
+```go
+source := rand.NewSource(time.Now().UnixNano())
+```
+
+Once the source is created, we can use it create a random number generator. We must create the source and random generator each time, otherwise it will continue to return the same number.
+
+```go
+random := rand.New(source)
+```
+
+Once the generator is created, it can be used to create a random number between 0 and 150. Then that random number is converted to a `time.Duration` type, and multiplied to become milliseconds.
+
+```go
+duration := time.Duration(random.Intn(150)) * time.Millisecond
+```
+
+One further note about the randomness is needed. It will always return the same value in the go playground because the go playground always starts running with the same timestamp. So, if you plug this into the playground, you'll always receive the same result. If you want to see the timeout in action, just replace 150 with some number below 80.
+
+### Another send-only channel
+
+At the very bottom of `fetch` are the two lines that we actually care about.
+
+```go
+time.Sleep(duration)
+channel <- url
+```
+
+The first line tells the goroutine to sleep for the specified duration. This will make some responses take too long for the given URL, later causing the API to respond without the results of that url.
+
+Finally, the url is sent to the channel. In a real `fetch` it would be expected that the actual response is sent to the channel; for our purposes, it's just the url.
+
+## The Main Function
 
 This `Fetch` will respond with a string (the url) some time between 0 and 150 milliseconds after it's called. This function is intended to mock the results of an actual API, which could have response times varying from 60-150ms.
 
