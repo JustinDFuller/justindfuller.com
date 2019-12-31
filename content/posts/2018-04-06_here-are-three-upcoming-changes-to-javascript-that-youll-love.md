@@ -68,7 +68,7 @@ You’ll need to have [Node.js](https://nodejs.org/en/) and [NPM ](https://www.n
 
 To do so, you can run the following command in a new directory:
 
-```
+```console
 npm init -f && npm i ava@1.0.0-beta.3 @babel/preset-env@7.0.0-beta.42 @babel/preset-stage-0@7.0.0-beta.42 @babel/register@7.0.0-beta.42 @babel/polyfill@7.0.0-beta.42 @babel/plugin-transform-runtime@7.0.0-beta.42 @babel/runtime@7.0.0-beta.42 --save-dev
 ```
 

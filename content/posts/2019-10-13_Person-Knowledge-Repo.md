@@ -10,11 +10,15 @@ title: "Keep a git repository of all your practice code"
 weight: 1
 aliases:
   - /posts/2019-10-13_Person-Knowledge-Repo
+images:
+  - /learning-to-code.png
 ---
 
 Are you struggling to find projects to showcase to potential employers? Have you been practicing [LeetCode](https://leetcode.com/) as you prepare to interview for a Software Development job? Do you occasionally practice a Kata on [Codewars](www.codewars.com) to keep your skills from getting rusty?
 
 <!--more-->
+
+![Learning To Code](/learning-to-code.png)
 
 If you answered yes to any of these questions, you should consider saving every practice problem you do in a public git repo, like [Github](https://github.com/).
 

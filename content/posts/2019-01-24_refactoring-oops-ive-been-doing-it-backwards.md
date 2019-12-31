@@ -9,7 +9,7 @@ next: /posts/refactoring-oops-ive-been-doing-it-wrong
 title: "Refactoring — oops, I’ve been doing it wrong."
 weight: 1
 images:
-  - /learning-javascript.jpeg
+  - /learning-to-code.png
 aliases:
   - /posts/2019-01-24_refactoring-oops-ive-been-doing-it-backwards
 ---
@@ -18,7 +18,7 @@ Welcome to my intervention. I’m a refactoring addict and I’m not afraid to a
 
 <!--more-->
 
-![](/learning-javascript.jpeg)
+![](/learning-to-code.png)
 
 We all know about refactoring. If you’ve read even a single programming book, or if you spend much time reading code blogs, you’ll have heard all about it. It’s an important concept that keeps code understandable, maintainable, and extensible.
 
@@ -114,7 +114,7 @@ hasEntitlement() {
 
 Don't let the Class throw you off. The same result can be accomplished without it.
 
-```
+```js
 function superUser(user) {
   return {
     ...user,

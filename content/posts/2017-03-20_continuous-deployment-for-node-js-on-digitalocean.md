@@ -69,11 +69,11 @@ At this point, you will want to create a user to use in deployment. For safety, 
 
 * Run the following commands to get everything set up. This is where some of the sudo access is needed.
 
-```
+```console
 curl -sL [https://deb.nodesource.com/setup_7.x](https://deb.nodesource.com/setup_7.x) | sudo bash -
 ```
 
-```
+```console
 sudo apt-get install nodejs
 ```
 
@@ -88,7 +88,7 @@ Yarn install instructions can be found on their website.
 
 To keep things brief here are the directions:
 
-```
+```console
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -107,7 +107,7 @@ You will need to create an SSH key on your droplet and add it to Github by follo
 
 Now that you’re connected to Github you can clone your repo.
 
-```
+```console
 git clone git@github.com:USERNAME/REPOSITORY.git
 ```
 
@@ -133,7 +133,7 @@ Sound good? Ok, here’s what to do:
 1. Create your Codeship account and log in. It should walk you through connecting to Github (or Bitbucket or Gitlab) and then selecting your repository. Since you’re an adult I’m going to let you handle this part!
 2. You should now be at a screen where you need to configure your tests. The first section gives you setup commands, use these:
 
-```
+```console
 nvm use 6
 npm i -g yarn
 yarn
@@ -141,13 +141,13 @@ yarn
 
 3. Next, you need to set up your test commands. This part is complicated, but don’t worry, you can just paste in the following command:
 
-```
+```console
 yarn test
 ```
 
 4. If you made it through that difficult step, go ahead and move on to setting up your deployment settings. Once you’re on that part you’ll see a bunch of options to select, like Amazon S3 and Heroku. We’re going to use a custom script, which is the very last option. That script should look like this:
 
-```
+```console
 ssh deploy@DROPLET_IP 'cd NAME_OF_YOUR_PROJECT/; git checkout master; git pull; yarn; yarn restart;'
 ```
 
