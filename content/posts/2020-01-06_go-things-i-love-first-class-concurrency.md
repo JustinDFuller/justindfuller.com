@@ -1,12 +1,12 @@
 ---
 author: "Justin Fuller"
 date: 2020-01-06
-linktitle: "Go Things I Love: First Class Concurrency"
+linktitle: "Go Things I Love: Channels and Goroutines"
 menu:
   main:
     parent: posts
-next: /posts/go-things-i-love-first-class-concurrency
-title: "Go Things I ❤️: First Class Concurrency"
+next: /posts/go-things-i-love-channels-and-goroutines
+title: "Go Things I Love: Channels and Goroutines"
 weight: 1
 images:
   - /go-things-i-love.png
@@ -14,7 +14,7 @@ images:
 
 Concurrency, in some form, is one of the most important building blocks of performant software. For developers, depending on the programming language they choose, this can become either a point of pain or joy. Go, in my estimation, provides one of the most delightful ways to achieve concurrency. 
 
-This post, _First Class Concurrency_, will demonstrate a few of the neat concurrency patterns in Go.
+This post, _Channels and Goroutines_, will demonstrate a few of the neat concurrency patterns in Go.
 
 <!--more-->
 
@@ -38,7 +38,9 @@ type (
 
 Notice the `chan` keyword in the function argument definitions. A `chan` is a channel. 
 
-Next comes the arrow `<-` that shows which way the data flow to or from the channel. The `WriteOnly` function receives a channel that can only be written to. The `ReadOnly` function receives a channel that can only be read from. Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language.
+Next comes the arrow `<-` that shows which way the data flow to or from the channel. The `WriteOnly` function receives a channel that can only be written to. The `ReadOnly` function receives a channel that can only be read from. 
+
+Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language. Later in this post we'll see these declarations in action.
 
 In Go, channels are a mechanism for goroutines to communicate. You'll run across a common phrase when working with go:
 
@@ -51,30 +53,32 @@ This means that goroutines should communicate changes through channels. In Go, c
 Here's an example of Go code that communicates by sharing memory.
 
 ```go
-var ints []int
-var wg sync.WaitGroup
+func IntAppender() {
+	var ints []int
+	var wg sync.WaitGroup
 
-for i := 0; i < 10; i++ {
-  wg.Add(1)
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
 
-  go func(i int) {
-    defer wg.Done()
-    ints = append(ints, i)
-  }(i)
+		go func(i int) {
+			defer wg.Done()
+			ints = append(ints, i)
+		}(i)
+	}
+
+	wg.Wait()
 }
-
-wg.Wait()
 ```
 
-This piece of code creates a goroutine for each integer that is appended to the array. It's trivial and not realistic but it serves an important demonstrative purpose.
+`IntAppender` creates a goroutine for each integer that is appended to the array. It's trivial and not-at-all realistic but it serves an important demonstrative purpose. 
 
-Each goroutine shares memory, the `ints` array, then appends an integer to it.
+In `IntAppender` each goroutine shares the same memory memory—the `ints` array—which it apends integers to.
 
-This code communicates by sharing memory, it does not share memory by communicating.
+This code communicates by sharing memory. It does not share memory by communicating.
 
-Yes, it works but this is not the most idiomatic Go and it's not the safest way to write this program. In this example, there are 11 goroutines with access to the `ints` slice (one running the main function, ten more spawned by the loop). 
+Yes, it works but at the cost of being not-idiomatic Go. More importantly, it's not the safest way to write this program. In this example, there are 11 goroutines with access to the `ints` slice (one running the main function, ten more spawned by the loop). 
 
-What happens when the codebase grows to thousands or millions of lines of code? There's no longer any guarantee that things will behave as expected if many functions and goroutines are sharing memory.
+What happens when the codebase grows to thousands or millions of lines of code? With this pattern strewn around the codebase, there's no guarantee that things will behave as expected when many functions and goroutines are sharing memory.
 
 ## Share memory by communicating (👍)
 
