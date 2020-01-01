@@ -6,7 +6,7 @@ menu:
   main:
     parent: posts
 next: /posts/go-things-i-love-first-class-concurrency
-title: "Go Things I Love: First Class Concurrency"
+title: "Go Things I ❤️: First Class Concurrency"
 weight: 1
 images:
   - /go-things-i-love.png
@@ -46,7 +46,7 @@ In Go, channels are a mechanism for goroutines to communicate. You'll run across
 
 This means that goroutines should communicate changes through channels. In Go, channels are a safer and idiomatic way to share memory.
 
-## Communicating by sharing memory
+## Communicating by sharing memory (👎)
 
 Here's an example of Go code that communicates by sharing memory.
 
@@ -76,7 +76,7 @@ Yes, it works but this is not the most idiomatic Go and it's not the safest way 
 
 What happens when the codebase grows to thousands or millions of lines of code? There's no longer any guarantee that things will behave as expected if many functions and goroutines are sharing memory.
 
-# Share memory by communicating
+## Share memory by communicating (👍)
 
 The first sign that this code is not sharing memory by communicating is the use of `sync.WaitGroup`. To be clear, WaitGroups are not always bad, however, they may indicate a code smell that your code _could_ instead use a channel.
 
