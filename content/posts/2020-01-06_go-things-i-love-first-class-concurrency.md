@@ -153,7 +153,7 @@ var urls = [...]string{
 
 The URLs are for top stories, most popular stories, and the current hardcover fiction reviews. 
 
-Instead of a real `http.Get` I will substitute a fake `Fetch` function. This will provide a clearer demonstration of the timeout.
+Instead of a real `http.Get` I will substitute a fake `fetch` function. This will provide a clearer demonstration of the timeout.
 
 ```go
 func fetch(url string, channel chan<- string) {
@@ -206,42 +206,65 @@ The first line tells the goroutine to sleep for the specified duration. This wil
 
 Finally, the URL is sent to the channel. In a real `fetch` it would be expected that the actual response is sent to the channel; for our purposes, it's just the URL.
 
+### A read-only channel
+
+Since the `fetch` function funnels results into the channel, it makes sense to have a corresponding function funnel results out of the channel into a slice of strings.
+
+Take a look at the function. Next we'll break it down line-by-line.
+
+```go
+func stringSliceFromChannel(maxLength int, input <-chan string) []string {
+	var results []string
+	timeout := time.After(time.Duration(80) * time.Millisecond)
+
+	for {
+		select {
+		case str := <-input:
+			results = append(results, str)
+
+			if len(results) == maxLength {
+				fmt.Println("Got all results")
+				return results
+			}
+		case <-timeout:
+			fmt.Println("Timeout!")
+			return results
+		}
+	}
+}
+```
+
+The `stringSliceFromChannel` function declares that it will accept a read-only channel, `channel <-chan string`. This indicates that the function will convert the channel's inputs into a different type of output—a slice of strings, or `[]string`. 
+
+Even though it's valid to declare a function argument with, `channel chan string`, opting for the arrow `<-` operator makes the function's intent clearer. This can be particularly helpful in a longer function.
+
+Next, the timeout is created. `time.After` returns a channel. After the given `time.Duration` it will write to the channel (what it writes doesn't matter).
+
+The `timeout` and `input` channels are used together in a `for select` loop. The `for` loop with no other arguments will loop forever—or until it's broken by a `break` or `return`. The `select` acts like a `switch` statement for channels. The first `case` block to have a channel ready will execute. By combining the `for` and `select`, this block of code will run until the desired number of results is retireved or until the timeout happens.
+
+Whatever results are available, even if there are none, will be returned when the timeout happens. If all results are collected then the timeout is ignored.
+
+Now that there is both a channel writer and a channel reader, let's see how to put it all together in the `main` function.
+
 ## The Main Function
 
-This `Fetch` will respond with a string (the URL) sometime between 0 and 150 milliseconds after it's called. This function is intended to mock the results of an actual API, which could have response times varying from 60-150ms.
+This `fetch` will respond with a string (the URL) sometime between 0 and 150 milliseconds after it's called. This function is intended to mock the results of an actual API, which could have response times varying from 60-150ms.
 
 Now, the main program:
 
 ```go
 func main() {
-    start := time.Now()
+	start := time.Now()
 
-    channel := make(chan string)
-    for _, url := range urls {
-        go Fetch(url, channel)
-    }
+	channel := make(chan string)
+	for _, url := range urls {
+		go fetch(url, channel)
+	}
 
-    var results []string
-    timeout := time.After(time.Duration(80) * time.Millisecond)
+	results := stringSliceFromChannel(len(urls), channel)
 
-Loop:
-    for {
-        select {
-        case url := <-channel:
-            results = append(results, url)
-
-            if len(results) == len(urls) {
-                fmt.Println("Got all results")
-                break Loop
-            }
-        case <-timeout:
-            fmt.Println("Timeout!")
-            break Loop
-        }
-    }
-
-    fmt.Printf("Took %s\n", time.Now().Sub(start))
-    fmt.Printf("Results: %v\n", results)
+	fmt.Printf("Took %s\n", time.Now().Sub(start))
+	fmt.Printf("Results: %v\n", results)
 }
 ```
 
@@ -259,7 +282,7 @@ Things I want to talk about:
 * Read and write-only channels
 * Channel generators
 * Channel timeouts
-  * Limiting to responses under 100ms: https://play.golang.org/p/XnBSfTeeCX7
+  * Limiting to responses under N milliseconds: https://play.golang.org/p/g3RnP9A26v5
 * Ordering channel responses
   * Unordered responses: https://play.golang.org/p/p_3YPw9LrgC
   * Ordered responses: https://play.golang.org/p/EkYf-YSsErW
