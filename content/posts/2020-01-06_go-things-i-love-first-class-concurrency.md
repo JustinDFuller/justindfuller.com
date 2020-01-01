@@ -1,6 +1,6 @@
 ---
 author: "Justin Fuller"
-date: 2019-12-27
+date: 2020-01-06
 linktitle: "Go Things I Love: First Class Concurrency"
 menu:
   main:
