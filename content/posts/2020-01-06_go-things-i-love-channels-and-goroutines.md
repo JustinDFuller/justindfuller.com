@@ -169,7 +169,7 @@ func fetch(url string, channel chan<- string) {
 }
 ```
 
-There are already several concepts to unpack in this helper function and we haven't even gotten to the main body yet. 
+This is a common pattern in Go demonstration code—generate a random number, sleep the goroutine for the randomly generated duration, then do some work. In order to fully understand the code and why it is being used to demonstrate a fake `http.Get`, the next sections will step through each line, explaining what it does.
 
 ### Deterministic Randomness (See: oxymorons)
 
@@ -238,17 +238,57 @@ func stringSliceFromChannel(maxLength int, input <-chan string) []string {
 }
 ```
 
+First, look at the function argument declaration.
+
+```go
+func stringSliceFromChannel(maxLength int, input <-chan string) []string {
+```
+
 The `stringSliceFromChannel` function declares that it will accept a read-only channel, `channel <-chan string`. This indicates that the function will convert the channel's inputs into a different type of output—a slice of strings, or `[]string`. 
 
-Even though it's valid to declare a function argument with, `channel chan string`, opting for the arrow `<-` operator makes the function's intent clearer. This can be particularly helpful in a longer function.
+Even though it's valid to declare a function argument with, `channel chan string`, opting for the arrow `<-` operator makes the function's intent clearer. This can be particularly helpful in a long function.
 
-Next, the timeout is created. `time.After` returns a channel. After the given `time.Duration` it will write to the channel (what it writes doesn't matter).
+Next, the timeout is created. 
 
-The `timeout` and `input` channels are used together in a `for select` loop. The `for` loop with no other arguments will loop forever—or until it's broken by a `break` or `return`. The `select` acts like a `switch` statement for channels. The first `case` block to have a channel ready will execute. By combining the `for` and `select`, this block of code will run until the desired number of results is retireved or until the timeout happens.
+```go
+timeout := time.After(time.Duration(80) * time.Millisecond)
+```
 
-Whatever results are available, even if there are none, will be returned when the timeout happens. If all results are collected then the timeout is ignored.
+The function `time.After` returns a channel. After the given `time.Duration` it will write to the channel (_what_ it writes doesn't matter).
+
+Moving on, the `timeout` and `input` channels are used together in a `for select` loop. The `for` loop with no other arguments will loop forever—or until it's broken by a `break` or `return`. The `select` acts like a `switch` statement for channels. The first `case` block to have a channel ready will execute. By combining the `for` and `select`, this block of code will run until the desired number of results is retireved or until the timeout happens.
+
+Take a look at the case block for the `input` channel.
+
+```go
+case str := <-input:
+	results = append(results, str)
+	
+	if len(results) == maxLength {
+		fmt.Println("Got all results")
+		return results
+	}
+```
+
+In this block the output of the channel is assigned to a variable and that variable is placed in the results array. The results array is returned if it is the desired length.
+
+Now, look at the case block for the `timeout` channel.
+
+```go
+case <-timeout:
+	fmt.Println("Timeout!")
+	return results
+```
+
+Whatever results are available, even if there are none, will be returned when the timeout happens.
 
 Now that there is both a channel writer and a channel reader, let's see how to put it all together in the `main` function.
+
+---
+
+👋 Want to learn more about Go? [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about.
+
+---
 
 ## The Main Function
 
@@ -258,8 +298,6 @@ Now, the main program:
 
 ```go
 func main() {
-	start := time.Now()
-
 	channel := make(chan string)
 	for _, url := range urls {
 		go fetch(url, channel)
@@ -267,10 +305,38 @@ func main() {
 
 	results := stringSliceFromChannel(len(urls), channel)
 
-	fmt.Printf("Took %s\n", time.Now().Sub(start))
 	fmt.Printf("Results: %v\n", results)
 }
 ```
+
+First, a channel is created to collect the fetch results, `channel := make(chan string)`.
+
+Next, the `urls` are looped over and a goroutine is created to fetch each url. 
+
+```go
+for _, url := range urls {
+	go fetch(url, channel)
+}
+```
+
+This allows the fetching to happen concurrently.
+
+Once the fetches have been kicked off, `stringSliceFromChannel` will block until the results are in or the timeout occurs.
+
+```go
+results := stringSliceFromChannel(len(urls), channel)
+```
+
+Finally, we can print our results to see which URLs are returned. If you run this code in the [Go Playground](https://play.golang.org/p/g3RnP9A26v5), remember to change the timeout number since the random number generator will always return the same results.
+
+## Final Thoughts
+
+This is a pretty neat concurrency pattern, although it's a little unrealistic. A good exercise might be to open the [Go Playground](https://play.golang.org/p/g3RnP9A26v5) to see if you can implement these scenarios:
+
+* The results should be returned as a JSON object. Maybe we could use a struct instead of an array of URLs?
+* A blank page is useless, the code should at least wait until there is ONE result to display.
+
+Enjoy!
 
 ---
 
