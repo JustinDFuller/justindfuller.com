@@ -40,7 +40,7 @@ Notice the `chan` keyword in the function argument definitions. A `chan` is a ch
 
 Next comes the arrow `<-` that shows which way the data flow to or from the channel. The `WriteOnly` function receives a channel that can only be written to. The `ReadOnly` function receives a channel that can only be read from. 
 
-Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language. Later in this post we'll see these declarations in action.
+Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language. Later in this post, we'll see these declarations in action.
 
 In Go, channels are a mechanism for goroutines to communicate. You'll run across a common phrase when working with go:
 
@@ -54,25 +54,25 @@ Here's an example of Go code that communicates by sharing memory.
 
 ```go
 func IntAppender() {
-	var ints []int
-	var wg sync.WaitGroup
+    var ints []int
+    var wg sync.WaitGroup
 
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
+    for i := 0; i < 10; i++ {
+        wg.Add(1)
 
-		go func(i int) {
-			defer wg.Done()
-			ints = append(ints, i)
-		}(i)
-	}
+        go func(i int) {
+            defer wg.Done()
+            ints = append(ints, i)
+        }(i)
+    }
 
-	wg.Wait()
+    wg.Wait()
 }
 ```
 
 `IntAppender` creates a goroutine for each integer that is appended to the array. It's trivial and not-at-all realistic but it serves an important demonstrative purpose. 
 
-In `IntAppender` each goroutine shares the same memory memory—the `ints` array—which it apends integers to.
+In `IntAppender` each goroutine shares the same memory—the `ints` array—which it appends integers to.
 
 This code communicates by sharing memory. It does not share memory by communicating.
 
@@ -169,7 +169,7 @@ func fetch(url string, channel chan<- string) {
 }
 ```
 
-This is a common pattern in Go demonstration code—generate a random number, sleep the goroutine for the randomly generated duration, then do some work. In order to fully understand the code and why it is being used to demonstrate a fake `http.Get`, the next sections will step through each line, explaining what it does.
+This is a common pattern in Go demonstration code—generate a random number, sleep the goroutine for the randomly generated duration, then do some work. To fully understand the code and why it is being used to demonstrate a fake `http.Get`, the next sections will step through each line, explaining what it does.
 
 ### Deterministic Randomness (See: oxymorons)
 
@@ -212,29 +212,29 @@ Finally, the URL is sent to the channel. In a real `fetch` it would be expected 
 
 ### A read-only channel
 
-Since the `fetch` function funnels results into the channel, it makes sense to have a corresponding function funnel results out of the channel into a slice of strings.
+Since the `fetch` function funnels results in the channel, it makes sense to have a corresponding function funnel results out of the channel into a slice of strings.
 
-Take a look at the function. Next we'll break it down line-by-line.
+Take a look at the function. Next, we'll break it down line-by-line.
 
 ```go
 func stringSliceFromChannel(maxLength int, input <-chan string) []string {
-	var results []string
-	timeout := time.After(time.Duration(80) * time.Millisecond)
+    var results []string
+    timeout := time.After(time.Duration(80) * time.Millisecond)
 
-	for {
-		select {
-		case str := <-input:
-			results = append(results, str)
+    for {
+        select {
+        case str := <-input:
+            results = append(results, str)
 
-			if len(results) == maxLength {
-				fmt.Println("Got all results")
-				return results
-			}
-		case <-timeout:
-			fmt.Println("Timeout!")
-			return results
-		}
-	}
+            if len(results) == maxLength {
+                fmt.Println("Got all results")
+                return results
+            }
+        case <-timeout:
+            fmt.Println("Timeout!")
+            return results
+        }
+    }
 }
 ```
 
@@ -256,33 +256,31 @@ timeout := time.After(time.Duration(80) * time.Millisecond)
 
 The function `time.After` returns a channel. After the given `time.Duration` it will write to the channel (_what_ it writes doesn't matter).
 
-Moving on, the `timeout` and `input` channels are used together in a `for select` loop. The `for` loop with no other arguments will loop forever—or until it's broken by a `break` or `return`. The `select` acts like a `switch` statement for channels. The first `case` block to have a channel ready will execute. By combining the `for` and `select`, this block of code will run until the desired number of results is retireved or until the timeout happens.
+Moving on, the `timeout` and `input` channels are used together in a `for select` loop. The `for` loop with no other arguments will loop forever—or until it's broken by a `break` or `return`. The `select` acts as a `switch` statement for channels. The first `case` block to have a channel ready will execute. By combining the `for` and `select`, this block of code will run until the desired number of results is retrieved or until the timeout happens.
 
 Take a look at the case block for the `input` channel.
 
 ```go
 case str := <-input:
-	results = append(results, str)
-	
-	if len(results) == maxLength {
-		fmt.Println("Got all results")
-		return results
-	}
+    results = append(results, str)
+    
+    if len(results) == maxLength {
+        fmt.Println("Got all results")
+        return results
+    }
 ```
 
-In this block the output of the channel is assigned to a variable and that variable is placed in the results array. The results array is returned if it is the desired length.
+In this block, the output of the channel is assigned to a variable and that variable is placed in the results array. The results array is returned if it is the desired length.
 
 Now, look at the case block for the `timeout` channel.
 
 ```go
 case <-timeout:
-	fmt.Println("Timeout!")
-	return results
+    fmt.Println("Timeout!")
+    return results
 ```
 
 Whatever results are available, even if there are none, will be returned when the timeout happens.
-
-Now that there is both a channel writer and a channel reader, let's see how to put it all together in the `main` function.
 
 ---
 
@@ -292,20 +290,18 @@ Now that there is both a channel writer and a channel reader, let's see how to p
 
 ## The Main Function
 
-This `fetch` will respond with a string (the URL) sometime between 0 and 150 milliseconds after it's called. This function is intended to mock the results of an actual API, which could have response times varying from 60-150ms.
-
-Now, the main program:
+Now that there is both a channel writer and a channel reader, let's see how to put it all together in the `main` function.
 
 ```go
 func main() {
-	channel := make(chan string)
-	for _, url := range urls {
-		go fetch(url, channel)
-	}
+    channel := make(chan string)
+    for _, url := range urls {
+        go fetch(url, channel)
+    }
 
-	results := stringSliceFromChannel(len(urls), channel)
+    results := stringSliceFromChannel(len(urls), channel)
 
-	fmt.Printf("Results: %v\n", results)
+    fmt.Printf("Results: %v\n", results)
 }
 ```
 
@@ -315,7 +311,7 @@ Next, the `urls` are looped over and a goroutine is created to fetch each url.
 
 ```go
 for _, url := range urls {
-	go fetch(url, channel)
+    go fetch(url, channel)
 }
 ```
 
@@ -331,7 +327,7 @@ Finally, we can print our results to see which URLs are returned. If you run thi
 
 ## Final Thoughts
 
-Here's the cool thing. We started out talking about how Go has first class concurrency support with goroutines and channels. Then we saw how easy it is to implement a complex concurrent pattern, a timeout, with a single channel and a few goroutines. Over my next few posts I hope to show that this was only scratching the surface of what one can do with concurrency in Go. I hope you'll check back in. (Better yet, [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to be updated each month about my new posts)
+Here's the cool thing. We started out talking about how Go has first-class concurrency support with goroutines and channels. Then we saw how easy it is to implement a complex concurrent pattern, a timeout, with a single channel and a few goroutines. Over my next few posts, I hope to show that this was only scratching the surface of what one can do with concurrency in Go. I hope you'll check back in. (Better yet, [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to be updated each month about my new posts)
 
 Finally, this is a pretty neat concurrency pattern, although it's a little unrealistic. A good exercise might be to open the [Go Playground](https://play.golang.org/p/g3RnP9A26v5) to see if you can implement these scenarios:
 
