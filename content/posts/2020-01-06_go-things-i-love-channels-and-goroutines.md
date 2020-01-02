@@ -331,7 +331,9 @@ Finally, we can print our results to see which URLs are returned. If you run thi
 
 ## Final Thoughts
 
-This is a pretty neat concurrency pattern, although it's a little unrealistic. A good exercise might be to open the [Go Playground](https://play.golang.org/p/g3RnP9A26v5) to see if you can implement these scenarios:
+Here's the cool thing. We started out talking about how Go has first class concurrency support with goroutines and channels. Then we saw how easy it is to implement a complex concurrent pattern, a timeout, with a single channel and a few goroutines. Over my next few posts I hope to show that this was only scratching the surface of what one can do with concurrency in Go. I hope you'll check back in. (Better yet, [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to be updated each month about my new posts)
+
+Finally, this is a pretty neat concurrency pattern, although it's a little unrealistic. A good exercise might be to open the [Go Playground](https://play.golang.org/p/g3RnP9A26v5) to see if you can implement these scenarios:
 
 * The results should be returned as a JSON object. Maybe we could use a struct instead of an array of URLs?
 * A blank page is useless, the code should at least wait until there is ONE result to display.
@@ -344,15 +346,3 @@ Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know 
 
 I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
 or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!
-
----
-
-Things I want to talk about:
-* Go's first-class support of channels in select statements and for loops.
-* Read and write-only channels
-* Channel generators
-* Channel timeouts
-  * Limiting to responses under N milliseconds: https://play.golang.org/p/g3RnP9A26v5
-* Ordering channel responses
-  * Unordered responses: https://play.golang.org/p/p_3YPw9LrgC
-  * Ordered responses: https://play.golang.org/p/EkYf-YSsErW
