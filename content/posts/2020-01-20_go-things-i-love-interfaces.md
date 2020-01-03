@@ -8,6 +8,7 @@ menu:
 next: /posts/go-things-i-love-interfaces
 title: "Go Things I Love: Interfaces"
 weight: 1
+draft: true
 images:
   - /go-things-i-love.png
 ---

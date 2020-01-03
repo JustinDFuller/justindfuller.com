@@ -8,6 +8,7 @@ menu:
 next: /posts/go-things-i-love-channels-and-goroutines
 title: "Go Things I Love: Channels and Goroutines"
 weight: 1
+draft: true
 images:
   - /go-things-i-love.png
 ---

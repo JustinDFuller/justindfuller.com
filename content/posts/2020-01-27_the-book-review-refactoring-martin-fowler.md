@@ -8,6 +8,7 @@ menu:
 next: /posts/the-book-review-refactoring-martin-fowler
 title: "The Book Review — Refactoring, Martin Fowler"
 weight: 1
+draft: true
 images:
   - /book-review.png
 ---

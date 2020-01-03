@@ -8,6 +8,7 @@ menu:
 next: /posts/the-book-review-intro
 title: "The Book Review — Intro"
 weight: 1
+draft: true
 images:
   - /book-review.png
 ---
