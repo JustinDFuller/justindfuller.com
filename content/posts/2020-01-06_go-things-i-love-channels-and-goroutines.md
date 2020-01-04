@@ -8,26 +8,29 @@ menu:
 next: /posts/go-things-i-love-channels-and-goroutines
 title: "Go Things I Love: Channels and Goroutines"
 weight: 1
-draft: true
 images:
   - /go-things-i-love.png
----
+--- 
 
-Concurrency, in some form, is one of the most important building blocks of performant software. For developers, depending on the programming language they choose, this can become either a point of pain or joy. Go, in my estimation, provides one of the most delightful ways to achieve concurrency. 
+This series, _Go Things I Love_, is my attempt to show the parts of Go that I like the best, as well as why I love working with it at [The New York Times](https://open.nytimes.com).
 
-This post, _Channels and Goroutines_, will demonstrate a few of the neat concurrency patterns in Go.
+In my last post [Go Things I Love: Methods On Any Type](/2019/12/go-things-i-love-methods-on-any-type/), I demonstrated a feature of Go that makes it easy to build Object-Oriented software.
+
+This post, _Channels and Goroutines_, will demonstrate a few neat concurrency patterns in Go.
 
 <!--more-->
 
 ![Go Things I Love](/go-things-i-love.png)
 
-To get the most out of this post you should familiarize yourself with the fundamentals of Go concurrency. A great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
+First: to get the most out of this post you should familiarize yourself with the fundamentals of Go concurrency. A great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
+
+Concurrency, in some form, is one of the most important building blocks of performant software. That's why it's important to pick a programming language with first-class concurrency support. Because Go, in my estimation, provides one of the most delightful ways to achieve concurrency, I believe it is a solid choice for any project that involves concurrency.
 
 ## First Class
 
-To be first-class is to have full support and consideration in all things. For concurrency to be a first-class citizen of Go, it must be a part of the language itself, not an API bolted on the side.
+To be first-class is to have full support and consideration in all things. That means, to be first-class, concurrency must be a part of the Go language itself. It cannot be a library bolted on the side.
 
-A few type declarations will serve to show how concurrency is built into the language itself.
+A few type declarations will begin to show how concurrency is built into the language.
 
 ```go
 type (
@@ -41,13 +44,13 @@ Notice the `chan` keyword in the function argument definitions. A `chan` is a ch
 
 Next comes the arrow `<-` that shows which way the data flow to or from the channel. The `WriteOnly` function receives a channel that can only be written to. The `ReadOnly` function receives a channel that can only be read from. 
 
-Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language. Later in this post, we'll see these declarations in action.
+Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language. Channel flow is important because it's how goroutines communicate. 
 
-In Go, channels are a mechanism for goroutines to communicate. You'll run across a common phrase when working with go:
+It's directly related to this phrase you might have seen before:
 
 > Do not communicate by sharing memory; instead, share memory by communicating.
 
-This means that goroutines should communicate changes through channels. In Go, channels are a safer and idiomatic way to share memory.
+The phrase, "share memory by communicating", means goroutines should communicate changes through channels; they provide a safer, idiomatic way to share memory.
 
 ## Communicating by sharing memory (👎)
 
@@ -71,21 +74,21 @@ func IntAppender() {
 }
 ```
 
-`IntAppender` creates a goroutine for each integer that is appended to the array. It's trivial and not-at-all realistic but it serves an important demonstrative purpose. 
+`IntAppender` creates a goroutine for each integer that is appended to the array. Even though it's a little too trivial to be realistic, it still serves an important demonstrative purpose. 
 
 In `IntAppender` each goroutine shares the same memory—the `ints` array—which it appends integers to.
 
-This code communicates by sharing memory. It does not share memory by communicating.
+This code communicates by sharing memory. Yes, it works—but it's not idiomatic Go. More importantly, it's not the safest way to write this program. 
 
-Yes, it works but at the cost of being not-idiomatic Go. More importantly, it's not the safest way to write this program. In this example, there are 11 goroutines with access to the `ints` slice (one running the main function, ten more spawned by the loop). 
+It's not very safe because there are 11 goroutines (one running the main function and ten more spawned by the loop) with access to the `ints` slice. What happens when the codebase grows? 
 
-What happens when the codebase grows to thousands or millions of lines of code? With this pattern strewn around the codebase, there's no guarantee that things will behave as expected when many functions and goroutines are sharing memory.
+This pattern provides no guarantee that the program will behave as expected; anything can happen when memory is shared broadly.
 
 ## Share memory by communicating (👍)
 
-The first sign that this code is not sharing memory by communicating is the use of `sync.WaitGroup`. To be clear, WaitGroups are not always bad, however, they may indicate a code smell that your code _could_ instead use a channel.
+The first sign that this example is not following "share memory by communicating" is the use of `sync.WaitGroup`. Even though I consider WaitGroups to be a code smell, I'm not ready to claim they are always bad. Either way, code is usually safer with a channel.
 
-Here's one idea of how to convert the bad example to idiomatic Go: replace the `WaitGroup` with a channel.
+Let's convert the bad example to idiomatic Go by replacing the `WaitGroup` with a channel.
 
 ```go
 // WriteOnly serves the purpose of demonstrating
@@ -116,7 +119,7 @@ func main() {
 
 [See this example in the Go playground.](https://play.golang.org/p/gi8zyZH7KMd)
 
-Now, only one goroutine can modify the `ints` slice. Each goroutine communicates through a channel. They're sharing memory by communicating through a channel, instead of modifying shared memory.
+Now, only one goroutine can modify the `ints` slice while the rest communicate through a channel. They're sharing memory by communicating through a channel instead of modifying shared memory.
 
 The example here shows two important ways that concurrency (goroutines and channels) are first-class citizens of the Go programming language. First, we used a write-only channel argument. This guaranteed that the method won't accidentally read from the channel, unexpectedly altering the functionality. Second, we see that the `for range` loop works on channels.
 
@@ -124,9 +127,9 @@ These are just a few ways that Go makes concurrency a first-class citizen. Next,
 
 ## Timeout
 
-One of the best ways to demonstrate the power of goroutines and channels is with a simple Go program that fetches results from three [New York Times endpoints](https://developer.nytimes.com/). One can imagine that the endpoint provides data for a news UI. Generally, the NYT API responds very quickly. However, our page must respond as quickly as possible. So, for this reason, we're going to serve whichever responses come within 80 milliseconds.
+To demonstrate a timeout, we will construct a simple news UI backend that fetches results from three [New York Times endpoints](https://developer.nytimes.com/). Even though the NYT endpoints respond very quickly, this won't quite meet our standards. Our program must always respond within 80 milliseconds. Because of this restriction, we're only going to use NYT endpoint responses that come fast enough.
 
-Here are the URLs that we'll be fetching from:
+Here are the URLs that the program will fetch from:
 
 ```go
 var urls = [...]string{
@@ -136,7 +139,9 @@ var urls = [...]string{
 }
 ```
 
-They've been declared as an array of strings, this will allow them to be iterated. Another neat feature of Go is how you can declare `const` blocks. Like this:
+The URLs have been declared as an array of strings, which will allow them to be iterated. 
+
+Another neat feature of Go is how you can declare `const` blocks. Like this:
 
 ```go
 const (
@@ -146,7 +151,7 @@ const (
 )
 ```
 
-Now the `urls` array can be more expressive by using the const declarations.
+Now, the `urls` array can be more expressive by using the const declarations.
 
 ```go
 var urls = [...]string{
@@ -170,7 +175,7 @@ func fetch(url string, channel chan<- string) {
 }
 ```
 
-This is a common pattern in Go demonstration code—generate a random number, sleep the goroutine for the randomly generated duration, then do some work. To fully understand the code and why it is being used to demonstrate a fake `http.Get`, the next sections will step through each line, explaining what it does.
+This is a common pattern in Go demonstration code—generate a random number, sleep the goroutine for the randomly generated duration, then do some work. To fully understand why this code is being used to demonstrate a fake `http.Get`, the next sections will step through each line, explaining what it does.
 
 ### Deterministic Randomness (See: oxymorons)
 
@@ -184,13 +189,13 @@ This means that we have to seed the randomizer with something that changes; if n
 source := rand.NewSource(time.Now().UnixNano())
 ```
 
-Once the source is created, we can use it to create a random number generator. We must create the source and random generator each time, otherwise, it will continue to return the same number.
+After the source is created, it can be used to create a random number generator. We must create the source and random generator each time. Otherwise, it will continue to return the same number.
 
 ```go
 random := rand.New(source)
 ```
 
-Once the generator is created, it can be used to create a random number between 0 and 150. Then that random number is converted to a `time.Duration` type, and multiplied to become milliseconds.
+Once the generator is created, it can be used to create a random number between 0 and 150. That random number is converted to a `time.Duration` type, then multiplied to become milliseconds.
 
 ```go
 duration := time.Duration(random.Intn(150)) * time.Millisecond
@@ -209,11 +214,11 @@ channel <- url
 
 The first line tells the goroutine to sleep for the specified duration. This will make some responses take too long for the given URL, later causing the API to respond without the results of that URL.
 
-Finally, the URL is sent to the channel. In a real `fetch` it would be expected that the actual response is sent to the channel; for our purposes, it's just the URL.
+Finally, the URL is sent to the channel. In a real `fetch` it would be expected that the actual response is sent to the channel. For our purposes, it's just the URL.
 
 ### A read-only channel
 
-Since the `fetch` function funnels results in the channel, it makes sense to have a corresponding function funnel results out of the channel into a slice of strings.
+Since the `fetch` function funnels results in the channel, it makes sense to have a corresponding function funnel results from the channel into a slice of strings.
 
 Take a look at the function. Next, we'll break it down line-by-line.
 
@@ -257,7 +262,13 @@ timeout := time.After(time.Duration(80) * time.Millisecond)
 
 The function `time.After` returns a channel. After the given `time.Duration` it will write to the channel (_what_ it writes doesn't matter).
 
-Moving on, the `timeout` and `input` channels are used together in a `for select` loop. The `for` loop with no other arguments will loop forever—or until it's broken by a `break` or `return`. The `select` acts as a `switch` statement for channels. The first `case` block to have a channel ready will execute. By combining the `for` and `select`, this block of code will run until the desired number of results is retrieved or until the timeout happens.
+Moving on, the `timeout` and `input` channels are used together in a `for select` loop. 
+
+The `for` loop with no other arguments will loop forever until stopped by a `break` or `return`. 
+
+The `select` acts as a `switch` statement for channels. The first `case` block to have a channel ready will execute. 
+
+By combining the `for` and `select`, this block of code will run until the desired number of results is retrieved or until the timeout happens.
 
 Take a look at the case block for the `input` channel.
 
@@ -271,7 +282,7 @@ case str := <-input:
     }
 ```
 
-In this block, the output of the channel is assigned to a variable and that variable is placed in the results array. The results array is returned if it is the desired length.
+The output of the channel is assigned to a variable, `str`. Next, `str` is appended to the results array. The results array is returned if it is the desired length.
 
 Now, look at the case block for the `timeout` channel.
 
@@ -291,7 +302,7 @@ Whatever results are available, even if there are none, will be returned when th
 
 ## The Main Function
 
-Now that there is both a channel writer and a channel reader, let's see how to put it all together in the `main` function.
+Now there is both a channel writer and a channel reader. Let's see how to put it all together in the `main` function.
 
 ```go
 func main() {
@@ -308,7 +319,7 @@ func main() {
 
 First, a channel is created to collect the fetch results, `channel := make(chan string)`.
 
-Next, the `urls` are looped over and a goroutine is created to fetch each url. 
+Next, the `urls` are looped over, creating a goroutine to fetch each url. 
 
 ```go
 for _, url := range urls {
@@ -318,28 +329,27 @@ for _, url := range urls {
 
 This allows the fetching to happen concurrently.
 
-Once the fetches have been kicked off, `stringSliceFromChannel` will block until the results are in or the timeout occurs.
+After the fetches have been kicked off, `stringSliceFromChannel` will block until either the results are in or the timeout occurs.
 
 ```go
 results := stringSliceFromChannel(len(urls), channel)
 ```
 
-Finally, we can print our results to see which URLs are returned. If you run this code in the [Go Playground](https://play.golang.org/p/g3RnP9A26v5), remember to change the timeout number since the random number generator will always return the same results.
+Finally, we can print the results to see which URLs are returned. If you run this code in the [Go Playground](https://play.golang.org/p/g3RnP9A26v5), remember to change the timeout number since the random number generator will always return the same results.
 
 ## Final Thoughts
 
 Here's the cool thing. We started out talking about how Go has first-class concurrency support with goroutines and channels. Then we saw how easy it is to implement a complex concurrent pattern, a timeout, with a single channel and a few goroutines. Over my next few posts, I hope to show that this was only scratching the surface of what one can do with concurrency in Go. I hope you'll check back in. (Better yet, [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to be updated each month about my new posts)
 
-Finally, this is a pretty neat concurrency pattern, although it's a little unrealistic. A good exercise might be to open the [Go Playground](https://play.golang.org/p/g3RnP9A26v5) to see if you can implement these scenarios:
+Finally, even though this is a neat concurrency pattern, it's unrealistic. As an exercise you could open the [Go Playground](https://play.golang.org/p/g3RnP9A26v5) to see if you can implement these scenarios:
 
 * The results should be returned as a JSON object. Maybe we could use a struct instead of an array of URLs?
-* A blank page is useless, the code should at least wait until there is ONE result to display.
-
-Enjoy!
+* A blank page is useless, the code should at least wait until there is one result to display.
+* The [context](https://golang.org/pkg/context/) type is often used with http handlers. Can you replace the `time.After` with an expiring context?
 
 ---
 
-Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
+Hi, I’m Justin Fuller. Thanks for reading my post. Before you go, I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
 I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
 or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!
