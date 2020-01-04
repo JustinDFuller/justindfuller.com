@@ -8,7 +8,6 @@ menu:
 next: /posts/go-things-i-love-channels-and-goroutines
 title: "Go Things I Love: Channels and Goroutines"
 weight: 1
-draft: true
 images:
   - /go-things-i-love.png
 --- 
@@ -25,7 +24,7 @@ This post, _Channels and Goroutines_, will demonstrate a few neat concurrency pa
 
 First: to get the most out of this post you should familiarize yourself with the fundamentals of Go concurrency. A great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
 
-Concurrency, in some form, is one of the most important building blocks of performant software. That's why it's important to pick a programming language with first-class concurrency support. Go, in my estimation, provides one of the most delightful ways to achieve concurrency, I believe it is a solid choice for any project that involves concurrency.
+Concurrency, in some form, is one of the most important building blocks of performant software. That's why it's important to pick a programming language with first-class concurrency support. Because Go, in my estimation, provides one of the most delightful ways to achieve concurrency, I believe it is a solid choice for any project that involves concurrency.
 
 ## First Class
 
@@ -81,13 +80,15 @@ In `IntAppender` each goroutine shares the same memory—the `ints` array—whic
 
 This code communicates by sharing memory. Yes, it works—but it's not idiomatic Go. More importantly, it's not the safest way to write this program. 
 
-There are 11 goroutines (one running the main function and ten more spawned by the loop) with access to the `ints` slice. What happens when the codebase grows? This pattern provides no guarantee that the program will behave as expected; anything can happen when memory is shared broadly.
+It's not very safe because there are 11 goroutines (one running the main function and ten more spawned by the loop) with access to the `ints` slice. What happens when the codebase grows? 
+
+This pattern provides no guarantee that the program will behave as expected; anything can happen when memory is shared broadly.
 
 ## Share memory by communicating (👍)
 
-The first sign that this code is not sharing memory by communicating is the use of `sync.WaitGroup`. To be clear, WaitGroups are not always bad. However, a WaitGroup may be a code smell indicating your code could be safer with a channel.
+The first sign that this example is not following "share memory by communicating" is the use of `sync.WaitGroup`. Even though I consider WaitGroups to be a code smell, I'm not ready to claim they are always bad. Either way, code is usually safer with a channel.
 
-Here's one idea of how to convert the bad example to idiomatic Go: replace the `WaitGroup` with a channel.
+Let's convert the bad example to idiomatic Go by replacing the `WaitGroup` with a channel.
 
 ```go
 // WriteOnly serves the purpose of demonstrating
@@ -118,7 +119,7 @@ func main() {
 
 [See this example in the Go playground.](https://play.golang.org/p/gi8zyZH7KMd)
 
-Now, only one goroutine can modify the `ints` slice. Each goroutine communicates through a channel. They're sharing memory by communicating through a channel instead of modifying shared memory.
+Now, only one goroutine can modify the `ints` slice while the rest communicate through a channel. They're sharing memory by communicating through a channel instead of modifying shared memory.
 
 The example here shows two important ways that concurrency (goroutines and channels) are first-class citizens of the Go programming language. First, we used a write-only channel argument. This guaranteed that the method won't accidentally read from the channel, unexpectedly altering the functionality. Second, we see that the `for range` loop works on channels.
 
@@ -188,7 +189,7 @@ This means that we have to seed the randomizer with something that changes; if n
 source := rand.NewSource(time.Now().UnixNano())
 ```
 
-Once the source is created, we can use it to create a random number generator. We must create the source and random generator each time, otherwise, it will continue to return the same number.
+After the source is created, it can be used to create a random number generator. We must create the source and random generator each time. Otherwise, it will continue to return the same number.
 
 ```go
 random := rand.New(source)
@@ -213,11 +214,11 @@ channel <- url
 
 The first line tells the goroutine to sleep for the specified duration. This will make some responses take too long for the given URL, later causing the API to respond without the results of that URL.
 
-Finally, the URL is sent to the channel. In a real `fetch` it would be expected that the actual response is sent to the channel; for our purposes, it's just the URL.
+Finally, the URL is sent to the channel. In a real `fetch` it would be expected that the actual response is sent to the channel. For our purposes, it's just the URL.
 
 ### A read-only channel
 
-Since the `fetch` function funnels results in the channel, it makes sense to have a corresponding function funnel results out of the channel into a slice of strings.
+Since the `fetch` function funnels results in the channel, it makes sense to have a corresponding function funnel results from the channel into a slice of strings.
 
 Take a look at the function. Next, we'll break it down line-by-line.
 
@@ -261,7 +262,13 @@ timeout := time.After(time.Duration(80) * time.Millisecond)
 
 The function `time.After` returns a channel. After the given `time.Duration` it will write to the channel (_what_ it writes doesn't matter).
 
-Moving on, the `timeout` and `input` channels are used together in a `for select` loop. The `for` loop with no other arguments will loop forever—or until it's broken by a `break` or `return`. The `select` acts as a `switch` statement for channels. The first `case` block to have a channel ready will execute. By combining the `for` and `select`, this block of code will run until the desired number of results is retrieved or until the timeout happens.
+Moving on, the `timeout` and `input` channels are used together in a `for select` loop. 
+
+The `for` loop with no other arguments will loop forever until stopped by a `break` or `return`. 
+
+The `select` acts as a `switch` statement for channels. The first `case` block to have a channel ready will execute. 
+
+By combining the `for` and `select`, this block of code will run until the desired number of results is retrieved or until the timeout happens.
 
 Take a look at the case block for the `input` channel.
 
@@ -295,7 +302,7 @@ Whatever results are available, even if there are none, will be returned when th
 
 ## The Main Function
 
-Now that there is both a channel writer and a channel reader, let's see how to put it all together in the `main` function.
+Now there is both a channel writer and a channel reader. Let's see how to put it all together in the `main` function.
 
 ```go
 func main() {
@@ -322,7 +329,7 @@ for _, url := range urls {
 
 This allows the fetching to happen concurrently.
 
-After the fetches have been kicked off, `stringSliceFromChannel` will block until the results are in or the timeout occurs.
+After the fetches have been kicked off, `stringSliceFromChannel` will block until either the results are in or the timeout occurs.
 
 ```go
 results := stringSliceFromChannel(len(urls), channel)
@@ -338,12 +345,11 @@ Finally, even though this is a neat concurrency pattern, it's unrealistic. As an
 
 * The results should be returned as a JSON object. Maybe we could use a struct instead of an array of URLs?
 * A blank page is useless, the code should at least wait until there is one result to display.
-
-Enjoy!
+* The [context](https://golang.org/pkg/context/) type is often used with http handlers. Can you replace the `time.After` with an expiring context?
 
 ---
 
-Hi, I’m Justin Fuller. I’m glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
+Hi, I’m Justin Fuller. Thanks for reading my post. Before you go, I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
 I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
 or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!
