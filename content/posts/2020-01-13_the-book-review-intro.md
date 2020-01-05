@@ -1,12 +1,12 @@
 ---
 author: "Justin Fuller"
 date: 2020-01-13
-linktitle: "The Book Review — Intro"
+linktitle: "The Book Review"
 menu:
   main:
     parent: posts
-next: /posts/the-book-review-intro
-title: "The Book Review — Intro"
+next: /posts/the-book-review
+title: "The Book Review"
 weight: 1
 draft: true
 images:
