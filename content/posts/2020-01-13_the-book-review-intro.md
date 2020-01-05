@@ -15,9 +15,9 @@ images:
 
 Every line of code that you write is the culmination of your profressional and educational experience; be it a formal college education, an intense six-week bootcamp, or a prodigious number of blog posts and tutorials, your well of experience is drawn from by every line of code, every decision you make as a software developer. That's why it's essential that you spend your precious, limited free time—the fragment that you use to better yourself through learning—with the best possible resources.
 
-Unfortunately, not all learning resources are equal. We've all read the blog posts that were seemingly thrown together in five minutes, scattered books with little-to-no coherence, and tutorials that created more questions than were answered.
+Unfortunately, not all learning resources are equal. While there are great resources of every type, we've all read the blog posts that were seemingly thrown together in five minutes, scattered books with little-to-no coherence, and tutorials that created more questions than were answered.
 
-In this series, _The Book Review_, I plan to recommend, summarize, and review some of the best software development learning resources that I've found. I hope to convince you that software development books are worth more of your time than you might have thought; that—contrary to popular belief—software isn't moving too fast for books to keep up, because some wisdom is timeless.
+In this series, _The Book Review_, I plan to recommend, summarize, and review some of the best software development learning resources that I've found. I also hope to convince you that software development books are worth more of your time than you might have thought; that—contrary to popular belief—software isn't moving too fast for books to keep up, because some wisdom is timeless.
 
 <!--more-->
 
@@ -26,6 +26,9 @@ In this series, _The Book Review_, I plan to recommend, summarize, and review so
 * Why Books?
   * Timeless wisdom
   * Look at the programming paradigms from Clean Architecture
+* When to use books and when to not.
+  * When: Principles, fundamentals, generics
+  * Not: Modern languages, frameworks, libraries, tools
 * How to find time
   * During your commute (bus, train)
   * Take short breaks if you are having trouble being productive
