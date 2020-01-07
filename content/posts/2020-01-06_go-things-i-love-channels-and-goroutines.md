@@ -78,9 +78,9 @@ func IntAppender() {
 
 In `IntAppender` each goroutine shares the same memory—the `ints` array—which it appends integers to.
 
-This code communicates by sharing memory. Yes, it works—but it's not idiomatic Go. More importantly, it's not the safest way to write this program. 
+This code communicates by sharing memory. Yes, it seems like works (only if you run it on the go playground)—but it's not idiomatic Go. More importantly, it's not a safe way to write this program because it doesn't always give the expected results (again, unless you run it on the go playground).
 
-It's not very safe because there are 11 goroutines (one running the main function and ten more spawned by the loop) with access to the `ints` slice. What happens when the codebase grows? 
+It's not safe because there are 11 goroutines (one running the main function and ten more spawned by the loop) with access to the `ints` slice.
 
 This pattern provides no guarantee that the program will behave as expected; anything can happen when memory is shared broadly.
 
@@ -336,6 +336,10 @@ results := stringSliceFromChannel(len(urls), channel)
 ```
 
 Finally, we can print the results to see which URLs are returned. If you run this code in the [Go Playground](https://play.golang.org/p/g3RnP9A26v5), remember to change the timeout number since the random number generator will always return the same results.
+
+## Caveats
+
+It could seem like I'm suggesting that you should always use channels instead of waitgroups or mutexes. I'm not. Each tool is designed for a specific use case, [and each has a tradeoff](https://github.com/golang/go/wiki/MutexOrChannel). Instead of walking away from this post thinking, "I should always use channels, they're so much better than anything else." I hope you will simply consider if you can improve the clarity of your program with a channel, rather than sharing memory. If not, don't use them.
 
 ## Final Thoughts
 
