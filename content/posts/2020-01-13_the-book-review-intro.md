@@ -1,12 +1,12 @@
 ---
 author: "Justin Fuller"
 date: 2020-01-13
-linktitle: "The Book Review"
+linktitle: "Tech Book Review — The Kist"
 menu:
   main:
     parent: posts
-next: /posts/the-book-review
-title: "The Book Review"
+next: /posts/the-book-review-the-list
+title: "Tech Book Review — The List"
 weight: 1
 draft: true
 images:
@@ -17,11 +17,15 @@ Every line of code that you write is the culmination of your professional and ed
 
 <!--more-->
 
-Unfortunately, not all learning resources are equal. While there are great resources of every type, we've all read the blog posts that were seemingly thrown together in five minutes, scattered books with little-to-no coherence, and tutorials that created more questions than were answered.
+![The Book Review](/book-review.png)
+
+Unfortunately, not all learning resources are equal. While there are great resources of every type, we've all read the blog posts that were seemingly thrown together in five minutes, scattered books with little-to-no coherence, and tutorials that created more questions than were answered. 
 
 In this series, _The Book Review_, I plan to recommend, summarize, and review some of the best software development learning resources that I've found. I also hope to convince you that software development books are worth more of your time than you might have thought; that—contrary to popular belief—software isn't moving too fast for books to keep up, because some wisdom is timeless.
 
-![The Book Review](/book-review.png)
+## Is it worth the time?
+
+The major drawback to reading a book is also the greatest benefit to reading a book; the time involved. As I mentioned earlier, it's possible to create a blog post in five minutes, or a youtube tutorial in an hour; the same cannot be said for a book. Yes, some books are not worth your time — that's why I'm beginning this list, to recommend the best ones I have found. However, because a book requires months or even years to prepare you are far more likely to find higher quality.
 
 * Why Books?
   * Timeless wisdom
