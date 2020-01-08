@@ -1,7 +1,7 @@
 ---
 author: "Justin Fuller"
 date: 2020-01-13
-linktitle: "Tech Book Review — The Kist"
+linktitle: "Tech Book Review — The List"
 menu:
   main:
     parent: posts
@@ -25,9 +25,13 @@ In this series, _The Book Review_, I plan to recommend, summarize, and review so
 
 ## Is it worth the time?
 
-The major drawback to reading a book is also the greatest benefit to reading a book; the time involved. As I mentioned earlier, it's possible to create a blog post in five minutes, or a youtube tutorial in an hour; the same cannot be said for a book. Yes, some books are not worth your time — that's why I'm beginning this list, to recommend the best ones I have found. However, because a book requires months or even years to prepare you are far more likely to find higher quality.
+The major drawback to reading a book is also the greatest benefit to reading a book: the time involved. As I mentioned earlier, it's possible to create a blog post in five minutes, or a youtube tutorial in an hour; the same cannot be said for a book. Yes, some are not worth your time — that's why I'm beginning this list, to recommend the best ones I have found. However, books are more likely to have quality instructions and principles because of the time required to create one. There are also many review steps involved in the publishing of a book; reviews and reviewers mean mistakes are caught and flakey ideas are challenged before it's ever sent to the masses.
 
-* Why Books?
+This type of rigor is completely unecessary for many aspects of software development. As an example, I don't need to have a Reactjs component question peer reviewed before explaining which order the lifecycle methods are invoked. Instead, when I start to think on a larger level, such as system design, team cohesion, refactoring, algorithms, and concurrency, I want to be sure that I am learning from the very best works, and I want an in-depth discussion.
+
+For that reason, you wont find any books on this list related to a specific programming language, library, or framework. Instead, you'll find books that focus on larger — often, more abstract — problems.
+
+* Is it worth the time?
   * Timeless wisdom
   * Look at the programming paradigms from Clean Architecture
 * When to use books and when to not.
