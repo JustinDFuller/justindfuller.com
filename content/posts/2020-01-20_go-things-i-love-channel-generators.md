@@ -13,17 +13,100 @@ images:
   - /go-things-i-love.png
 ---
 
-// This example shows the default, synchronous code 
-// It takes 600ms to execute, which is far too slow 
-// but the errors do allow you to stop short.
+In my last post, [Channels and Goroutines](/2020/01/go-things-i-love-channels-and-goroutines/), I discussed how channels can be used to safely write concurrent programs. It showed that channels and goroutines can be combined to use communication instead of shared memory. Now, I want to take that discussion further by looking at how code can organize, create, and share goroutines and channels.
 
-https://play.golang.org/p/UR6Plhj1CXI
+<!--more-->
 
-// This example shows using a waitgroup to obtain concurrency
-// it executes in half the time, 300ms, but, as will be shown in another
-// example, there are some problems with the waitgroup error handling.
+![Go Things I Love](/go-things-i-love.png)
 
-https://play.golang.org/p/fkr6mbeSehG
+## Starting Synchronous
+
+To explore these concepts, I want to start small and build up to the fully concurrent version. In this way, we will clearly see the decisions that led from synchronous to concurrent code.
+
+The example scenario is a common one: user creation. Really, it could be substitued for any entity creation. However, I want to show it in the context of a more fully-functioning production application. This means that, instead of just creating the user in the database, there will be some analytics data saved and a new user email will be scheduled; there will also be some error handling.
+
+Here's the initial snippet.
+
+```go
+func (service *Service) CreateUser(user *User) error {
+	err := service.AnalyticsClient.Put(AnalyticsTypeUserSignup, AnalyticsStateUserSignupStarted, user.Email)
+	if err != nil {
+		return err
+	}
+
+	err = service.DatabaseClient.Put(DatabaseTableUsers, user.Email, user)
+	if err != nil {
+		return err
+	}
+
+	err = service.EventScheduler.Schedule(EmailTemplateNewUserSignup, user.Email, user)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+```
+
+[See it in the Go Playground.](https://play.golang.org/p/v2QKP3Q1bIC)
+
+Hopefully this code looks like something you could imagine seeing in a user registration service. It does some straightforward work. First, it saves analytics data and the new user to the database, then it schedules a new user welcome email.
+
+So, what's the problem?
+
+Well, in our imaginary scenario, this particular registration endpoint is used because the shopping cart checkout forces users to create an account. The route used to respond very quickly, before we started collecting analytics and sending the emails. Now it responds several hundred milliseconds slower, [significantly lowering the conversion rate](https://www.fastcompany.com/1825005/how-one-second-could-cost-amazon-16-billion-sales).
+
+Let's speed it up.
+
+## Add a little concurrency
+
+The dead-simplest way to achieve concurrency is with a waitgroup. We can keep all the original code, wrap the execution in a IIFE, and launch each part as a goroutine. Take a look.
+
+```go
+func (service *Service) CreateUser(user *User) error {
+	var wg sync.WaitGroup
+	var userError error
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err := service.AnalyticsClient.Put(AnalyticsTypeUserSignup, AnalyticsStateUserSignupStarted, user.Email)
+		if err != nil {
+			userError = err
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err := service.DatabaseClient.Put(DatabaseTableUsers, user.Email, user)
+		if err != nil {
+			userError = err
+		}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		err := service.EventScheduler.Schedule(EmailTemplateNewUserSignup, user.Email, user)
+		if err != nil {
+			userError = err
+		}
+	}()
+
+	wg.Wait()
+
+	return userError
+}
+```
+
+[See it in the Go Playground.](https://play.golang.org/p/BgLqfb2d_pm)
+
+A few things just happened. Yes, the snippet got longer, but it now runs in less than half the time! If you opened it up in the playground you saw that the program now runs in just 300ms. That's less than half of the last version, which clocked in at about 700ms. If we stopped here our conversion rate would go back to normal and everyone would be happy.
+
+Well, maybe not everyone. What happens when an error occurs? Does this method fail-fast and quickly get an error response to the user? What about the memory sharing? Each goroutine is modifying `userError`, that can't be the best way to do it, right?
+
+## What happens when there is an error
 
 // This example shows the problems with the waitgroup errors
 // They do not fail fast, it still takes 300ms even though an
@@ -80,10 +163,6 @@ https://play.golang.org/p/_LmnjayYw19
 // Now it has channel generators and no errors
 
 https://play.golang.org/p/ZkAUyCUCyQx
-
-<!--more-->
-
-![Go Things I Love](/go-things-i-love.png)
 
 ---
 
