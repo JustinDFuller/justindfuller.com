@@ -60,7 +60,7 @@ Let's speed it up.
 
 ## Add a little concurrency
 
-The dead-simplest way to achieve concurrency is with a waitgroup. We can keep all the original code, wrap the execution in a IIFE, and launch each part as a goroutine. Take a look.
+The dead-simplest way to achieve concurrency is with a waitgroup. We can keep all the original code, wrap the execution in a [IIFE](https://en.wikipedia.org/wiki/Immediately_invoked_function_expression), and launch each part as a goroutine. Take a look.
 
 ```go
 func (service *Service) CreateUser(user *User) error {
@@ -107,6 +107,28 @@ A few things just happened. Yes, the snippet got longer, but it now runs in less
 Well, maybe not everyone. What happens when an error occurs? Does this method fail-fast and quickly get an error response to the user? What about the memory sharing? Each goroutine is modifying `userError`, that can't be the best way to do it, right?
 
 ## What happens when there is an error
+
+Up until this point the code for `AnalyticsClient`, `DatabaseClient`, and `EventScheduler` has not been shown (unless you opened up the go playground). Unsurprisingly, the methods on these structs are only example code; they print the arguments, sleep the goroutine, then return `nil` or an error.
+
+To show what happens when an error occurs, one of the methods can be altered to return an error instead of `nil`.
+
+```go
+func (ac *DatabaseClient) Put(table, key string, data interface{}) error {
+	fmt.Printf("Saving database data to table %s with key %s. \n", table, key)
+	time.Sleep(time.Duration(200) * time.Millisecond)
+	return errors.New("Oops, we could have stopped after 200ms")
+}
+```
+
+Instead of returning as soon as an error occurs, the error group waits for all goroutines to complete.
+
+```
+Scheduling event for email NewUserSignupEmail with key johnny@example.com. 
+Saving analytics data to table AttemptedUserSignups with key johnny@example.com. 
+Saving database data to table Users with key johnny@example.com. 
+Oops, we could have stopped after 200ms
+Took 300ms
+```
 
 // This example shows the problems with the waitgroup errors
 // They do not fail fast, it still takes 300ms even though an
