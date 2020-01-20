@@ -1,12 +1,12 @@
 ---
 ruthor: "Justin Fuller"
 date: 2020-02-10
-linktitle: "That programming language isn't so bad"
+linktitle: "Why do we fall into the rewrite trap?"
 menu:
   main:
     parent: posts
-next: /posts/that-programming-language-isnt-so-bad
-title: "That programming language isn't so bad"
+next: /posts/why-do-we-fall-into-the-rewrite-trap
+title: "Why do we fall into the rewrite trap?"
 weight: 1
 draft: true
 images:
