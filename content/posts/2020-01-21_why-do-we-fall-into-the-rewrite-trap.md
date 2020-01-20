@@ -160,13 +160,13 @@ The golden opportunity to rewrite less-than-stellar code is when the business wa
 
 This is one reason that, as [Sam Newnan writes in _Building Microservices_](https://amzn.to/36g7PaN), some people suggest to keep microservices small enough to rewrite in 2 weeks or less. There's no huge loss if a total overhaul is needed. You could rewrite it during a slow season.
 
-There's another opportunity, which (I hope) is even rarer than the last case. Sometimes a developer or development teams have written code that is so bad, so convoluted, that even they can't understand it enough to make a single change without creating a slew of bugs. It might be that it was designed by an [architecture astronaut](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/), or that every variable is called `x`, `x1`, or `x2`. If this is the case, there might be no way around a rewrite.
+There's another opportunity, which (I hope) is even rarer than the last case. Sometimes a development team has written code that is so bad, so convoluted, that even they can't understand it enough to make a single change without creating a slew of bugs. If this is the case, a rewrite may be unavoidable.
 
 ---
 > Rewrite for better functionality, rather than better code.
 ---
 
-However, let me caution you even in this case. If the composition of the team has not drastically changed; if there is not a clear definition of the cause and solution to the last iteration's problems; or there is not new leadership that provides clearer vision, principles, and guidance — you will likely repeat the same mistakes all over again. Because if the people haven't changed, the circumstances haven't changed, and the practices haven't changed, what will be different this time?
+However, let me caution you even in this case. If the composition of the team has not drastically changed; if there is not a clear definition of the cause and solution to the last iteration's problems; or there is not new leadership that provides clearer vision, principles, and guidance — you will likely repeat the same mistakes all over again. If the people haven't changed, the circumstances haven't changed, and the practices haven't changed, what will be different this time?
 
 ## Key Takeaways
 
@@ -183,6 +183,6 @@ Here are the key takeaways:
 
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Twitter](https://twitter.com/justin_d_fuller), or [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about. Thanks again for reading!
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Twitter](https://twitter.com/justin_d_fuller), or [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about. Thanks again for reading!
 
 ---
