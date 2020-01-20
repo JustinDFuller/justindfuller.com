@@ -1,6 +1,6 @@
 ---
 ruthor: "Justin Fuller"
-date: 2020-02-3
+date: 2020-02-10
 linktitle: "That programming language isn't so bad"
 menu:
   main:
