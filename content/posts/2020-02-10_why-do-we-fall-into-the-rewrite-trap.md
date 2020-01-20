@@ -65,7 +65,7 @@ This allowed for a quick, gradual, and seamless transition from old technology t
 
 Unfortunately, some developers and institutions bank hard on convincing others that a rewrite is the best use of their money. To do this they rely on convincing others of the inferiority of older, battle-tested languages like Java and PHP to newly popular technologies like Node.js or Go. 
 
-They don't just stop at "Go is a better use-case for this problem with Java" — no, they say Java is always bad, always the wrong choice, and our existing Java projects are terrible messes that need to be rewritten. Maybe, even, the experienced Java developers that we have aren't really as good as we once thought.
+They don't just stop at "Go is better than Java for this problem" — no, they say Java is always bad, always the wrong choice, and our existing Java projects are terrible messes that need to be rewritten. Maybe, even, the experienced Java developers that we have aren't really as good as we once thought.
 
 This is [contempt culture](https://blog.aurynn.com/2015/12/16-contempt-culture) and it's prevalent in some software development communities. I know this because I was one of the developers who called old languages terrible, clunky, slow while claiming the superiority of my language of choice.
 
@@ -111,9 +111,9 @@ Instead of rewriting the error handling pattern I will probably try to improve a
 > If your reason for rewriting the code is that you don't understand it, you should not rewrite it.
 ---
 
-Sure, refactoring may have more pieces now than it did when he write it — moving an endpoint to another service may be a modern extension to moving a method to another class — but the base concepts are still the same.
+Sure, refactoring may have more pieces now than it did when he wrote it — moving an endpoint to another service may be a modern extension to moving a method to another class — but the base concepts are still the same.
 
-More importantly, the benefits are still the same. You will retain all the bugs that were fixed, all the edge-cases that were handled, all the sparsely-documented features that you don't even know about, they'll still be there when you're done refactoring.
+More importantly, the benefits are still the same. You will retain all the bug fixes, handled edge-cases, and sparsely-documented features that you don't even know about. They'll still be there when you're done refactoring.
 
 If you rewrite, you'll likely lose much of that. It's an idealistic view of ourselves to think that we understand any large codebase, probably rewritten by several or dozens of developers over months or years, well enough to cover all of these cases in a rewrite. Much of it will be lost.
 
@@ -121,7 +121,7 @@ If you rewrite, you'll likely lose much of that. It's an idealistic view of ours
 
 I used to have a very abstract understanding of refactoring. My manager would ask if I was done with my current task and I would say, yes, but I need to refactor it before it's ready.
 
-What did I mean by that? In the beginning I had some vague notion of making the code "prettier" or "easier to understand". They're not bad reasons; if I just wrote code that I can't underestand now, I certainly won't be able to understand it when I come back to it a few months later.
+What did I mean by that? In the beginning I had some vague notion of making the code "prettier" or "easier to understand". They're not bad reasons; if I just wrote code that I can't understand now, I certainly won't be able to when I come back a few months later.
 
 The problem with this approach is that a vague understanding of refactoring comes with a vague understanding of the costs and benefits. Will the next developer agree that the code is easier to understand? 
 
@@ -132,9 +132,11 @@ Books like _Refactoring_ help by giving a clear picture of when and how to refac
 For example, here are a few concrete refactoring reasons and solutions:
 
 Reason 1: The code is hard to understand. I don't know where to make my change.
-Solution 1: Read through the code, add tests where there are none, and improve variable or function names once you understand their true purpose and have added tests.
+
+Solution 1: Read through the code; add tests where there are none; then, once you understand their true purpose and have added tests, improve variable or function names.
 
 Reason 2: Making this change will touch many parts of the codebase, otherwise known as [shotgun surgery](https://refactoring.guru/smells/shotgun-surgery), I'm worried something will break.
+
 Solution 2: Rearrange the codebase so that your change will only have to modify one or a few pieces of the code.
 
 You can use [code smells](https://refactoring.guru/refactoring/smells) and their specific solutions to greatly reduce the abstract-ness of refactoring. Refactoring can become a quick, concrete tool that you use to accomplish specific purposes.
@@ -147,9 +149,9 @@ However, refactoring can be a better tool [before you begin making any changes](
 
 Think about when you refactor after making your changes. What are you doing? You're _guessing_ what will be needed by the next person or the next change to the code. You're _guessing_ what will be misunderstood or unclear to the next developer. You might be right, but you also might be wasting everyone's time.
 
-When you refactor before making a change you have a clearer picture of what is unclear, what is difficult to do, and what is needed to be done.
+When you refactor before making a change you have a clearer picture of what is misunderstood, what change needs to be done, and why it's difficult to accomplish.
 
-So for this reason I suggest another rule of thumb: Prefer refactoring _before_ you make a change, rather than after.
+For this reason, I suggest another rule of thumb: Prefer refactoring _before_ you make a change, rather than after.
 
 ## When to rewrite
 
@@ -157,19 +159,21 @@ As always, things aren't perfectly black-and-white. There are a few times when a
 
 The golden opportunity to rewrite less-than-stellar code is when the business wants to re-think how the product works. If the business is unhappy with the product and the developers are unhappy with the code, this may be the perfect opportunity to rewrite. Rewrite for better functionality, rather than better code. However, unless you're in a fast-moving startup, this opportunity may not come very often as most companies that I've worked with prefer incremental change.
 
-There's another opportunity, which, I hope, is even rarer than the last case. Sometimes a developer or development teams have written code that is so bad, so convoluted, that they can't understand it enough to make a single change without creating a slew of bugs. It might be that it was designed by an [architecture astronaut](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/), or that every variable is called `x`, `x1`, or `x2`. If this is the case, there might be no way around a rewrite.
+This is one reason that, as [Sam Newnan writes in _Building Microservices_](https://amzn.to/36g7PaN), some people suggest to keep microservices small enough to rewrite in 2 weeks or less. There's no huge loss if a total overhaul is needed. You could rewrite it during a slow season.
+
+There's another opportunity, which (I hope) is even rarer than the last case. Sometimes a developer or development teams have written code that is so bad, so convoluted, that even they can't understand it enough to make a single change without creating a slew of bugs. It might be that it was designed by an [architecture astronaut](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/), or that every variable is called `x`, `x1`, or `x2`. If this is the case, there might be no way around a rewrite.
 
 ---
 > Rewrite for better functionality, rather than better code.
 ---
 
-However, let me caution you even in this case. If the makeup of the team has not changed drastically; if there has not been a clearly defined cause and solution to the last iteration's problems; or there is not new leadership that provides clearer vision, principles, and guidance — you will likely fall into the same trap all over again. Because if the people haven't changed, the circumstances haven't changed, and the practices haven't changed, what will be different this time?
+However, let me caution you even in this case. If the composition of the team has not drastically changed; if there is not a clear definition of the cause and solution to the last iteration's problems; or there is not new leadership that provides clearer vision, principles, and guidance — you will likely repeat the same mistakes all over again. Because if the people haven't changed, the circumstances haven't changed, and the practices haven't changed, what will be different this time?
 
 ## Key Takeaways
 
 Yes, all of this was just to say that you should prefer refactoring over rewriting. If you couldn't tell by all the times I linked to it, I highly recommend [Martin Fowler's Refactoring](https://amzn.to/2R6rFkP) to learn more about the subject.
 
-Here are the three key takeaways:
+Here are the key takeaways:
 
 1. Prefer refactoring over rewriting.
 2. If your reason for rewriting the code is that you don't understand it, you should not rewrite it.
