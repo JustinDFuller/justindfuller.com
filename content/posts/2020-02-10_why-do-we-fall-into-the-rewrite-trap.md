@@ -103,7 +103,9 @@ Here's a rule of thumb: If your reason for rewriting the code is that you don't 
 
 Instead of rewriting the error handling pattern I will probably try to improve a few method names. This brings me back to Martin Fowler's [Refactoring](https://amzn.to/2R6rFkP). Most of the time, if you feel that a rewrite is needed, you can probably just refactor a few pieces of the program and you'll be in great shape. 
 
+---
 > If your reason for rewriting the code is that you don't understand it, you should not rewrite it.
+---
 
 Sure, refactoring may have more pieces now than it did when he write it — moving an endpoint to another service may be a modern extension to moving a method to another class — but the base concepts are still the same.
 
@@ -119,7 +121,9 @@ The golden opportunity to rewrite less-than-stellar code is when the business wa
 
 There's another opportunity, which, I hope, is even rarer than the last case. Sometimes a developer or development teams have written code that is so bad, so convoluted, that even they can't understand it enough to make a change without creating a slew of bugs. It might be that it was designed by an [architecture astronaut](https://www.joelonsoftware.com/2001/04/21/dont-let-architecture-astronauts-scare-you/), or that every variable is called `x`, `x1`, or `x2`. If this is the case, there might be no way around a rewrite.
 
+---
 > Rewrite for better functionality, rather than better code.
+---
 
 However, let me caution you even in this case. If the makeup of the team has not changed drastically; if there has not been a clearly defined cause and solution to the last iteration's problems; or there is not new leadership that provides clearer vision, principles, and guidance — you will likely fall into the same trap all over again. Because if the people haven't changed, the circumstances haven't changed, and the practices haven't changed, what makes you think you'll do better this time?
 
