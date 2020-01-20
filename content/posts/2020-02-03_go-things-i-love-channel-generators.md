@@ -1,6 +1,6 @@
 ---
 author: "Justin Fuller"
-date: 2020-01-27
+date: 2020-02-03
 linktitle: "Go Things I Love: Channel Generators"
 menu:
   main:
