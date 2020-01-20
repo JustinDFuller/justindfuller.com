@@ -61,10 +61,53 @@ This allowed for a quick, gradual, and seamless transition from old technology t
 
 ## The Rewrite
 
-Unfortunately, some developers and institutions bank hard on convincing others that a rewrite is the best use of their money. In some cases, even multiple-year, large team efforts to completely rewrite existing codebases. I've even seen it and heard of it happen where there are multiple rewrites in a row — if you didn't get it right the first two times, why would you get it right this time?
+Unfortunately, some developers and institutions bank hard on convincing others that a rewrite is the best use of their money. In some cases, even multiple-year, large team efforts to completely rewrite existing codebases. I've even seen it and heard of it happen where there are multiple rewrites in a row — if you didn't get it right the first few times, why would you get it right this time?
 
 No, you don't _finally_ have the right programming language. Maybe you finally have the right team, but probably not.
 
 I think Joel is exactly right with his fundamental, cardinal rule of programming:
 
 > It's harder to read code than to write it.
+
+I recently experienced this first-hand. After starting a new job at [The New York Times](https://open.nytimes.com) — which has amazing code quality for an organization that is over 150 years old — I encountered an error handling pattern that I didn't like; it seemed combursome and convoluted. 
+
+My initial thought was to ignore this pattern, rewrite it, maybe even replace it with a better solution. That was until I found that the original author put together an entire talk about this error handling pattern. It turns out that, while it may be a little confusing, it gives incredible transparency when you need to debug with application logs.
+
+## Refactoring
+
+So, if rewrites are so bad, how can you avoid them?
+
+Here's a rule of thumb: If your reason for rewriting the code is that you don't understand it, you should not rewrite it. Instead, you should spend the time trying to understand the code. Once you understand it, refactor the code to make it easier for the next person to understand.
+
+Instead of rewriting the error handling pattern I will probably try to improve a few method names. This brings me back to Martin Fowler's [Refactoring](https://amzn.to/2R6rFkP). Most of the time, if you feel that a rewrite is needed, you can probably just refactor a few pieces of the program and you'll be in great shape. 
+
+> If your reason for rewriting the code is that you don't understand it, you should not rewrite it.
+
+Sure, refactoring may have more pieces now than it did when he write it — moving an endpoint to another service may be a modern extension to moving a method to another class — but the base concepts are still the same.
+
+More importantly, the benefits are still the same. You will retain all the bugs that were fixed, all the edge-cases that were handled, all the sparsely-documented features that you don't even know about, they'll still be there when you're done refactoring.
+
+If you rewrite, you'll likely lose all of that. It's an idealistic view of ourselves to think that we understand any large codebase, probably rewritten by several or dozens of developers over the course of months or years, well enough to cover all of these cases in a rewrite. Much of it will be lost.
+
+## When to rewrite
+
+
+---
+
+👋 Want to learn more about programming? [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about.
+
+---
+
+## Key Takeaways
+
+1. Prefer refactoring over rewriting.
+2. If your reason for rewriting the code is that you don't understand it, you should not rewrite it.
+3. Rewrite for better functionality, rather than better code.
+
+---
+
+Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
+
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Twitter](https://twitter.com/justin_d_fuller), or [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about. Thanks again for reading!
+
+---
