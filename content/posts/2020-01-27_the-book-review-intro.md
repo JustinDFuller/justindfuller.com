@@ -1,6 +1,6 @@
 ---
 author: "Justin Fuller"
-date: 2020-01-20
+date: 2020-01-27
 linktitle: "Tech Book Review — The List"
 menu:
   main:
