@@ -52,7 +52,7 @@ To understand why, you must first understand that interactions with your 401k pl
 
 However, your retirement website is very different. When you go to it you are not trying to load it as quickly as possible to make an impulsive purchase of some ETFs — you're probably doing your yearly check-in or enrolling for the first time. You'll probably check your balance, your contributions, the performance of your holdings, and maybe even download a few tax documents.
 
-We found that users were coming less often, while spending far more time on the website, using many parts of it — the perfect use-case for a single-page web application. Initial load time was a low priority while seamless transitions between pages were of great value.
+We found that users were coming less often, while spending far more time on the website, using many parts of it — the perfect use-case for a single-page web application. The initial load time was a low priority while seamless transitions between pages were of great value.
 
 So, what did we do? Did we rewrite the whole application? No.
 
@@ -64,7 +64,7 @@ This allowed for a quick, gradual, and seamless transition from old technology t
 
 Unfortunately, some developers and institutions bank hard on convincing others that a rewrite is the best use of their money. To do this they rely on convincing others of the inferiority of older, battle-tested languages like Java and PHP to newly popular technologies like Node.js or Go. 
 
-They don't just stop at "Go is better than Java for this problem" — no, they say Java is always bad, always the wrong choice, and our existing Java projects are terrible messes that need to be rewritten. Maybe, even, the experienced Java developers that we have aren't really as good as we once thought.
+They don't just stop at "Go is better than Java for this problem" — no, they say Java is always bad, always the wrong choice, and our existing Java projects are terrible messes that need to be rewritten. Maybe, even, the experienced Java developers that we have aren't as good as we once thought.
 
 This is [contempt culture](https://blog.aurynn.com/2015/12/16-contempt-culture) and it's prevalent in some software development communities. I know this because I was one of the developers who called old languages terrible, clunky, slow while claiming the superiority of my language of choice.
 
@@ -120,7 +120,7 @@ If you rewrite, you'll likely lose much of that. It's an idealistic view of ours
 
 I used to have a very abstract understanding of refactoring. My manager would ask if I was done with my current task and I would say, yes, but I need to refactor it before it's ready.
 
-What did I mean by that? In the beginning I had some vague notion of making the code "prettier" or "easier to understand". They're not bad reasons; if I just wrote code that I can't understand now, I certainly won't be able to when I come back a few months later.
+What did I mean by that? In the beginning, I had some vague notion of making the code "prettier" or "easier to understand". They're not bad reasons; if I just wrote code that I can't understand now, I certainly won't be able to when I come back a few months later.
 
 The problem with this approach is that a vague understanding of refactoring comes with a vague understanding of the costs and benefits. Will the next developer agree that the code is easier to understand? 
 
