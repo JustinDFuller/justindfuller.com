@@ -1,6 +1,6 @@
 ---
 author: "Justin Fuller"
-date: 2020-01-27
+date: 2020-02-10
 linktitle: "The Book Review — Refactoring, Martin Fowler"
 menu:
   main:
