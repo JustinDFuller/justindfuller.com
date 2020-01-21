@@ -146,6 +146,8 @@ I used to think refactoring was done after I finished coding. I finished my work
 
 However, refactoring can be a better tool [before you begin making any changes](https://martinfowler.com/articles/preparatory-refactoring-example.html) as a way to make your change easier. As [Kent Beck said](https://twitter.com/kentbeck/status/250733358307500032?lang=en) "Make the change easy (warning: this may be hard), then make the easy change."
 
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">for each desired change, make the change easy (warning: this may be hard), then make the easy change</p>&mdash; Kent Beck (@KentBeck) <a href="https://twitter.com/KentBeck/status/250733358307500032?ref_src=twsrc%5Etfw">September 25, 2012</a></blockquote>
+
 Think about when you refactor after making your changes. What are you doing? You're _guessing_ what will be needed by the next person or the next change to the code. You're _guessing_ what will be misunderstood or unclear to the next developer. You might be right, but you also might be wasting everyone's time.
 
 When you refactor before making a change you have a clearer picture of what is misunderstood, what change needs to be done, and why it's difficult to accomplish.
