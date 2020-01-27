@@ -1,19 +1,19 @@
 ---
 author: "Justin Fuller"
 date: 2020-02-03
-linktitle: "Go Things I Love: Channel Generators"
+linktitle: "Comparing Concurrency Patterns in Go"
 menu:
   main:
     parent: posts
-next: /posts/go-things-i-love-channel-generators
-title: "Go Things I Love: Channel Generators"
+next: /posts/comparing-concurrency-patterns-in-go
+title: "Comparing Concurrency Patterns in Go"
 weight: 1
 draft: true
 images:
   - /go-things-i-love.png
 ---
 
-In my last post, [Channels and Goroutines](/2020/01/go-things-i-love-channels-and-goroutines/), I discussed how channels can be used to safely write concurrent programs. It showed that channels and goroutines can be combined to use communication instead of shared memory. Now, I want to take that discussion further by looking at how code can organize, create, and share goroutines and channels.
+There are many ways to organize concurrent programs in Go. In my last post, [Channels and Goroutines](/2020/01/go-things-i-love-channels-and-goroutines/), I discussed how channels and goroutines can be used to safely write concurrent programs. Those aren't the only options, though. This post will compare channels, goroutines, waitgroups, errorgroups, channel generators, and more.
 
 <!--more-->
 
@@ -56,11 +56,24 @@ So, what's the problem?
 
 Well, in our imaginary scenario, this particular registration endpoint is used because the shopping cart checkout forces users to create an account. The route used to respond very quickly, before we started collecting analytics and sending the emails. Now it responds several hundred milliseconds slower, [significantly lowering the conversion rate](https://www.fastcompany.com/1825005/how-one-second-could-cost-amazon-16-billion-sales).
 
-Let's speed it up.
+__The Comparison Checklist:__
+
+To compare the different concurrency patterns, this checklist will show how each pattern stacks up against the others. The ideal pattern would check every box.
+
+- [ ] Executes in 300ms.
+- [x] No or little concurrency cleanup required/no complicated waiting logic.
+- [x] Fails immediately on the first error.
+- [ ] Fails in 200ms on error (fastest possible error, see later examples).
+
+This non-concurrent example meets two out of four criteria. Yes, it has no cleanup for concurrent operations and it does fail as soon as an error occured. Unfortunately, since it does each operation serially, it takes much longer than 300ms to complete, and it takes more than 200ms to exit on database failures because it doesn't start executing that function until after 100ms.
+
+Now, let's see if we can speed it up.
 
 ## Add a little concurrency
 
-The dead-simplest way to achieve concurrency is with a waitgroup. We can keep all the original code, wrap the execution in a [IIFE](https://en.wikipedia.org/wiki/Immediately_invoked_function_expression), and launch each part as a goroutine. Take a look.
+The dead-simplest way to achieve concurrency is with a waitgroup. We can keep all the original code, wrap the execution in a [IIFE](https://en.wikipedia.org/wiki/Immediately_invoked_function_expression), and launch each part as a goroutine.
+
+A [sync.WaitGroup](https://golang.org/pkg/sync/#WaitGroup) works by keeping a counter of operations that are still waiting to complete. For each operation, the counter is incremented by one. To execute concurrently, each operation is kicked off by a new goroutine. As an operation completes, `wg.Done()` is called, decrementing the counter. The function `wg.Wait()` will block until the counter reaches zero.
 
 ```go
 func (service *Service) CreateUser(user *User) error {
@@ -105,6 +118,16 @@ func (service *Service) CreateUser(user *User) error {
 A few things just happened. Yes, the snippet got longer, but it now runs in less than half the time! If you opened it up in the playground you saw that the program now runs in just 300ms. That's less than half of the last version, which clocked in at about 700ms. If we stopped here our conversion rate would go back to normal and everyone would be happy.
 
 Well, maybe not everyone. What happens when an error occurs? Does this method fail-fast and quickly get an error response to the user? What about the memory sharing? Each goroutine is modifying `userError`, that can't be the best way to do it, right?
+
+__The Comparison Checklist:__
+- [x] Executes in 300ms.
+- [x] No or little concurrency cleanup required/no complicated waiting logic.
+- [ ] Fails immediately on the first error.
+- [ ] Fails in 200ms on error (fastest possible error, see later examples).
+
+This example still only checks two out of four of the comparison criteria, although it does check what is arguably the most important checkbox, "Executes in 300ms". Unfortunately, this example does not fail fast on errors. In fact, it will execute all goroutines regardless of errors.
+
+Clearly, we've improved the execution speed, but the overall execution and the code itself may still have room for improvement.
 
 ## What happens when there is an error
 
