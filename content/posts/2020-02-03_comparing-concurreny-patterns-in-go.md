@@ -143,7 +143,7 @@ func (ac *DatabaseClient) Put(table, key string, data interface{}) error {
 }
 ```
 
-Instead of returning as soon as an error occurs, the error group waits for all goroutines to complete.
+Instead of returning as soon as an error occurs, the error group waits for all goroutines to complete. Even though this is fine for many scenarios, it doesn't work for the user registration scenario that is being explored in this post. Since we want the user to get through registration as quickly as possible, it's crucial that errors are shown as quickly as possible, so that the User can address them (or retry) and move on. Otherwise, we'll lose sales.
 
 ```
 Scheduling event for email NewUserSignupEmail with key johnny@example.com. 
