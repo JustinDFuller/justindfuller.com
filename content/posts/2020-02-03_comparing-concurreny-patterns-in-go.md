@@ -143,7 +143,11 @@ func (ac *DatabaseClient) Put(table, key string, data interface{}) error {
 }
 ```
 
-Instead of returning as soon as an error occurs, the error group waits for all goroutines to complete. Even though this is fine for many scenarios, it doesn't work for the user registration scenario that is being explored in this post. Since we want the user to get through registration as quickly as possible, it's crucial that errors are shown as quickly as possible, so that the User can address them (or retry) and move on. Otherwise, we'll lose sales.
+Instead of returning as soon as an error occurs, the WaitGroup waits for all goroutines to complete. Even though this is fine for many scenarios, it doesn't work for the user registration scenario that is being explored in this post. 
+
+Since we want the user to get through registration as quickly as possible, it's crucial that errors are shown as quickly as possible, so that the user can address them (or retry) and move on. Otherwise, we'll lose sales.
+
+You can see this example in [The Go Playground](https://play.golang.org/p/TKq6O13StDP). The error occurs after 200ms but the function doesn't finish until all goroutines have completed, 100ms later.
 
 ```
 Scheduling event for email NewUserSignupEmail with key johnny@example.com. 
