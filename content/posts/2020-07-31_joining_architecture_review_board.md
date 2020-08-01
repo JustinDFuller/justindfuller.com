@@ -10,14 +10,14 @@ title: "I'm joining the Architecture Review Board at The New York Times."
 weight: 1
 draft: true
 images:
-  - https://developer.nytimes.com/
+  - https://developer.nytimes.com/logos/logo?v=1595895839284
 ---
 
 I'm excited to announce that I'll be joining the Architecture Review Board (ARB) at The New York Times. I want to share why we have this group and why it's an important, useful part of our organization.
 
 <!--more-->
 
-![NYTimes Developer](https://developer.nytimes.com/)
+![NYTimes Developer](https://developer.nytimes.com/logos/logo?v=1595895839284)
 
 ## What is the Architecture Review Board?
 
