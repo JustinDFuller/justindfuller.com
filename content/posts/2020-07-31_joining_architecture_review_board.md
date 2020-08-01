@@ -10,14 +10,14 @@ title: "I'm joining the Architecture Review Board at The New York Times."
 weight: 1
 draft: true
 images:
-  - https://developer.nytimes.com/logos/logo?v=1595895839284
+  - /learning-to-code.png
 ---
 
 I'm excited to announce that I'll be joining the Architecture Review Board (ARB) at The New York Times. I want to share why we have this group and why it's an important, useful part of our organization.
 
 <!--more-->
 
-![NYTimes Developer](https://developer.nytimes.com/logos/logo?v=1595895839284)
+![Learning To Code](/learning-to-code.png)
 
 ## What is the Architecture Review Board?
 
@@ -45,7 +45,7 @@ To make the process easier, we provide an RFC template ([see this Rust example](
 
 The most important part of any RFC is the feedback you receive. Ideally, it should be easy for an engineer to give feedback and for an author to ask follow-up questions. Google docs has been working well for us, with its commenting and suggestion features. It's also convenient to be able to see a complete history of the document, to reference changes during the discussion. Others haven't felt the same about Google, so there are many tools out there. If you use another tool
 
-Some important topics you may want to cover in your RFC: What you are building, why you are building it, when you want to build it, how you want to build it, and why you aren't building something else. This last one is extremely important. Many good RFC questions look like, "this solution makes sense, but have you considered ___?" When you show what you've already considered, and why you aren't going to use that solution, you focus the discussion on only what you've already found to be viable.
+Some important topics you may want to cover in your RFC: What you are building, why you are building it, when you want to build it, how you want to build it, and why you aren't building something else. This last one is extremely important. Many good RFC questions look like, "this solution makes sense, but have you considered this other thing instead?" When you show what you've already considered, and why you aren't going to use that solution, you focus the discussion on only what you've already found to be viable.
 
 At the end of the process you shouldn't be waiting for a stamp of approval. Our RFC board, and I believe any group that wants people to voluntarily come to them for help, shouldn't act as the gatekeepers of what is and isn't allowed to be done. You should walk away with some helpful feedback and a clear statement that your solution does or does not line up with accepted standards.
 
@@ -53,9 +53,13 @@ But if you want to try something new, at least you are aware of the risks and al
 
 ## Request For Proposals
 
-The Request For Proposals, or RFP, is like an RFC; except, instead of comments, you are asking for solutions. You should use an RFP when you know you want to build something, but you don't know how you should do it. It should be OK to say, "I don't have all the answers. I want to leverage the combined knowledge of our company to come up with something I can't on my own." There should be no shame in that.
+The Request For Proposals, or RFP, is like an RFC; except, instead of comments, you are asking for solutions. You should use an RFP when you know you want to build something, but you don't know how you should do it. It should be OK to say, "I don't have all the answers. I want to leverage the combined knowledge of our company to come up with something I can't on my own."
 
-In an RFP you should carefully outline the problem 
+In an RFP you should outline the problem you're facing, why existing solutions won't work, and ideas you have (no matter how rough). Once submitted, the ARB can give suggestions, but the primary goal is to get suggestions from engineers across the company, with the ARB acting as a broadcaster for your request.
+
+## Memos and Decisions
+
+
 
 ---
 
