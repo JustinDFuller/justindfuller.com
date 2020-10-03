@@ -21,15 +21,23 @@ For the worst interview I've ever been a part of, it wasn't bad because of somet
 
 Before I begin interviewing with a company, I do some research to see if it aligns with my values and goals, and to see if the work seems interesting. I usually ask something like this: "There are so many great places to work, places that have important missions, meaningful work, and fun cultures. Tell me why you chose to work here, and why I should too."
 
-Almost without fail, the interview will tell me all the things they love about their company. Except once, when they wouldn't.
+Almost without fail, the interviewer will tell me all the things they love about their company. Except once, when they wouldn't.
 
 They responded, "That's really for you to decide. I can't tell you why you should work here."
 
-On the surface this sounds perfectly reasonable. Each of us is unique, with different goals and values, so we must make the choice for ourselves. But this is actually a __huge red flag__. Think about this question in some other context, like when you ask a friend if you should go to the new restaurant that your friend just tried. If they tell you "You have to decide for yourself", are you really going to try it? They clearly had a bad experience but don't want to tell you.
+On the surface this sounds perfectly reasonable. Each of us is unique, with different goals and values, so we must make the choice for ourselves. But this is actually a __huge red flag__. Think about this question in some other context, like when you ask a friend if you should go to the new restaurant that your friend just tried. If they tell you "You have to decide for yourself", are you really going to try it? It seems like they had a bad experience but don't want to tell you.
+
+### How To Respond
 
 If the interviewer won't sell the role, you can try to reframe the question. You can ask "What's your favorite part about working here?" and "Tell me about a project that you're excited to work on."
 
+It's also important to remember that a single interviewer may not be representative of the entire company. It's possible this person is burnt out or the company is a bad fit for them. Be sure to ask this type of question to multiple people if you don't hear a positive answer at first.
+
 If they still can't give you an answer, it's time to realize that they don't enjoy working here, and likely neither will you.
+
+### When You're Giving An Interview
+
+As an interviewer, it's important to remember that you're being interviewed too. The interviewee is trying to decide if they would like working at your company and your team. You might be reluctant to advocate for your company in this way; maybe you're worried about unduly influencing the interviewees decision. TODO
 
 ## The Programming Gotcha
 
