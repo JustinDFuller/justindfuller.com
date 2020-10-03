@@ -1,17 +1,21 @@
 ---
 author: "Justin Fuller"
 date: 2020-10-02
-linktitle: "The two biggest red flags I've encountered in an interview"
+linktitle: "Two interview red flags and how to avoid them
 menu:
   main:
     parent: posts
 next: /posts/interview-red-flags
-title: The biggest red flags I've encountered in an interview"
+title: Two interview red flags and how to avoid them"
 weight: 1
 draft: true
 ---
 
-In my career I've been fortunate enough to interview for many companies across industries. Almost all of them have been a positive experience, except for a few. Here are the biggest red flags I've encountered in an interview, how to spot them, and how to avoid them when you are the one giving the interview.
+Let's face it, interviewing is hard. It's tough for the interviewee but it's also tough for the interviewer. At best, you and the interviewer have a few hours together to decide if you want to work together for, potentially, several years.
+
+Over the course of my career I've — thankfully — had many positive interviews, with only a few bad ones.
+
+Here are the two biggest red flags I've encountered, and how to avoid them.
 
 <!--more-->
 
@@ -35,9 +39,9 @@ It's also important to remember that a single interviewer may not be representat
 
 If they still can't give you an answer, it's time to realize that they don't enjoy working here, and likely neither will you.
 
-### When You're Giving An Interview
+### When You're Giving The Interview
 
-As an interviewer, it's important to remember that you're being interviewed too. The interviewee is trying to decide if they would like working at your company and your team. You might be reluctant to advocate for your company in this way; maybe you're worried about unduly influencing the interviewees decision. TODO
+As an interviewer, it's important to remember that you're being interviewed too. The interviewee is trying to decide if they would like working at your company and your team. You might be reluctant to advocate for your company in this way; maybe you're worried about unduly influencing the interviewees decision. __TODO__
 
 ## The Programming Gotcha
 
@@ -60,6 +64,16 @@ It's also perfectly acceptable to never use certain features of a programming la
 How you respond depends on how urgently you need this job, or how badly you want to work for this company. It may be tempting to explain to the interviewer that their questions are bad, but that's unlikely to help anyone. If you're able to answer the questions correctly, you could get some extra points by carefully explaining why you think this questions can be troublesome, and by referring the interviewer to questions that you generally find to be more demonstrative of engineering skills.
 
 Most of the time, you should just note that 
+
+### When You're Giving The Interview
+
+If this sounds like a question you've been asking in interviews, don't worry! It's easy to fix. Just remember the golden rule: If the answer is revealed by running the code once, it's not a good question.
+
+You should instead consider using questions that require writing code similar to what your engineers do every day. If you're making UI widgets for a bank, do not require them to solve a complex leetcode-style algorithm. If you're maintaining legacy code, create a small project that contains a bug; then, ask the interviewee to find and fix it.
+
+There are many options available to you, all of which avoid testing for rote memorization, while target skills for your unique needs.
+
+Most importantly, be sure that this question, or a small set of questions, are consistent for all of your candidates. This will help ensure fair comparisons.
 
 ---
 
