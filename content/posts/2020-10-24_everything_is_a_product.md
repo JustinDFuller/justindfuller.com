@@ -8,7 +8,6 @@ menu:
 next: /posts/interview-red-flags
 title: "Everything is A Product"
 weight: 1
-draft: true
 ---
 
 Your internal tools may have more value than you think they do. 
