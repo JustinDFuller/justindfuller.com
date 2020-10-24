@@ -27,7 +27,9 @@ Even if the application is unique, we may be using fairly common strategies and 
 
 ## Dependency
 
-Next, does your company gain an advantage by making potential competitors depend on your tools and by linking your competitors' profits to yours? Let's say some other companies do value your tools; Some of them may even be in the same market as you. It may make sense that those who are trying to solve the same problem may value similar tools. As their company grows, their usage (and therefore, the amount they pay) for your tool may grow. So, if your competitor grows, it will increase your profits in at least one way, offsetting the loss of the competitive advantage your tool brings the company.
+Next, does your company gain an advantage by making potential competitors depend on your tools and by linking your competitors' profits to yours? Let's say some other companies do value your tools; some of them may even be in the same market as you. It may make sense that those who are trying to solve the same problem may value similar tools. As their company grows, their usage (and therefore, the amount they pay) for your tool may grow. So, if your competitor grows, it will increase your profits in at least one way. 
+
+Could this offset the loss of the competitive advantage your tool brings the company?
 
 ## Quality
 
@@ -37,7 +39,7 @@ The requirement of high-quality products could lead us to the reason that intern
 
 ## Example
 
-I work at The Times, so a natural thought is to offer our news editing tools as a product. Some might be worried that it would hurt our competitive advantage, but I don't think that's a real problem. Our real competitive advantage is the investment we've made in our journalists. Since our journalists use and enjoy our tools, likely, others would too. Those other companies would likely pay us for our tools, which may be better because we can hire more engineers. We could also reinvest the profits back into the tool; which would continue to make our journalists' job easier. It's a self-perpetuating cycle.
+I work at [The Times](https://open.nytimes.com/), so a natural thought is to offer our news editing tools as a product. Some might be worried that it would hurt our competitive advantage, but I don't think that's a real problem. Our real competitive advantage is the investment we've made in our journalists. Since our journalists use and enjoy our tools, likely, others would too. Those other companies would likely pay us for our tools, which may be better because we can hire more engineers. We could also reinvest the profits back into the tool; which would continue to make our journalists' job easier. It's a self-perpetuating cycle.
 
 I think back to my time at Bank Of America, where they love internal tools. There are so many internal tools, so many that could become products. Yes, they would have to stop viewing them in the narrow scope they were built, and put a lot of TLC into them, and figure out how to handle PCI and security, but it can be done. Their competitive advantage surely isn't their internal tools, but their vast physical presence and consumer trust (queue complaints about the company).
 
@@ -54,3 +56,15 @@ Finally, if you don't want to offer it as a product, you could (and I think, sho
 As I've mentioned, I don't think the most significant downside here is losing a competitive advantage. I suspect that the disadvantage is tarnishing the company's reputation with sub-par products. If the product isn't high-quality, it could very well embarrass the company; this increases the investment needed for these products compared to their cost as internal tools.
 
 So, will it ever happen? Maybe. Will this become a broad practice in many companies? I predict not. But [SAAS is very popular](https://www.statista.com/statistics/510333/worldwide-public-cloud-software-as-a-service/#:~:text=The%20global%20public%20cloud%20software,main%20categories%20of%20cloud%20computing), and there is only more money to be made there. Many large companies already have a swoath of products, so maybe they should start selling them.
+
+## I'm not an MBA
+
+So I'm excited to hear why I'm wrong wherever this get's posted. Thanks for reading!
+
+---
+
+Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
+
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Twitter](https://twitter.com/justin_d_fuller), or [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about. Thanks again for reading!
+
+---
