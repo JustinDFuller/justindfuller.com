@@ -12,6 +12,8 @@ weight: 1
 
 Your internal tools may have more value than you think they do. 
 
+<!--more-->
+
 ## A Successful Internal Tool
 
 Just look at AWS, the world's [largest cloud provider](https://www.parkmycloud.com/blog/aws-vs-azure-vs-google-cloud-market-share/#:~:text=As%20of%20July%202020%2C%20Canalys,and%20other%20clouds%20with%2037%25); AWS started life as a [set of internal tools](https://techcrunch.com/2016/07/02/andy-jassys-brief-history-of-the-genesis-of-aws/) that morphed into the cloud provider that many of us use today.
