@@ -1,12 +1,11 @@
 ---
 author: "Justin Fuller"
 date: 2020-10-24
-linktitle: "Everything is A Product"
+linktitle: "Everything Is a Product"
 menu:
   main:
     parent: posts
-next: /posts/interview-red-flags
-title: "Everything is A Product"
+title: "Everything Is a Product"
 weight: 1
 ---
 
