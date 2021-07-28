@@ -23,9 +23,9 @@ googleAnalytics = "UA-57389891-8"
   name = "LinkedIn"
   url = "https://linkedin.com/in/justin-fuller-8726b2b1"
 
-[[menu.sidebar]]
-  name = "Twitter"
-  url = "https://twitter.com/justin_d_fuller"
+# [[menu.sidebar]]
+#  name = "Twitter"
+#  url = "https://twitter.com/justin_d_fuller"
 
 #[[menu.navbar]]
 #  name = "Link 1"
@@ -80,11 +80,11 @@ googleAnalytics = "UA-57389891-8"
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2
 
-  [params.social]
+  # [params.social]
     # Optional, used for attribution in Twitter cards (ideally not a person
     # for example: nytimes, flickr, NatGeo, etc).
     # See: https://dev.twitter.com/cards/types/summary-large-image
-    twitter = "@justin_d_fuller"
+    # twitter = "@justin_d_fuller"
 
 # Default content language for Hugo 0.17's multilingual support (default is "en")
 # See: https://github.com/spf13/hugo/blob/master/docs/content/content/multilingual.md
