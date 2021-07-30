@@ -23,10 +23,6 @@ googleAnalytics = "UA-57389891-8"
   name = "LinkedIn"
   url = "https://linkedin.com/in/justin-fuller-8726b2b1"
 
-[[menu.sidebar]]
-  name = "Twitter"
-  url = "https://twitter.com/justin_d_fuller"
-
 #[[menu.navbar]]
 #  name = "Link 1"
 #  url = "https://example.org"
