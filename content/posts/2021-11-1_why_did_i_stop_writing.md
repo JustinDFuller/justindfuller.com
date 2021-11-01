@@ -1,6 +1,6 @@
 ---
 author: "Justin Fuller"
-date: 2021-11-1
+date: 2021-11-01
 linktitle: "Why Did I Stop Writing?"
 menu:
   main:
@@ -9,7 +9,7 @@ next: /posts/why-did-i-stop-writing
 title: "Why Did I Stop Writing?"
 weight: 1
 images:
-  - https://cdn-images-1.medium.com/max/7680/1*tt8gjEhAZq4b_R20vUPjHw.png
+  - /why_did_i_stop_writing.png
 --- 
 
 The last time I wrote a regular blog post was about one year ago.
