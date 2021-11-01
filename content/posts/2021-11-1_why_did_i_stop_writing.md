@@ -9,7 +9,7 @@ next: /posts/why-did-i-stop-writing
 title: "Why Did I Stop Writing?"
 weight: 1
 images:
-  - /why_did_i_stop_writing.png
+  - /why_did_I_stop_writing.png
 --- 
 
 The last time I wrote a regular blog post was about one year ago.
