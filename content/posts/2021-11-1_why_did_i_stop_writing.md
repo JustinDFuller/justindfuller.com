@@ -86,7 +86,7 @@ I could just privately reflect on my problems and interests, which is pretty muc
 
 But, even though it was sometimes painful, I did learn a lot from the responses. I don’t want to give that up. I just want to find a way to make it less painful, even enjoyable (hopefully).
 
-So, why will I write?
+### So, why will I write?
 
 I don’t want to convince others that I’m a perfect, flawless expert in some field (I couldn’t if I tried). 
 
