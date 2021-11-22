@@ -75,7 +75,7 @@ It’s a pretty basic question that can reveal things like:
 
 * we don’t have any organizational documentation about logging
 
-* we don’t even agree on the *type *of logging
+* we don’t even agree on the *type* of logging
 
 Here’s an awkward, but simple, one: 
 > “Why are we doing this?” 
@@ -94,11 +94,11 @@ First, I have to acknowledge that asking a stupid question will gain me some lev
 
 So, is that price worth it? It depends on my goals.
 
-If my goal is to impress others with my knowledge, then the answer is likely *no*, unless the person I’m asking is not a person I want to impress with my knowledge. If, for some reason, I’ve decided that I always want to impress *everyone *with my knowledge, then I can’t ask *anyone* a stupid question.
+If my goal is to impress others with my knowledge, then the answer is likely *no*, unless the person I’m asking is not a person I want to impress with my knowledge. If, for some reason, I’ve decided that I always want to impress *everyone* with my knowledge, then I can’t ask *anyone* a stupid question.
 
 So, before I ask a stupid question, I have to decide that my goal is not to look impressively smart, informed, or prepared. This may cost me reputation and opportunity, even more so if I’m unable to turn those stupid questions into valuable insights and actions.
 
-Instead, my goal must be to *actually *be smart, informed, and prepared. Regardless of the perceptions of others, I want to maximize the amount of knowledge I have, even at the cost of my reputation.
+Instead, my goal must be to *actually* be smart, informed, and prepared. Regardless of the perceptions of others, I want to maximize the amount of knowledge I have, even at the cost of my reputation.
 
 I think stupid questions can lead to this result because they are essentially engaging in First Principles: the act of reducing a problem to its basic components. 
 
@@ -110,7 +110,7 @@ I wonder if the reason they’re considered stupid is that, in order to be produ
 
 ## Someone who has the time
 
-There’s a guy I worked with who is *great *at asking stupid questions. I mean that as a compliment, but I won’t name him because who wants to be labeled as the guy who asks stupid questions?
+There’s a guy I worked with who is *great* at asking stupid questions. I mean that as a compliment, but I won’t name him because who wants to be labeled as the guy who asks stupid questions?
 
 Anyway, he’s fantastic at it. He’ll drop into a slack channel or a conversation and ask the simplest questions about how things work. Yet, somehow, they’ll turn into great conversations. 
 
