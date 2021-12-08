@@ -42,7 +42,7 @@ googleAnalytics = "UA-57389891-8"
   description = "Justin Fuller's blog about being a Software Engineer."
 
   # Show header (default: true)
-  #header_visible = true
+  header_visible = false
 
   # Format dates with Go's time formatting
   date_format = "Mon Jan 02, 2006"
@@ -75,7 +75,7 @@ googleAnalytics = "UA-57389891-8"
 
   [params.sidebar]
     # Optional about block for sidebar (can be Markdown)
-    about = "Justin Fuller is a Software Engineer at [The New York Times](https://open.nytimes.com). He works with Go, JavaScript, Node.js, and React."
+    about = "Hey, I'm Justin. I'm a Software Engineer at [The New York Times](https://open.nytimes.com). I work with Go, JavaScript, Node.js, and React."
 
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2
