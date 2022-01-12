@@ -23,6 +23,11 @@ googleAnalytics = "UA-57389891-8"
   name = "LinkedIn"
   url = "https://linkedin.com/in/justin-fuller-8726b2b1"
 
+[[menu.sidebar]]
+  name = "Purchase Plan"
+  url = "https://purchaseplan.io"
+
+
 # [[menu.sidebar]]
 #  name = "Twitter"
 #  url = "https://twitter.com/justin_d_fuller"
@@ -39,7 +44,7 @@ googleAnalytics = "UA-57389891-8"
   author = "Justin Fuller"
 
   # Description/subtitle for homepage (can be Markdown)
-  description = "Justin Fuller's blog about being a Software Engineer."
+  description = "Justin Fuller's blog."
 
   # Show header (default: true)
   header_visible = false
@@ -75,7 +80,7 @@ googleAnalytics = "UA-57389891-8"
 
   [params.sidebar]
     # Optional about block for sidebar (can be Markdown)
-    about = "Hey, I'm Justin. I'm a Software Engineer at [The New York Times](https://open.nytimes.com). I work with Go, JavaScript, Node.js, and React."
+    about = "Hey, I'm Justin. I occasionally write about things. I'm married with a ton of kids. I work at [The New York Times](https://open.nytimes.com). I make things like [Purchase Plan](https://purchaseplan.io)."
 
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2
