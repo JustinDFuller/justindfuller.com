@@ -14,6 +14,8 @@ images:
 
 Halfway through last year, I found myself overwhelmed by my schedule. There were simply too many things to do and not enough time. As we bookworms tend to do, I set out to find books that would teach me to wrangle my schedule.
 
+<!--more-->
+
 ![](/living_on_24_hours_a_day.jpeg)
 
 I started with what felt like an obvious choice,[ Getting Things Done: The Art of Stress-Free Productivity](https://amzn.to/3qXZaXc).
