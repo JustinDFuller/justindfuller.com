@@ -47,7 +47,7 @@ googleAnalytics = "UA-57389891-8"
   description = "Justin Fuller's blog."
 
   # Show header (default: true)
-  header_visible = false
+  header_visible = true
 
   # Format dates with Go's time formatting
   date_format = "Mon Jan 02, 2006"
