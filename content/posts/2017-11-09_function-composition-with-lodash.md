@@ -20,8 +20,6 @@ Have you been reading JavaScript posts lately? Maybe you’ve noticed that funct
 
 In this post we’ll look at how to use Lodash/fp to compose both our own functions, and the Lodash functions that you may already be using today!
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 Before we start coding — lets be sure that we know what we’re talking about!
 
 ## Functional Programming:

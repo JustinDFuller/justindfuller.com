@@ -18,8 +18,6 @@ aliases:
 
 <!--more-->
 
-![](/learning-javascript.jpeg)
-
 Mocking, stubbing, or maybe—even better—[dependency inversion](https://medium.com/free-code-camp/simply-javascript-a-straightforward-intro-to-mocking-stubbing-and-interfaces-14e67ed6641a), they can simplify testing and make your code easier to change, but can they cause problems too? Let’s see.
 
 Take a look at this test where we are saving a file using an external file service.

@@ -18,8 +18,6 @@ Function composition is growing in popularity, so I say it’s about time we con
 
 <!--more-->
 
-![Learning Javascript](/learning-javascript.jpeg)
-
 ## Two problems
 
 Imports are an amazing addition to the JavaScript language. They allow you to split code into small modules and only import what you need. Problems arise because any exported functions will now come with the assumed context of those imports. We’ll look more deeply into those problems in a moment.

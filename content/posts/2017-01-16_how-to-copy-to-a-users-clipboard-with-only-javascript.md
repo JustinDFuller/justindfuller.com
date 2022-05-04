@@ -18,8 +18,6 @@ Put your learning hats on, we’re diving into another API that you might not ha
 
 <!--more-->
 
-![It will test your head… and your mind… and your brain, too.](/board.png)
-
 *It will test your head… and your mind… and your brain, too.*
 
 ## I need to be honest, this isn’t really one API.

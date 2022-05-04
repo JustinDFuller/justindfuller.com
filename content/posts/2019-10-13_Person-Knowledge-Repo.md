@@ -18,8 +18,6 @@ Are you struggling to find projects to showcase to potential employers? Have you
 
 <!--more-->
 
-![Learning To Code](/learning-to-code.png)
-
 If you answered yes to any of these questions, you should consider saving every practice problem you do in a public git repo, like [Github](https://github.com/).
 
 I try to keep up with programming trends, and one question that I see come up a lot, [particularly](https://www.reddit.com/r/learnprogramming/) on [reddit](https://www.reddit.com/r/cscareerquestions/), is "What project should I do?"

@@ -20,8 +20,6 @@ Before I transitioned to software development, I spent time as a sound engineer.
 
 <!--more-->
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 Instead of buying into the “more expensive, more complex is better” philosophy, I spent every evening learning the basics. I focused on fundamental skills. I learned how to use an equalizer to make a voice sound natural. I learned how to use a compressor to soften quick and loud sounds or to beef up thin sounds. It turned out that the return on investment for those hours was more than I ever hoped for!
 
 I ended up favoring the simplest tools and I was very happy with the work I produced.

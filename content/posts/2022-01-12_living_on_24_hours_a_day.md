@@ -16,8 +16,6 @@ Halfway through last year, I found myself overwhelmed by my schedule. There were
 
 <!--more-->
 
-![](/living_on_24_hours_a_day.jpeg)
-
 I started with what felt like an obvious choice,[ Getting Things Done: The Art of Stress-Free Productivity](https://amzn.to/3qXZaXc).
 
 The central idea in Getting Things Done is that we can’t hold everything in our heads all the time. But we try to, so we constantly have many open “tabs”. We’re not only trying to keep track of what we’re currently doing but also all the things we need to do. The takeaway is to stop trying to keep everything in your head. Instead, write everything down and only focus on what you have to do at this moment.

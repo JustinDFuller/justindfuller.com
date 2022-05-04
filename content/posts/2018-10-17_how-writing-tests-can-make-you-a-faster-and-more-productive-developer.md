@@ -18,8 +18,6 @@ Most of us have heard of “writer’s block”, but have you heard of “develo
 
 <!--more-->
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 So what do you do? Do you just take a coffee break, come back an hour later and hope you figure it out then? Maybe you can go talk to your coworkers, joke around for a bit, and put off getting that code working. Don’t worry, future you can deal with this problem! (You never really liked them all that much anyways.)
 
 Instead of struggling to bring that code out of nowhere, there is a simple way to trick your mind into getting started. A writer can overcome this problem by starting with an outline and filling it in. A developer can begin by writing tests!

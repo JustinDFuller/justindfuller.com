@@ -20,8 +20,6 @@ This post, _Channels and Goroutines_, will demonstrate a few neat concurrency pa
 
 <!--more-->
 
-![Go Things I Love](/go-things-i-love.png)
-
 First: to get the most out of this post you should familiarize yourself with the fundamentals of Go concurrency. A great place to do that is [in the Go tour](https://tour.golang.org/concurrency/1). These patterns rely on goroutines and channels to accomplish their elegance.
 
 Concurrency, in some form, is one of the most important building blocks of performant software. That's why it's important to pick a programming language with first-class concurrency support. Because Go, in my estimation, provides one of the most delightful ways to achieve concurrency, I believe it is a solid choice for any project that involves concurrency.

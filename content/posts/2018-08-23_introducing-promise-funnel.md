@@ -20,8 +20,6 @@ The use case was inspired by two particular problems I had recently.
 
 <!--more-->
 
-![](/promise-funnel.png)
-
 In problem one I had a React App that authenticates both immediately, and on a regular interval. During each authentication the requests to retrieve data needed to wait. I did not want to receive or show unauthenticated response errors during this time.
 
 In the second problem, I had a database micro-service that immediately invoked functions that send queries, but it needed to complete the connection to the database before any queries are actually sent.

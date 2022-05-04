@@ -20,8 +20,6 @@ The release is imminent; this is the last update that needs to be verified, and 
 
 <!--more-->
 
-![Learning To Code](/learning-to-code.png)
-
 It turns out that it *is* a validation error, kind of. The input I am giving is a duplicate. It’s valid, it just already exists!
 
 Wouldn’t it be so helpful to know that?

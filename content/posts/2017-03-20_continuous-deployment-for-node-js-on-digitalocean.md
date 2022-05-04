@@ -18,8 +18,6 @@ Continuous Integration and Deployment have become important parts of the softwar
 
 <!--more-->
 
-![Codeship, Node.js, DigitalOcean](/continuous-deployment.png)
-
 By following this guide you should be set up with continuous integration and deployment of your Node.js app within just a few minutes. It makes a few assumptions: The first is that you are hosting your application on DigitalOcean and the second is that you have your repository stored on Github, Bitbucket, or Gitlab. It also assumes you have a pretty good grasp of Node.js, NPM, and the command line.
 
 ## Feel free to skip around

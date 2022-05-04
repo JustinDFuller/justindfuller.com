@@ -18,8 +18,6 @@ As I’ve progressed through my career, I’ve experienced increasing imposter s
 
 I understand this is a common feeling, particularly in software engineering. It’s called [Imposter Syndrome](https://www.freecodecamp.org/news/what-is-imposter-syndrome-and-how-do-you-overcome-it/) because you feel like you are not qualified to do your job — like you’re pretending but no one has figured it out.
 
-![Photo Credit [@felipepelaquim](https://unsplash.com/@felipepelaquim)](https://cdn-images-1.medium.com/max/2000/0*69D4lzRgYD7Ggg2S)*Photo Credit [@felipepelaquim](https://unsplash.com/@felipepelaquim)*
-
 ## My Story
 
 It didn’t start in my first or even second job.

@@ -19,8 +19,6 @@ I want to explore some of my favorite features of the language. I don't intend t
 
 <!--more-->
 
-![Go Things I Love](/go-things-i-love.png)
-
 ## Methods
 
 Typically a method is defined as a function that belongs to an object or class. This means you wouldn't necessarily add a method

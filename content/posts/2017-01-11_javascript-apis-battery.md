@@ -18,8 +18,6 @@ Yes, you heard me right, the Battery API! As the web expands, so does the number
 
 <!--more-->
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 * Decreasing processing and requests when the battery is low.
 
 * Provide users with warnings. Especially useful if your users are working with time-sensitive data or actions, or if you know your app is a power-drainer.

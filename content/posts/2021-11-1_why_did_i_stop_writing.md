@@ -14,8 +14,6 @@ images:
 
 The last time I wrote a regular blog post was about one year ago.
 
-![](https://cdn-images-1.medium.com/max/7680/1*tt8gjEhAZq4b_R20vUPjHw.png)
-
 Now, as we all know, a few things have happened in the world since then. So, it could be understandable if I didn’t post anything. But, if I’m honest, the reasons I stopped posting related more to my feelings and less to the state of the world around me.
 
 I’m thinking about this because I just finished reading [this excellent post by Dan Luu](https://danluu.com/look-stupid/) about his willingness to look stupid.

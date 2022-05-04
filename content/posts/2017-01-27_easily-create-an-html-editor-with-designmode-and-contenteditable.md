@@ -18,8 +18,6 @@ Have you ever wondered how hard it would be to recreate a text editor like the o
 
 <!--more-->
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 If you haven’t seen Medium’s text editor, I would highly recommend checking it out. You are able to write, edit, and style your content (within Medium’s provided styles) right here in your browser.
 
 No tech knowledge is needed. No html tags appear in the text.

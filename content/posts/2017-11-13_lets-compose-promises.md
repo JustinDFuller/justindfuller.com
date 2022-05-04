@@ -18,8 +18,6 @@ Today we’re going to combine two of the most useful tools that a JavaScript de
 
 <!--more-->
 
-![Please enjoy this barely related comic about Functional Programming :)](/compose-promises.jpeg)
-
 ### Promises
 
 The [Promise API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is a simple but powerful way to handle asynchronous operations. To create a promise you would type new Promise() and the only argument would be a callback function.

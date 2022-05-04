@@ -14,8 +14,6 @@ images:
 
 While I’m riffing off of Dan Luu’s post about not being afraid to look stupid, I want to think about asking Stupid Questions.
 
-![Asking Stupid Questions](/asking_stupid_questions.png)
-
 In this post I want to explore:
 
 * What is a stupid question?

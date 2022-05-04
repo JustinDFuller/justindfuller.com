@@ -17,8 +17,6 @@ Only ten years late, I just finished reading [Thinking, Fast and Slow](https://a
 
 <!--more-->
 
-![](/bias_smells.png)
-
 Among the many biases he explores, there's the anchoring effect, where we don't stray far from a number, even when it's not relevant to the question at hand. There's also availability bias, where we answer questions based on the ease of thinking of examples, even when that doesn't provide the correct answer.
 
 Throughout the book, Kahneman expresses skepticism that individuals can overcome these biases. I know of no reason he would be wrong, but I wonder if something similar to [code smells](https://blog.codinghorror.com/code-smells/) would help. In software engineering, we have the idea of code smells, which allow engineers to pair a generic problem with a solution quickly.

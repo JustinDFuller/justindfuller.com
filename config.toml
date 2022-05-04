@@ -50,7 +50,7 @@ googleAnalytics = "UA-57389891-8"
   header_visible = true
 
   # Format dates with Go's time formatting
-  date_format = "Mon Jan 02, 2006"
+  date_format = "January 2, 2006"
 
   # verification string for Google Webmaster Tools
   #google_verify_meta = "BAi57DROASu4b2mkVNA_EyUsobfA7Mq8BmSg7Rn-Zp9"
@@ -80,7 +80,7 @@ googleAnalytics = "UA-57389891-8"
 
   [params.sidebar]
     # Optional about block for sidebar (can be Markdown)
-    about = "👋Hey, I'm Justin. I occasionally write about things. I'm married with a bunch of kids. I work at [The New York Times](https://open.nytimes.com). I make things like [Purchase Plan](https://purchaseplan.io)."
+    about = "👋 Hey, I'm Justin. I occasionally write about things. I'm married with a bunch of kids. I work at [The New York Times](https://open.nytimes.com). I make things like [Purchase Plan](https://purchaseplan.io)."
 
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2

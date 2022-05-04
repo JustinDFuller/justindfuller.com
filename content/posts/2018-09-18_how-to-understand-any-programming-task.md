@@ -18,8 +18,6 @@ The day has finally arrived. Is it your first day on your job, or have you been 
 
 <!--more-->
 
-![Learning To Code](/learning-to-code.png)
-
 So what should you do? Should you just get started and hope it works? Should you immediately tell your boss that you can’t do this because you don’t understand?
 
 I imagine that you know the answer is neither!

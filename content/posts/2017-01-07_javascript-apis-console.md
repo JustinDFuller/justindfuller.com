@@ -18,8 +18,6 @@ The console API could be the most well-known JavaScript API. Pretty much every d
 
 <!--more-->
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 ## **Assert**
 
 First up we have `console.assert(*assertion*)` which allows us to run an *assertion* in the console.

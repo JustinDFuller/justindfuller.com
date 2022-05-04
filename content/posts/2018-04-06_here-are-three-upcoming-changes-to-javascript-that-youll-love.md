@@ -18,8 +18,6 @@ Let’s take a look at some useful upcoming features in JavaScript. You’ll see
 
 <!--more-->
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 ## How JavaScript Changes
 
 *Feel free to skip this part if you are already familiar with how the [Ecma TC39](http://www.ecma-international.org/memento/TC39.htm) committee decides on and processes changes to the JavaScript language.*

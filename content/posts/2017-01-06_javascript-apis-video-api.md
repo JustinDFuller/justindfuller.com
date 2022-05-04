@@ -18,8 +18,6 @@ In this series, I will be exploring the different JavaScript APIs that are avail
 
 <!--more-->
 
-![Learning JavaScript](/learning-javascript.jpeg)
-
 **Not Just For YouTube**
 
 If you haven’t used it before, you may not even know the Video API exists, or you may be under the impression it can only be used for creating a custom video player. However, if you just need to embed a video into your site, and don’t want to create your own fancy video player, the Video API still has something for you!

@@ -18,8 +18,6 @@ So, my question is, if we as a community figured out — twenty years ago — th
 
 <!--more-->
 
-![Learning To Code](/learning-to-code.png)
-
 ## My History
 
 To figure out why we keep falling into the rewrite trap, I want to first step back through a few points in my history. 

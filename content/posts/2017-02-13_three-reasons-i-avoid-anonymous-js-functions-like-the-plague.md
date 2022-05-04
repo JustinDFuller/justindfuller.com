@@ -18,8 +18,6 @@ You’re bound to see an anonymous function whenever your read code. Sometimes t
 
 <!--more-->
 
-![](/anonymous.jpeg)
-
 In case you don’t know what an anonymous function is, here’s a quote:
 
 > Anonymous functions are functions that are dynamically declared at runtime. They’re called anonymous functions because they aren’t given a name in the same way as normal functions. — Helen Emerson, Helephant.com
