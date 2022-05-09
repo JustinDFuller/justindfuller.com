@@ -27,10 +27,10 @@ Here are a few ideas to reduce bias, focused on things I can control at my level
 ## Consistent Time
 A straightforward solution is to conduct interviews at consistent times. Generally, I do interviews between 1-4 pm eastern time, and I don't offer availability outside this window. Sure, 3 pm is a couple hours after my lunch break, but I have to be at least somewhat flexible for candidates.
 
-This isn't a perfect solution because some interviewees aren't available during this window. But it has worked for most interview schedules I've been a part of recently.
+This isn't a perfect solution because some candidates aren't available during this window. But it has worked for most interview schedules I've been a part of recently.
 
 ## Consistent Questions
-Another way to avoid bias is to have a consistent set of questions I judge interviewees against. These are not the questions that I *ask* in the interview. These are the questions I use to *evaluate* the interview.
+Another way to avoid bias is to have a consistent set of questions I judge candidates against. These are not the questions that I *ask* in the interview. These are the questions I use to *evaluate* the interview.
 
 These questions are not absolute, where 5 out of 5 equals a hire recommendation, and 2 out of 5 results in a rejection recommendation. Instead, I judge interview scores relative to each other. If most interviews score 2 out of 5, I should recommend someone who gets 3 or 4 out of 5. 
 
