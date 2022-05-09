@@ -101,3 +101,7 @@ googleAnalytics = "UA-57389891-8"
 
 # vim: ts=2 sw=2 et
 
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
