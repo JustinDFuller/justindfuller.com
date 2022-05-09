@@ -12,7 +12,7 @@ images:
  - /reducing_interview_bias.png
 --- 
 
-In 2011, researchers at Ben Gurion University in Israel and Columbia University found [Judge's rulings are affected by lunch breaks](https://www.pnas.org/doi/10.1073/pnas.1018033108). The judges granted 65% of parole requests at the beginning of the day. The rate declined steadily until a lunch break, after which the rate jumped back to 65%. They granted almost no requests at the end of the day.
+In 2011, researchers at Ben Gurion University in Israel and Columbia University found [Judges' rulings are affected by lunch breaks](https://www.pnas.org/doi/10.1073/pnas.1018033108). The judges granted 65% of parole requests at the beginning of the day. The rate declined steadily until a lunch break, after which the rate jumped back to 65%. They granted almost no requests at the end of the day.
 
 <!--more-->
 
