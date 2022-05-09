@@ -25,7 +25,7 @@ Am I more likely to fail an interviewee at the end of my day? Am I more likely t
 Here are a few ideas to reduce bias, focused on things I can control at my level: an individual not in charge of the hiring process.
 
 ## Consistent Time
-A straightforward solution is to conduct interviews at consistent times. Generally, I do interviews between 1-4 pm eastern time, and I don't offer availability outside this window. Sure, 3 pm is a couple hours after my lunch break, but it's a necessary window to give to be flexible.
+A straightforward solution is to conduct interviews at consistent times. Generally, I do interviews between 1-4 pm eastern time, and I don't offer availability outside this window. Sure, 3 pm is a couple hours after my lunch break, but I have to be at least somewhat flexible for candidates.
 
 This isn't a perfect solution because some interviewees aren't available during this window. But it has worked for most interview schedules I've been a part of recently.
 
