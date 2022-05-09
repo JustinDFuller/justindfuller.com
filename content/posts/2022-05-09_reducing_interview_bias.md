@@ -30,7 +30,7 @@ A straightforward solution is to conduct interviews at consistent times. For the
 This isn't a perfect solution because some interviewees can't make this window work. But, for the most part, it works well.
 
 ## Consistent Questions
-Another way to avoid bias is to have a consistent set of questions I judge interviewees against. 
+Another way to avoid bias is to have a consistent set of questions I judge interviewees against. These are not the questions that I *ask* in the interview. These are the questions I use to *evaluate* the interview.
 
 These questions are not absolute, where 5 out of 5 equals a hire recommendation, and 2 out of 5 results in a rejection recommendation. Instead, I judge interview scores relative to each other. If most interviews score 2 out of 5, I should recommend someone who gets 3 or 4 out of 5. 
 
@@ -55,6 +55,8 @@ For a full stack system design interview, the questions might look like this:
 * Were they able to describe a clear component structure?
 
 These questions aren't perfect. However, they should be better than going by my "gut" feeling, which will be affected by hunger, how difficult my day has been, or even how nice the candidate's zoom background is.
+
+The important part is that you use the *same questions* for every interview. The consistency here is key, because it ensures each candidate is judged against the same criteria.
 
 ## Resources
 
