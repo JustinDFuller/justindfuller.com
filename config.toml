@@ -19,9 +19,9 @@ googleAnalytics = "UA-57389891-8"
   name = "Github"
   url = "https://github.com/JustinDFuller"
 
-[[menu.sidebar]]
-  name = "LinkedIn"
-  url = "https://linkedin.com/in/justin-fuller-8726b2b1"
+# [[menu.sidebar]]
+#  name = "LinkedIn"
+#  url = "https://linkedin.com/in/justin-fuller-8726b2b1"
 
 [[menu.sidebar]]
   name = "Purchase Plan"
