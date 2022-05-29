@@ -27,6 +27,9 @@ googleAnalytics = "UA-57389891-8"
   name = "Purchase Plan"
   url = "https://purchaseplan.io?utm_source=JustinDFuller&utm_medium=blog&utm_campaign=side_bar"
 
+[[menu.sidebar]]
+  name = "Really Simple Notes"
+  url = "https://reallysimplenotes.com?utm_source=JustinDFuller&utm_medium=blog&utm_campaign=side_bar"
 
 # [[menu.sidebar]]
 #  name = "Twitter"
