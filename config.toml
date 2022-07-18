@@ -12,7 +12,7 @@ googleAnalytics = "UA-57389891-8"
 #disqusShortname = "XYW"
 
 [permalinks]
-  posts = "/:year/:month/:title/"
+  posts = "/:year/:month/:slug/"
   page = "/:slug/"
 
 [[menu.sidebar]]
