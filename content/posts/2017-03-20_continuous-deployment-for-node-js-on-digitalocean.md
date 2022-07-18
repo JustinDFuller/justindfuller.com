@@ -12,6 +12,7 @@ images:
   - /continuous-deployment.png
 aliases:
   - /posts/2017-03-20_continuous-deployment-for-node-js-on-digitalocean
+tags: ["Programming"]
 ---
 
 Continuous Integration and Deployment have become important parts of the software development cycle. It’s important to spend your time creating features, and you don’t want to worry about deploying your code. Plus, the more you are manually deploying code, the more likely you are to make an error. Today we will automate the process of running our tests and deploying our Node.js app to DigitalOcean.

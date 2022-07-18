@@ -12,6 +12,7 @@ images:
   - /learning-javascript.jpeg
 aliases:
   - /posts/2017-01-16_how-to-copy-to-a-users-clipboard-with-only-javascript
+tags: ["Programming"]
 ---
 
 Put your learning hats on, we’re diving into another API that you might not have known existed before today!

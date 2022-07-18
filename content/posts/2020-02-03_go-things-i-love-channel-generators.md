@@ -11,6 +11,7 @@ weight: 1
 draft: true
 images:
   - /go-things-i-love.png
+tags: ["Programming"]
 ---
 
 In my last post, [Channels and Goroutines](/2020/01/go-things-i-love-channels-and-goroutines/), I discussed how channels can be used to safely write concurrent programs. It showed that channels and goroutines can be combined to use communication instead of shared memory. Now, I want to take that discussion further by looking at how code can organize, create, and share goroutines and channels.

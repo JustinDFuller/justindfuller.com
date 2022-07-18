@@ -12,6 +12,7 @@ images:
   - /learning-javascript.jpeg
 aliases:
   - /posts/2018-10-17_simply-javascript-a-straightforward-intro-to-mocking-stubbing-and-interfaces
+tags: ["Programming"]
 ---
 
 I like to think that I’m a simple guy, I like simple things. So whenever I sense complexity, my first reaction is to wonder if I can make things easier.

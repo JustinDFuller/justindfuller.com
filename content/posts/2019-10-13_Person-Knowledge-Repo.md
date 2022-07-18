@@ -12,6 +12,7 @@ aliases:
   - /posts/2019-10-13_Person-Knowledge-Repo
 images:
   - /learning-to-code.png
+tags: ["Programming"]
 ---
 
 Are you struggling to find projects to showcase to potential employers? Have you been practicing [LeetCode](https://leetcode.com/) as you prepare to interview for a Software Development job? Do you occasionally practice a Kata on [Codewars](www.codewars.com) to keep your skills from getting rusty?

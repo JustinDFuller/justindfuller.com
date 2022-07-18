@@ -11,6 +11,7 @@ weight: 1
 draft: true
 images:
   - /book-review.png
+tags: ["Programming"]
 ---
 
 The first review in _The Book Review_ series.

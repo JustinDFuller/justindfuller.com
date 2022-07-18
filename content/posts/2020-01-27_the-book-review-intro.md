@@ -11,6 +11,7 @@ weight: 1
 draft: true
 images:
   - /book-review.png
+tags: ["Programming"]
 ---
 
 Every line of code that you write is the culmination of your professional and educational experience; be it a formal college education, an intense six-week bootcamp, or a prodigious number of blog posts and tutorials, your well of experience is drawn from by every line of code, every decision you make as a software developer. That's why it's essential that you spend your precious, limited free time—the fragment that you use to better yourself through learning—with the best possible resources.

@@ -12,6 +12,7 @@ images:
   - /learning-javascript.jpeg
 aliases:
   - /posts/2019-07-19_service-calls-make-your-tests-better
+tags: ["Programming"]
 ---
 
 **TL;DR:** If all tests are mocked, you don’t know if your code works, you only know that, theoretically, it is supposed to work if the integrations adhere to the contract you expect.

@@ -10,6 +10,7 @@ title: "Why Did I Stop Writing?"
 weight: 1
 images:
   - /why_did_I_stop_writing.png
+tags: ["Writing"]
 --- 
 
 The last time I wrote a regular blog post was about one year ago.

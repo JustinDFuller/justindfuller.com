@@ -12,6 +12,7 @@ images:
   - /compose-promises.jpeg
 aliases:
   - /posts/2017-11-13_lets-compose-promises
+tags: ["Programming"]
 ---
 
 Today we’re going to combine two of the most useful tools that a JavaScript developer has in his or her tool belt. Promises and Function Composition.
