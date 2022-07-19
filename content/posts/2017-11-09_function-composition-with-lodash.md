@@ -12,7 +12,7 @@ images:
   - /learning-javascript.jpeg
 aliases:
   - /posts/2017-11-09_function-composition-with-lodash
-tags: ["Programming"]
+tags: [Code]
 ---
 
 Have you been reading JavaScript posts lately? Maybe you’ve noticed that functional programming is really popular right now. It’s a really powerful way to program, but can be overwhelming to get started with. Thankfully the most popular NPM package (with 48 million downloads this month) has a very useful functional programming package to help us get started!

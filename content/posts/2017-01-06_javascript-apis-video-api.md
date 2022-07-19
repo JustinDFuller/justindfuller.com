@@ -12,7 +12,7 @@ images:
   - /learning-javascript.jpeg
 aliases:
   - /posts/2017-01-06_javascript-apis-video-api
-tags: ["Programming"]
+tags: [Code]
 ---
 
 In this series, I will be exploring the different JavaScript APIs that are available for use in a browser environment. Some will be well known, others may be completely new to you. Hopefully, each section will present you with some new information and useful real-world tips! So, let’s get started.

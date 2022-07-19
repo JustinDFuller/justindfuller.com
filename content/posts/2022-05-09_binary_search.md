@@ -11,7 +11,7 @@ weight: 1
 images:
  - /binary_search.png
 draft: true
-tags: ["Programming"]
+tags: [Code]
 --- 
 
 When searching an array, the typical Big O asymptotic runtime is going to be O(n). That is, in the worst case scenario, the item you are looking for will be the last element in the array. 

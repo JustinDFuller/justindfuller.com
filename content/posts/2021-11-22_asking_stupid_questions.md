@@ -10,7 +10,7 @@ title: "Asking Stupid Questions"
 weight: 1
 images:
   - /asking_stupid_questions.png
-tags: ["Writing"]
+tags: [Life]
 --- 
 
 While I’m riffing off of Dan Luu’s post about not being afraid to look stupid, I want to think about asking Stupid Questions.

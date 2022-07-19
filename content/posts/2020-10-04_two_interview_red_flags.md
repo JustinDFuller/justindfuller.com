@@ -9,7 +9,7 @@ next: /posts/interview-red-flags
 title: Two interview red flags and how to avoid them"
 weight: 1
 draft: true
-tags: ["Programming"]
+tags: [Code]
 ---
 
 Let's face it; interviewing is hard. It's tough for the interviewee, but it's also challenging for the interviewer. At best, you and the interviewer have a few hours together to decide if you want to work together for, potentially, several years.

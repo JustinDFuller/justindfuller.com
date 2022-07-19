@@ -12,7 +12,7 @@ images:
   - /learning-to-code.png
 aliases:
   - /posts/2018-11-28_how-to-write-error-messages-that-dont-suck
-tags: ["Programming"]
+tags: [Code]
 ---
 
 “A validation error occurred.” Yep. Thanks!

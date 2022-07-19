@@ -12,7 +12,7 @@ aliases:
   - /posts/2018-09-18_how-to-understand-any-programming-task
 images:
   - /learning-to-code.png
-tags: ["Programming"]
+tags: [Code]
 ---
 
 The day has finally arrived. Is it your first day on your job, or have you been doing this for ten years? It doesn’t matter. We all eventually find ourselves with a task that we simply do not understand.

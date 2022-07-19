@@ -10,7 +10,7 @@ title: "Embracing Impostor Syndrome"
 weight: 1
 images:
   - /embracing-impostor-syndrome.jpeg
-tags: ["Writing"]
+tags: [Life]
 --- 
 
 As I’ve progressed through my career, I’ve experienced increasing imposter syndrome. It’s never gone away.

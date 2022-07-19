@@ -11,7 +11,7 @@ weight: 1
 draft: true
 images:
   - /go-things-i-love.png
-tags: ["Programming"]
+tags: [Code]
 ---
 
 There are many ways to organize concurrent programs in Go. In my last post, [Channels and Goroutines](/2020/01/go-things-i-love-channels-and-goroutines/), I discussed how channels and goroutines can be used to safely write concurrent programs. Those aren't the only options, though. This post will compare channels, goroutines, waitgroups, errorgroups, channel generators, and more.

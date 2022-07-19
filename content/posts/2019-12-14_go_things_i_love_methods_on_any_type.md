@@ -12,7 +12,7 @@ images:
   - /go-things-i-love.png
 aliases: 
   - /posts/2019-12-14_Go-Things-I-Love-Methods-On-Any-Type
-tags: ["Programming"]
+tags: [Code]
 ---
 
 Now that I am working with [Go](https://golang.org/) as my primary language at [The New York Times](https://open.nytimes.com/), 

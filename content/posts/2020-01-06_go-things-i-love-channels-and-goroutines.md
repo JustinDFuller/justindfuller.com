@@ -10,7 +10,7 @@ title: "Go Things I Love: Channels and Goroutines"
 weight: 1
 images:
   - /go-things-i-love.png
-tags: ["Programming"]
+tags: [Code]
 --- 
 
 This series, _Go Things I Love_, is my attempt to show the parts of Go that I like the best, as well as why I love working with it at [The New York Times](https://open.nytimes.com).

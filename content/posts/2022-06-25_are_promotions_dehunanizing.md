@@ -10,7 +10,7 @@ title: "Are Promotions Dehumanizing?"
 weight: 1
 images:
  - /are_promotions_dehumanizing.png
-tags: ["Writing"]
+tags: [Life]
 ---
 
 Promotions, the act of changing someone's title and possibly increasing their pay after they reach some milestone. 

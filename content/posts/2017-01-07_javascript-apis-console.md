@@ -12,7 +12,7 @@ images:
   - /learning-javascript.jpeg
 aliases:
   - /posts/2017-01-07_javascript-apis-console
-tags: ["Programming"]
+tags: [Code]
 ---
 
 The console API could be the most well-known JavaScript API. Pretty much every developer who was written any substantial amount of code has had to console.log *something.* If you’ve written any kind of libraries or services, you’ve probably used console.warn or console.error to notify the user that they’ve done something incorrectly. But the console API can do far more for us, so today we’re going to see how to leverage that!

@@ -12,7 +12,7 @@ images:
   - /learning-to-code.png
 aliases:
   - /posts/2019-01-24_refactoring-oops-ive-been-doing-it-backwards
-tags: ["Programming"]
+tags: [Code]
 ---
 
 Welcome to my intervention. I’m a refactoring addict and I’m not afraid to admit it, but there’s only one problem: I’ve been doing it backward. You see, what I’ve been doing could be more accurately described as premature code abstraction.

@@ -12,7 +12,7 @@ images:
   - /learning-javascript.jpeg
 aliases:
   - /posts/2018-04-06_here-are-three-upcoming-changes-to-javascript-that-youll-love
-tags: ["Programming"]
+tags: [Code]
 ---
 
 Let’s take a look at some useful upcoming features in JavaScript. You’ll see their syntax, links to keep up to date with their progress, and we’ll write a small test suite to show how to begin using these proposals today!

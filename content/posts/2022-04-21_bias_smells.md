@@ -11,7 +11,7 @@ title: "Bias Smells"
 weight: 1
 images:
   - /bias_smells.png
-tags: ["Writing"]
+tags: [Life]
 --- 
 
 Only ten years late, I just finished reading [Thinking, Fast and Slow](https://amzn.to/3L5Dql3). In it, Daniel Kahneman explores biases involved in human intuition.
