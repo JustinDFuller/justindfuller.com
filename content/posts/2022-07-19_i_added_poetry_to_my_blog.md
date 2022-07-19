@@ -60,4 +60,4 @@ I hope you enjoy it and I hope everyone else out there struggling can find a hel
 
 PS. I'll take this opportunity to call out some other important things that I'm trying to work on too: getting better sleep, eating healthier, drinking less coffee, exercising more, finding proper medication, and going to therapy.
 
-[Here's a link to the poetry.](/tags/poetry)
+[Anyway, here's a link to some poems.](/tags/poetry) Enjoy!
