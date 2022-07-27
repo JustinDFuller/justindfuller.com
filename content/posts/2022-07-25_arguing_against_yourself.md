@@ -124,7 +124,31 @@ Unless, of course, you're talking with a disputer.
 
 Let's assume for a moment that you decided not to be one.
 You are truly arguing, discussing, in good-faith; in search of the truth.
+But your partner? Not so much. They want to *win*.
 
 There's no need to fear, because all is not lost.
 
-There's a strategy 
+There's a strategy I refer to as **Granting the Premise**, which can allow you
+to have a productive conversation with someone who is otherwise difficult, or working off of very
+different assumptions than yourself.
+
+Imagine you're at the Thanksgiving dinner table when your uncle claims that the recent
+election was stolen. Millions of fake votes were cast. There needs to be a recount, even a revote.
+
+What's your immediate reaction?
+
+If you're like me, you'll begin to debate his premise.
+
+No, the election was not stolen. Where is the evidence? And so on.
+
+You might pull up articles, reputable sources of information, and prove without a doubt (at least, you have no doubts)
+that the election was not in fact stolen.
+
+A good-faith arguer would likely say, "thanks for bringing this to my attention".
+They would then take into account your new evidence, go back and compare it to what they heard before,
+and perhaps even seek out more sources so that they can understand the truth.
+
+That happens all the time, right?
+
+No, instead they begin to spew their own facts, and we all beging to attack the credibility
+of each others sources. The conversation is altogether unproductive, and no one leaves with their view changed.
