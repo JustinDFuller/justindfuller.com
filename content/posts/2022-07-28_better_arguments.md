@@ -1,15 +1,15 @@
 ---
 author: "Justin Fuller"
-date: 2022-07-25
-linktitle: "Arguing against yourself"
+date: 2022-07-28
+linktitle: "How to have better arguments"
 menu:
   main:
     parent: posts
-next: /posts/arguing-against-yourself
-title: "Arguing Against Yourself"
+next: /posts/how-to-have-better-arguments
+title: "How to have better arguments"
 weight: 1
 images:
- - /how_do_we_work_together.jpg
+ - /how_to_have_better_arguments.jpg
 tags: [Life]
 draft: true
 ---
@@ -118,6 +118,16 @@ You've become a partner who understands their view and shares their concerns.
 
 With that shared foundation, you can seek the truth together.
 
+<div style="border: 2px dotted black; padding: 20px; margin-bottom: 20px;">
+<strong style="margin-bottom: 20px; display: block;">Arguing Against Yourself</strong>
+<ol style="padding-left: 22px;">
+  <li style="margin-bottom: 10px; padding-left: 5px;">Make your goal to find the truth, not to win the argument</li>
+  <li style="margin-bottom: 10px; padding-left: 5px;">Build up the credibility of your opponent, instead of tearing them down.</li>
+  <li style="margin-bottom: 10px; padding-left: 5px;">Argue against their strongest points, not their weakest</li>
+  <li style="margin-bottom: 10px; padding-left: 5px;">Argue against yourself whenever you think of a counter-argument</li>
+</ol>
+</div>
+
 ## Disputers
 
 Unless, of course, you're talking with a disputer.
@@ -150,5 +160,37 @@ and perhaps even seek out more sources so that they can understand the truth.
 
 That happens all the time, right?
 
-No, instead they begin to spew their own facts, and we all beging to attack the credibility
-of each others sources. The conversation is altogether unproductive, and no one leaves with their view changed.
+No, instead they begin to spew their own facts, and we all begin to attack the credibility
+of each other's sources. The conversation is altogether unproductive, and no one leaves with their view changed.
+
+Instead, we can grant the premise. As scary as it may sound, you can say something like,
+"let's assume for a moment that the election was stolen" and begin to try to understand if their
+conclusion logically follows from their premise.
+
+In our Thanksgiving dinner case, we might ask, why would a do-over help? Won't the election still be
+vulnerable to tampering? Could it be more vulnerable since there's less time to prepare?
+What other options do we have, besides redoing the election?
+
+The point is, you are no longer trying dispute their initial claim. This is particularly helpful
+in cases where the initial claim was never based on hard facts or evidence, but was instead chosen
+because of feelings. In these situations, no amount of evidence or counterargument is going to help.
+
+However, when you grant their premise, you can find out if their conclusion logically follows their
+initial claim. This can lead to an actual change in views, by showing that even with their initial claim,
+their conclusion doesn't make sense.
+
+Or, on the flip side, you may discover that their argument has more merit than you thought.
+
+It could also lead to questions that neither of you thought of before. In the election example, maybe
+you both begin to wonder why you even need to ask these questions about our elections? How could we
+create a system with more transparency, one that everyone could trust?
+
+<div style="border: 2px dotted black; padding: 20px; margin-bottom: 20px;">
+<strong style="margin-bottom: 20px; display: block;">Granting the Premise</strong>
+<ol style="padding-left: 22px;">
+  <li style="margin-bottom: 10px; padding-left: 5px;">Don't dispute their initial claim, grant it for the sake of the conversation</li>
+  <li style="margin-bottom: 10px; padding-left: 5px;">Ask questions to learn if their conclusion logically follows their premise</li>
+  <li style="margin-bottom: 10px; padding-left: 5px;">Allow them time to build up their argument, don't constantly interrupt to dispute</li>
+</ol>
+</div>
+
