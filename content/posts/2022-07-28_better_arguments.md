@@ -17,28 +17,27 @@ draft: true
 In the book [Theaetetus](https://amzn.to/3BfyJTl), Socrates attempts to reason about a fundamental question 
 of philosophy: What is knowledge?
 
-Socrates addresses the idea of another philosopher, Protagoras, that claims, "Man is the measure of all things"
-and, "What seems to a man, is to him." Meaning, knowledge is relative to each person.
+Socrates addresses the idea of another philosopher, Protagoras, who claims, "Man is the measure of all things"
+and, "What seems to a man, is to him." Meaning knowledge is relative to each person.
 
 <!--more-->
 
-This claim was fundamentally at odds with Plato, the author of Theaetetus, and his view of the world.
+Plato, the author of Theaetetus, was fundamentally at odds with this idea.
 To Plato, there must be a truth independent of any man, by which all other claims can be measured.
 
-However, after he rebuts Protagoras' statement with a convincing argument,
-he does something quite unexpected, at least to this modern reader.
-
-He begins praising the very person he seeks to discredit:
+However, after convincingly rebutting Protagoras' claim,
+Socrates begins praising the very person he seeks to discredit:
 
 > Doubtless, as he is older, he may be expected to be wiser than we are. <br />
 > And if he could only just get his head out of the world below, <br />
 > he would have overthrown both of us again and again, <br />
 > me for talking nonsense and you for assenting to me <br />
 
-He not only claims his opponent to be wiser than himself, but also that he would
-successfully rebut him, if only he was alive.
+He claims his opponent is wiser and would successfully rebut him, if he was still alive.
 
-But, of course, this isn't the only time Socrates says something like this.
+This isn't the only time Socrates says something like this. It's something of a pattern,
+even a strategy, that he employs.
+
 In [Plato's Republic](https://amzn.to/3PFdHSQ) as Socrates attempts to define the perfect state,
 he says:
 
@@ -55,19 +54,9 @@ saying:
 He doesn't address only the weak counter arguments, but the best he can think of. Not only that,
 he builds up the counter-arguments merits instead of trying to discredit them.
 
-Now, contrast this to the style of argument you've experienced. Here I'm referring to the political
-arguments of the thanksgiving table, the heated discussions at work as you try to figure out
-the best path forward. When have you heard someone pause to argue _for_ someone on the other side?
+The question is, why would he argue against himself? Why would he build the credibility of his opponent?
 
-No, instead we focus solely on disputing the other argument. Often, we rely on the [Straw Man](https://en.wikipedia.org/wiki/Straw_man)
-argument to cut down the weakest forms of our opponents arguments. But, of course, this isn't the only option.
-Instead of strawmanning, you can [Steel Man](https://constantrenewal.com/steel-man). In other words, you can argue
-against your opponent's strongest arguments, instead of the weakest. But why stop there? You can take it even further
-with the [Star Man](https://centerforinquiry.org/blog/how-to-star-man-arguing-from-compassion/), choosing both the strongest counter-argument while also building up your opponent.  
-
-## Old Ideas
-
-It turns out, Socrates also addresses this issue long ago.  
+In Theaetetus, he addresses this question head-on.
 
 > After the manner of disputers, we were satisfied with mere verbal consistency 
 
@@ -76,38 +65,51 @@ One group is merely attempting to win an argument, to come up with some phrase t
 They aren't interested in the truth, they are interested in winning.  
 
 Instead, a philosopher is chasing after the truth, and that's what Socrates is doing.  
+
 That's why he argues against himself.  
 
-I think we should argue against ourselves too.  
+He's not afraid of the truth, he's afraid of being wrong. So he assumes the best of whoever contradics him,
+he assumes there's a good reason that they disagree, if only he could discover it.
 
-But that's dangerous, because you might be taken advantage of. 
-The moment you begin arguing for the other side, your opponent could begin to claim victory. 
-Even if they don't, you run the risk of accidentally convincing listeners of a point you actually disagree with. 
-This might be trivial at work, when negotiating how best to implement some small software project, 
-or it could be consequential, discussing important moral issues with friends or family.
+But this isn't how I've learned to argue.
 
-So, there better be a good tradeoff to make it worth the cost and effort.
-Thankfully, the benefit to arguing against yourself are many, but they can only be realized
-after you've established the right goal.
+No, instead I focus solely on disputing the other argument. Often, I rely on the [Straw Man](https://en.wikipedia.org/wiki/Straw_man)
+argument to cut down the weakest forms of my opponent's argument. 
 
-## Benefits
+But, of course, this isn't the only option.
 
-If your goal is to win the argument, I admit this is the wrong approach. <br />
-If your goal is to find the truth, you'll find the benefits.
+Instead of strawmanning, I could [Steel Man](https://constantrenewal.com/steel-man). In other words, I could argue
+against my opponent's strongest arguments, instead of the weakest. But why stop there? I could take it even further
+with the [Star Man](https://centerforinquiry.org/blog/how-to-star-man-arguing-from-compassion/), choosing both the strongest 
+counter-argument while also building up my opponent.  
 
-First, as you switch your goal to finding the truth, you should also drop the view
-that you're talking to an opponent. Instead, as cheesy as it may sound, think of them as a partner in the search for truth.
-Even if you know they don't take that point of view, it will help you lower your defenses.
-Suddenly, the argument is less tense, because you're searching for the truth with a partner
-instead of fighting your opponent.
+Actually, I'm suggesting to take it even further. Yes, I should build up my opponent's credibility; yes,
+I should argue against their strongest arguments; now I go even further: I should argue against myself.
 
-Next, you'll better understand your partner's views.
-If you've heard or experienced [Cunningham's Law](https://en.wikipedia.org/wiki/Ward_Cunningham#%22Cunningham's_Law%22)
-you know what I mean. As soon as you misrepresent their view, they'll call you out.
+That's dangerous, because the moment I begin arguing for the other side, my opponent could claim victory. 
+Even if they don't, I risk convincing listeners of a point I disagree with. 
+This might be trivial at work, negotiating how to implement some software project;
+it could be consequential, discussing moral issues with friends or family.
+
+So, what makes it worth the cost and effort?
+
+Like Socrates, it begins by establishing the correct goal.
+If the goal is to win the argument, I admit this is the wrong approach.
+If the goal is to find the truth, there are many benefits.
+
+First, as I switch goals to finding the truth, I can drop the view that I'm talking to an opponent. 
+Instead, as cheesy as it may sound, I can think of them as a partner in the search for truth.
+This framing lowers my defenses even when I know my partner doesn't share my goal, .
+
+Suddenly, the argument is less tense, because I'm searching for the truth with a partner instead of fighting an opponent.
+
+Next, I gain empathy and understanding for my partner's views.
+Because, in order to argue for another's view, I typically have to _express_ their view.
+If you've heard or experienced [Cunningham's Law](https://en.wikipedia.org/wiki/Ward_Cunningham#%22Cunningham's_Law%22),
+you know what I mean. As soon I misrepresent their view, they'll call me out.
 This has happened to me many times (I'm pretty bad at understanding people, it seems). 
-I'll rephrase someone's argument or attempt to build upon it, only to hear emphatically, "no, that's not what I'm saying at all!"
-If I hadn't done this, I would have inadvertendly argued against a Straw Man. 
-If not a Straw Man, I would have at least been arguing against a totally different point of view.
+I'll rephrase someone's argument or attempt to build upon it, only to hear emphatically, "no, that's not what I'm saying at all."
+If I hadn't attempted to rephrase their view, I would have inadvertendly argued against a Straw Man. 
 
 Once you can restate and add upon their view, you'll also begin to discover some shared values and concerns. 
 These can quickly become common ground that you build upon to find the answer.
