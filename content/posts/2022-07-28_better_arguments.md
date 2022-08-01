@@ -14,10 +14,23 @@ tags: [Life]
 draft: true
 ---
 
-In the book [Theaetetus](https://amzn.to/3BfyJTl), Socrates attempts to reason about a fundamental question 
+Through the high living room windows, I notice the last light of the sun dipping under the trees behind my house. 
+The television plays a country band at the Grand Ole Opry, quietly to avoid waking the children. 
+My parents sit on the couch, tired from a night watching my three young kids. 
+I sit cross-legged on the rug, listening as they describe the night,
+the highs and lows of the kids' behavior.
+
+"Your mom and I saw a movie last night", my dad switches the topic, "about the election."
+
+---
+
+Over two thousand years ago, depicted in Plato's [Theaetetus](https://amzn.to/3BfyJTl), 
+Socrates lounges in a Palaestra, an ancient greek wrestling school. He's chatting with his friend 
+Theodorus, explaining that he needs help understanding a fundamental question 
 of philosophy: What is knowledge?
 
-Socrates addresses the idea of another philosopher, Protagoras, who claims, "Man is the measure of all things"
+Eventually, after some discussion, Socrates addresses the idea of another philosopher, 
+Protagoras, who claims, "Man is the measure of all things"
 and, "What seems to a man, is to him." Meaning knowledge is relative to each person.
 
 <!--more-->
