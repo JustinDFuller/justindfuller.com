@@ -16,9 +16,8 @@ draft: true
 
 Through the high living room windows, I notice the last light of the sun dipping under the trees behind my house. 
 The television plays a country band at the Grand Ole Opry, quietly to avoid waking the children. 
-My parents sit on the couch, tired from a night watching my three young kids. 
-I sit cross-legged on the rug, listening as they describe the night,
-the highs and lows of the kids' behavior.
+My parents sit on the couch, exhausted after babysitting my three young kids. 
+I sit cross-legged on the rug, listening as they describe the night's highs and lows.
 
 "Your mom and I saw a movie last night", my dad switches the topic, "about the election."
 
@@ -29,8 +28,8 @@ Socrates lounges in a Palaestra, an ancient greek wrestling school. He's chattin
 Theodorus, explaining that he needs help understanding a fundamental question 
 of philosophy: What is knowledge?
 
-Eventually, after some discussion, Socrates addresses the idea of another philosopher, 
-Protagoras, who claims, "Man is the measure of all things"
+Eventually, after some discussion, Socrates addresses the idea of another philosopher.
+His old friend Protagoras claimed, "Man is the measure of all things"
 and, "What seems to a man, is to him." Meaning knowledge is relative to each person.
 
 <!--more-->
@@ -84,7 +83,39 @@ That's why he argues against himself.
 He's not afraid of the truth, he's afraid of being wrong. So he assumes the best of whoever contradics him,
 he assumes there's a good reason that they disagree, if only he could discover it.
 
-But this isn't how I've learned to argue.
+---
+
+"So, basically, they were using cellphone location data", he explained, 
+"to show when these democrats were going to ballot dropboxes."
+
+I had asked what the documentary was about. As he spoke, I reminded myself to keep an open mind
+and a civil tone. I didn't want to be too agressive, as I tend to be in political arguments.
+
+"They paired that location data with video footage to prove it was democrats putting tens
+of thousands of votes into dropboxes. It's called ballot stuffing", he said. 
+Meanwhile, my mom nods her head in agreement.  My wife and I glance at each other.
+
+He finally added, "the really interesting thing was how they used the same technology to solve a case 
+for the police in Atlanta. That's how you know it's trustworthy."
+
+I took the bait. Unlocking my phone, I ask, "what did you say the company is called?" 
+Searching the internet for the company and Atlanta, I immediately found an NPR article explaining
+that the company actually provided the data several months after the culprits were found and charged.
+
+They didn't solve the case, they simply provided data for an already-solved case, unprompted.
+The just wanted to use it for PR, as a way to build false trust in their business.
+
+That's what I told my dad.
+
+You can guess exactly how the rest of that argument went. We attacked the credibility of the other's sources.
+We ignored their claims, prefering our own. 
+
+No one left with changed views, but everyone left a little upset,
+our relationships strained a bit more.
+
+---
+
+I don't argue like Socrates.
 
 No, instead I focus solely on disputing the other argument. Often, I rely on the [Straw Man](https://en.wikipedia.org/wiki/Straw_man)
 argument to cut down the weakest forms of my opponent's argument. 
@@ -97,7 +128,7 @@ with the [Star Man](https://centerforinquiry.org/blog/how-to-star-man-arguing-fr
 counter-argument while also building up my opponent.  
 
 Actually, I'm suggesting to take it even further. Yes, I should build up my opponent's credibility; yes,
-I should argue against their strongest arguments; now I go even further: I should argue against myself.
+I should argue against their strongest arguments; also, I should argue against myself.
 
 That's dangerous, because the moment I begin arguing for the other side, my opponent could claim victory. 
 Even if they don't, I risk convincing listeners of a point I disagree with. 
@@ -112,26 +143,29 @@ If the goal is to find the truth, there are many benefits.
 
 First, as I switch goals to finding the truth, I can drop the view that I'm talking to an opponent. 
 Instead, as cheesy as it may sound, I can think of them as a partner in the search for truth.
-This framing lowers my defenses even when I know my partner doesn't share my goal, .
+This framing lowers my defenses even when I know my partner doesn't share my goal.
 
 Suddenly, the argument is less tense, because I'm searching for the truth with a partner instead of fighting an opponent.
 
-Next, I gain empathy and understanding for my partner's views.
+But it doesn't stop there. I also gain empathy and understanding for my partner's views.
 Because, in order to argue for another's view, I typically have to _express_ their view.
-If you've heard or experienced [Cunningham's Law](https://en.wikipedia.org/wiki/Ward_Cunningham#%22Cunningham's_Law%22),
-you know what I mean. As soon I misrepresent their view, they'll call me out.
+
+If you've heard of [Cunningham's Law](https://en.wikipedia.org/wiki/Ward_Cunningham#%22Cunningham's_Law%22),
+you know what I mean. Giving the wrong answer is the best way to get the right answer.
+
+As soon I misrepresent their view, they'll call me out.
 This has happened to me many times (I'm pretty bad at understanding people, it seems). 
 I'll rephrase someone's argument or attempt to build upon it, only to hear emphatically, "no, that's not what I'm saying at all."
 If I hadn't attempted to rephrase their view, I would have inadvertendly argued against a Straw Man. 
 
-Once you can restate and add upon their view, you'll also begin to discover some shared values and concerns. 
-These can quickly become common ground that you build upon to find the answer.
+Once I can restate and add upon their view, I also begin to discover shared values and concerns. 
+These quickly become common ground that I build upon.
 
-With that common ground, you'll also give yourself credit in your partner's eyes.
-To them, you'll also no longer be an opponent, simplying trying to dispute their idea.
-You've become a partner who understands their view and shares their concerns.
+With that common ground, I also give myyself credit in my partner's eyes.
+To them, I'll also no longer be an opponent, simplying trying to dispute their idea.
+I've become a partner who understands their view and shares their concerns.
 
-With that shared foundation, you can seek the truth together.
+With that shared foundation, we can seek the truth together.
 
 <div style="border: 2px dotted black; padding: 20px; margin-bottom: 20px;">
 <strong style="margin-bottom: 20px; display: block;">Arguing Against Yourself</strong>
