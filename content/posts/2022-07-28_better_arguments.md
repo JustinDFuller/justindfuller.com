@@ -21,6 +21,8 @@ I sit cross-legged on the rug, listening as they describe the night's highs and 
 
 "Your mom and I saw a movie last night", my dad switches the topic, "about the election."
 
+<!--more-->
+
 ---
 
 Over two thousand years ago, depicted in Plato's [Theaetetus](https://amzn.to/3BfyJTl), 
@@ -32,7 +34,6 @@ Eventually, after some discussion, Socrates addresses the idea of another philos
 His old friend Protagoras claimed, "Man is the measure of all things"
 and, "What seems to a man, is to him." Meaning knowledge is relative to each person.
 
-<!--more-->
 
 Plato, the author of Theaetetus, was fundamentally at odds with this idea.
 To Plato, there must be a truth independent of any man, by which all other claims can be measured.
