@@ -118,12 +118,15 @@ our relationships strained a bit more.
 
 I don't argue like Socrates.
 
-No, instead I focus solely on disputing the other argument. Often, I rely on the [Straw Man](https://en.wikipedia.org/wiki/Straw_man)
+Actually, it's possible Socrates didn't argue like Socrates. After all, most of what we know about him
+comes from Plato's dialogues. There's no telling how closely his depiction resembles the real man.
+
+But, I digress. No, I don't argue like him. Instead, I focus solely on disputing the other argument. Often, I rely on the [Straw Man](https://en.wikipedia.org/wiki/Straw_man)
 argument to cut down the weakest forms of my opponent's argument. 
 
 But, of course, this isn't the only option.
 
-Instead of strawmanning, I could [Steel Man](https://constantrenewal.com/steel-man). In other words, I could argue
+Instead of strawmanning, I could [Steel Man](https://constantrenewal.com/steel-man). I could argue
 against my opponent's strongest arguments, instead of the weakest. But why stop there? I could take it even further
 with the [Star Man](https://centerforinquiry.org/blog/how-to-star-man-arguing-from-compassion/), choosing both the strongest 
 counter-argument while also building up my opponent.  
@@ -136,11 +139,19 @@ Even if they don't, I risk convincing listeners of a point I disagree with.
 This might be trivial at work, negotiating how to implement some software project;
 it could be consequential, discussing moral issues with friends or family.
 
+It's also difficult. What if I don't think my opponent or their sources are credible?
+What if they have no convincing arguments? What if I can't think of any counter-arguments?
+Naturally, if I oppose someone's view, it's likely for a variety of exactly these reasons.
+So, to see them as credible or convincing, requires a lot of effort. It requires seeing their
+perspective, understanding what they care about, and identifying which principles guide them.
+
 So, what makes it worth the cost and effort?
 
-Like Socrates, it begins by establishing the correct goal.
-If the goal is to win the argument, I admit this is the wrong approach.
-If the goal is to find the truth, there are many benefits.
+When I look to Socrates, I see that it begins with changing my goal.
+
+> wonder is the feeling of a philosopher, and philosophy begins in wonder
+
+The argument's goal must shift from winning to wonder, to discovering truth.
 
 First, as I switch goals to finding the truth, I can drop the view that I'm talking to an opponent. 
 Instead, as cheesy as it may sound, I can think of them as a partner in the search for truth.
@@ -243,4 +254,15 @@ create a system with more transparency, one that everyone could trust?
   <li style="margin-bottom: 10px; padding-left: 5px;">Allow them time to build up their argument, don't constantly interrupt to dispute</li>
 </ol>
 </div>
+
+
+---
+
+# Extra stuff
+
+Of course, Plato already outlined this form of argument through Socrates.
+
+> The disputer may trip up his opponent as often as he likes, and make fun;
+> but the dialectician will be in earnest, and only correct his adversary when necessary,
+
 
