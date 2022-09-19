@@ -14,11 +14,13 @@ tags: [Life]
 draft: true
 ---
 
+<span class="story">
+
 The story I have to tell you today is not the story I wished to tell. In fact, I am loath to repeat much of it. I pray antiquity and modernity alike judge me not as an author, nor even as editor, but as a trembling witness. Reluctant to confess what he has seen, yet compelled by his conscience to reveal the devilry that took place at the autumn equinox on the outskirts of a great Carolina wilderness.
 
 <!--more-->
 
-<h2 style="text-align: center; font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;">I</h2>
+## I
 
 Whether it benefit you or not, reader, I must explain what innocent circumstances brought me upon this mystery. I cannot countenance anyone to think I would search out such thought or deed. If I had known what would occur, I would have fled those ancient and crooked pines.
 
@@ -34,7 +36,7 @@ Despite the distance of only a few miles, it took several hours to find my desti
 
 Once complete, I found my feet and legs rejuvenated and ready to continue the journey. It also reminded me of the simple beauty that I often overlook in everyday things. One with my experience and reputation might not incline to focus on something so familiar as Mimus Polyglottos, but the exercise revealed several things about the creatures I never before noticed. I took a note to publish a few thoughts about this in the university’s publication upon my return; a thought that would soon cease to be of any importance.
 
-<h2 style="text-align: center; font-family: Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;">II</h2>
+## II
 
 I arrived at my unexpecting host just as the sun fell below the trees. Finding the property surprisingly without a gate and unprotected by hounds, I parked a reasonable distance away. If the recluse should warn me off with a shotgun I would be safe, but if he watched my approach, he would hopefully see my friendly and hopeful demeanor. Just to be safe, I gave the horn a few taps and shouted a greeting.
 
@@ -42,3 +44,4 @@ Despite the unusual hour for callers and my unexpected visit, my host opened his
 
 “Hello, I am calling after a doctor Miles Thales. Might that be you?”
 
+</span>
