@@ -44,4 +44,23 @@ Despite the unusual hour for callers and my unexpected visit, my host opened his
 
 “Hello, I am calling after a doctor Miles Thales. Might that be you?”
 
+## III
+
+Allow me to assure you: I was equally surprised at the following events as you will surely be. To be perfectly forthcoming, I had spent the drive fortifying my mind to the possibility that I would sleep the night in the cold back seat of this station wagon. Instead, and to my great delight, I was, within a few minutes, reclining in a comfortable chair by a low-crackling fireplace. A steaming cup of tea placed in my hands by a host that shew no signs of reclusivity nor eccentricism. Indeed, all evidence pointed to the contrary. The room I found myself in was undoubtedly equipped for entertaining. Furnished with comfortable arm chairs and even a <i>fauteuil</i>, encircling a warm fireplace, there was no doubt that I sat in a gathering space. But for what mysterious or scholarly pursuits, I could not say.
+
+Across the fireplace sat my host. The young doctor Thales. Not a disheveled old man but well-groomed and young. He was certainly not a recluse, but was in fact positively excited to have a visitor.
+
+“It’s certainly odd these reports would lead you here. I haven’t communicated with a university colleague in at least three years. However, I don’t expect you’ll find your journey was in vain.”
+
+“What do you mean?” I asked, renewing hope that the elusive species I sought did indeed nestle in this quiet forest.
+
+“Well, I admit I don’t know of the creatures you’re seeking. But there are many excellent foot trails beyond this property. I cannot quite describe the sensations, but I often feel that, when I walk through these trees, they speak to me. You said you have a few days, yes? So I entreat you, stay a while, and see what comes of it.”
+
+## IV
+I woke in the night to the reverberant melody of the majestic Bubo Virginianus. Not another sound was to be heard. But, I must admit, despite the hospitable manner of my reception, I crept to my bedroom door, ensuring the lock was still securely fastened.
+
+## V
+I 
+
+
 </span>
