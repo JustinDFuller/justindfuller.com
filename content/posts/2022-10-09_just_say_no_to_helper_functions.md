@@ -19,7 +19,7 @@ I'm just waking up so I need to start simple to get the ol' synapses firing.
 
 <!--more-->
 
-I open LeetCode to find a practice problem. Despite my ten years of experience and Staff engineer title, I fail to comprehend all but the easiest problems. Instead of questioning my life and career choices, I choose a simple "Two Sum" problem.
+I open LeetCode to find a practice problem. Despite my ten years of experience, I fail to comprehend all but the easiest problems. Instead of questioning my life and career choices, I choose a simple "Two Sum" problem.
 
 The prompt says, "given a set of integers, I must determine if any two of them sum to a third integer, `n`."
 
