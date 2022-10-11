@@ -60,7 +60,111 @@ Across the fireplace sat my host. The young doctor Thales. Not a disheveled old 
 I woke in the night to the reverberant melody of the majestic Bubo Virginianus. Not another sound was to be heard. But, I must admit, despite the hospitable manner of my reception, I crept to my bedroom door, ensuring the lock was still securely fastened.
 
 ## V
-I 
+The house was empty the next morning. On the stove sat a kettle, the tea still hot. On the table, a few breakfast items and a note.
 
+<i style="padding: 30px 20px; text-align: center; display: block;">
+  Run out for supplies. Will return by evening. <br />
+  Help yourself to this breakfast as well as  <br />
+  anything else you find in the storage closet. <br />
+  If you like, there is a hiking trail behind the house.
+</i>
+
+After eating what was set out, I regrettably found myself to still be quite hungry. With a tinge of regret, I foraged my host’s storage closet to find enough sustenance. His letter was no lie. The remaining supplies were meager, but as he was resupplying, and I felt it would not be wise to traverse a strange mountain on an empty stomach, I almost depleted the remainder of his store.
+
+I now set out for what I hoped to be a fine morning of hiking; bringing, as always, my binoculars, notebook, and pencils. Despite the late morning hour, the sun scarcely peeked over the hills and through the trees. Perhaps due to this, there was a late-hanging morning fog and refreshing dew suspended from each leaf. One might expect a wood such as this to teem with life, but to the contrary I found it almost eerily silent. I was neither able to glimpse the movement of a squirrel in a tree nor even the gentle glide of a cherry millipede, so common on a Carolina trail floor. 
+
+And with that, you know. I have explained myself, and you may plainly see how it is I arrived on that trail. You can also understand why there was no witness but myself, and why my own witness, due to an underprovisioning of food, may not hold up under scrutiny.
+
+## VI
+
+It happened only a couple hours later–shortly after the sun reached its zenith. Not long before I had run out of food and water, resolving to turn back only at the top of the next hill.
+
+I have laid my regrets before you many times now. I shall lay them before you only once more. Had I only turned back, heeded the ire I felt in those trees, we should not now be speaking of what happened next. As it stands, I pray for your mercy.
+
+He stood in the direct center of the path. An old man, with light skin and lighter hair. If I remember correctly, both hair and beard were long, falling below the shoulders. He was dressed unusually. Not in hiking attire like one might expect, although he was equipped with a walking stick, but something more akin to a desert nomad; a long tan robe and thick black boots.
+
+After overcoming my shock at seeing another, I raised my hand in greeting, but no sound ever left my throat. Instead, I stood frozen in place, for it was evident something was amiss. The man, if that is indeed what he was, also stood frozen in place, staring intently at the nearest tree.
+
+For a long while I watched him, wondering what he might see. As for my own profession, I was accustomed to staring for long periods in order to be absolutely sure of even the most minute detail. Yet, there was something different about his stare. As I mentioned before there was a foreboding absence of wildlife in this forest. Something I eventually attributed to a strange aspect of Hangman’s Dome. Perhaps he was not an Ornithologist like myself, but instead an Arborist who had just discovered some vital peculiarity in a species of his own interest.
+
+It was only after a long and frankly loud growl of my own stomach that I woke from the trance. The two of us had stood for I know not how long; the man staring at the tree, me, at him. At this point my worry overcame my fear. I approached him, offering a tentative call. Do you guess the result? Of course. He did not move. Indeed, he shew not a sign of having heard me. At this I began to worry with increasing urgency. Had he been struck dead and yet remained standing by some devilish miracle? Was he frozen by some predator's venom? Would I soon be the next victim? 
+
+As I grew closer, I detected the slight movement of breathing. This discovery ruled out death, but not venom. A braver man might have run right up to this poor fellow, shaking him and calling for him to awake. I, however, now understand that I am not that kind of man. My steps were slow, cautious, even fearful. After my first call, I let out only a small, “Hello?” and later, “Sir?” 
+
+Finally, there was no option left. I was standing but a foot away from him–my whispers having no effect. It happened only when I grew the courage to touch his shoulder.
+
+## VII
+
+“There is no such thing as a tree.”
+
+“I’m sorry?”
+
+He had not moved a single inch, except his mouth as he spoke. In hindsight, I do not believe I saw his mouth move but I refuse to accept the alternative.
+
+“There is no such thing. Look, what do you see?”
+
+“You want me to look at the tree?”
+
+“Look at what?”
+
+Could it be some sort of jest? Had he seen or heard my trek behind him? Perhaps he planned this ruse to frighten me.
+
+But I tell you the truth and I beg you believe me. Throughout what I have told and will tell, this man–this <i>thing</i></i>–moved not a single muscle, not a millimeter. I confess, previously I said he moved his mouth to speak but if I recall in all honesty, I cannot be certain he did.
+
+“This is my discovery, this is their gift to me. Until this day we have seen through an abstract world that does not exist. Now, I understand. It begins with the trees. Do you understand that they do not exist?”
+
+What other choice did I have but to respond? What is worse, to flee into the silent forest behind me, or to face the speaking terror before me?
+
+“I am sorry. I do not understand. Certainly they must exist.” and at this, I walked over to the tree he stare so intently at, placing my hand upon the trunk. “Do you see? I rest my hand on the trunk of this tree. How could it not be real?”
+
+“Oh blessed child. Oh deceived child. It is no tree that you rest your hand upon. A tree can only exist in your mind.”
+
+Despite my famished and dehydrated state, I can assure you that my palm did sit upon the bark of a great pine tree. Not only that, but my feet stood and softly crunched its needles. There is no doubt in my mind what I beheld.
+
+Changing my tactic, I asked, “Sir, are you well?”
+
+For a long while he did not answer. Only, he continued to stare, as I wondered if he heard me.
+
+Finally, he responded, “all my life I believed the truth to be out there, somewhere out in the universe. Perhaps even outside the universe. Now, I understand, at last, that it is only in myself.”
+
+He paused, but I was intrigued and eager to hear more, so I remained silent and still.
+
+“It was only at this spot, looking at this tree, that I woke from the dream. I lived in an abstract world, filled with ideas that could only ever exist in my head. Of course, my boy, you touch and see something that you call a tree. But what is a tree but an ordering of atoms in some particular way? What is an atom but an ordering of some even smaller element? There is no tree, only a blindness to reality. Only a shortcut to understanding.”
+
+“You mean…”, I began, but did not finish.
+
+“Which of these is the real tree? If it is not one of these, where is it? If I remove the leaves, does it cease to be a tree? What about the branches, the bark, the trunk, the roots? If I paint it red?”
+
+At this, I began to feel the whole situation rather silly, if you can believe it. If it were not for the results of this encounter, I might indeed continue to think it so. For, although I was no trained philosopher, I had dabbled here and there during my days studying at the university. I remembered a thing or two about a rather fussy argument relating to the forms of ideas.
+
+“Sir, of course the name of a tree is arbitrary, but that has no bearing on the reality of the thing I touch” – for I indeed still placed my hand upon the trunk, feeling rather awkward but unable to move – “we call them by some other name in each language and redefine and reclassify species all the time. You seem to be an educated man, surely you know this.”
+
+At this, I felt my case was made, but his reply struck me down.
+
+“How can I wake one from a dream who does not know he slumbers? You deceive yourself and allow your senses to do the same. It is not just the word that we have created for each other. The very form itself was created by our senses. Our perception is nothing short of a dream, a lie, made to represent a less oppressive reality.”
+
+## VIII
+
+Our debate continued in this fashion for some time. Eventually, I was overcome with hunger and frightened by the sunken state of the sky. I bid this strange fellow come with me, but to this he did not reply. I then begged him to remain where he was, promising that I would return with help. I made my way back to the cabin as quickly as I could in my famished state. 
+
+Upon my arrival, it was now very dark indeed, the young doctor Thales greeted me with unmasked anxiety. Apparently, he had been quite worried at the late hour of my arrival, having understood that I had not returned home, due to my station wagon remaining in the driveway. As I explained the strange occurrence, he prepared me a meal. At my insistence, he and I ventured back out, bringing flashlights and extra water for the old man. However, upon our arrival at the top of that fateful hill, we found it empty.
+
+## IX
+
+Dear reader, do not mock me. You may wonder at the significance of this tale. To that, we now arrive. For, although my experience was rattling, it would not be worth recounting except to report a sick and missing person to the authorities.
+
+No, it is what this tale has done to me, what it has unmade in me, that I must share.
+
+The old man claimed that there was no such thing as a tree. He claimed perception to be a mask we place upon reality, a lie, a dream. I am afraid I have begun to awake from that dream, and I tremble at the thought of what that poor fellow experienced, if he did indeed burst forth into true reality.
+
+For I now understand, I now <i>experience</i> that I walk around in an abstract world. What is it to walk? What is a world? What am I? All concepts, nothing real. Can you name a single thing that is not abstract? A single entity that is not packaged up by thought or perception because the human mind cannot comprehend what really takes place? You cannot. To name, to think itself, is to be abstract.
+
+But, I am afraid, truly afraid, that I can no longer be abstract. The world around me slowly unravels. No, it is not unraveling, but for the first time it is becoming <i>real</i>.
+
+## Appendix
+
+The preceding letters were found among the few remaining possessions of one of my most interesting patients. The patient, who, for his privacy, will remain anonymous, was an accomplished scholar in his field. He was brought into my care at the behest of his mother, who reported strange behavior. This young man, still in his thirties, had become solemn and reclusive. He was no longer able to care for himself. Instead, he spent long hours staring at objects, often crying and whispering that it did not exist, that it was a lie. At first he and I would discuss these thoughts at great length. Eventually, he was no longer able to communicate. At the very end, it became clear that his mind had cleanly divorced reality.
+
+His last words were, “Doctor, I do remember that is what you call yourselves, although I can no longer see you in such a singular form.” Shortly after, he died.
 
 </span>
