@@ -11,6 +11,7 @@ weight: 1
 images:
  - /just_say_no_to_helper_functions.png
 tags: [Code]
+draft: true
 ---
 
 I wake up in the morning. The sun is bright, the air is warm. The day is Saturday. What do I do? Of course, I settle down with my laptop to write some code.
