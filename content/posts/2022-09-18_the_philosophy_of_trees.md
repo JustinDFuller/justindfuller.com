@@ -11,7 +11,6 @@ weight: 1
 images:
  - /the_philosophy_of_trees.webp
 tags: [Life]
-draft: true
 ---
 
 <span class="story">
