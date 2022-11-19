@@ -10,7 +10,7 @@ title: "The Philosophy of Trees"
 weight: 1
 images:
  - /the_philosophy_of_trees.webp
-tags: [Life]
+tags: [Story]
 ---
 
 <span class="story">
