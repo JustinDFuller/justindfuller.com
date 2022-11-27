@@ -24,6 +24,10 @@ googleAnalytics = "UA-57389891-8"
 #  url = "https://linkedin.com/in/justin-fuller-8726b2b1"
 
 [[menu.sidebar]]
+  name = "Better Interviews"
+  url = "https://www.betterinterview.club?utm_source=JustinDFuller&utm_medium=blog&utm_campaign=side_bar"
+
+[[menu.sidebar]]
   name = "Purchase Plan"
   url = "https://purchaseplan.io?utm_source=JustinDFuller&utm_medium=blog&utm_campaign=side_bar"
 
