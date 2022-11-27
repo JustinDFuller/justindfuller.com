@@ -83,7 +83,7 @@ googleAnalytics = "UA-57389891-8"
 
   [params.sidebar]
     # Optional about block for sidebar (can be Markdown)
-    about = "👋 Hey, I'm Justin. I occasionally write about things. I'm married with a bunch of kids. I work at [The New York Times](https://open.nytimes.com). I make things like [Purchase Plan](https://purchaseplan.io) and [Really Simple Notes](https://reallysimplenotes.com)."
+    about = "👋 Hey, I'm Justin. I occasionally write about things. I'm married with a bunch of kids. I work at [The New York Times](https://open.nytimes.com). I make things like [Better Interviews](https://www.betterinterview.club), [Purchase Plan](https://purchaseplan.io) and [Really Simple Notes](https://reallysimplenotes.com)."
 
     # How many posts to show on the sidebar (Default: 5)
     #num_recent_posts = 2
