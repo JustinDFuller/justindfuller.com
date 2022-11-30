@@ -162,7 +162,15 @@ If we don't remove them from the API response, we get a giant (for this API) res
 We can also learn where this `Used` value comes from. Maybe we don't know about the "filtering" step yet, but
 if we are debugging something, we at least have a lead on where to look next!
 
-### Summary
+### Exceptions
+
+There are exceptions to every rule. Here are some I can think of:
+
+* When your programming language is not well-documented or you *know* the readers of your code aren't familiar with it.
+* When you are using an API that is either obscure or poorly documented.
+* When you are writing a very complex bit of code that cannot be simplified
+
+There are likely many others! But, as a general rule, I believe the following principles stand:
 
 1. Assume a competent engineer who lacks context.
 2. Explain they *why* not the *what*.
