@@ -11,7 +11,6 @@ weight: 1
 images:
  - /go-tip-function-arguments.png
 tags: [Code]
-draft: true
 ---
 
 Here's a quick Go language tip: Prefer function arguments over struct fields. I'll explain why.
