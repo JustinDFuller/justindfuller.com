@@ -1,17 +1,16 @@
 ---
 author: "Justin Fuller"
 date: 2022-10-10
-linktitle: "Just Say No To Helper Functions"
+linktitle: "Helper Functions"
 menu:
   main:
     parent: posts
-next: /posts/just-say-no-to-helper-functions
-title: "Just Say No To Helper Functions"
+next: /posts/helper-functions
+title: "Helper Functions"
 weight: 1
 images:
  - /just_say_no_to_helper_functions.png
 tags: [Code]
-draft: true
 ---
 
 I wake up in the morning. The sun is bright, the air is warm. The day is Saturday. What do I do? Of course, I settle down with my laptop to write some code.
