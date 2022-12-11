@@ -5,7 +5,7 @@ languageCode = "en-us"
 title = "Justin Fuller"
 theme = "hugo-theme"
 # number of posts to show on home/category/tag pages (Default: 10)
-paginate = 5
+paginate = 10
 # optionally override the site's footer with custom copyright text
 # copyright = "Except where otherwise noted, content on this site is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/)."
 googleAnalytics = "UA-57389891-8"
@@ -19,10 +19,6 @@ googleAnalytics = "UA-57389891-8"
   name = "Github"
   url = "https://github.com/JustinDFuller"
 
-# [[menu.sidebar]]
-#  name = "LinkedIn"
-#  url = "https://linkedin.com/in/justin-fuller-8726b2b1"
-
 [[menu.sidebar]]
   name = "Better Interviews"
   url = "https://www.betterinterview.club?utm_source=JustinDFuller&utm_medium=blog&utm_campaign=side_bar"
@@ -35,18 +31,9 @@ googleAnalytics = "UA-57389891-8"
   name = "Really Simple Notes"
   url = "https://reallysimplenotes.com?utm_source=JustinDFuller&utm_medium=blog&utm_campaign=side_bar"
 
-# [[menu.sidebar]]
-#  name = "Twitter"
-#  url = "https://twitter.com/justin_d_fuller"
-
-#[[menu.navbar]]
-#  name = "Link 1"
-#  url = "https://example.org"
-
-
 # Theme variables
 [params]
-  email_subscribe = "https://eepurl.com/gOmcFP"
+  # email_subscribe = "https://eepurl.com/gOmcFP"
   # Site author
   author = "Justin Fuller"
 
