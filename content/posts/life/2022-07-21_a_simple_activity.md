@@ -10,7 +10,7 @@ title: "How do we work together?"
 weight: 1
 images:
  - /how_do_we_work_together.jpg
-tags: [Code]
+tags: [Life]
 ---
 
 When she was a teacher, on the first day of each class, Lauren, my wife, would start the year with a simple activity.

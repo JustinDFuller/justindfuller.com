@@ -7,7 +7,7 @@ menu:
     parent: posts
 title: "Everything Is a Product"
 weight: 1
-tags: [Code]
+tags: [Life]
 ---
 
 Your internal tools may have more value than you think they do. 
