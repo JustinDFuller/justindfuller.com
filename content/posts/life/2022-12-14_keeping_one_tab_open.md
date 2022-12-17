@@ -1,268 +1,158 @@
 ---
 author: "Justin Fuller"
-date: 2022-07-28
-linktitle: "How to have better arguments"
+date: 2022-12-14
+linktitle: "Keeping One Tab Open"
 menu:
   main:
     parent: posts
-next: /posts/how-to-have-better-arguments
-title: "How to have better arguments"
+next: /posts/keeping-one-tab-open
+title: "Keeping One Tab Open"
 weight: 1
 images:
- - /how_to_have_better_arguments.jpg
+ - /keeping_one_tab_open.png
 tags: [Life]
-draft: true
 ---
 
-Through the high living room windows, I notice the last light of the sun dipping under the trees behind my house. 
-The television plays a country band at the Grand Ole Opry, quietly to avoid waking the children. 
-My parents sit on the couch, exhausted after babysitting my three young kids. 
-I sit cross-legged on the rug, listening as they describe the night's highs and lows.
-
-"Your mom and I saw a movie last night", my dad switches the topic, "about the election."
+<p>Recently, someone found the maximum number of tabs that Microsoft Edge can handle.
+The number is <a href="https://www.reddit.com/r/MicrosoftEdge/comments/zgwt1f/edge_crashed_with_1600_open_tabs_clicked_inbuilt/">sixteen hundred</a>.
+One tab over this and it crashes.</p>
 
 <!--more-->
 
----
-
-Over two thousand years ago, depicted in Plato's [Theaetetus](https://amzn.to/3BfyJTl), 
-Socrates lounges in a Palaestra, an ancient greek wrestling school. He's chatting with his friend 
-Theodorus, explaining that he needs help understanding a fundamental question 
-of philosophy: What is knowledge?
-
-Eventually, after some discussion, Socrates addresses the idea of another philosopher.
-His old friend Protagoras claimed, "Man is the measure of all things"
-and, "What seems to a man, is to him." Meaning knowledge is relative to each person.
-
-
-Plato, the author of Theaetetus, was fundamentally at odds with this idea.
-To Plato, there must be a truth independent of any man, by which all other claims can be measured.
-
-However, after convincingly rebutting Protagoras' claim,
-Socrates begins praising the very person he seeks to discredit:
-
-> Doubtless, as he is older, he may be expected to be wiser than we are. <br />
-> And if he could only just get his head out of the world below, <br />
-> he would have overthrown both of us again and again, <br />
-> me for talking nonsense and you for assenting to me <br />
-
-He claims his opponent is wiser and would successfully rebut him, if he was still alive.
-
-This isn't the only time Socrates says something like this. It's something of a pattern,
-even a strategy, that he employs.
-
-In [Plato's Republic](https://amzn.to/3PFdHSQ) as Socrates attempts to define the perfect state,
-he says:
-
-> Shall we take the other side first and begin by arguing against ourselves? <br />
-> In this manner the adversary's position will not be undefended.
-
-He pauses in his argument to give voice to a strong counter-argument of his would-be opponents.
-
-But he doesn't stop there, after rebutting that argument, he moves to a more difficult counter-argument,
-saying:
-
-> A greater [rebuttal] is coming; you will not think much of this when you see the next.
-
-He doesn't address only the weak counter arguments, but the best he can think of. Not only that,
-he builds up the counter-arguments merits instead of trying to discredit them.
-
-The question is, why would he argue against himself? Why would he build the credibility of his opponent?
-
-In Theaetetus, he addresses this question head-on.
-
-> After the manner of disputers, we were satisfied with mere verbal consistency 
-
-Here he contrasts disputers, also called Eristics, against philosophers. 
-One group is merely attempting to win an argument, to come up with some phrase that no one else can dispute. 
-They aren't interested in the truth, they are interested in winning.  
-
-Instead, a philosopher is chasing after the truth, and that's what Socrates is doing.  
-
-That's why he argues against himself.  
-
-He's not afraid of the truth, he's afraid of being wrong. So he assumes the best of whoever contradics him,
-he assumes there's a good reason that they disagree, if only he could discover it.
-
----
-
-"So, basically, they were using cellphone location data", he explained, 
-"to show when these democrats were going to ballot dropboxes."
-
-I had asked what the documentary was about. As he spoke, I reminded myself to keep an open mind
-and a civil tone. I didn't want to be too agressive, as I tend to be in political arguments.
-
-"They paired that location data with video footage to prove it was democrats putting tens
-of thousands of votes into dropboxes. It's called ballot stuffing", he said. 
-Meanwhile, my mom nods her head in agreement.  My wife and I glance at each other.
-
-He finally added, "the really interesting thing was how they used the same technology to solve a case 
-for the police in Atlanta. That's how you know it's trustworthy."
-
-I took the bait. Unlocking my phone, I ask, "what did you say the company is called?" 
-Searching the internet for the company and Atlanta, I immediately found an NPR article explaining
-that the company actually provided the data several months after the culprits were found and charged.
-
-They didn't solve the case, they simply provided data for an already-solved case, unprompted.
-The just wanted to use it for PR, as a way to build false trust in their business.
-
-That's what I told my dad.
-
-You can guess exactly how the rest of that argument went. We attacked the credibility of the other's sources.
-We ignored their claims, prefering our own. 
-
-No one left with changed views, but everyone left a little upset,
-our relationships strained a bit more.
-
----
-
-I don't argue like Socrates.
-
-Actually, it's possible Socrates didn't argue like Socrates. After all, most of what we know about him
-comes from Plato's dialogues. There's no telling how closely his depiction resembles the real man.
-
-But, I digress. No, I don't argue like him. Instead, I focus solely on disputing the other argument. Often, I rely on the [Straw Man](https://en.wikipedia.org/wiki/Straw_man)
-argument to cut down the weakest forms of my opponent's argument. 
-
-But, of course, this isn't the only option.
-
-Instead of strawmanning, I could [Steel Man](https://constantrenewal.com/steel-man). I could argue
-against my opponent's strongest arguments, instead of the weakest. But why stop there? I could take it even further
-with the [Star Man](https://centerforinquiry.org/blog/how-to-star-man-arguing-from-compassion/), choosing both the strongest 
-counter-argument while also building up my opponent.  
-
-Actually, I'm suggesting to take it even further. Yes, I should build up my opponent's credibility; yes,
-I should argue against their strongest arguments; also, I should argue against myself.
-
-That's dangerous, because the moment I begin arguing for the other side, my opponent could claim victory. 
-Even if they don't, I risk convincing listeners of a point I disagree with. 
-This might be trivial at work, negotiating how to implement some software project;
-it could be consequential, discussing moral issues with friends or family.
-
-It's also difficult. What if I don't think my opponent or their sources are credible?
-What if they have no convincing arguments? What if I can't think of any counter-arguments?
-Naturally, if I oppose someone's view, it's likely for a variety of exactly these reasons.
-So, to see them as credible or convincing, requires a lot of effort. It requires seeing their
-perspective, understanding what they care about, and identifying which principles guide them.
-
-So, what makes it worth the cost and effort?
-
-When I look to Socrates, I see that it begins with changing my goal.
-
-> wonder is the feeling of a philosopher, and philosophy begins in wonder
-
-The argument's goal must shift from winning to wonder, to discovering truth.
-
-First, as I switch goals to finding the truth, I can drop the view that I'm talking to an opponent. 
-Instead, as cheesy as it may sound, I can think of them as a partner in the search for truth.
-This framing lowers my defenses even when I know my partner doesn't share my goal.
-
-Suddenly, the argument is less tense, because I'm searching for the truth with a partner instead of fighting an opponent.
-
-But it doesn't stop there. I also gain empathy and understanding for my partner's views.
-Because, in order to argue for another's view, I typically have to _express_ their view.
-
-If you've heard of [Cunningham's Law](https://en.wikipedia.org/wiki/Ward_Cunningham#%22Cunningham's_Law%22),
-you know what I mean. Giving the wrong answer is the best way to get the right answer.
-
-As soon I misrepresent their view, they'll call me out.
-This has happened to me many times (I'm pretty bad at understanding people, it seems). 
-I'll rephrase someone's argument or attempt to build upon it, only to hear emphatically, "no, that's not what I'm saying at all."
-If I hadn't attempted to rephrase their view, I would have inadvertendly argued against a Straw Man. 
-
-Once I can restate and add upon their view, I also begin to discover shared values and concerns. 
-These quickly become common ground that I build upon.
-
-With that common ground, I also give myyself credit in my partner's eyes.
-To them, I'll also no longer be an opponent, simplying trying to dispute their idea.
-I've become a partner who understands their view and shares their concerns.
-
-With that shared foundation, we can seek the truth together.
-
-<div style="border: 2px dotted black; padding: 20px; margin-bottom: 20px;">
-<strong style="margin-bottom: 20px; display: block;">Arguing Against Yourself</strong>
-<ol style="padding-left: 22px;">
-  <li style="margin-bottom: 10px; padding-left: 5px;">Make your goal to find the truth, not to win the argument</li>
-  <li style="margin-bottom: 10px; padding-left: 5px;">Build up the credibility of your opponent, instead of tearing them down.</li>
-  <li style="margin-bottom: 10px; padding-left: 5px;">Argue against their strongest points, not their weakest</li>
-  <li style="margin-bottom: 10px; padding-left: 5px;">Argue against yourself whenever you think of a counter-argument</li>
+<p>Not too long ago, I felt like my brain had sixteen hundred tabs open at all times.
+Even while I focused on one task, I would keep several tabs open in the background,
+mostly to remember to do things after the current task.</p>
+<p>I&rsquo;d try to remember:</p>
+<ul>
+<li>What I planned to do next</li>
+<li>The email or slack message I need to follow up on</li>
+<li>Questions I need to ask my team</li>
+<li>Issues I need to address</li>
+<li>And so much more</li>
+</ul>
+<p>Even when I focused deeply on a task, I still had to dedicate a large portion of my processing
+power to all these other &ldquo;open tabs&rdquo; that I needed to hold on to.</p>
+<p>It&rsquo;s not just a metaphor, though. This was reflected in the literal open browser tabs on my computer.</p>
+<p><img src="/tabs.png" alt="Tabs"></p>
+<p>At any given time, I would have open:</p>
+<ul>
+<li>The current page I&rsquo;m working on, perhaps adjusting a component or adding a feature</li>
+<li>MDN or StackOverflow to answer some question I have, related to the current task</li>
+<li>Maybe a few more MDN and StackOverflow tabs that <em>might</em> be useful</li>
+<li>Gmail, google calendar, jira, trello</li>
+<li>Some blog posts I want to read later</li>
+<li>Random tabs I opened and forgot about but I&rsquo;m not sure I&rsquo;m ready to close them yet</li>
+<li>And probably a lot more too</li>
+</ul>
+<p>This trend of open tabs and &ldquo;open tabs&rdquo; continued until I discovered the book, <a href="https://amzn.to/3PwjIBV">Getting Things Done: The Art of Stress-Free Productivity</a>.</p>
+<h2 id="write-it-down">Write It Down</h2>
+<p>Most people laugh or don&rsquo;t believe me when I try to explain how helpful this method is, because it sounds too simple.</p>
+<p>If you have something you need to remember: <strong>write it down</strong>.</p>
+<p>Once you write it down in a place that you can easily come back to later, you can finally close that open tab.
+Once you write down everything that you need to remember, you can close <em>all</em> of your open tabs and start to truly focus on one thing at a time.</p>
+<p>For this to work, you need to write it down in a place that&hellip;</p>
+<ul>
+<li>Is consistent across all the things you think about</li>
+<li>You can trust to remind you</li>
+<li>Allows you to prioritize and reprioritize tasks</li>
+</ul>
+<h2 id="trello">Trello</h2>
+<p>For the rest of this post, I will show you how I use <a href="https://www.trello.com">Trello</a> to keep one tab open.
+However, Trello is just one of many tools that you can use. It probably will not be right for everyone.
+I hope what you&rsquo;ll see is the strategy I use, rather than the specific tool I use to accomplish it.</p>
+<p><img src="/living_on_24_hours_a_day_trello.png" alt="Trello"></p>
+<h2 id="step-1-record-all-inputs">Step 1: Record All Inputs</h2>
+<p>Throughout your day you&rsquo;ll receive countless inputs.</p>
+<ul>
+<li>Emails</li>
+<li>Old-school snail-mail</li>
+<li>Slack messages</li>
+<li>Texts</li>
+<li>Calendar Invites</li>
+<li>Your spouse asking you to do something</li>
+<li>You&rsquo;ll notice an issue with your house or work</li>
+<li>You&rsquo;ll remember something you forgot to take care of</li>
+</ul>
+<p>Typically, you have a few options to handle these inputs:</p>
+<ol>
+<li>Completely ignore it</li>
+<li>Try to remember it for later</li>
+<li>Drop what you&rsquo;re doing to handle it immediately</li>
 </ol>
-</div>
-
-## Disputers
-
-Unless, of course, you're talking with a disputer.
-
-Let's assume for a moment that you decided not to be one.
-You are truly arguing, discussing, in good-faith; in search of the truth.
-But your partner? Not so much. They want to *win*.
-
-There's no need to fear, because all is not lost.
-
-There's a strategy I refer to as **Granting the Premise**, which can allow you
-to have a productive conversation with someone who is otherwise difficult, or working off of very
-different assumptions than yourself.
-
-Imagine you're at the Thanksgiving dinner table when your uncle claims that the recent
-election was stolen. Millions of fake votes were cast. There needs to be a recount, even a revote.
-
-What's your immediate reaction?
-
-If you're like me, you'll begin to debate his premise.
-
-No, the election was not stolen. Where is the evidence? And so on.
-
-You might pull up articles, reputable sources of information, and prove without a doubt (at least, you have no doubts)
-that the election was not in fact stolen.
-
-A good-faith arguer would likely say, "thanks for bringing this to my attention".
-They would then take into account your new evidence, go back and compare it to what they heard before,
-and perhaps even seek out more sources so that they can understand the truth.
-
-That happens all the time, right?
-
-No, instead they begin to spew their own facts, and we all begin to attack the credibility
-of each other's sources. The conversation is altogether unproductive, and no one leaves with their view changed.
-
-Instead, we can grant the premise. As scary as it may sound, you can say something like,
-"let's assume for a moment that the election was stolen" and begin to try to understand if their
-conclusion logically follows from their premise.
-
-In our Thanksgiving dinner case, we might ask, why would a do-over help? Won't the election still be
-vulnerable to tampering? Could it be more vulnerable since there's less time to prepare?
-What other options do we have, besides redoing the election?
-
-The point is, you are no longer trying dispute their initial claim. This is particularly helpful
-in cases where the initial claim was never based on hard facts or evidence, but was instead chosen
-because of feelings. In these situations, no amount of evidence or counterargument is going to help.
-
-However, when you grant their premise, you can find out if their conclusion logically follows their
-initial claim. This can lead to an actual change in views, by showing that even with their initial claim,
-their conclusion doesn't make sense.
-
-Or, on the flip side, you may discover that their argument has more merit than you thought.
-
-It could also lead to questions that neither of you thought of before. In the election example, maybe
-you both begin to wonder why you even need to ask these questions about our elections? How could we
-create a system with more transparency, one that everyone could trust?
-
-<div style="border: 2px dotted black; padding: 20px; margin-bottom: 20px;">
-<strong style="margin-bottom: 20px; display: block;">Granting the Premise</strong>
-<ol style="padding-left: 22px;">
-  <li style="margin-bottom: 10px; padding-left: 5px;">Don't dispute their initial claim, grant it for the sake of the conversation</li>
-  <li style="margin-bottom: 10px; padding-left: 5px;">Ask questions to learn if their conclusion logically follows their premise</li>
-  <li style="margin-bottom: 10px; padding-left: 5px;">Allow them time to build up their argument, don't constantly interrupt to dispute</li>
+<p>But there is another way: record the input, along with any relevant information such as dates or links, so that you can come back to it later.</p>
+<p style="background: #222;">
+  <img src="/todo_column.png" alt="TODO Column" style="margin: auto; display: block;" />
+</p>
+<p>For me, this looks like dropping a new card in my TODO column in Trello.
+When I notice a slack message or email that requires follow-up, I drop a card in the column.</p>
+<h2 id="step-2-add-detail">Step 2: Add Detail</h2>
+<p>The cards alone are useful as a prioritization and reminder tool.
+However, the real benefit materializes only when you are able to decrease your mental load and &ldquo;close some tabs&rdquo;.</p>
+<p>That&rsquo;s where adding detail comes in.</p>
+<p>When I create a card, I add:</p>
+<ul>
+<li>Any relevant links to get me back to the slack message, email, or related information</li>
+<li>A brief description containing whatever thoughts I have on the task.
+<ul>
+<li>&ldquo;Make sure to talk to XYZ person about this before responding&rdquo;</li>
+<li>&ldquo;See if this has already been implemented in another system&rdquo;</li>
+</ul>
+</li>
+<li>A due date if there&rsquo;s a deadline or even ideal time to have this task complete</li>
+</ul>
+<p style="background: #222;">
+  <img src="/details.png" alt="Card Details" style="margin: auto; display: block;" />
+</p>
+<p>Details are crucial to staying focused.
+With only the card you have a reminder of what you need to do, but not how to do it.
+So you may find that the task itself is off your mind, but you&rsquo;re still attempting to hold on to all the extra things required to complete the task.</p>
+<h2 id="step-3-focus">Step 3: Focus</h2>
+<p>This is the hardest part. You now have the tools to focus on one task at a time.
+But it still takes conscious effort to do so.</p>
+<p>In Trello, this looks like literally one card in the &ldquo;Doing&rdquo; tab at all times.
+There should always be a card in that tab unless you are actively choosing to be &ldquo;off&rdquo; or &ldquo;wasting time&rdquo; (which is a totally valid and normal thing to do, by the way, life isn&rsquo;t only about productivity).</p>
+<p style="background: #222;">
+  <img src="/doing_tab.png" alt="One Open Task" style="margin: auto; display: block;" />
+</p>
+<h2 id="switching-tasks">Switching Tasks</h2>
+<p>It&rsquo;s pretty common to start a task, only to be interrupted and forced to switch to another task.
+This is notoriously difficult for &ldquo;knowledge workers&rdquo; like Software Engineers.
+However, your cards can help you context switch easily.</p>
+<p>When switching tasks, you need to be able to completely turn off the current task and focus on the new one.</p>
+<ol>
+<li>Write down any new details you&rsquo;ll need to remember when coming back.</li>
+<li>Add relevant links, such as the path to the file you were working in or the StackOverflow answer you were reading.</li>
+<li>Move the task back to &ldquo;TODO&rdquo;</li>
+<li>If the new task will take more than 5 minutes: Create a card for it and move it to &ldquo;Doing&rdquo;.</li>
 </ol>
-</div>
+<h2 id="finishing-tasks">Finishing Tasks</h2>
+<p>Whenever you finish a task, move it to the &ldquo;Done&rdquo; column.</p>
+<p>At the end of each week, I review the completed tasks to see if I&rsquo;m satisfied with my work.</p>
+<p>I like to ask myself:</p>
+<ul>
+<li>Did I spend my time wisely this week?</li>
+<li>Did I get stuck on a certain task for too long?</li>
+<li>What were the affects or results of the tasks I completed?</li>
+</ul>
+<p>If I&rsquo;m not satisfied, I try to understand why, and prepare to spend my time differently in the next week.</p>
+<h2 id="cleaning-up">Cleaning Up</h2>
+<p>The more you do this, the more you will accumulate cards.
+At the end of each week, I move my &ldquo;Done&rdquo; column to a different board.
+I don&rsquo;t delete the cards, because I occasionally like to browse back through them to do a longer
+retro on my work.</p>
+<p>I also set up an automation to remove cards that are older than thirty days.
+Again, it does not delete the cards, it moves them to an &ldquo;Archive&rdquo; board.
+I do this because I have a lot of ideas, but often find that they are unimportant to me a month later.
+I think it&rsquo;s healthy to let go of ideas once I no longer feel they are relevant.
+I don&rsquo;t need to power through unimportant tasks, just because I incorrectly thought they were important in the past.</p>
+<hr>
+<h2 id="putting-it-all-together">Putting it All Together</h2>
+<ul>
+<li>Write down every input</li>
+<li>Record enough details that you can truly get it off your mind</li>
+<li>Focus on one task at a time</li>
+<li>Do a weekly retro on your completed tasks</li>
+<li>Regularly prune your tasks to focus on only what is currently relevant</li>
+</ul>
 
-
----
-
-# Extra stuff
-
-Of course, Plato already outlined this form of argument through Socrates.
-
-> The disputer may trip up his opponent as often as he likes, and make fun;
-> but the dialectician will be in earnest, and only correct his adversary when necessary,
-
-
+  
