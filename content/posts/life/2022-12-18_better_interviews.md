@@ -25,6 +25,20 @@ Eventually, I realized I lacked a consistent, structured way to evaluate candida
 
 That's when I created Better Interviews.
 
+## What Is it?
+
+Better Interviews uses a concept I call, "interview signals". They are five "yes" or "no" questions that I answer about each candidate that I'm interviewing for a role.
+
+These consistent questions help me compare candidates across a standard set of criteria. Suddenly, it becomes much easier to compare candidates to each other.
+
+There are a ton of other benefits too. I can now write up interview feedback in just a few minutes. It used to take me thirty minutes to an hour. I also have a helpful way to guide candidates through the interview. If they haven't touched on an area where I know I need a signal, I can prompt them to focus on that area. After all, my goal is to help candidates do their best in an interview, not make them fail!
+
+[Better Interviews](https://www.betterinterview.club) encapsulates this idea in a simple workflow.
+
+The tool is **totally free** because I just want to help us make interviews better and fairer for everyone.
+
+As you use these interview signals, I encourage you to share them with your candidates. The idea is to set them up for success. They can best prepare to show you their skills in the areas you care most about.
+
 ## How It Works
 
 First, a hiring manager opens a role. For each role, they create five binary (yes-or-no) questions.
