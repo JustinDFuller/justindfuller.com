@@ -69,3 +69,6 @@ This style of collecting feedback has drastically simplified my interview proces
 
 If you think this method for collecting feedback will help you, [Better Interviews](https://www.betterinterview.club) provides the tools to make it happen.
 
+## Open Source
+
+The code is open source. You can find it at [github.com/justindfuller/betterinterview.club](https://github.com/JustinDFuller/betterinterview.club).
