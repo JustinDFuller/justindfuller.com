@@ -9,7 +9,7 @@ next: /posts/better-interviews
 title: "Better Interviews"
 weight: 1
 images:
- - /betterinterviews1.png
+ - /better_interviews_logo.png
 tags: [Life]
 ---
 
