@@ -6,7 +6,7 @@ menu:
   main:
     parent: posts
 next: /posts/my-javascript-style-guide
-title: "Technical Roadmaps"
+title: "My JavaScript Style Guide"
 weight: 1
 # images:
 # - /my-javascript-style-guide.png
@@ -28,7 +28,7 @@ Here is how I write JavaScript.
 
 ## Explicit Checks
 
-Wrong:
+**Incorrect:**
 
 ```js
 if (someBoolean) {
@@ -36,7 +36,7 @@ if (someBoolean) {
 }
 ```
 
-Wrong:
+**Incorrect:**
 
 ```js
 if (!someThingThatCouldBeUndefined) {
@@ -44,7 +44,7 @@ if (!someThingThatCouldBeUndefined) {
 }
 ```
 
-Right:
+**Correct:**
 
 ```js
 if (someBoolean === true) {
@@ -62,13 +62,13 @@ TODO
 
 ## Always Use Brackets
 
-Wrong:
+**Incorrect:**
 
 ```js
 if (someBoolean === true) doAThing();
 ```
 
-Right:
+**Correct:**
 
 ```js
 if (someBoolean === true) {
@@ -82,7 +82,7 @@ TODO
 
 ## Prevent Export Renaming
 
-Wrong:
+**Incorrect:**
 
 ```js
 export default function() {
@@ -95,7 +95,7 @@ import doAThing from './thing';
 doAThing();
 ```
 
-Wrong:
+**Incorrect:**
 
 ```js
 export function doAThing() {
@@ -113,7 +113,7 @@ import * as thing from './thing';
 thing.doAThing();
 ```
 
-Right:
+**Correct:**
 
 ```js
 function do() {
@@ -136,7 +136,7 @@ TODO
 
 ## Unfold If Statements
 
-Wrong:
+**Incorrect:**
 
 ```js
 if (something === true) {
@@ -146,7 +146,7 @@ if (something === true) {
 }
 ```
 
-Right:
+**Correct:**
 
 ```js
 if (something === false) {
@@ -172,7 +172,7 @@ TODO
 
 And allow the surrounding code context to provide additional information.
 
-Wrong:
+**Incorrect:**
 
 ```js
 export function stringifyABTests(allUserABTests) {
@@ -182,7 +182,7 @@ export function stringifyABTests(allUserABTests) {
 }
 ```
 
-Right:
+**Correct:**
 
 ```js
 function stringify(tests) {
@@ -215,7 +215,7 @@ Instead, you should use names that describe the **domain** on which your code is
 
 For example, let's say you need some helper functions to operate on a URL.
 
-Wrong:
+**Incorrect:**
 
 ```js
 // utils.js
@@ -230,7 +230,7 @@ import { modifyURL } from './utils';
 modifyURL('https://www.nytimes.com/')
 ```
 
-Right:
+**Correct:**
 
 ```js
 // url.js
@@ -257,9 +257,9 @@ TODO
 
 Instead of making a shared or common folder, put reused files at the root directory (or at the same level that you would place the shared folder).
 
-Wrong:
+**Incorrect:**
 
-```
+```text
 .
 └── src/
     ├── routes/
@@ -269,9 +269,9 @@ Wrong:
         └── url.js
 ```
 
-Right:
+**Correct:**
 
-```
+```text
 .
 └── src/
     ├── routes/
@@ -288,7 +288,7 @@ TODO
 
 Unless you are using the `this` keyword.
 
-Wrong:
+**Incorrect:**
 
 ```js
 const modify = (url) => {
@@ -296,7 +296,7 @@ const modify = (url) => {
 }
 ```
 
-Wrong:
+**Incorrect:**
 
 ```js
 function modify() {
@@ -304,7 +304,7 @@ function modify() {
 }
 ```
 
-Right:
+**Correct:**
 
 ```js
 function modify(url) {
@@ -312,7 +312,7 @@ function modify(url) {
 }
 ```
 
-Right:
+**Correct:**
 
 ```js
 const modify = () => {
