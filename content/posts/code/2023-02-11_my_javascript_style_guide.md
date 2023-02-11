@@ -88,7 +88,7 @@ export function modifyURL(url) {
 // Imported as:
 import { modifyURL } from './utils';
 
-modifyURL('https://www.nytimes.com/')
+modifyURL('https://www.justindfuller.com/')
 ```
 
 **Correct:**
@@ -107,7 +107,7 @@ export const url = {
 // Imported as:
 import { url } from './url';
 
-url.modify('https://www.nytimes.com/')
+url.modify('https://www.justindfuller.com/')
 ```
 
 #### Why?
@@ -168,7 +168,12 @@ thing.do();
 
 TODO
 
+### Prefer Fewer, Flatter Files
 
+Try to limit the number of directories and files that you create.
+Do not arbitrary limit the number of lines in a file. Files in a folder, or folders in folders.
+
+To take this to the extreme: your application should be one file until you have a good reason that it should not be.
 
 ## Logic
 
@@ -337,6 +342,66 @@ const modify = () => {
 
 TODO
 
+### Embrace Re-assignment
+
+As long as the types are the same and the variables will not affect other scopes.
+
+**Incorrect:**
+
+```js
+const request1 = await users.get('id1');
+if (request.error) {
+  return
+}
+
+const request2 = await users.get('id2');
+if (request.error) {
+  return
+}
+```
+
+**Incorrect:**
+
+```js
+function normalize(url) {
+  const lowerCase = url.toLowerCase();
+  const withoutQuery = lowerCase.split('?')[0];
+  const withoutHash = withoutQuery.split('#')[0];
+  return withoutHash;
+}
+```
+
+**Correct:**
+
+```js
+let request = await users.get('id1')
+if (request.error) {
+  return
+}
+
+request = await users.get('id2')
+if (request.error) {
+  return
+}
+```
+
+**Correct:**
+
+You could also use chaining here.
+
+```js
+function normalize(url) {
+  url = url.toLowerCase();
+  url = url.split('?')[0];
+  url = url.split('#')[0];
+  return url;
+}
+```
+
+#### Why?
+
+TODO
+
 ### Immutable Functional Classes
 
 Store complex state in immutable functional classes.
@@ -378,7 +443,7 @@ const postDefaults = {
 };
 
 function newPost(post = postDefaults) {
-  return {
+  return Object.freeze({
     ...post,
     setTitle(title) {
       return newPost({
@@ -392,7 +457,7 @@ function newPost(post = postDefaults) {
         body,
       });
     },
-  };
+  });
 }
 
 const [post, setPost] = useState(newPost());
