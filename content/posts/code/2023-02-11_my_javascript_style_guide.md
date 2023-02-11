@@ -18,6 +18,8 @@ Here is how I write JavaScript.
 
 <!--more-->
 
+{{< table_of_contents >}}
+
 ## Principles
 
 * Verbose code is understood code.
@@ -26,61 +28,93 @@ Here is how I write JavaScript.
 * Understanding code is far more difficult and time-consuming than writing code.
 * Engineers avoid reading code and documentation as much as possible.
 
-## Explicit Checks
+## Project Structure
+
+### Domain-Driven Files and Folders
+
+Instead of making a shared or common folder, put reused files at the root directory (or at the same level that you would place the shared folder).
 
 **Incorrect:**
 
-```js
-if (someBoolean) {
-  // do something
-}
+```text
+.
+└── src/
+    ├── routes/
+    │   ├── Home.jsx
+    │   └── Article.jsx
+    └── shared/
+        └── url.js
 ```
 
+**Correct:**
+
+```text
+.
+└── src/
+    ├── routes/
+    │   ├── Home.jsx
+    │   └── Article.jsx
+    └── url.js
+```
+
+#### Why?
+
+TODO
+
+### Domain-Driven Variable Names
+
+The following names are essentially meaningless:
+
+* util, utils, utilities, helper, helpers
+* key, value, data, entry
+* service, factory
+* shared, common
+
+By using any of these names, you are declaring: "I don't know what this code is used for. I don't know what it is operating on. I don't know who or what uses it."
+
+Instead, you should use names that describe the **domain** on which your code is operating.
+
+For example, let's say you need some helper functions to operate on a URL.
+
 **Incorrect:**
 
 ```js
-if (!someThingThatCouldBeUndefined) {
+// utils.js
+
+export function modifyURL(url) {
   // do something
 }
+
+// Imported as:
+import { modifyURL } from './utils';
+
+modifyURL('https://www.nytimes.com/')
 ```
 
 **Correct:**
 
 ```js
-if (someBoolean === true) {
+// url.js
+
+function modify(url) {
   // do something
 }
 
-if (someThingThatCouldBeUndefined === undefined) {
-  // do something
+export const url = {
+  modify,
 }
+
+// Imported as:
+import { url } from './url';
+
+url.modify('https://www.nytimes.com/')
 ```
 
-### Why?
+#### Why?
 
 TODO
 
-## Always Use Brackets
-
-**Incorrect:**
-
-```js
-if (someBoolean === true) doAThing();
-```
-
-**Correct:**
-
-```js
-if (someBoolean === true) {
-  doAThing();
-}
-```
-
-### Why?
-
-TODO
-
-## Prevent Export Renaming
+### Prevent Export Renaming
 
 **Incorrect:**
 
@@ -130,11 +164,52 @@ import { thing } from './thing';
 thing.do();
 ```
 
-## Why?
+#### Why?
 
 TODO
 
-## Unfold If Statements
+
+
+## Logic
+
+### Explicit Checks
+
+**Incorrect:**
+
+```js
+if (someBoolean) {
+  // do something
+}
+```
+
+**Incorrect:**
+
+```js
+if (!someThingThatCouldBeUndefined) {
+  // do something
+}
+```
+
+**Correct:**
+
+```js
+if (someBoolean === true) {
+  // do something
+}
+
+if (someThingThatCouldBeUndefined === undefined) {
+  // do something
+}
+```
+
+#### Why?
+
+TODO
+
+### Indented Error Flow
+
+Indented lines should never contain the "happy path".
+Unindented flows should never contain error paths.
 
 **Incorrect:**
 
@@ -164,11 +239,33 @@ if (anotherThing === true) {
 // do something
 ```
 
-### Why?
+#### Why?
 
 TODO
 
-## Embrace Short Variables
+## Style
+
+### Always Use Brackets
+
+**Incorrect:**
+
+```js
+if (someBoolean === true) doAThing();
+```
+
+**Correct:**
+
+```js
+if (someBoolean === true) {
+  doAThing();
+}
+```
+
+#### Why?
+
+TODO
+
+### Embrace Short Variables
 
 And allow the surrounding code context to provide additional information.
 
@@ -196,95 +293,11 @@ export const abtests = {
 }
 ```
 
-### Why?
+#### Why?
 
 TODO
 
-## Avoid Meaningless Names
-
-The following names are essentially meaningless:
-
-* util, utils, utilities, helper, helpers
-* key, value, data, entry
-* service, factory
-* shared, common
-
-By using any of these names, you are declaring: "I don't know what this code is used for. I don't know what it is operating on. I don't know who or what uses it."
-
-Instead, you should use names that describe the **domain** on which your code is operating.
-
-For example, let's say you need some helper functions to operate on a URL.
-
-**Incorrect:**
-
-```js
-// utils.js
-
-export function modifyURL(url) {
-  // do something
-}
-
-// Imported as:
-import { modifyURL } from './utils';
-
-modifyURL('https://www.nytimes.com/')
-```
-
-**Correct:**
-
-```js
-// url.js
-
-function modify(url) {
-  // do something
-}
-
-export const url = {
-  modify,
-}
-
-// Imported as:
-import { url } from './url';
-
-url.modify('https://www.nytimes.com/')
-```
-
-### Why?
-
-TODO
-
-## Avoid Meaningless Folders
-
-Instead of making a shared or common folder, put reused files at the root directory (or at the same level that you would place the shared folder).
-
-**Incorrect:**
-
-```text
-.
-└── src/
-    ├── routes/
-    │   ├── Home.jsx
-    │   └── Article.jsx
-    └── shared/
-        └── url.js
-```
-
-**Correct:**
-
-```text
-.
-└── src/
-    ├── routes/
-    │   ├── Home.jsx
-    │   └── Article.jsx
-    └── url.js
-```
-
-### Why?
-
-TODO
-
-## Prefer Regular Functions
+### Prefer Regular Functions
 
 Unless you are using the `this` keyword.
 
@@ -320,6 +333,71 @@ const modify = () => {
 }
 ```
 
-### Why?
+#### Why?
+
+TODO
+
+### Immutable Functional Classes
+
+Store complex state in immutable functional classes.
+
+**Incorrect:**
+
+```js
+const [postTitle, setPostTitle] = useState("");
+const [postBody, setPostBody] = useState("");
+```
+
+**Incorrect:**
+
+```js
+class Post {
+  constructor() {
+    this.title = ""
+    this.body = ""
+  }
+
+  setTitle(title) {
+    this.title = title
+  }
+
+  setBody(body) {
+    this.body = body
+  }
+}
+
+const [post, setPost] = useState(new Post());
+```
+
+**Correct:**
+
+```js
+const postDefaults = {
+  title: "",
+  body: "",
+};
+
+function newPost(post = postDefaults) {
+  return {
+    ...post,
+    setTitle(title) {
+      return newPost({
+        ...post,
+        title,
+      });
+    },
+    setBody(body) {
+      return newPost({
+        ...post,
+        body,
+      });
+    },
+  };
+}
+
+const [post, setPost] = useState(newPost());
+```
+
+#### Why?
 
 TODO

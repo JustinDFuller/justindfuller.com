@@ -99,3 +99,7 @@ googleAnalytics = "UA-57389891-8"
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 2
