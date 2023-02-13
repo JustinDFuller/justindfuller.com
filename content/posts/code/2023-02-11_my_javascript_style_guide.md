@@ -33,6 +33,7 @@ Here is how I write JavaScript.
 ### Domain-Driven Files and Folders
 
 Instead of making a shared or common folder, put reused files at the root directory (or at the same level that you would place the shared folder).
+Avoid introducing structure that reflects the technology, and instead use your structure to reflect domain concepts.
 
 **Incorrect:**
 
@@ -50,16 +51,21 @@ Instead of making a shared or common folder, put reused files at the root direct
 
 ```text
 .
-└── src/
-    ├── routes/
-    │   ├── Home.jsx
-    │   └── Article.jsx
-    └── url.js
+├── Home.jsx
+├── Article.jsx
+└── url.js
 ```
 
 #### Why?
 
 TODO
+
+### Prefer Fewer, Flatter Files
+
+Try to limit the number of directories and files that you create.
+Do not arbitrary limit the number of lines in a file. Files in a folder, or folders in folders.
+
+To take this to the extreme: your application should be one file until you have a good reason that it should not be.
 
 ### Domain-Driven Variable Names
 
@@ -100,14 +106,14 @@ function modify(url) {
   // do something
 }
 
-export const url = {
+export const URL = {
   modify,
 }
 
 // Imported as:
-import { url } from './url';
+import { URL } from './url';
 
-url.modify('https://www.justindfuller.com/')
+URL.modify('https://www.justindfuller.com/')
 ```
 
 #### Why?
@@ -119,61 +125,111 @@ TODO
 **Incorrect:**
 
 ```js
-export default function() {
+export default function modify() {
   // do something
 }
 
 // Imported as:
-import doAThing from './thing';
+import modify from './url';
 
-doAThing();
+modify("https://www.justindfuller.com");
 ```
 
 **Incorrect:**
 
 ```js
-export function doAThing() {
+export function modify() {
  // do something
 }
 
 // Imported as:
-import { doAThing } from './thing';
+import { modify } from './url';
 
-doAThing();
+modify();
 
 // Or import as:
-import * as thing from './thing';
+import * as url from './url';
 
-thing.doAThing();
+url.modify("https://www.justindfuller.com");
 ```
 
 **Correct:**
 
 ```js
-function do() {
+function modify() {
   // do something
 }
 
-export const thing = {
-  do,
+export const URL = {
+  modify,
 }
 
 // Imported as:
-import { thing } from './thing';
+import { URL } from './url';
 
-thing.do();
+URL.modify("https://www.justindfuller.com");
 ```
 
 #### Why?
 
 TODO
 
-### Prefer Fewer, Flatter Files
+### Prevent Returned Variable Renaming
 
-Try to limit the number of directories and files that you create.
-Do not arbitrary limit the number of lines in a file. Files in a folder, or folders in folders.
+**Incorrect:**
 
-To take this to the extreme: your application should be one file until you have a good reason that it should not be.
+```js
+function modify(url) {
+  return url + "/"
+}
+
+// Import As:
+import { URL } from './url';
+
+const modified = url.modify("https://www.justindfuller.com")
+```
+
+**Incorrect:**
+
+```js
+function modify(url) {
+  return {
+  }
+}
+
+// Imported as:
+import { Thing } from './thing';
+
+const { name } = Thing.New()
+// or
+const thisThing = Thing.New() 
+```
+
+**Correct:**
+
+```js
+function New() {
+  return {
+    thing: {
+      name: "foo",
+    }
+  }
+}
+
+// Imported as:
+import { Thing } from './thing';
+
+const { thing } = Thing.New();
+```
+
+#### Why?
+
+Have you ever attempted to follow a single variable through a particular path in the code,
+only to find it difficult because that variable is renamed a dozen times?
+
+This problem is similar to [Prevent Export Renaming]({{< ref "#prevent-export-renaming" >}} "Prevent Export Renaming"), but it applies to returned variables and properties.
+
+When code uses domain-driven variable naming, the property names are intentional. They should only be re-named with great care.
 
 ## Logic
 
