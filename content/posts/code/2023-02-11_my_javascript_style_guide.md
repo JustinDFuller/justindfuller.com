@@ -15,15 +15,17 @@ draft: true
 ---
 
 JavaScript is a powerful language that I've used to successfully write complex programs.
-However, the paradigms of the community have led to projects that are difficult to understand.
+However, the paradigms of the community yield obscure, disjointed, incoherent code.
 
 <!--more-->
 
-This difficulty can be traced back to the bad influence of NPM, Babel, Webpack, The AirBnB Style Guide,
-and even further back to spaghetti-inducing JQuery paradigms.
+I attribute these results to the bad influence of useful tools, such as NPM, Babel, Webpack, The AirBnB Style Guide,
+Angular, and even further back to spaghetti-inducing JQuery paradigms.
 
 But, I do not want to complain about the bad habits of others.
 Instead, I want to propose a style for writing comprehensible JavaScript.
+
+**But first, a warning:** You are probably going to hate these suggestions.
 
 {{< table_of_contents >}}
 
@@ -87,9 +89,9 @@ In some projects, you have to navigate through two, three, four, or more folders
 
 Now, how can you succesfully understand and operate on your domain, if you cannot clearly see and understand what it is?
 
-Terrible frameworks, such as Angular.js, and awful paradigms such as Model View Controller (MVC) have led us to organize projects in incomprehensible ways.
+Terrible frameworks, such as Angular.js, and awful paradigms such as Model View Controller (MVC) have led us to organize projects in arbitrary and unhelpful ways.
 
-So, instead of organizing your project around something arbitrary, such as routes, organize it around domain concepts.
+So, instead of organizing your project around something meaningless to your product, such as routes, organize it around domain concepts.
 
 ### Prefer Fewer, Flatter Files
 
@@ -97,6 +99,7 @@ There are a myriad of valid reasons to split of functions, files, and folders.
 However, size is not one of them.
 I'm sorry if your finger hurts from scrolling.
 Perhaps you can learn how to navigate more quickly with your keyboard.
+Even better, use the search feature.
 
 If you'd like to confuse your colleagues, I suggest splitting your code into many helper functions, then spread those helper functions throughout dozens of files and folders.
 
@@ -122,14 +125,14 @@ For example, let's say you need some helper functions to operate on a URL.
 ```js
 // utils.js
 
-export function modifyURL(url) {
-  // do something
+export function normalizeURL(url) {
+  return url.endsWith("/") ? url : url + "/";
 }
 
 // Imported as:
-import { modifyURL } from './utils';
+import { normalizeURL } from './utils';
 
-modifyURL('https://www.justindfuller.com/')
+normalizeURL('https://www.justindfuller.com/')
 ```
 
 **Correct:**
@@ -137,18 +140,18 @@ modifyURL('https://www.justindfuller.com/')
 ```js
 // url.js
 
-function modify(url) {
-  // do something
+function ensureTrailingSlash(url) {
+  return url.endsWith("/") ? url : url + "/";
 }
 
 export const URL = {
-  modify,
+  ensureTrailingSlash,
 }
 
 // Imported as:
 import { URL } from './url';
 
-URL.modify('https://www.justindfuller.com/')
+URL.ensureTrailingSlash('https://www.justindfuller.com/')
 ```
 
 #### Why?
@@ -160,49 +163,49 @@ TODO
 **Incorrect:**
 
 ```js
-export default function modify() {
-  // do something
+export default function ensureTrailingSlash(url) {
+  return url.endsWith("/") ? url : url + "/";
 }
 
 // Imported as:
-import modify from './url';
+import ensureTrailingSlash from './url';
 
-modify("https://www.justindfuller.com");
+ensureTrailingSlash("https://www.justindfuller.com");
 ```
 
 **Incorrect:**
 
 ```js
-export function modify() {
- // do something
+export function ensureTrailingSlash(url) {
+  return url.endsWith("/") ? url : url + "/";
 }
 
 // Imported as:
-import { modify } from './url';
+import { ensureTrailingSlash } from './url';
 
-modify();
+ensureTrailingSlash();
 
 // Or import as:
 import * as urlUtils from './url';
 
-urlUtils.modify("https://www.justindfuller.com");
+urlUtils.ensureTrailingSlash("https://www.justindfuller.com");
 ```
 
 **Correct:**
 
 ```js
-function modify() {
-  // do something
+function ensureTrailingSlash(url) {
+  return url.endsWith("/") ? url : url + "/";
 }
 
 export const URL = {
-  modify,
+  ensureTrailingSlash,
 }
 
 // Imported as:
 import { URL } from './url';
 
-URL.modify("https://www.justindfuller.com");
+URL.ensureTrailingSlash("https://www.justindfuller.com");
 ```
 
 #### Why?
@@ -226,40 +229,40 @@ This adds an extra barrier to the process, hopefully prompting them to think car
 **Incorrect:**
 
 ```js
-function modify(url) {
-  return url + "/"
+function ensureTrailingSlash(url) {
+  return url.endsWith("/") ? url : url + "/";
 }
 
 // Import As:
 import { URL } from './url';
 
-const modified = url.modify("https://www.justindfuller.com")
+const modified = url.ensureTrailingSlash("https://www.justindfuller.com")
 ```
 
 **Incorrect:**
 
 ```js
-function modify(url) {
+function ensureTrailingSlash(url) {
   return {
-    normalized: url + "/",
+    normalized: url.endsWith("/") ? url : url + "/",
   }
 }
 
 // Imported as:
 import { URL } from './url';
 
-const { normalized } = URL.modify("https://www.justindfuller.com")
+const { normalized } = URL.ensureTrailingSlash("https://www.justindfuller.com")
 // or
-const url = URL.modify("https://www.justindfuller.com") 
+const url = URL.ensureTrailingSlash("https://www.justindfuller.com") 
 ```
 
 **Correct:**
 
 ```js
-function modify(url) {
+function ensureTrailingSlash(url) {
   return {
     url: {
-      normalized: url + "/",
+      normalized: url.endsWith("/") ? url : url + "/",
       original: url,
     }
   }
@@ -268,7 +271,7 @@ function modify(url) {
 // Imported as:
 import { URL } from './url';
 
-const { url } = URL.modify("https://www.justindfuller.com");
+const { url } = URL.ensureTrailingSlash("https://www.justindfuller.com");
 console.log(url.normalized) // https://www.justindfuller.com/
 ```
 
@@ -285,6 +288,71 @@ But, when a function directly returns a variable, engineers are prompted to come
 By preventing variable renaming, you reduce the burden on engineers using your function.
 You reduce the chances that the same variable with have different names throughout the code.
 Your codebase will gain consistency and other engineers jobs will become easier.
+
+### Immutable Functional Classes
+
+Store complex state in immutable functional classes.
+
+**Incorrect:**
+
+```js
+const [postTitle, setPostTitle] = useState("");
+const [postBody, setPostBody] = useState("");
+```
+
+**Incorrect:**
+
+```js
+class Post {
+  constructor() {
+    this.title = ""
+    this.body = ""
+  }
+
+  setTitle(title) {
+    this.title = title
+  }
+
+  setBody(body) {
+    this.body = body
+  }
+}
+
+const [post, setPost] = useState(new Post());
+```
+
+**Correct:**
+
+```js
+const postDefaults = {
+  title: "",
+  body: "",
+};
+
+function newPost(post = postDefaults) {
+  return Object.freeze({
+    ...post,
+    setTitle(title) {
+      return newPost({
+        ...post,
+        title,
+      });
+    },
+    setBody(body) {
+      return newPost({
+        ...post,
+        body,
+      });
+    },
+  });
+}
+
+const [post, setPost] = useState(newPost());
+```
+
+#### Why?
+
+TODO
 
 ## Logic
 
@@ -420,32 +488,32 @@ Unless you are using the `this` keyword.
 **Incorrect:**
 
 ```js
-const modify = (url) => {
-  return // do something to url
+const ensureTrailingSlash = (url) => {
+  return url.endsWith("/") ? url : url + "/"
 }
 ```
 
 **Incorrect:**
 
 ```js
-function modify() {
-  return this.url // do something to this.url
+function ensureTrailingSlash() {
+  return this.url.endsWith("/") ? this.url : this.url + "/"
 }
 ```
 
 **Correct:**
 
 ```js
-function modify(url) {
-  return // do something to url
+function ensureTrailingSlash(url) {
+  return url.endsWith("/") ? url : url + "/"
 }
 ```
 
 **Correct:**
 
 ```js
-const modify = () => {
-  return this.url // do something to this.url
+const ensureTrailingSlash = () => {
+  return this.url.endsWith("/") ? this.url : this.url + "/"
 }
 ```
 
@@ -513,67 +581,4 @@ function normalize(url) {
 
 TODO
 
-### Immutable Functional Classes
 
-Store complex state in immutable functional classes.
-
-**Incorrect:**
-
-```js
-const [postTitle, setPostTitle] = useState("");
-const [postBody, setPostBody] = useState("");
-```
-
-**Incorrect:**
-
-```js
-class Post {
-  constructor() {
-    this.title = ""
-    this.body = ""
-  }
-
-  setTitle(title) {
-    this.title = title
-  }
-
-  setBody(body) {
-    this.body = body
-  }
-}
-
-const [post, setPost] = useState(new Post());
-```
-
-**Correct:**
-
-```js
-const postDefaults = {
-  title: "",
-  body: "",
-};
-
-function newPost(post = postDefaults) {
-  return Object.freeze({
-    ...post,
-    setTitle(title) {
-      return newPost({
-        ...post,
-        title,
-      });
-    },
-    setBody(body) {
-      return newPost({
-        ...post,
-        body,
-      });
-    },
-  });
-}
-
-const [post, setPost] = useState(newPost());
-```
-
-#### Why?
-
-TODO
