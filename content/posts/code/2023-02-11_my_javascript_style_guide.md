@@ -156,7 +156,19 @@ URL.ensureTrailingSlash('https://www.justindfuller.com/')
 
 #### Why?
 
-TODO
+As I've claimed, naming things is one of the hardest problems in Software Engineering.
+
+In my experience, Engineers love two types of meaningless variables.
+
+The first is the "cute" name that is cool, catchy, and ultimately meaningless.
+Like naming your browser "Firefox".
+
+The second is the vague, name, such as "util" or "data".
+These are meaningless because all code constitutes a "utility" that operates on "data".
+
+Neither type of name helps other engineers (or your future self) understand what is going on in the code.
+
+The best names utilize descriptive terms that are meaningful to the relevant domain of your project.
 
 ### Prevent Export Renaming
 
