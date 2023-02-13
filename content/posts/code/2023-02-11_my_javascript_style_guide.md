@@ -14,9 +14,16 @@ tags: [Code]
 draft: true
 ---
 
-Here is how I write JavaScript.
+JavaScript is a powerful language that I've used to successfully write complex programs.
+However, the paradigms of the community have led to projects that are difficult to understand.
 
 <!--more-->
+
+This difficulty can be traced back to the bad influence of NPM, Babel, Webpack, The AirBnB Style Guide,
+and even further back to spaghetti-inducing JQuery paradigms.
+
+But, I do not want to complain about the bad habits of others.
+Instead, I want to propose a style for writing comprehensible JavaScript.
 
 {{< table_of_contents >}}
 
@@ -56,16 +63,44 @@ Avoid introducing structure that reflects the technology, and instead use your s
 └── url.js
 ```
 
+**Correct:**
+
+```text
+.
+├── Home/
+│   ├── Route.jsx
+│   ├── api.js
+│   └── styles.js
+├── Article/
+│   ├── Route.jsx
+│   ├── api.js
+│   └── styles.js
+└── url.js
+```
+
 #### Why?
 
-TODO
+Could you learn what your project does by looking at the root of your repository?
+What about the second level folder?
+
+In some projects, you have to navigate through two, three, four, or more folders just to figure out what domain concepts it operates on.
+
+Now, how can you succesfully understand and operate on your domain, if you cannot clearly see and understand what it is?
+
+Terrible frameworks, such as Angular.js, and awful paradigms such as Model View Controller (MVC) have led us to organize projects in incomprehensible ways.
+
+So, instead of organizing your project around something arbitrary, such as routes, organize it around domain concepts.
 
 ### Prefer Fewer, Flatter Files
 
-Try to limit the number of directories and files that you create.
-Do not arbitrary limit the number of lines in a file. Files in a folder, or folders in folders.
+There are a myriad of valid reasons to split of functions, files, and folders.
+However, size is not one of them.
+I'm sorry if your finger hurts from scrolling.
+Perhaps you can learn how to navigate more quickly with your keyboard.
 
-To take this to the extreme: your application should be one file until you have a good reason that it should not be.
+If you'd like to confuse your colleagues, I suggest splitting your code into many helper functions, then spread those helper functions throughout dozens of files and folders.
+
+On the other hand, if you want to enable your colleagues (and yourself) to understand your code: only split it up when absolutely necessary, when you have a good reason, and even then, do it as little as possible.
 
 ### Domain-Driven Variable Names
 
@@ -148,9 +183,9 @@ import { modify } from './url';
 modify();
 
 // Or import as:
-import * as url from './url';
+import * as urlUtils from './url';
 
-url.modify("https://www.justindfuller.com");
+urlUtils.modify("https://www.justindfuller.com");
 ```
 
 **Correct:**
@@ -172,7 +207,19 @@ URL.modify("https://www.justindfuller.com");
 
 #### Why?
 
-TODO
+Naming things is one of the hardest things in software engineering.
+A well-named variable (meaning it is accurate and concise) is rare.
+
+Since thinking of good names is difficult and time-consuming, 
+it is natural for engineers to not take the time to do it properly.
+So, when you create a module, you should think very carefully about the names given to your exported functions and variables.
+
+But you should also think carefully about how your module will be referenced.
+By providing a consistent name, your module will be easier to find and understand.
+Also, engineers will have to spend less time thinking of how to name your module when they import it.
+
+Whenever they *do* want to rename it, they must explicitly do so.
+This adds an extra barrier to the process, hopefully prompting them to think carefully about what they are doing.
 
 ### Prevent Returned Variable Renaming
 
@@ -194,32 +241,35 @@ const modified = url.modify("https://www.justindfuller.com")
 ```js
 function modify(url) {
   return {
+    normalized: url + "/",
   }
 }
 
 // Imported as:
-import { Thing } from './thing';
+import { URL } from './url';
 
-const { name } = Thing.New()
+const { normalized } = URL.modify("https://www.justindfuller.com")
 // or
-const thisThing = Thing.New() 
+const url = URL.modify("https://www.justindfuller.com") 
 ```
 
 **Correct:**
 
 ```js
-function New() {
+function modify(url) {
   return {
-    thing: {
-      name: "foo",
+    url: {
+      normalized: url + "/",
+      original: url,
     }
   }
 }
 
 // Imported as:
-import { Thing } from './thing';
+import { URL } from './url';
 
-const { thing } = Thing.New();
+const { url } = URL.modify("https://www.justindfuller.com");
+console.log(url.normalized) // https://www.justindfuller.com/
 ```
 
 #### Why?
@@ -230,6 +280,11 @@ only to find it difficult because that variable is renamed a dozen times?
 This problem is similar to [Prevent Export Renaming]({{< ref "#prevent-export-renaming" >}} "Prevent Export Renaming"), but it applies to returned variables and properties.
 
 When code uses domain-driven variable naming, the property names are intentional. They should only be re-named with great care.
+But, when a function directly returns a variable, engineers are prompted to come up with a name each time they use your function.
+
+By preventing variable renaming, you reduce the burden on engineers using your function.
+You reduce the chances that the same variable with have different names throughout the code.
+Your codebase will gain consistency and other engineers jobs will become easier.
 
 ## Logic
 
