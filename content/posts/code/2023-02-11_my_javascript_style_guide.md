@@ -8,8 +8,8 @@ menu:
 next: /posts/my-javascript-style-guide
 title: "My JavaScript Style Guide"
 weight: 1
-# images:
-# - /my-javascript-style-guide.png
+images:
+ - /my_javascript_style_guide.png
 tags: [Code]
 draft: true
 ---
@@ -19,7 +19,7 @@ However, the paradigms of the community yield obscure, disjointed, incoherent co
 
 <!--more-->
 
-I attribute these results to the bad influence of useful tools, such as NPM, Babel, Webpack, The AirBnB Style Guide,
+I attribute these results to the bad influence of useful tools, such as NPM, Babel, Webpack, the AirBnB Style Guide,
 Angular, and even further back to spaghetti-inducing JQuery paradigms.
 
 But, I do not want to complain about the bad habits of others.
@@ -158,7 +158,7 @@ URL.ensureTrailingSlash('https://www.justindfuller.com/')
 
 As I've claimed, naming things is one of the hardest problems in Software Engineering.
 
-In my experience, Engineers love two types of meaningless variables.
+In my experience, engineers love two types of meaningless variables.
 
 The first is the "cute" name that is cool, catchy, and ultimately meaningless.
 Like naming your browser "Firefox".
@@ -171,6 +171,9 @@ Neither type of name helps other engineers (or your future self) understand what
 The best names utilize descriptive terms that are meaningful to the relevant domain of your project.
 
 ### Prevent Export Renaming
+
+*Never* use default exports. In fact, don't even use regular exported constant or functions.
+Instead, wrap the exports in an exported variable that matches the module name.
 
 **Incorrect:**
 
