@@ -14,28 +14,78 @@ tags: [Code]
 draft: true
 ---
 
-JavaScript is a powerful language that I've used to successfully write complex programs.
-However, the paradigms of the community yield obscure, disjointed, incoherent code.
+Great software engineering, like all art and science (after all—software engineering is a mixture of art and science), requires peace and clarity of mind.
+Without this, you will build your personal problems right into the software itself.
 
 <!--more-->
 
-I attribute these results to the bad influence of useful tools, such as NPM, Babel, Webpack, the AirBnB Style Guide,
-Angular, and even further back to spaghetti-inducing JQuery paradigms.
+Over the years I've built plenty of my personal problems into software. This has caused me to do two things: first, I've built the wrong software; second, I've built software the wrong way.
 
-But, I do not want to complain about the bad habits of others.
-Instead, I want to propose a style for writing comprehensible JavaScript.
+Today, I'd like to talk about that second type of problem.
+Mostly because I'm still not sure I'm qualified to talk about how to solve the right problems.
+In fact, I've got some people telling me, right now, that I'm solving the wrong problem. 
+I'm not convinced that they are wrong, but I also can't figure out if they are right.
+I admit that this is a far more important topic, but I'm just not ready yet to give advice on it.
 
-**But first, a warning:** You are probably going to hate these suggestions.
+So, I want to talk about the second problem. Later, there's going to be a lot of code and examples.
+But, like many other things in life, they are worthless without context and reasons.
+Those reasons bring us back to where I started, only a few sentences ago: clarity and peace of mind.
+
+Have I built my personal problems into software? You bet. Let's begin with the most obvious: my laziness.
+There's a quote, maybe from Bill Gates, that says, “I choose a lazy person to do a hard job. Because a lazy person will find an easy way to do it.”
+But this implies a thoughtful, intentional laziness. A laziness that does have peace of mind.
+My laziness has been anything but. I call mine, "laziness of the fingers."
+Meaning, I take shortcuts just to save a little typing.
+
+I vividly remember a project where I chose to enable a reusable feature by setting a flag (I know, that's vague, but the details don't really matter), saying "if we have to do this again, we'll just have to set this flag and it will work. This should make it a lot easier."
+You see, I thought the hard part of enabling that feature in the future would be the _typing_.
+Well, about a year later—just enough time for the original implementation to seep from my mind—we needed to add that feature again.
+I remembered adding the flag, so I told my team it would be easy.
+But it wasn't.
+First, I couldn't quite remember what the flag was (and I of course had not documented it).
+So just enabling the flag was difficult.
+Next, the feature needed to be _slightly_ different than the first one.
+So I had to go in and add special cases for the new implementation.
+Now it gets even worse. Those special cases ended up breaking the original implementation.
+
+At this point I was about five years into my career. I somehow had "Senior" in my title.
+Shorly after I would be promoted, for the first time, to a "Tech Lead" of the entire team.
+Yet, it was at this point that I realized for the first time, that typing was not the hardest part of software engineering.
+Up until that point, much of what I had engineered was shortcuts to save time typing things out.
+
+But it did not actually sink in until much, much later that I needed to optimize for something else entirely.
+In some ways, I would find that I needed to actually veer my strategy all the way to the opposite side of the road, 
+to instead optimize for the ability _understand_ and change things _safely_. I eventually learned that typing _more_ is often the best way to accomplish this.
+
+That's where peace and clarity of mind come back into play. If you are not at peace—say, for example, you are in a rush—you cannot have clarity of mind.
+But clarity of mind is vague and borderline meaningless. So I'll attempt to give it some meaning.
+To have clarity of mind is to understand not only why you _are_ doing something, but also why you _are not_ doing something else.
+
+You'll find this in much of the guide below. It will suggest to do one, probably slightly weird, thing, rather than any of the regular options.
+If I do my job well, I'll explain the types of problems that the standard path causes and I'll show how my idea avoids those problems.
+
+But before we jump in, I want to share one more thing I've learned.
+It's more important context to help you understand how I came up with some of these odd ideas.
+Not too long ago, I started thinking about how in my entire career, I've never really had to work on a truly Hard Problem<sup>TM</sup>.
+Instead, I've been doing what I saw in some joking tweet: "Websites are just fancy database skins."
+I've been making projects that are essentially either a CRUD (create, read, update, delete) app or an app that makes decisions based on some other CRUD app.
+
+So, why are things so _hard_?
+
+I think I figured out part of the reason.
+I promise it's nothing new, people have been saying this for forever.
+Instead of doing the simplest thing, we've added layer upon layer of abstraction upon our projects _for no good reason_.
+We follow a pattern because some book told us to. We use a format becuase some framework requires it.
+We add a few lines _just in case_.
+
+It's this, more than anything else, that my suggestions attempt to combat.
+They attempt to ruthlessly, mercilessly, scrape away the cruft of patterns and abstraction.
+I want to wittle down the art of software engineering to its simplest, over-simplified form.
+OK, maybe I exaggerate a bit. We're not going all the way back to ones and zeroes. But, let's see how far we can go.
+
+# Style Guide
 
 {{< table_of_contents >}}
-
-## Principles
-
-* Verbose code is understood code.
-* Understandable code is the best recipe for correct code.
-* Don't write a single character without a clearly articulated purpose.
-* Understanding code is far more difficult and time-consuming than writing code.
-* Engineers avoid reading code and documentation as much as possible.
 
 ## Project Structure
 
