@@ -83,16 +83,23 @@ They attempt to ruthlessly, mercilessly, scrape away the cruft of patterns and a
 I want to wittle down the art of software engineering to its simplest, over-simplified form.
 OK, maybe I exaggerate a bit. We're not going all the way back to ones and zeroes. But, let's see how far we can go.
 
+To create this style guide, I'll ask two questions about the way I've learned to create JavaScript applications:
+
+1. What arbitrary paradigms or abstractions can I **remove** to reveal the real purpose of my code?
+2. What verbosity can I **add** to improve the clarity of my programs?
+
 # Style Guide
 
 {{< table_of_contents >}}
 
 ## Project Structure
 
-### Domain-Driven Files and Folders
+### Remove Arbitrary Files & Folders
 
-Instead of making a shared or common folder, put reused files at the root directory (or at the same level that you would place the shared folder).
-Avoid introducing structure that reflects the technology, and instead use your structure to reflect domain concepts.
+Each file and folder should meaningfully relate to the domain of your application.
+Remove any file or folder that was created without reason.
+
+Common examples of rote folders are: `src`, `utils`, `shared`, `common`.
 
 **Incorrect:**
 
@@ -120,11 +127,11 @@ Avoid introducing structure that reflects the technology, and instead use your s
 ```text
 .
 ├── Home/
-│   ├── Route.jsx
+│   ├── Page.jsx
 │   ├── api.js
 │   └── styles.js
 ├── Article/
-│   ├── Route.jsx
+│   ├── Page.jsx
 │   ├── api.js
 │   └── styles.js
 └── url.js
@@ -139,7 +146,7 @@ In some projects, you have to navigate through two, three, four, or more folders
 
 Now, how can you succesfully understand and operate on your domain, if you cannot clearly see and understand what it is?
 
-Terrible frameworks, such as Angular.js, and awful paradigms such as Model View Controller (MVC) have led us to organize projects in arbitrary and unhelpful ways.
+In my experience, frameworks and paradigms (such as MVC, Model View Controller) influenced me to organize projects in arbitrary and unhelpful ways.
 
 So, instead of organizing your project around something meaningless to your product, such as routes, organize it around domain concepts.
 
