@@ -94,6 +94,8 @@ To create this style guide, I'll ask two questions about the way I've learned to
 
 ## Project Structure
 
+The project structure should reflect the problem domain.
+
 ### Remove Arbitrary Files & Folders
 
 Each file and folder should meaningfully relate to the domain of your application.
@@ -127,11 +129,11 @@ Common examples of rote folders are: `src`, `utils`, `shared`, `common`.
 ```text
 .
 ├── Home/
-│   ├── Page.jsx
+│   ├── Component.jsx
 │   ├── api.js
 │   └── styles.js
 ├── Article/
-│   ├── Page.jsx
+│   ├── Component.jsx
 │   ├── api.js
 │   └── styles.js
 └── url.js
@@ -152,15 +154,38 @@ So, instead of organizing your project around something meaningless to your prod
 
 ### Prefer Fewer, Flatter Files
 
+Do not split up for organization.
+Only split up files and functions when the code is reused by multiple things.
+
+Incorrect:
+
+```text
+.
+└── article/
+    ├── Header.jsx
+    ├── Footer.jsx
+    └── Body.jsx
+```
+
+Correct:
+
+```text
+.
+└── Article.jsx
+```
+
+#### Why?
+
 There are a myriad of valid reasons to split of functions, files, and folders.
-However, size is not one of them.
-I'm sorry if your finger hurts from scrolling.
-Perhaps you can learn how to navigate more quickly with your keyboard.
-Even better, use the search feature.
+For example, you could split up code into separate functions or files if that code serves several different use-cases.
+This might look like a React component that is used on many pages.
 
-If you'd like to confuse your colleagues, I suggest splitting your code into many helper functions, then spread those helper functions throughout dozens of files and folders.
+However, size is not a reason to split up a file or function.
+Taken to the extreme, your application should be one file, one function, until you have a good reason for it not to be.
 
-On the other hand, if you want to enable your colleagues (and yourself) to understand your code: only split it up when absolutely necessary, when you have a good reason, and even then, do it as little as possible.
+Editors have advanced navigation, search, and highlighting feature to make it easy to navigate larger files.
+
+When related code is co-located, we all benefit from having the information in one place.
 
 ### Domain-Driven Variable Names
 
@@ -213,14 +238,15 @@ URL.ensureTrailingSlash('https://www.justindfuller.com/')
 
 #### Why?
 
-As I've claimed, naming things is one of the hardest problems in Software Engineering.
+Naming things is one of the hardest problems in Software Engineering.
 
-In my experience, engineers love two types of meaningless variables.
+In my experience, we engineers love two types of meaningless variables.
 
 The first is the "cute" name that is cool, catchy, and ultimately meaningless.
-Like naming your browser "Firefox".
+Like naming your browser "Firefox". 
+This is a great strategy for marketing, but not for clearly communicating functionality.
 
-The second is the vague, name, such as "util" or "data".
+The second is the vague name, such as "util" or "data".
 These are meaningless because all code constitutes a "utility" that operates on "data".
 
 Neither type of name helps other engineers (or your future self) understand what is going on in the code.
@@ -282,7 +308,7 @@ URL.ensureTrailingSlash("https://www.justindfuller.com");
 
 #### Why?
 
-Naming things is one of the hardest things in software engineering.
+Again, naming things is one of the hardest things in software engineering.
 A well-named variable (meaning it is accurate and concise) is rare.
 
 Since thinking of good names is difficult and time-consuming, 
