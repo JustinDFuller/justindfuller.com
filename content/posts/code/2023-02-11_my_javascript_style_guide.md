@@ -141,16 +141,17 @@ Common examples of rote folders are: `src`, `utils`, `shared`, `common`.
 
 #### Why?
 
-Could you learn what your project does by looking at the root of your repository?
+Could you learn what my project does by looking at the root of the repository?
 What about the second level folder?
 
 In some projects, you have to navigate through two, three, four, or more folders just to figure out what domain concepts it operates on.
 
-Now, how can you succesfully understand and operate on your domain, if you cannot clearly see and understand what it is?
+Now, how can you join me to succesfully understand and operate on my domain, if you cannot clearly see and understand what it is?
+Of course you will be able to because you are likely a skilled Software Engineer.
+But, depending on the project layout, it take you longer than necessary.
 
-In my experience, frameworks and paradigms (such as MVC, Model View Controller) influenced me to organize projects in arbitrary and unhelpful ways.
-
-So, instead of organizing your project around something meaningless to your product, such as routes, organize it around domain concepts.
+I noticed frameworks (such as Angular) and paradigms (such as MVC, Model View Controller) influenced me to organize projects in arbitrary and unhelpful ways. 
+So, instead of organizing my project around something meaningless to the product, such as routes, I now organize it around domain concept.
 
 ### Prefer Fewer, Flatter Files
 
@@ -176,31 +177,43 @@ Correct:
 
 #### Why?
 
-There are a myriad of valid reasons to split of functions, files, and folders.
-For example, you could split up code into separate functions or files if that code serves several different use-cases.
-This might look like a React component that is used on many pages.
+Earlier in my career, I would follow these steps when writing code.
 
-However, size is not a reason to split up a file or function.
-Taken to the extreme, your application should be one file, one function, until you have a good reason for it not to be.
+1. Figure out how to get it working.
+2. Test it thoroughly.
+3. Refactor it to make it "modular" and "readable".
 
-Editors have advanced navigation, search, and highlighting feature to make it easy to navigate larger files.
+In the final step of that process, I typically made things "modular" and "readable" by splitting code into multiple files and functions.
 
-When related code is co-located, we all benefit from having the information in one place.
+After a while, I realized this was making my code _harder_ to read and understand — even for myself!
+
+Instead of a single function that I could simply read straight through, I now had to dive through many files and functions to accomplish the same task.
+This obfuscated how my code worked, even though I was careful to use descriptive file and function names.
+
+Now, I only split up files and functions under these circumstances:
+
+1. (Primary reason) The code needs to be used in 3+ places.
+2. (Secondary reason) They are truly unrelated domain concepts.
+
+Now, related code lives together. Unrelated code lives apart.
+
+The tradeoff is, of course, that my files and functions are bigger.
+However — at least when reading my own code — I am now more reliably able to come back to it, understand it, and successfully modify it.
 
 ### Domain-Driven Variable Names
 
-The following names are essentially meaningless:
+I have come to believe that the following variable names are essentially meaningless:
 
 * util, utils, utilities, helper, helpers
 * key, value, data, entry
 * service, factory
 * shared, common
 
-By using any of these names, you are declaring: "I don't know what this code is used for. I don't know what it is operating on. I don't know who or what uses it."
+Previously, I frequently used these names in my code. But, I have a confession: by using these names, I was declaring: "I don't know what this code is used for. I don't know what it is operating on. I don't know who or what uses it."
 
-Instead, you should use names that describe the **domain** on which your code is operating.
+I now prefer to use names that describe the **domain** on which my code is operating.
 
-For example, let's say you need some helper functions to operate on a URL.
+For example, let's say I need some helper functions to operate on a URL.
 
 **Incorrect:**
 
