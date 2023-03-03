@@ -194,6 +194,7 @@ Now, I only split up files and functions under these circumstances:
 
 1. (Primary reason) The code needs to be used in 3+ places.
 2. (Secondary reason) They are truly unrelated domain concepts.
+3. (Last resort) The file is getting so long my IDE is struggling with it.
 
 Now, related code lives together. Unrelated code lives apart.
 
