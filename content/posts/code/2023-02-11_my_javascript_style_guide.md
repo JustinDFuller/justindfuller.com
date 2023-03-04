@@ -322,21 +322,23 @@ URL.ensureTrailingSlash("https://www.justindfuller.com");
 
 #### Why?
 
-Again, naming things is one of the hardest things in software engineering.
-A well-named variable (meaning it is accurate and concise) is rare.
+When you are writing a module, package, or file, a few things are happening.
 
-Since thinking of good names is difficult and time-consuming, 
-it is natural for engineers to not take the time to do it properly.
-So, when you create a module, you should think very carefully about the names given to your exported functions and variables.
+1. You are thinking carefully about the current needs of your domain.
+2. You have full context for the inputs and outputs.
+3. You understand what you intend your code to do and (just as importantly) to not do.
 
-But you should also think carefully about how your module will be referenced.
-By providing a consistent name, your module will be easier to find and understand.
-Also, engineers will have to spend less time thinking of how to name your module when they import it.
+This allows you to think clearly and carefully about function and variable names.
 
-Whenever they *do* want to rename it, they must explicitly do so.
-This adds an extra barrier to the process, hopefully prompting them to think carefully about what they are doing.
+When you are using a module, you no longer have all of this context.
+
+So, we should enforce the names created at the time and by the engineers with the *most* context.
+
 
 ### Prevent Returned Variable Renaming
+
+What should the returned variable be?
+Enforce it by returning that name as an object property.
 
 **Incorrect:**
 
@@ -401,74 +403,31 @@ By preventing variable renaming, you reduce the burden on engineers using your f
 You reduce the chances that the same variable with have different names throughout the code.
 Your codebase will gain consistency and other engineers jobs will become easier.
 
-### Immutable Functional Classes
+## Logic
 
-Store complex state in immutable functional classes.
+### Encapsulate Complex Domain Concepts
 
-**Incorrect:**
-
-```js
-const [postTitle, setPostTitle] = useState("");
-const [postBody, setPostBody] = useState("");
-```
+The most important and complex domain concepts should be encapsulated in object methods.
 
 **Incorrect:**
 
 ```js
-class Post {
-  constructor() {
-    this.title = ""
-    this.body = ""
-  }
-
-  setTitle(title) {
-    this.title = title
-  }
-
-  setBody(body) {
-    this.body = body
-  }
-}
-
-const [post, setPost] = useState(new Post());
+TODO
 ```
 
 **Correct:**
 
 ```js
-const postDefaults = {
-  title: "",
-  body: "",
-};
-
-function newPost(post = postDefaults) {
-  return Object.freeze({
-    ...post,
-    setTitle(title) {
-      return newPost({
-        ...post,
-        title,
-      });
-    },
-    setBody(body) {
-      return newPost({
-        ...post,
-        body,
-      });
-    },
-  });
-}
-
-const [post, setPost] = useState(newPost());
+TODO
 ```
 
 #### Why?
 
 TODO
 
-## Logic
+### Explicit Comparisons
 
-### Explicit Checks
+Reduce unintended behavior with explicit comparisons.
 
 **Incorrect:**
 
@@ -515,6 +474,8 @@ if (something === true) {
     // do something
   }
 }
+
+// throw an error
 ```
 
 **Correct:**
