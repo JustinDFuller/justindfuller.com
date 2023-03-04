@@ -500,6 +500,90 @@ if (anotherThing === true) {
 
 TODO
 
+### Return Errors
+
+Instead of throwing.
+
+**Incorrect:**
+
+```js
+function ensureTrailingSlash(url) {
+  if (url === undefined) {
+    throw new Error("url cannot be undefined");
+  }
+
+  if (url.length === 0) {
+    throw new Error("url cannot be empty");
+  }
+
+  return {
+    url: {
+      normalized: url.endsWith("/") ? url : url + "/",
+      original: url,
+    }
+  }
+}
+
+try {
+  const { url } = URL.ensureTrailingSlash("https://www.justindfuller.com");
+} catch(e) {
+  // there was an invalid URL
+}
+```
+
+**Correct:**
+
+```js
+function ensureTrailingSlash(url) {
+  if (url === undefined) {
+    return {
+      url: {
+        error: new Error("url cannot be undefined"),
+        original: url,
+      },
+    };
+  }
+
+  if (url.length === 0) {
+    return {
+      url: {
+        error: new Error("url cannot be empty"),
+        original: url,
+      },
+    };
+  }
+
+  return {
+    url: {
+      normalized: url.endsWith("/") ? url : url + "/",
+      original: url,
+    }
+  }
+}
+
+const { url } = URL.ensureTrailingSlash("https://www.justindfuller.com");
+if (url.error !== undefined) {
+  console.error("An error occured for URL.ensureTrailingSlash", url.error)
+  return
+}
+console.log(url.normalized) // https://www.justindfuller.com/
+```
+
+#### Why?
+
+Thrown errors should be used for invalid code but not invalid data.
+
+For example, if you attempt to reassign a constant value, an error can and should be thrown: but it should be done by the JavaScript engine.
+
+However, if your code is processing normally, you should keep your code and logic processing through normal control flows.
+A thrown error breaks us out of normal control flows, bubbling up to the nearest try/catch block.
+
+By including and operating on errors as data, you have the following benefits:
+
+1. Errors can become a well-defined part of your API contract.
+2. Error checks are a clear part of your logic.
+3. Errors can easily be logged and debugged alongside other data.
+
 ## Style
 
 ### Always Use Brackets
@@ -509,6 +593,14 @@ TODO
 ```js
 if (someBoolean === true) doAThing();
 ```
+
+**Incorrect:**
+
+```js
+if (someBoolean === true)
+ doAThing();
+```
+
 
 **Correct:**
 
@@ -520,7 +612,15 @@ if (someBoolean === true) {
 
 #### Why?
 
-TODO
+Brackets clearly delineate sections of logic.
+
+There are 3 problems with omitting them:
+
+1. Many engineers expect to see them and some are not aware they can be omitted. This can be confusing.
+2. Omitting brackets can easily lead to unexpected behavior. For example, if you add another function call under the first one (in the example above) it will not work as expected.
+3. Omitted brackets can be particularly confusing if several blocks of logic are grouped closely together without brackets.
+
+Brackets are a verbose option that improves code clarity.
 
 ### Embrace Short Variables
 
@@ -530,29 +630,59 @@ And allow the surrounding code context to provide additional information.
 
 ```js
 export function stringifyABTests(allUserABTests) {
-  return allUserABTests.map(function(userABTest) {
-    return userABTest.name + '=' + userABTest.variant
-  }).join(',')
+  return {
+    tests: {
+      string: allUserABTests.map(function(userABTest) {
+        return userABTest.name + '=' + userABTest.variant
+      }).join(','),
+      array: allUserABTests,
+    },
+  };
 }
+
+// Usage
+const { tests } = stringifyABTests([{ name: "foo", variant: "bar" }])
+console.log(tests.string) // foo=bar
 ```
 
 **Correct:**
 
 ```js
 function stringify(tests) {
-  return tests.map(function(t) {
-    return t.name + '=' + t.variant
-  }).join(',')
+  return {
+    tests: {
+      string: tests.map(function(t) {
+        return t.name + '=' + t.variant
+      }).join(','),
+      array: tests,
+    }.
+  };
 }
 
 export const abtests = {
   stringify,
 }
+
+// Usage
+const { tests } = abtests.stringify([{ name: "foo", variant: "bar" }])
+console.log(tests.string) // foo=bar
 ```
 
 #### Why?
 
-TODO
+This one may be surprising, because one of our main goals was to add verbosity to improve clarity.
+
+However, our other goal was to remove arbitrary practices that hide the true intention of code.
+
+This is a hard line to walk.
+
+Sometimes, verbose names can get in the way, making it *more* difficult to interpret the code.
+
+Thankfully, there is a particular case where this is true.
+
+1. In short functions.
+2. Where the surrounding code provides context.
+3. Where you have to do multiple operations on the variable.
 
 ### Prefer Regular Functions
 
