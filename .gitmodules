@@ -1,6 +1,0 @@
-[submodule "theme"]
-  path = themes/hugo-theme
-  url = https://github.com/alanorth/hugo-theme-bootstrap4-blog.git
-[submodule "themes/hugo-theme"]
-	path = themes/hugo-theme
-	url = https://github.com/JustinDFuller/hugo-theme.git
