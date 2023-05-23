@@ -13,12 +13,12 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/aphor", func(w http.ResponseWriter, r *http.Request) {
-		var aphorisms = template.Must(template.ParseFiles("./aphor/main.template.html"))
+	http.HandleFunc("/aphorism", func(w http.ResponseWriter, r *http.Request) {
+		var aphorisms = template.Must(template.ParseFiles("./aphorism/main.template.html"))
 
-		file, err := os.ReadFile("./aphor/entries.txt")
+		file, err := os.ReadFile("./aphorism/entries.txt")
 		if err != nil {
-			log.Fatalf("Error reading aphor entries: %s", err)
+			log.Fatalf("Error reading aphorism entries: %s", err)
 		}
 
 		split := bytes.Split(file, []byte("\n"))
