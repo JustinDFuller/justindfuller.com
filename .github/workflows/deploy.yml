@@ -2,7 +2,7 @@ name: Build and Deploy to GAE
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "redesign", "main" ]
 
 jobs:
   setup-build-publish-deploy:
