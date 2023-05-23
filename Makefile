@@ -4,7 +4,7 @@ server:
 	@go run main.go;
 
 server-watch:
-	@reflex -s -- sh -c "$(MAKE) server";
+	@reflex -r '\.go' -s -- sh -c "$(MAKE) server";
 
 deploy:
 	@gcloud app deploy;
