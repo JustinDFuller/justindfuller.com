@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -10,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"text/template"
 )
 
 func main() {
@@ -114,6 +114,82 @@ func main() {
 			Entries [][]byte
 		}
 		poems.Execute(w, data{
+			Entries: contents,
+		})
+	})
+
+	http.HandleFunc("/story", func(w http.ResponseWriter, r *http.Request) {
+		files, err := os.ReadDir("./story")
+		if err != nil {
+			log.Fatalf("Error reading story entries: %s", err)
+		}
+
+		var names []string
+		for _, dir := range files {
+			if name := dir.Name(); strings.HasSuffix(name, ".md") && !dir.IsDir() {
+				names = append(names, name)
+			}
+		}
+
+		contents := make([][]byte, len(names), len(names))
+		var wg sync.WaitGroup
+
+		wg.Add(len(names))
+
+		for i, name := range names {
+			i := i
+			name := name
+
+			go func() {
+				defer wg.Done()
+
+				file, err := os.ReadFile("./story/" + name)
+				if err != nil {
+					log.Fatalf("Error reading file: %s", err)
+				}
+
+				lines := bytes.Split(file, []byte("\n"))
+
+				for i := len(lines) - 1; i >= 0; i-- {
+					lines[i] = bytes.TrimSpace(lines[i])
+					if lines[i] == nil || bytes.Equal(lines[i], []byte("\n")) {
+						lines = append(lines[:i], lines[i+1:]...)
+					}
+				}
+
+				for i, line := range lines {
+					if bytes.HasPrefix(line, []byte("<h")) {
+						continue
+					}
+
+					if line == nil || bytes.Equal(line, []byte("\n")) {
+						continue
+					}
+
+					lines[i] = append([]byte("<p>"), line...)
+					lines[i] = append(lines[i], []byte("</p>")...)
+				}
+
+				contents[i] = bytes.Join(lines, nil)
+			}()
+		}
+
+		wg.Wait()
+
+		low := 0
+		high := len(contents) - 1
+
+		for high > low {
+			contents[low], contents[high] = contents[high], contents[low]
+			low++
+			high--
+		}
+
+		var stories = template.Must(template.ParseFiles("./story/main.template.html"))
+		type data struct {
+			Entries [][]byte
+		}
+		stories.Execute(w, data{
 			Entries: contents,
 		})
 	})
