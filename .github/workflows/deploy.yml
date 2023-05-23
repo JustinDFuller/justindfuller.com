@@ -1,0 +1,32 @@
+name: Build and Deploy to GAE
+
+on:
+  push:
+    branches: [ "master", "redesign", "main" ]
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+    - name: 'deploy'
+      uses: 'google-github-actions/deploy-appengine@v1'
+      with:
+        project_id: "justindfuller"
+
+    - name: 'test'
+      run: 'echo "${{ steps.deploy.outputs.url }}"'
