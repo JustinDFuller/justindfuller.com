@@ -56,7 +56,6 @@
       p {
         margin-bottom: 40px;
         line-height: 36px;
-        text-align: justify;
       }
 
       hr {
@@ -70,7 +69,9 @@
     <main>
       <section>
         {{ range .Entries }}
-        <p>{{ printf "%s" . }}</p>
+          <p>
+            {{ printf "%s" . }}
+          </p>
         <hr />
         {{ end }}
       </section>

@@ -70,8 +70,12 @@
     <main>
       <section>
         {{ range .Entries }}
-        <p>{{ printf "%s" . }}</p>
-        <hr />
+        <div style="text-align: center;">
+          <p style="text-align: left; display: inline-block;">
+            {{ printf "%s" . }}
+          </p>
+          <hr />
+        </div>
         {{ end }}
       </section>
     </main>
