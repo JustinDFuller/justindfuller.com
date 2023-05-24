@@ -64,6 +64,10 @@
       hr {
         margin-top: 30px;
       }
+
+      h1, h2 {
+        text-align: center;
+      }
     </style>
   </head>
 
@@ -71,14 +75,19 @@
     <main>
       <section>
         {{ range .Entries }}
-        <div style="text-align: center;">
-          <p style="text-align: left; display: inline-block;">
-            {{ printf "%s" . }}
-          </p>
+          {{ printf "%s" . }}
           <hr />
-        </div>
         {{ end }}
       </section>
     </main>
+
+    <!-- Simple script to hide main until fonts are loaded -->
+    <script>
+      const main = document.querySelector('main')
+      main.style.visibility = "hidden"
+      document.fonts.ready.then(function () {
+        main.style.visibility = "visible"
+      }); 
+    </script>
   </body>
 </html>
