@@ -39,7 +39,13 @@
         background: #fcf9f4;
       }
 
+      @keyframes fadeIn {
+        0% { opacity: 0;  }
+        100% { opacity: 1;  }
+      }
+
       main {
+        animation: fadeIn 1s;
         height: 100%;
         max-width: 700px;
         margin: auto;
@@ -53,7 +59,7 @@
         color: black;
         padding: 10px 20px;
         border-radius: 2px;
-        transition: background 1s, color 1s;
+        transition: background 500ms, color 500ms;
         width: 200px;
         max-width: 100%;
         text-align: center;
