@@ -228,6 +228,10 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/make", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./make/main.template.html")
+	})
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./main.template.html")
 	})
