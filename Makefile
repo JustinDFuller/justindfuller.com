@@ -1,3 +1,4 @@
+export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
 
 server:
