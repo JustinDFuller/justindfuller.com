@@ -233,6 +233,12 @@ func main() {
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Hostname() == "justindfuller.com" {
+			http.Redirect(w, r, "https://www.justindfuller.com", http.StatusMovedPermanently)
+
+			return
+		}
+
 		http.ServeFile(w, r, "./main.template.html")
 	})
 
