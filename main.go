@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
@@ -244,14 +245,6 @@ func main() {
 			return
 		}
 
-		s, err := os.Stat("./make/main.template.html")
-		if err != nil {
-			http.Error(w, "An error occured.", http.StatusInternalServerError)
-			log.Printf("Error stating ./main.template.html: %s", err)
-
-			return
-		}
-
 		f, err := os.Open("./make/main.template.html")
 		if err != nil {
 			http.Error(w, "An error occured.", http.StatusInternalServerError)
@@ -268,20 +261,12 @@ func main() {
 		if id := os.Getenv("GAE_DEPLOYMENT_ID"); id != "" {
 			w.Header().Set("ETag", fmt.Sprintf("W/%s", id))
 		}
-		http.ServeContent(w, r, f.Name(), s.ModTime(), f)
+		http.ServeContent(w, r, f.Name(), time.Now(), f)
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Hostname() == "justindfuller.com" {
 			http.Redirect(w, r, "https://www.justindfuller.com", http.StatusMovedPermanently)
-
-			return
-		}
-
-		s, err := os.Stat("./main.template.html")
-		if err != nil {
-			http.Error(w, "An error occured.", http.StatusInternalServerError)
-			log.Printf("Error stating ./main.template.html: %s", err)
 
 			return
 		}
@@ -302,7 +287,7 @@ func main() {
 		if id := os.Getenv("GAE_DEPLOYMENT_ID"); id != "" {
 			w.Header().Set("ETag", fmt.Sprintf("W/%s", id))
 		}
-		http.ServeContent(w, r, f.Name(), s.ModTime(), f)
+		http.ServeContent(w, r, f.Name(), time.Now(), f)
 	})
 
 	port := os.Getenv("PORT")
