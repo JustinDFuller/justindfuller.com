@@ -6,6 +6,31 @@ automatic_scaling:
   max_idle_instances: 1
 
 handlers:
+  - url: /aphorism
+    static_files: .build/aphorism.html
+    upload: .build/aphorism.html
+    secure: always
+
+  - url: /poem
+    static_files: .build/poem.html
+    upload: .build/poem.html
+    secure: always
+
+  - url: /story
+    static_files: .build/story.html
+    upload: .build/story.html
+    secure: always
+
+  - url: /make
+    static_files: .build/make.html
+    upload: .build/make.html
+    secure: always
+
+  - url: /
+    static_files: .build/index.html
+    upload: .build/index.html
+    secure: always
+
   - url: /.*
     script: auto
     secure: always

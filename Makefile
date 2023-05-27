@@ -13,3 +13,12 @@ deploy:
 format:
 	@go fmt ./...;
 	@npx prettier -w **/*;
+
+build:
+	@rm -rf ./.build;
+	@mkdir ./.build;
+	@curl "http://localhost:9000/" > ./.build/index.html;
+	@curl "http://localhost:9000/story" > ./.build/story.html;
+	@curl "http://localhost:9000/make" > ./.build/make.html;
+	@curl "http://localhost:9000/aphorism" > ./.build/aphorism.html;
+	@curl "http://localhost:9000/poem" > ./.build/poem.html;
