@@ -7,6 +7,11 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"github.com/yuin/goldmark"
+	meta "github.com/yuin/goldmark-meta"
+	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer/html"
 )
 
 func Entry(want string) ([]byte, error) {
@@ -34,27 +39,21 @@ func Entry(want string) ([]byte, error) {
 		return nil, errors.Wrapf(err, "error reading story: %s", path)
 	}
 
-	lines := bytes.Split(file, []byte("\n"))
+	md := goldmark.New(
+		goldmark.WithExtensions(extension.GFM, meta.Meta),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+		goldmark.WithRendererOptions(
+			html.WithHardWraps(),
+			html.WithUnsafe(),
+		),
+	)
 
-	for i := len(lines) - 1; i >= 0; i-- {
-		lines[i] = bytes.TrimSpace(lines[i])
-		if lines[i] == nil || bytes.Equal(lines[i], []byte("\n")) {
-			lines = append(lines[:i], lines[i+1:]...)
-		}
+	var buf bytes.Buffer
+	if err := md.Convert(file, &buf); err != nil {
+		return nil, errors.Wrap(err, "error converting markdown")
 	}
 
-	for i, line := range lines {
-		if bytes.HasPrefix(line, []byte("<h")) {
-			continue
-		}
-
-		if line == nil || bytes.Equal(line, []byte("\n")) {
-			continue
-		}
-
-		lines[i] = append([]byte("<p>"), line...)
-		lines[i] = append(lines[i], []byte("</p>")...)
-	}
-
-	return bytes.Join(lines, nil), nil
+	return buf.Bytes(), nil
 }

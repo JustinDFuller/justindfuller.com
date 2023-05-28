@@ -1,8 +1,23 @@
-<h1>The Philosophy of Trees</h1>
+---
+author: "Justin Fuller"
+date: 2022-09-18
+linktitle: "The Philosophy of Trees"
+menu:
+  main:
+    parent: posts
+next: /posts/the-philosophy-of-trees
+title: "The Philosophy of Trees"
+weight: 1
+images:
+ - /the_philosophy_of_trees.webp
+tags: [Story]
+---
+
+# The Philosophy of Trees
 
 The story I have to tell you today is not the story I wished to tell. In fact, I am loath to repeat much of it. I pray antiquity and modernity alike judge me not as an author, nor even as editor, but as a trembling witness. Reluctant to confess what he has seen, yet compelled by his conscience to reveal the devilry that took place at the autumn equinox on the outskirts of a great Carolina wilderness.
 
-<h2>I</h2>
+## I
 
 Whether it benefit you or not, reader, I must explain what innocent circumstances brought me upon this mystery. I cannot countenance anyone to think I would search out such thought or deed. If I had known what would occur, I would have fled those ancient and crooked pines.
 
@@ -14,19 +29,19 @@ Despite my conspicuous arrival in a town that, as I took it, saw few visitors, I
 
 If only I could have known what that fateful advice would bring about, I could have thanked the man, turned around my mother’s old station wagon, and driven back east. As it stands, I was overcome with no such foresight and set out in earnest search of my host. 
 
-Despite the distance of only a few miles, it took several hours to find my destination. The roads at this point were merely dirt and gravel, if that. On one occasion I became so tired of driving that I pulled the car over to what one might call the side of the road. Fetching my binoculars, pencils, and notebook, I attempted to find some recuperation in my profession. Unfortunately, there was nothing in sight except common Mimus Polyglottos. However, I knew that a bit of rest would do wonders for my aching legs, so I resigned myself to illustrating the diving form of these common and brilliant creatures.
+Even though the distance was but a few miles, it took several hours to find my destination. The roads at this point were merely dirt and gravel, if that. On one occasion I became so tired of driving that I pulled the car over to what one might call the side of the road. Fetching my binoculars, pencils, and notebook, I attempted to find some recuperation in my profession. Unfortunately, there was nothing in sight except common Mimus Polyglottos. However, I knew that a bit of rest would do wonders for my aching legs, so I resigned myself to illustrating the diving form of these common and brilliant creatures.
 
 Once complete, I found my feet and legs rejuvenated and ready to continue the journey. It also reminded me of the simple beauty that I often overlook in everyday things. One with my experience and reputation might not incline to focus on something so familiar as Mimus Polyglottos, but the exercise revealed several things about the creatures I never before noticed. I took a note to publish a few thoughts about this in the university’s publication upon my return; a thought that would soon cease to be of any importance.
 
-<h2>II</h2>
+## II
 
 I arrived at my unexpecting host just as the sun fell below the trees. Finding the property surprisingly without a gate and unprotected by hounds, I parked a reasonable distance away. If the recluse should warn me off with a shotgun I would be safe, but if he watched my approach, he would hopefully see my friendly and hopeful demeanor. Just to be safe, I gave the horn a few taps and shouted a greeting.
 
-Despite the unusual hour for callers and my unexpected visit, my host opened his door, greeting me with warranted apprehension, but without aggression. My assumption about a mountain recluse led me to expect a gruff and standoffish eccentric; I quickly realized my mistake. The gentleman who greeted me was of similar age and stature as myself. He was well-groomed and his manner of dress was oddly formal for the setting. I, without forsaking the safety of my vehicle, while he remained within a calculated distance of the door, began to explain this abnormal visit.
+Given the unusual hour for callers and my unexpected visit, I was surprised when my host opened his door. He greeted me with warranted apprehension, but without aggression. My assumption about a mountain recluse led me to expect a gruff and standoffish eccentric; I quickly realized my mistake. The gentleman who greeted me was of similar age and stature as myself. He was well-groomed and his manner of dress was oddly formal for the setting. I, without forsaking the safety of my vehicle, while he remained within a calculated distance of the door, began to explain this abnormal visit.
 
 “Hello, I am calling after a doctor Miles Thales. Might that be you?”
 
-<h2>III</h2>
+## III
 
 Allow me to assure you: I was equally surprised at the following events as you will surely be. To be perfectly forthcoming, I had spent the drive fortifying my mind to the possibility that I would sleep the night in the cold back seat of this station wagon. Instead, and to my great delight, I was, within a few minutes, reclining in a comfortable chair by a low-crackling fireplace. A steaming cup of tea placed in my hands by a host that shew no signs of reclusivity nor eccentricism. Indeed, all evidence pointed to the contrary. The room I found myself in was undoubtedly equipped for entertaining. Furnished with comfortable arm chairs and even a <i>fauteuil</i>, encircling a warm fireplace, there was no doubt that I sat in a gathering space. But for what mysterious or scholarly pursuits, I could not say.
 
@@ -38,21 +53,28 @@ Across the fireplace sat my host. The young doctor Thales. Not a disheveled old 
 
 “Well, I admit I don’t know of the creatures you’re seeking. But there are many excellent foot trails beyond this property. I cannot quite describe the sensations, but I often feel that, when I walk through these trees, they speak to me. You said you have a few days, yes? So I entreat you, stay a while, and see what comes of it.”
 
-<h2>IV</h2>
-I woke in the night to the reverberant melody of the majestic Bubo Virginianus. Not another sound was to be heard. But, I must admit, despite the hospitable manner of my reception, I crept to my bedroom door, ensuring the lock was still securely fastened.
+## IV
+I woke in the night to the reverberant melody of the majestic Bubo Virginianus. Not another sound was to be heard. But, I must admit, the hospitable manner of my reception was not enough to prevent me from creeping to my bedroom door, ensuring the lock was still securely fastened.
 
-<h2>V</h2>
+## V
 The house was empty the next morning. On the stove sat a kettle, the tea still hot. On the table, a few breakfast items and a note.
 
-<i style="padding: 30px 20px; text-align: center; display: block;">Run out for supplies. Will return by evening. <br /> Help yourself to this breakfast as well as  <br /> anything else you find in the storage closet. <br /> If you like, there is a hiking trail behind the house.  </i>
+<div style="display: flex; justify-content: center; align-items: center; margin: 40px 0;">
+  <i style="text-align: left; width: max-content;">
+    Run out for supplies. Will return by evening. <br />
+    Help yourself to this breakfast as well as  <br />
+    anything else you find in the storage closet. <br />
+    If you like, there is a hiking trail behind the house.
+  </i>
+</div>
 
 After eating what was set out, I regrettably found myself to still be quite hungry. With a tinge of regret, I foraged my host’s storage closet to find enough sustenance. His letter was no lie. The remaining supplies were meager, but as he was resupplying, and I felt it would not be wise to traverse a strange mountain on an empty stomach, I almost depleted the remainder of his store.
 
-I now set out for what I hoped to be a fine morning of hiking; bringing, as always, my binoculars, notebook, and pencils. Despite the late morning hour, the sun scarcely peeked over the hills and through the trees. Perhaps due to this, there was a late-hanging morning fog and refreshing dew suspended from each leaf. One might expect a wood such as this to teem with life, but to the contrary I found it almost eerily silent. I was neither able to glimpse the movement of a squirrel in a tree nor even the gentle glide of a cherry millipede, so common on a Carolina trail floor. 
+I now set out for what I hoped to be a fine morning of hiking; bringing, as always, my binoculars, notebook, and pencils. Oddly, at this late morning hour, the sun scarcely peeked over the hills and through the trees. Perhaps due to this, there was a late-hanging morning fog and refreshing dew suspended from each leaf. One might expect a wood such as this to teem with life, but to the contrary I found it almost eerily silent. I was neither able to glimpse the movement of a squirrel in a tree nor even the gentle glide of a cherry millipede, so common on a Carolina trail floor. 
 
 And with that, you know. I have explained myself, and you may plainly see how it is I arrived on that trail. You can also understand why there was no witness but myself, and why my own witness, due to an underprovisioning of food, may not hold up under scrutiny.
 
-<h2>VI</h2>
+## VI
 
 It happened only a couple hours later–shortly after the sun reached its zenith. Not long before I had run out of food and water, resolving to turn back only at the top of the next hill.
 
@@ -70,7 +92,7 @@ As I grew closer, I detected the slight movement of breathing. This discovery ru
 
 Finally, there was no option left. I was standing but a foot away from him–my whispers having no effect. It happened only when I grew the courage to touch his shoulder.
 
-<h2>VII</h2>
+## VII
 
 “There is no such thing as a tree.”
 
@@ -96,7 +118,7 @@ What other choice did I have but to respond? What is worse, to flee into the sil
 
 “Oh blessed child. Oh deceived child. It is no tree that you rest your hand upon. A tree can only exist in your mind.”
 
-Despite my famished and dehydrated state, I can assure you that my palm did sit upon the bark of a great pine tree. Not only that, but my feet stood and softly crunched its needles. There is no doubt in my mind what I beheld.
+Even in my famished and dehydrated state, I can assure you that my palm did sit upon the bark of a great pine tree. Not only that, but my feet stood and softly crunched its needles. There is no doubt in my mind what I beheld.
 
 Changing my tactic, I asked, “Sir, are you well?”
 
@@ -120,13 +142,13 @@ At this, I felt my case was made, but his reply struck me down.
 
 “How can I wake one from a dream who does not know he slumbers? You deceive yourself and allow your senses to do the same. It is not just the word that we have created for each other. The very form itself was created by our senses. Our perception is nothing short of a dream, a lie, made to represent a less oppressive reality.”
 
-<h2>VIII</h2>
+## VIII
 
 Our debate continued in this fashion for some time. Eventually, I was overcome with hunger and frightened by the sunken state of the sky. I bid this strange fellow come with me, but to this he did not reply. I then begged him to remain where he was, promising that I would return with help. I made my way back to the cabin as quickly as I could in my famished state. 
 
 Upon my arrival, it was now very dark indeed, the young doctor Thales greeted me with unmasked anxiety. Apparently, he had been quite worried at the late hour of my arrival, having understood that I had not returned home, due to my station wagon remaining in the driveway. As I explained the strange occurrence, he prepared me a meal. At my insistence, he and I ventured back out, bringing flashlights and extra water for the old man. However, upon our arrival at the top of that fateful hill, we found it empty.
 
-<h2>IX</h2>
+## IX
 
 Dear reader, do not mock me. You may wonder at the significance of this tale. To that, we now arrive. For, although my experience was rattling, it would not be worth recounting except to report a sick and missing person to the authorities.
 
@@ -138,7 +160,7 @@ For I now understand, I now <i>experience</i> that I walk around in an abstract 
 
 But, I am afraid, truly afraid, that I can no longer be abstract. The world around me slowly unravels. No, it is not unraveling, but for the first time it is becoming <i>real</i>.
 
-<h2>Appendix</h2>
+## Appendix
 
 The preceding letters were found among the few remaining possessions of one of my most interesting patients. The patient, who, for his privacy, will remain anonymous, was an accomplished scholar in his field. He was brought into my care at the behest of his mother, who reported strange behavior. This young man, still in his thirties, had become solemn and reclusive. He was no longer able to care for himself. Instead, he spent long hours staring at objects, often crying and whispering that it did not exist, that it was a lie. At first he and I would discuss these thoughts at great length. Eventually, he was no longer able to communicate. At the very end, it became clear that his mind had cleanly divorced reality.
 
