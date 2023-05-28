@@ -11,9 +11,6 @@ dispatch:
   - url: "notes.justindfuller.com/*"
     service: reallysimplenotes
 
-  - url: "justindfuller-dot-justindfuller.uc.r.appspot.com/"
-    service: default
-
   - url: "justindfuller.uc.r.appspot.com/"
     service: default
 

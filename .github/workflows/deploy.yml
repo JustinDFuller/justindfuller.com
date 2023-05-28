@@ -24,7 +24,7 @@ jobs:
         go-version: '1.20'
       
     - name: 'build'
-      run: 'timeout 60 ./build.sh'
+      run: 'timeout 60 ./.github/workflows/build.sh'
 
     - name: 'auth'
       uses: 'google-github-actions/auth@v1'
@@ -35,7 +35,4 @@ jobs:
       uses: 'google-github-actions/deploy-appengine@v1'
       with:
         project_id: "justindfuller"
-        deliverables: "app.yaml dispatch.yaml"
-
-    - name: 'test'
-      run: 'echo "${{ steps.deploy.outputs.url }}"'
+        deliverables: "./.github/workflows/app.yaml ./.dispatch.yaml"
