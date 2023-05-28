@@ -40,8 +40,12 @@
       }
 
       @keyframes fadeIn {
-        0% { opacity: 0;  }
-        100% { opacity: 1;  }
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
 
       main {
@@ -75,9 +79,7 @@
     <main>
       <section>
         {{ range .Entries }}
-          <p>
-            {{ printf "%s" . }}
-          </p>
+        <p>{{ printf "%s" . }}</p>
         <hr />
         {{ end }}
       </section>
@@ -85,11 +87,11 @@
 
     <!-- Simple script to hide main until fonts are loaded -->
     <script>
-      const main = document.querySelector('main')
-      main.style.visibility = "hidden"
+      const main = document.querySelector("main");
+      main.style.visibility = "hidden";
       document.fonts.ready.then(function () {
-        main.style.visibility = "visible"
-      }); 
+        main.style.visibility = "visible";
+      });
     </script>
   </body>
 </html>
