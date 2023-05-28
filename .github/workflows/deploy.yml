@@ -26,6 +26,9 @@ jobs:
     - name: 'build'
       run: 'timeout 60 ./.github/workflows/build.sh'
 
+    - name: 'prep'
+      run: 'mv ./.github/workflows/app.yaml ./.github/workflows/dispatch.yaml ./'
+
     - name: 'auth'
       uses: 'google-github-actions/auth@v1'
       with:
@@ -35,4 +38,4 @@ jobs:
       uses: 'google-github-actions/deploy-appengine@v1'
       with:
         project_id: "justindfuller"
-        deliverables: "./.github/workflows/app.yaml ./.dispatch.yaml"
+        deliverables: "app.yaml dispatch.yaml"
