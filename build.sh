@@ -1,2 +1,2 @@
 #!/bin/bash
-make server & (sleep 1 && make build)
+make server & (sleep 20 && make build)
