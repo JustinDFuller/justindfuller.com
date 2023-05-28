@@ -24,10 +24,10 @@ jobs:
         go-version: '1.20'
       
     - name: 'build'
-      run: 'timeout 60 ./.github/workflows/build.sh'
+      run: 'timeout 60 .appengine/build.sh'
 
     - name: 'prep'
-      run: 'mv ./.github/workflows/app.yaml ./.github/workflows/dispatch.yaml ./'
+      run: 'mv .appengine/app.yaml .appengine/dispatch.yaml ./'
 
     - name: 'auth'
       uses: 'google-github-actions/auth@v1'
