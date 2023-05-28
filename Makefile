@@ -18,7 +18,10 @@ build:
 	@rm -rf ./.build;
 	@mkdir ./.build;
 	@curl "http://localhost:9000/" > ./.build/index.html;
-	@curl "http://localhost:9000/story" > ./.build/story.html;
 	@curl "http://localhost:9000/make" > ./.build/make.html;
 	@curl "http://localhost:9000/aphorism" > ./.build/aphorism.html;
 	@curl "http://localhost:9000/poem" > ./.build/poem.html;
+	@curl "http://localhost:9000/story" > ./.build/story.html;
+	@curl "http://localhost:9000/story/the_philosophy_of_trees" > ./.build/the_philosophy_of_trees.html;
+	@curl "http://localhost:9000/story/bridge" > ./.build/bridge.html;
+	@curl "http://localhost:9000/story/nothing" > ./.build/nothing.html;

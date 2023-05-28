@@ -21,6 +21,21 @@ handlers:
     upload: .build/story.html
     secure: always
 
+  - url: /story/the_philosophy_of_trees
+    static_files: .build/the_philosophy_of_trees.html
+    upload: .build/the_philosophy_of_trees.html
+    secure: always
+
+  - url: /story/bridge
+    static_files: .build/bridge.html
+    upload: .build/bridge.html
+    secure: always
+
+  - url: /story/nothing
+    static_files: .build/nothing.html
+    upload: .build/nothing.html
+    secure: always
+
   - url: /make
     static_files: .build/make.html
     upload: .build/make.html

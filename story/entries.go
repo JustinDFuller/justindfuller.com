@@ -7,77 +7,54 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"golang.org/x/sync/errgroup"
 )
 
-func Entries() ([][]byte, error) {
+func Entry(want string) ([]byte, error) {
 	files, err := os.ReadDir("./story")
 	if err != nil {
 		return nil, errors.Wrap(err, "error reading story directory")
 	}
 
-	var names []string
+	var name string
+
 	for _, dir := range files {
-		if name := dir.Name(); strings.HasSuffix(name, ".md") && !dir.IsDir() {
-			names = append(names, name)
+		if n := dir.Name(); strings.HasSuffix(n, fmt.Sprintf("%s.md", want)) {
+			name = n
 		}
 	}
 
-	contents := make([][]byte, len(names), len(names))
-	var wg errgroup.Group
-
-	for i, name := range names {
-		i := i
-		name := name
-
-		wg.Go(func() error {
-			path := fmt.Sprintf("./story/%s", name)
-
-			file, err := os.ReadFile(path)
-			if err != nil {
-				return errors.Wrapf(err, "error reading story: %s", path)
-			}
-
-			lines := bytes.Split(file, []byte("\n"))
-
-			for i := len(lines) - 1; i >= 0; i-- {
-				lines[i] = bytes.TrimSpace(lines[i])
-				if lines[i] == nil || bytes.Equal(lines[i], []byte("\n")) {
-					lines = append(lines[:i], lines[i+1:]...)
-				}
-			}
-
-			for i, line := range lines {
-				if bytes.HasPrefix(line, []byte("<h")) {
-					continue
-				}
-
-				if line == nil || bytes.Equal(line, []byte("\n")) {
-					continue
-				}
-
-				lines[i] = append([]byte("<p>"), line...)
-				lines[i] = append(lines[i], []byte("</p>")...)
-			}
-
-			contents[i] = bytes.Join(lines, nil)
-
-			return nil
-		})
+	if name == "" {
+		return nil, errors.New("not found")
 	}
 
-	if err := wg.Wait(); err != nil {
-		return nil, errors.Wrap(err, "error reading stories")
+	path := fmt.Sprintf("./story/%s", name)
+
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return nil, errors.Wrapf(err, "error reading story: %s", path)
 	}
 
-	low := 0
-	high := len(contents) - 1
+	lines := bytes.Split(file, []byte("\n"))
 
-	for high > low {
-		contents[low], contents[high] = contents[high], contents[low]
-		low++
-		high--
+	for i := len(lines) - 1; i >= 0; i-- {
+		lines[i] = bytes.TrimSpace(lines[i])
+		if lines[i] == nil || bytes.Equal(lines[i], []byte("\n")) {
+			lines = append(lines[:i], lines[i+1:]...)
+		}
 	}
 
-	return contents, nil
+	for i, line := range lines {
+		if bytes.HasPrefix(line, []byte("<h")) {
+			continue
+		}
+
+		if line == nil || bytes.Equal(line, []byte("\n")) {
+			continue
+		}
+
+		lines[i] = append([]byte("<p>"), line...)
+		lines[i] = append(lines[i], []byte("</p>")...)
+	}
+
+	return bytes.Join(lines, nil), nil
 }
