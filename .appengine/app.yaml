@@ -1,0 +1,61 @@
+runtime: go120
+service: default
+
+automatic_scaling:
+  max_instances: 1
+  max_idle_instances: 1
+
+handlers:
+  - url: /aphorism
+    static_files: .build/aphorism.html
+    upload: .build/aphorism.html
+    secure: always
+
+  - url: /poem
+    static_files: .build/poem.html
+    upload: .build/poem.html
+    secure: always
+
+  - url: /story
+    static_files: .build/story.html
+    upload: .build/story.html
+    secure: always
+
+  - url: /story/the_philosophy_of_trees
+    static_files: .build/the_philosophy_of_trees.html
+    upload: .build/the_philosophy_of_trees.html
+    secure: always
+
+  - url: /story/bridge
+    static_files: .build/bridge.html
+    upload: .build/bridge.html
+    secure: always
+
+  - url: /story/nothing
+    static_files: .build/nothing.html
+    upload: .build/nothing.html
+    secure: always
+
+  - url: /review
+    static_files: .build/review.html
+    upload: .build/review.html
+    secure: always
+
+  - url: /review/zen-and-the-art-of-motorcycle-maintenance
+    static_files: .build/zen-and-the-art-of-motorcycle-maintenance.html
+    upload: .build/zen-and-the-art-of-motorcycle-maintenance.html
+    secure: always
+
+  - url: /make
+    static_files: .build/make.html
+    upload: .build/make.html
+    secure: always
+
+  - url: /
+    static_files: .build/index.html
+    upload: .build/index.html
+    secure: always
+
+  - url: /.*
+    script: auto
+    secure: always

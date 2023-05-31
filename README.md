@@ -1,7 +1,5 @@
-# Blog
+# justindfuller.com
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/47c8c143-195f-45bc-a205-b548873d256a/deploy-status)](https://app.netlify.com/sites/justindfuller/deploys)
+[![Build and Deploy to GAE](https://github.com/JustinDFuller/justindfuller.com/actions/workflows/deploy.yml/badge.svg?branch=redesign)](https://github.com/JustinDFuller/justindfuller.com/actions/workflows/deploy.yml)
 
-My blog. Built with [Hugo](gohugo.io), served with [Netlify](netlify.com).
-
-![Screenshot](https://image.thum.io/get/maxAge/12/width/1000/https://justindfuller.com "Screenshot")
+[https://www.justindfuller.com](https://www.justindfuller.com)

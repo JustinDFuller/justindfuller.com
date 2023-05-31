@@ -17,6 +17,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+      
+    - name: 'build'
+      run: 'timeout 60 .appengine/build.sh'
+
+    - name: 'prep'
+      run: 'mv .appengine/app.yaml .appengine/dispatch.yaml ./'
 
     - name: 'auth'
       uses: 'google-github-actions/auth@v1'
@@ -27,6 +38,4 @@ jobs:
       uses: 'google-github-actions/deploy-appengine@v1'
       with:
         project_id: "justindfuller"
-
-    - name: 'test'
-      run: 'echo "${{ steps.deploy.outputs.url }}"'
+        deliverables: "app.yaml dispatch.yaml"

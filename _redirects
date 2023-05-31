@@ -1,5 +1,0 @@
-# These rules will change if you change your site’s custom domains or HTTPS settings
-
-# Redirect default Netlify subdomain to primary domain
-https://inspiring-archimedes-2b17ce.netlify.com/* https://www.justindfuller.com/:splat 301!
-https://justindfuller.netlify.com/* https://www.justindfuller.com/:splat 301!
