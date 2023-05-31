@@ -36,6 +36,16 @@ handlers:
     upload: .build/nothing.html
     secure: always
 
+  - url: /review
+    static_files: .build/review.html
+    upload: .build/review.html
+    secure: always
+
+  - url: /review/zen-and-the-art-of-motorcycle-maintenance
+    static_files: .build/zen-and-the-art-of-motorcycle-maintenance.html
+    upload: .build/zen-and-the-art-of-motorcycle-maintenance.html
+    secure: always
+
   - url: /make
     static_files: .build/make.html
     upload: .build/make.html

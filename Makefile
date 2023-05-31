@@ -25,3 +25,5 @@ build:
 	@curl "http://localhost:9000/story/the_philosophy_of_trees" > ./.build/the_philosophy_of_trees.html;
 	@curl "http://localhost:9000/story/bridge" > ./.build/bridge.html;
 	@curl "http://localhost:9000/story/nothing" > ./.build/nothing.html;
+	@curl "http://localhost:9000/review" > ./.build/review.html;
+	@curl "http://localhost:9000/review/zen-and-the-art-of-motorcycle-maintenance" > ./.build/zen-and-the-art-of-motorcycle-maintenance.html;

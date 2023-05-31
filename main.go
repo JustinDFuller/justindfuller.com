@@ -9,6 +9,7 @@ import (
 
 	"github.com/justindfuller/justindfuller.com/aphorism"
 	"github.com/justindfuller/justindfuller.com/poem"
+	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
 )
 
@@ -70,6 +71,34 @@ func main() {
 		}
 
 		template.Must(template.ParseFiles("./story/story.template.html")).Execute(w, data{
+			Entry: entry,
+		})
+	})
+
+	http.HandleFunc("/review", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./review/main.template.html")
+	})
+
+	http.HandleFunc("/review/", func(w http.ResponseWriter, r *http.Request) {
+		paths := strings.Split(r.URL.Path, "/")
+		last := len(paths) - 1
+
+		if len(paths) == 0 {
+			http.Error(w, "Review not found.", http.StatusNotFound)
+			log.Printf("Review not found: %s", r.URL.Path)
+
+			return
+		}
+
+		entry, err := review.Entry(paths[last])
+		if err != nil {
+			http.Error(w, "Error reading review.", http.StatusInternalServerError)
+			log.Printf("Error reading review: %s", err)
+
+			return
+		}
+
+		template.Must(template.ParseFiles("./review/review.template.html")).Execute(w, data{
 			Entry: entry,
 		})
 	})
