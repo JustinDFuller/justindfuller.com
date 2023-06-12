@@ -55,3 +55,9 @@
 **Succor**
 
 > Aid; help; assitance; esp., assistance that relieves and delivers from difficulty, want, or distress.
+
+<hr />
+
+**Supererogatory**
+
+> Observed or performed to an extent not enjoined or required.
