@@ -11,6 +11,7 @@ import (
 	"github.com/justindfuller/justindfuller.com/poem"
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
+	"github.com/justindfuller/justindfuller.com/word"
 )
 
 type data struct {
@@ -30,6 +31,20 @@ func main() {
 
 		template.Must(template.ParseFiles("./aphorism/main.template.html")).Execute(w, data{
 			Entries: entries,
+		})
+	})
+
+	http.HandleFunc("/word", func(w http.ResponseWriter, r *http.Request) {
+		entry, err := word.Entry()
+		if err != nil {
+			http.Error(w, "Error reading Words", http.StatusInternalServerError)
+			log.Printf("Error reading Words: %s", err)
+
+			return
+		}
+
+		template.Must(template.ParseFiles("./word/main.template.html")).Execute(w, data{
+			Entry: entry,
 		})
 	})
 

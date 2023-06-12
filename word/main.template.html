@@ -2,11 +2,11 @@
 <html class="no-js" lang="">
   <head>
     <meta charset="utf-8" />
-    <title>Justin Fuller</title>
-    <meta name="description" content="Justin Fuller" />
+    <title>Word | Justin Fuller</title>
+    <meta name="description" content="Word | Justin Fuller" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="og:title" content="Justin Fuller" />
+    <meta property="og:title" content="Word | Justin Fuller" />
 
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
@@ -32,7 +32,7 @@
         padding: 0;
         margin: 0;
         width: 100%;
-        height: 100%;
+        height: max-content;
         display: block;
         font-size: 24px;
         font-family: "Amiri", serif;
@@ -40,57 +40,66 @@
       }
 
       @keyframes fadeIn {
-        0% { opacity: 0;  }
-        100% { opacity: 1;  }
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
       }
 
       main {
         animation: fadeIn 1s;
-        height: 100%;
-        max-width: 700px;
+        padding: 20px;
+        height: max-content;
+        width: 100%;
+        display: block;
+      }
+
+      section {
+        display: block;
+        height: max-content;
+        max-width: 600px;
         margin: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
       }
 
-      main > a {
-        color: black;
-        padding: 10px 20px;
-        border-radius: 2px;
-        transition: background 500ms, color 500ms;
-        width: 200px;
-        max-width: 100%;
-        text-align: center;
+      p {
+        margin-bottom: 40px;
+        line-height: 36px;
       }
 
-      main > a:hover,
-      main > a:focus,
-      main > a:active {
-        background: black;
-        color: white;
+      hr {
+        margin-top: 50px;
+        margin-bottom: 50px;
+      }
+
+      blockquote {
+        border-left: 3px solid #444955;
+        margin: 0;
+        padding: 0 2em;
+        margin-bottom: 30px;
+      }
+
+      blockquote p {
+        margin-bottom: 0;
       }
     </style>
   </head>
 
   <body>
     <main>
-      <a href="/aphorism">Aphorism</a>
-      <a href="/poem">Poem</a>
-      <a href="/story">Story</a>
-      <a href="/word">Word</a>
-      <a href="/make">Make</a>
-      <a href="/review">Review</a>
+      <section>
+        {{ printf "%s" .Entry }}
+      </section>
     </main>
 
     <!-- Simple script to hide main until fonts are loaded -->
     <script>
-      const main = document.querySelector('main')
-      main.style.visibility = "hidden"
+      const main = document.querySelector("main");
+      main.style.visibility = "hidden";
       document.fonts.ready.then(function () {
-        main.style.visibility = "visible"
-      }); 
+        main.style.visibility = "visible";
+      });
     </script>
   </body>
 </html>
