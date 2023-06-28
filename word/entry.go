@@ -2,6 +2,7 @@ package word
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 
 	"github.com/pkg/errors"
@@ -12,8 +13,8 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-func Entry() ([]byte, error) {
-	path := "./word/entries.md"
+func Entry(name string) ([]byte, error) {
+	path := fmt.Sprintf("./word/%s.md", name)
 
 	file, err := os.ReadFile(path)
 	if err != nil {

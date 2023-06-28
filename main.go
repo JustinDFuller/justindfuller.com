@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -34,8 +35,22 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/word/quality", func(w http.ResponseWriter, r *http.Request) {
+		entry, err := word.Entry("quality")
+		if err != nil {
+			http.Error(w, "Error reading Words", http.StatusInternalServerError)
+			log.Printf("Error reading Words: %s", err)
+
+			return
+		}
+
+		template.Must(template.ParseFiles("./word/main.template.html")).Execute(w, data{
+			Entry: entry,
+		})
+	})
+
 	http.HandleFunc("/word", func(w http.ResponseWriter, r *http.Request) {
-		entry, err := word.Entry()
+		entry, err := word.Entry("entries")
 		if err != nil {
 			http.Error(w, "Error reading Words", http.StatusInternalServerError)
 			log.Printf("Error reading Words: %s", err)
@@ -120,6 +135,11 @@ func main() {
 
 	http.HandleFunc("/make", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./make/main.template.html")
+	})
+
+	http.HandleFunc("/image/", func(w http.ResponseWriter, r *http.Request) {
+		log.Print(r.URL.Path)
+		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
