@@ -27,3 +27,5 @@ build:
 	@curl "http://localhost:9000/story/nothing" > ./.build/nothing.html;
 	@curl "http://localhost:9000/review" > ./.build/review.html;
 	@curl "http://localhost:9000/review/zen-and-the-art-of-motorcycle-maintenance" > ./.build/zen-and-the-art-of-motorcycle-maintenance.html;
+	@curl "http://localhost:9000/word" > ./.build/word.html;
+	@curl "http://localhost:9000/word/quality" > ./.build/quality.html;

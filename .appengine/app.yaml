@@ -51,6 +51,16 @@ handlers:
     upload: .build/make.html
     secure: always
 
+  - url: /word/quality
+    static_files: .build/quality.html
+    upload: .build/quality.html
+    secure: always
+
+  - url: /word
+    static_files: .build/word.html
+    upload: .build/word.html
+    secure: always
+
   - url: /
     static_files: .build/index.html
     upload: .build/index.html
