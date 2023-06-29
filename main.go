@@ -44,7 +44,7 @@ func main() {
 			return
 		}
 
-		template.Must(template.ParseFiles("./word/main.template.html")).Execute(w, data{
+		template.Must(template.ParseFiles("./word/entry.template.html")).Execute(w, data{
 			Entry: entry,
 		})
 	})
