@@ -43,4 +43,19 @@ Witless and pandering?
 
 How could we end up at such a diffent evaluation of Quality?
 
+This is (of course) an absurd question.
+I might as well ask, "How can people have different opinions?"
+
+But I do believe it's a useful question to ask, even if it's absurd.
+
+
+<br />
+<br />
+<hr />
+<br />
+<br />
+
+Working area
+
+![Fundamental Esthetic Question](/image/fundamental_esthetic_question.png)
 ![Etymology of Quality](/image/etymology_of_quality.png)
