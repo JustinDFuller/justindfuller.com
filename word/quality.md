@@ -1,10 +1,8 @@
 # Quality
 
-Let's begin our discussion of Quality with Super Mario.
+Let's begin our discussion of Quality with Super Mario. I assert this is a movie of highest Quality.
 
 ![Super Mario Movie Poster](/image/super_mario_poster.jpg)
-
-I assert that this is a movie of highest Quality.
 
 Does it matter that: Chris Pratt doesn't know how to do an itialian accent? Half the scenes are in slow-motion? It's clearly trying to jumpstart a cinematic universe? They never really bother to explain *why* the mario bros are sucked into another universe? No!
 
@@ -22,6 +20,16 @@ Witless and pandering? How could we end up at such a diffent evaluation of Quali
 
 ![Fundamental Esthetic Question](/image/fundamental_esthetic_question.png)
 
+Why is this a fundamental esthetic question? Because if you place quality in the observer, then quality is merely opinion. However, we can't place quality in the object alone because there are clearly different beliefs about what quality is. Perhaps more importantly, we can't place quality solely in the observed because we can't physically find and study Quality.
+
+When discussing the Quality of Super Mario, we might attempt a rational analysis of the film. Did the story have plot holes? Was the lore consistent with canon? Were the characters true to their game counterparts? These "objective" methods of analysis might yield answers but they cannot reveal quality because we still don't know where quality exists. We don't know if we're asking the right questions to reveal Quality.
+
+I'm hardly the first person to ask this question. 
+
+> If someone takes me to ~~a play~~ **the Super Mario movie** that in the end fails to please my taste, then he can adduce all the rules established as proofs that the ~~play~~ **movie** is beautiful. I will stop my ears, listen to no reasons and arguments, and would rather believe that those rules of the critics are false than allow that my judgment should be determined by means of *a priori* grounds of proof, since it is supposed to be a judgment of taste and not of the understanding of reason.
+> 
+> Immanuel Kant
+> *Critique of the Power of Judgment*
 
 <br />
 <br />
@@ -32,3 +40,4 @@ Witless and pandering? How could we end up at such a diffent evaluation of Quali
 Working area
 
 ![Etymology of Quality](/image/etymology_of_quality.png)
+![The Intersection of Quality](/image/the_quality_intersection.png)

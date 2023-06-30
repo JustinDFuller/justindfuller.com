@@ -72,6 +72,15 @@
       text-indent: 36px;
     }
 
+    blockquote > p,
+    p:first-of-type {
+      text-indent: 0;
+    }
+
+    blockquote > p + p {
+      margin-top: 30px;
+    }
+
     hr {
       margin-top: 30px;
     }
@@ -114,7 +123,9 @@
     }
 
     img {
-      width: 80%;
+      max-height: 250px;
+      max-width: 100%;
+      width: auto;
       display: block;
       margin: auto;
     }
@@ -134,6 +145,12 @@
       main.style.visibility = "hidden";
       document.fonts.ready.then(function () {
         main.style.visibility = "visible";
+      });
+
+      document.querySelectorAll('p').forEach(function(p) {
+        if (p.clientHeight < 37) {
+          p.style.textIndent = 0;
+        }
       });
     </script>
   </body>
