@@ -41,3 +41,4 @@ Working area
 
 ![Etymology of Quality](/image/etymology_of_quality.png)
 ![The Intersection of Quality](/image/the_quality_intersection.png)
+![What intersects?](/image/what_intersects.png)
