@@ -69,12 +69,6 @@
       line-height: 36px;
       margin-bottom: 30px;
       text-align: justify;
-      text-indent: 36px;
-    }
-
-    blockquote > p,
-    p:first-of-type {
-      text-indent: 0;
     }
 
     blockquote > p + p {
@@ -145,12 +139,6 @@
       main.style.visibility = "hidden";
       document.fonts.ready.then(function () {
         main.style.visibility = "visible";
-      });
-
-      document.querySelectorAll('p').forEach(function(p) {
-        if (p.clientHeight < 37) {
-          p.style.textIndent = 0;
-        }
       });
     </script>
   </body>
