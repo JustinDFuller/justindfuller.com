@@ -33,7 +33,18 @@ I'm hardly the first person to think objective assessments of quality are proble
 
 If I like something and judge it to be Quality, can The New York Times' movie critic claim I am wrong? They may attempt to use objective reasoning, but that reasoning is based on the faulty assumption that they know which traits are important.
 
-Now, this is a total bummer. Why? Because if Quality resides solely in the observer and is totally subjective, then it becomes nearly impossible to track, quantify, measure, or assess. It's impossible (or nearly so) because the total number of variables includes every living person multiplied by every possible mood or whim of their spirit. I could wittle this number down to only the people I care about but that hardly seems to help.
+Now, this is a total bummber. Not for the subjecivist, content to lean against the fence to watch Quality graze, but absolutely for the person who desires to grab Quality by the horns and ride it into town. This is not to say that ones opinion is *merely* an opinion, without worth or weight of its own. It's simply to say that it's not *useful* for anyone who wants to consistently replicate Quality.
+
+So, we must continue if we are to find anything useful. But continue where? For now, my only idea is to investigate the word *quality*: what does it mean? where does it come from?
+
+First, the easy part. What does it mean? For this, I'll consult Webster's 1913 dictionary; the last edition written and edited by lexicographer Noah Webster.
+
+> Quality
+> 1. That which makes, or helps to make, anything such as it is; anything belonging to a subject, or predicable of it; distinguishing property, characteristic, or attribute.
+> <br />
+> 2. The condition of being of such a sort as distinguished from others; nature or character relatively considered, as of goods; character; rank.
+
+We seem to have two types of Quality. The first is that which makes something what it is: its attributes. The second is that which distinguishes something from others, its rank.
 
 <br />
 <br />
