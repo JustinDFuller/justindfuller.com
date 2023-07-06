@@ -49,6 +49,15 @@ We seem to have two types of Quality. The first is that which makes something wh
 
 These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *L. qualitas*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)".
 
+![Little-q quality](/image/little_q_quality.png)
+
+Little-q quality (ποιότης) appears in ancient Greek philosophy. Like in Plato's dialogue, Theaetetus, where he investigates the nature of knowledge.
+
+> **Socrates:**
+> Now perhaps quality *(ποιότης)* seems an extraordinary word, and you do not understand it when used with general application, so let me give particular examples. For the active element becomes neither heat nor whiteness, but hot or white, and other things in the same way.
+
+Here, quality is "hot" and "white"; quality is attributes.
+
 <br />
 <br />
 <hr />
