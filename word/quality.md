@@ -39,12 +39,15 @@ So, we must continue if we are to find anything useful. But continue where? For 
 
 First, the easy part. What does it mean? For this, I'll consult Webster's 1913 dictionary; the last edition written and edited by lexicographer Noah Webster.
 
-> Quality
+> **Quality**
+> Noun
 > 1. That which makes, or helps to make, anything such as it is; anything belonging to a subject, or predicable of it; distinguishing property, characteristic, or attribute.
 > <br />
 > 2. The condition of being of such a sort as distinguished from others; nature or character relatively considered, as of goods; character; rank.
 
-We seem to have two types of Quality. The first is that which makes something what it is: its attributes. The second is that which distinguishes something from others, its rank.
+We seem to have two types of Quality. The first is that which makes something what it is, its attributes (little-q "quality"). The second is that which distinguishes something from others, its rank (big Q "Quality").
+
+These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *L. qualitas*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)".
 
 <br />
 <br />
