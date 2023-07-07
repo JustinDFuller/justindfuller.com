@@ -56,7 +56,9 @@ Little-q quality (ποιότης) appears in ancient Greek philosophy. Like in P
 > **Socrates:**
 > Now perhaps quality *(ποιότης)* seems an extraordinary word, and you do not understand it when used with general application, so let me give particular examples. For the active element becomes neither heat nor whiteness, but hot or white, and other things in the same way.
 
-Here, quality is "hot" and "white"; quality is attributes.
+Here, quality is "hot" and "white"; quality is attributes. You might say this is the quality of the observed. This type of quality is easily observed, defined, and quantified. It's certainly not the Quality Kant referred to, saying he'd cover his ears if you dared contradict him. No, I expect he'd not cover his ears like a toddler, screaming, "it's not BLUE it's RED" when you attempt to describe the sky.
+
+So, here I suggest we pivot to the other. The Quality of, "goods; character; rank" according to our friend Webster. But here, he and his dictionary are of no help to us. We've already tracked the etymology he provided and it led only to little-q quality.
 
 <br />
 <br />
