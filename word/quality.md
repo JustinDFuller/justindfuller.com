@@ -20,7 +20,7 @@ Witless and pandering? How could we end up at such a diffent evaluation of Quali
 
 ![Fundamental Esthetic Question](/image/fundamental_esthetic_question.png)
 
-Why is this a fundamental esthetic question? Because if you place Quality in the observer, then Quality is merely opinion. However, I can't place Quality in the object alone because there are clearly different beliefs about what Quality is. Perhaps more importantly, I can't place Quality solely in the observed because I can't physically find and study Quality.
+Why is this a fundamental esthetic question? Because if Quality is only in the observer, then Quality is merely opinion. Conversely, Quality can't be in the object alone because there are clearly different beliefs about what Quality is. Perhaps more importantly, I can't place Quality solely in the observed because no one has ever physically found and studied Quality.
 
 When discussing the Quality of Super Mario, I might attempt a rational analysis of the film. Did the story have plot holes? Was the lore consistent with canon? Were the characters true to their game counterparts? These "objective" or *a priori* methods of analysis might yield answers but they cannot reveal Quality because I still don't know where Quality exists. I don't know if I'm asking the right questions to reveal Quality.
 
@@ -45,9 +45,9 @@ First, the easy part. What does it mean? For this, I'll consult Webster's 1913 d
 > <br />
 > 2. The condition of being of such a sort as distinguished from others; nature or character relatively considered, as of goods; character; rank.
 
-We seem to have two types of Quality. The first is that which makes something what it is, its attributes (little-q "quality"). The second is that which distinguishes something from others, its rank (big Q "Quality").
+We seem to have two types of Quality. The first is that which makes something what it is, its attributes (little-q "quality"). The second is that which distinguishes something from others, its rank (big-Q "Quality").
 
-These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *L. qualitas*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)".
+These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *L. qualitas*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing from his time. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)".
 
 ![Little-q quality](/image/little_q_quality.png)
 
@@ -58,16 +58,33 @@ Little-q quality (ποιότης) appears in ancient Greek philosophy. Like in P
 
 Here, quality is "hot" and "white"; quality is attributes. You might say this is the quality of the observed. This type of quality is easily observed, defined, and quantified. It's certainly not the Quality Kant referred to, saying he'd cover his ears if you dared contradict him. No, I expect he'd not cover his ears like a toddler, screaming, "it's not BLUE it's RED" when you attempt to describe the sky.
 
-So, here I suggest we pivot to the other. The Quality of, "goods; character; rank" according to our friend Webster. But here, he and his dictionary are of no help to us. We've already tracked the etymology he provided and it led only to little-q quality.
+So, here I suggest we pivot to the other. The Quality of, "goods; character; rank" according to our friend Webster. But here, he and his dictionary are of no further help to us. We've already tracked the etymology he provided and it led only to little-q quality. 
 
-<br />
-<br />
-<hr />
-<br />
-<br />
+To get us started, we can (carefully) venture into the world of pop-philosophy. Robert M. Pirsig provides us with a few ideas in his philosophical novel "Zen and The Art of Motorcycle Maintenance". But we must tread carefully here, as many of his ideas are verifiably false. However, they may be salvageable yet.
 
-Working area
+Pirsig explores the idea of Quality through the lens of an insane philosopher, Phaedrus. Eventually, Phaedrus runs across an ancient Greek definition if Quality.
+
+> "What moves the Greek warrior to deeds of heroism is not a sense of duty as we understand it...duty towards others: it is rather duty towards himself. He strives after that which we translate ‘virtue’ but is in Greek **areté** (ἀρετή), ‘excellence’—we shall have much to say about areté. It runs through Greek life." 
+> 
+> There, Phædrus thinks, is a definition of Quality that existed a thousand years ago.
+
+Now this is an interesting definition of Quality, but it doesn't move the needle for us. "Excellence" is clearly related to big-Q Quality but is hardly different in definition than Quality. We don't know where it resides. 
+
+Also, Pirsig gets confused. He believes the Greeks *only* had this word for Quality (and quality). But just a moment ago, we saw definitively that they had two words: ἀρετή (areté) and ποιότης (poiótēs) — big Q and little q quality, respectively. Even so, it's clear at some point the two concepts merged into one: quality.
 
 ![Etymology of Quality](/image/etymology_of_quality.png)
+
+Now, if only Pirsig had looked a little further, he might have found this quote from Aristotle in his *Nicomachean Ethics*.
+
+> It must then be premised that all excellence **(areté)** has a twofold effect on the thing to which it belongs: it not only renders the thing itself good, but it also causes it to perform its function well. For example, the effect of excellence **(areté)** in the eye is that the eye is good and functions well; since having good eyes means having good sight. Similarly excellence **(areté)** in a horse makes it a good horse, and also good at galloping, at carrying its rider, and at facing the enemy.
+
+Now we're cooking! Not excellence but *fulfillment of purpose*. This definition changes everything about big-Q Quality. It's no longer a mystical, subjective "Excellence" but a specific *event*: the moment an object fulfills its purpose. Quality is not a *thing*. Quality is an *event*!
+
 ![The Intersection of Quality](/image/the_quality_intersection.png)
+
+Why is this so important? Well, we can't find and measure Quality in an object; likewise, we can't measure internal, subjective definitions of excellence; but we can state our purposes and expectations, then measure when they are met.
+
+When we meet with an object that fails to satisfy our expectations, we do not find Quality. But when we meet with an object that satisfies (or exceeds, or redefines) our expectations, we find Quality.
+
 ![What intersects?](/image/what_intersects.png)
+
