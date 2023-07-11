@@ -42,9 +42,9 @@ I feel another question coming on. Already I feel like I'm opening an esthetic r
 
 There are reasons to believe Quality could exist on either side. For the observer, we know an assessment of Quality can differ between people. That's the basis for this entire discussion. On the other side, we know a person may change their assessment based on the object observed. They may also change their assessment based on changes to the observed object.
 
-When discussing the Quality of Super Mario, I might attempt a rational analysis of the film. Did the story have plot holes? Was the lore consistent with canon? Were the characters true to their game counterparts? These "objective" or *a priori* methods of analysis might yield answers but they cannot reveal Quality because I still don't know where Quality exists. I don't know if I'm asking the right questions to reveal Quality.
+Just a moment ago, we saw this play out over Super Mario. The critic placed quality in the observed when they attempted a rational analysis of the film. Asking: Did the story have plot holes? Was the lore consistent with canon? Were the characters true to their game counterparts? These "objective" or *a priori* methods of analysis certainly yielded answers. But did they reveal Quality? Of course, I don't think so, because I disagreed! I did the opposite. I placed Quality in myself (and my son, Kit) when I said Super Mario was Quality because we enjoyed it.
 
-I'm hardly the first person to think objective assessments of quality are problematic. Take a look at this quote from the philosopher Kant, from all the way back in the year 1790.
+It turns out I've got a bit of backup. You might even say I've got a heavyweight in my corner. Just take a look at this quote from the philosopher Kant, from all the way back in the year 1790.
 
 > If someone takes me to ~~a play~~ **the Super Mario movie** and it pleases my taste, then he can adduce all the rules established as proofs that the ~~play~~ **movie** lacks ~~beauty~~ **Quality**. I will stop my ears, listen to no reasons and arguments, and would rather believe that those rules of the critics are false than allow that my judgment should be determined by means of *a priori* grounds of proof, since it is supposed to be a judgment of taste and not of the understanding of reason.
 > 
@@ -53,13 +53,13 @@ I'm hardly the first person to think objective assessments of quality are proble
 
 Immanuel Kant goes to the Super Mario movie, finding himself deeply moved by the film. Afterwards, he reads a scathing review from The New York Times movie critic. The critic claims Super Mario was witless and pandering. Does Kant care? Kant does not care. He stuffs his fingers into his ears, chanting, "I can't hear you!" He argues the critic relies on *a priori* justifications for his critique. Meaning, the critic decided with reason alone—without emperical evidence—the movie should be witty and should not pander to superfan or childish desires. So, Kant shoots back his retort—complete with *a priori* justification—the movie should pander and need not be witty at all. His justifications are not important here. The point is that he is not moved by the critic's argument.
 
-What's this all about? Kant is saying arguments and reasons are not relevant when assessing traits such as goodness, beauty, or Quality. It is for each person to decide if the object fits the mold. He is not saying, "man is the measure of all things" but "each man is the measure of all things"—at least when it comes to esthetics.
+What's this all about? Kant is saying arguments and reasons are not relevant when assessing traits such as goodness, beauty, or Quality. It is for each person to decide if the object fits the mold. He is not saying, "man is the measure of all things" but "each man is the measure of all things"—at least when it comes to esthetic value judgement.
 
-Now, this is a total bummer. Not for the subjecivist—content to lean against the fence to watch Quality graze—but absolutely for the person who desires to grab Quality by the horns and ride it into town. This is not to say that ones opinion is *merely* an opinion, without worth or weight of its own. It's simply to say that it's not *useful* for anyone who wants to consistently replicate Quality. That is my goal, so I must continue on.
+Now, this is a total bummer. Not for the subjecivist—content to lean against the fence to watch Quality graze—but absolutely for the person who desires to grab Quality by the horns and ride it into town. This is not to say that ones opinion is *merely* an opinion, without worth or weight of its own. It's simply to say that it's not *useful* for anyone who wants to consistently replicate Quality.
 
-So, we must continue if we are to find anything useful. But continue where? For now, my only idea is to investigate the word *quality*: what does it mean? where does it come from?
+I remember my goal is to not only understand but to harness Quality. So, I must continue if I am to find anything useful. But continue where? For now, my only idea is to investigate the definition of the word: what does it mean? where does it come from?
 
-First, the easy part. What does it mean? For this, I'll consult Webster's 1913 dictionary; the last edition written and edited by lexicographer Noah Webster.
+First, the easy part. What does Quality mean? For this, I'll consult my favorite dictionary (and I hope you won't judge me too harshly for having one): Webster's 1913; the last edition written and edited by lexicographer Noah Webster.
 
 > **Quality**
 > Noun
@@ -67,22 +67,22 @@ First, the easy part. What does it mean? For this, I'll consult Webster's 1913 d
 > <br />
 > 2. The condition of being of such a sort as distinguished from others; nature or character relatively considered, as of goods; character; rank.
 
-We seem to have two types of Quality. The first is that which makes something what it is, its attributes (little-q "quality"). The second is that which distinguishes something from others, its rank (big-Q "Quality").
+We seem to have two types of Quality. The first is that which makes something what it is, its attributes (I'll call this "little-q quality"). The second is that which distinguishes something from others, its rank (big-Q Quality).
 
-These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *L. qualitas*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing from his time. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)".
+These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *"L. qualitas"*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing from his time. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)".
 
 ![Little-q quality](/image/little_q_quality.png)
 
-Little-q quality (ποιότης) appears in ancient Greek philosophy. Like in Plato's dialogue, Theaetetus, where he investigates the nature of knowledge.
+This same little-q quality (ποιότης) appears in ancient Greek philosophy. Like in Plato's dialogue, Theaetetus, where he investigates the nature of knowledge.
 
 > **Socrates:**
 > Now perhaps quality *(ποιότης)* seems an extraordinary word, and you do not understand it when used with general application, so let me give particular examples. For the active element becomes neither heat nor whiteness, but hot or white, and other things in the same way.
 
-Here, quality is "hot" and "white"; quality is attributes. You might say this is the quality of the observed. This type of quality is easily observed, defined, and quantified. It's certainly not the Quality Kant referred to, saying he'd cover his ears if you dared contradict him. No, I expect he'd not cover his ears like a toddler, screaming, "it's not BLUE it's RED" when you attempt to describe the sky.
+Here, quality is "hot" and "white"; quality is attributes. This type of quality can be observed and quantified. It's certainly not the Quality Kant referred to, saying he'd cover his ears if you dared contradict him. No, I expect he'd not cover his ears like a toddler, screaming, "Mario's hat is blue not red" when you attempt a description.
 
 So, here I suggest we pivot to the other. The Quality of, "goods; character; rank" according to our friend Webster. But here, he and his dictionary are of no further help to us. We've already tracked the etymology he provided and it led only to little-q quality. 
 
-To get us started, we can (carefully) venture into the world of pop-philosophy. Robert M. Pirsig provides us with a few ideas in his philosophical novel "Zen and The Art of Motorcycle Maintenance". But we must tread carefully here, as many of his ideas are verifiably false. However, they may be salvageable yet.
+To get us started, we can (carefully) venture into the world of pop-philosophy (OK I admit, we're already there). Robert M. Pirsig provides us with a few ideas in his philosophical novel "Zen and The Art of Motorcycle Maintenance". But we must tread carefully here, as many of his ideas are verifiably false. However, they may yet be salvaged.
 
 Pirsig explores the idea of Quality through the lens of an insane philosopher, Phaedrus. Eventually, Phaedrus runs across an ancient Greek definition if Quality.
 
