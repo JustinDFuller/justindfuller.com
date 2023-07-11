@@ -32,15 +32,11 @@ When we arrived at home, I began my routine of learning what others thought abou
 
 Witless and pandering? How could we end up at such a diffent evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, you might say this question is an important part of an entire Philsophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgement. 
 
-At the beginning of our search I unknowingly laid out our ultimate esthetic goal: to discover what quality is and how to harness it.
+At the beginning of our search I unknowingly laid out our ultimate esthetic goal: to discover what Quality is and how to harness it. But immediately I've run across another question that I must answer first: how can two people end up with opposing assessments of Quality for the same thing?
 
-Now, it seems, I must first answer a more fundamental esthetic question: how can two people end up with opposing assessments of quality for the same thing?
+This question is more difficult that it seems. You might respond, "because they like different things." This would define Quality as a part of the self, a part of each of us. But this presents problems. If Quality is only opinion or what we like, why do we bother with arguments at all? We could simply state, "I like this" or "I don't like this." Instead, we state, "The Super Mario Bros movie was excellent because..." giving our reasons for why we believe it is not just Quality to us but Quality for all. Now, by giving reasons, we're attempting to define Quality as part of the thing which we judge. This too is problematic. If Quality is a part of the observed, the judged, it would not change unless the thing itself changed. But we know this is not the case. I saw the same movie as the critic, yet we both evaluated it differently.
 
-This question is more difficult that it seems. You might respond, "because they like different things" but this presents problems too. If quality is only opinion or what we like, why do we bother with arguments at all? We could simply state, "I like this" or "I don't like this." Instead, we state, "The Super Mario Bros movie was excellent because..." giving our reasons for why we believe it is not just Quality to us but Quality for all.
-
-Because of this problem, I believe there is something deeper going on with Quality than "mere" opinion. So, before I can answer my esthetic question, I must first figure out what Quality is. To figure out what it is, I must figure out where to look.
-
-I must answer: where does Quality exist? In the observer or the observed?
+I feel another question coming on. Already I feel like I'm opening an esthetic russian nesting doll. Now I wonder, where does Quality exist? In the observer or the observed?
 
 ![Fundamental Esthetic Question](/image/fundamental_esthetic_question.png)
 
