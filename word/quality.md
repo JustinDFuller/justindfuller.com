@@ -16,11 +16,19 @@ We laughed, we cried, we cheered, and we got excited when our favorite character
 
 ![Super Mario Review](/image/super_mario_review.png)
 
-Witless and pandering? How could we end up at such a diffent evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, you might say this question is part of entire Philsophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgement. Here, my esthetic question is: where does Quality exist, in the observer or the observed?
+Witless and pandering? How could we end up at such a diffent evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, you might say this question is an important part of an entire Philsophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgement. 
+
+Here, my esthetic question is: how can two people end up with opposing assessments of quality for the same thing?
+
+This question is more difficult that it seems. You might respond, "because they like different things" but this presents problems too. If quality is only opinion, why do we bother with arguments at all? We could simply state, "I like this" or "I don't like this." No, we state, "The Super Mario Bros movie was excellent because..." giving our reasons for why we believe it is not just Quality to us but Quality for all.
+
+Because of this problem, I believe there is something deeper going on with Quality than "mere" opinion. So, before I can answer my esthetic question, I must first figure out what Quality is. To figure out what it is, I must figure out where to look.
+
+I must answer: where does Quality exist? In the observer or the observed?
 
 ![Fundamental Esthetic Question](/image/fundamental_esthetic_question.png)
 
-Why is this a fundamental esthetic question? Because if Quality is only in the observer, then Quality is merely opinion. Conversely, Quality can't be in the object alone because there are clearly different beliefs about what Quality is. Perhaps more importantly, I can't place Quality solely in the observed because no one has ever physically found and studied Quality.
+There are reasons to believe Quality could exist on either side. For the observer, we know an assessment of Quality can differ between people. That's the basis for this entire discussion. On the other side, we know a person may change their assessment based on the object observed. They may also change their assessment based on changes to the observed object.
 
 When discussing the Quality of Super Mario, I might attempt a rational analysis of the film. Did the story have plot holes? Was the lore consistent with canon? Were the characters true to their game counterparts? These "objective" or *a priori* methods of analysis might yield answers but they cannot reveal Quality because I still don't know where Quality exists. I don't know if I'm asking the right questions to reveal Quality.
 
@@ -31,9 +39,11 @@ I'm hardly the first person to think objective assessments of quality are proble
 > Immanuel Kant
 > *Critique of the Power of Judgment* (paraphrase)
 
-If I like something and judge it to be Quality, can The New York Times' movie critic claim I am wrong? They may attempt to use objective reasoning, but that reasoning is based on the faulty assumption that they know which traits are important.
+Immanuel Kant goes to the Super Mario movie, finding himself deeply moved by the film. Afterwards, he reads a scathing review from The New York Times movie critic. The critic claims Super Mario was witless and pandering. Does Kant care? Kant does not care. He stuffs his fingers into his ears, chanting, "I can't hear you!" He argues the critic relies on *a priori* justifications for his critique. Meaning, the critic decided with reason alone—without emperical evidence—the movie should be witty and should not pander to superfan or childish desires. So, Kant shoots back his retort—complete with *a priori* justification—the movie should pander and need not be witty at all. His justifications are not important here. The point is that he is not moved by the critic's argument.
 
-Now, this is a total bummber. Not for the subjecivist, content to lean against the fence to watch Quality graze, but absolutely for the person who desires to grab Quality by the horns and ride it into town. This is not to say that ones opinion is *merely* an opinion, without worth or weight of its own. It's simply to say that it's not *useful* for anyone who wants to consistently replicate Quality.
+What's this all about? Kant is saying arguments and reasons are not relevant when assessing traits such as goodness, beauty, or Quality. It is for each person to decide if the object fits the mold. He is not saying, "man is the measure of all things" but "each man is the measure of all things"—at least when it comes to esthetics.
+
+Now, this is a total bummer. Not for the subjecivist—content to lean against the fence to watch Quality graze—but absolutely for the person who desires to grab Quality by the horns and ride it into town. This is not to say that ones opinion is *merely* an opinion, without worth or weight of its own. It's simply to say that it's not *useful* for anyone who wants to consistently replicate Quality. That is my goal, so I must continue on.
 
 So, we must continue if we are to find anything useful. But continue where? For now, my only idea is to investigate the word *quality*: what does it mean? where does it come from?
 
@@ -88,3 +98,8 @@ When we meet with an object that fails to satisfy our expectations, we do not fi
 
 ![What intersects?](/image/what_intersects.png)
 
+Here's what it looks like to evaluate this definition of Quality.
+
+1. We must figure out Quality for *who*? It might be Quality for myself, or another. 
+2. Next, we state the expectations. This could still be subjective, "I want to have a good time" or it could be objective, "I want to increase revenue by 5%".
+3. Finally, we look for the meeting of expectations. This could be as simple as asking, "Did you have a good time?" or as methodical as a scientific measurement.
