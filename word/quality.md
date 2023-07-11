@@ -1,10 +1,22 @@
-# Quality
+# Searching for Quality
 
-Let's begin our discussion of Quality with Super Mario. I assert this is a movie of highest Quality.
+Quality fled across the desert, and the wordslinger followed.
+
+My favorite series of all time just might be the Dark Tower by Stephen King. The opening line irresistably sucks you in, "The man in black fled across the desert, and the gunslinger followed." It's impossible to stop reading. It's better than Harry Potter. Dare I say it? It's better than Lord of The Rings. (If they can't find me after this, you know which fan-base to investigate first.) But mega-fanbase or not, the Dark Tower series is of the highest Quality.
+
+I invite you to join me on a search for Quality. Like The Gunslinger's opening line, the idea of Quality irresistibly pulls me in. What on earth is it? More importantly: how can I have it? How can I make it? If the answer is obvious to you, it's not to me. I've tried so many times to capture Quality, only for it to slip through my fingers. I can assure you honestly at the outset that I have no idea where this search will lead.
+
+So, let's begin our search. And although searching for Quality in my favorite series would seem a sensible thing to do, I feel compelled to first look somewhere a bit more lighthearted. So, instead, let's turn our attention to Super Mario. 
+
+Please hear me out as I assert this is a movie of highest Quality.
 
 ![Super Mario Movie Poster](/image/super_mario_poster.jpg)
 
-Does it matter if: Chris Pratt doesn't know how to do an itialian accent? Half the scenes are in slow-motion? It's clearly trying to jumpstart a cinematic universe? They never really bother to explain *why* the mario bros are sucked into another universe? No!
+I'm joking, right? It's a fun movie, sure. But high Quality? Surely I should be embarassed to mention "The Super Mario Bros" in the same post about Quality and "Lord of The Rings."
+
+Shouldn't it matter that: Chris Pratt doesn't know how to do an itialian accent? Half the scenes are in slow-motion? It's clearly trying to jumpstart a cinematic universe? They never really bother to explain *why* the mario bros are sucked into another universe? 
+
+No!
 
 Why not? Because of this guy:
 
@@ -12,15 +24,19 @@ Why not? Because of this guy:
 
 My son Kit *loves* Mario. Mario Kart is his favorite game. Catch him in his Super Mario shirt, his Mario Kart shirt, or (in cold weather) his Super Mario sweater. Did I mention he asked for (and got) a Mario themed birthday this year? So, when I went to see the Super Mario Bros movie, I didn't care about: the animation style, the soundtrack, or the story. Although, to be honest, I liked all of them. I just cared that I could enjoy seeing some Super Mario action on the big screen with my little guy. 
 
-We laughed, we cried, we cheered, and we got excited when our favorite characters showed up on the screen (Donkey Kong for me, Peach for my daughter Max, and of course, Mario for Kit). But—surprisingly—my evaluation of Super Mario's Quality didn't quite line up with the reviews I saw.
+We laughed, we cried, and we cheered when our favorite characters showed up on the screen (Donkey Kong for me, Peach for my daughter Max, and of course, Mario for Kit). We walked out of that movie with smiles on our faces and Quality in our hearts.
+
+When we arrived at home, I began my routine of learning what others thought about the movie. Surely this would be a smashing hit; "recommended viewing for fathers and sons everywhere!" Surprisingly, my evaluation of Super Mario's Quality didn't quite line up with the critics.
 
 ![Super Mario Review](/image/super_mario_review.png)
 
 Witless and pandering? How could we end up at such a diffent evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, you might say this question is an important part of an entire Philsophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgement. 
 
-Here, my esthetic question is: how can two people end up with opposing assessments of quality for the same thing?
+At the beginning of our search I unknowingly laid out our ultimate esthetic goal: to discover what quality is and how to harness it.
 
-This question is more difficult that it seems. You might respond, "because they like different things" but this presents problems too. If quality is only opinion, why do we bother with arguments at all? We could simply state, "I like this" or "I don't like this." No, we state, "The Super Mario Bros movie was excellent because..." giving our reasons for why we believe it is not just Quality to us but Quality for all.
+Now, it seems, I must first answer a more fundamental esthetic question: how can two people end up with opposing assessments of quality for the same thing?
+
+This question is more difficult that it seems. You might respond, "because they like different things" but this presents problems too. If quality is only opinion or what we like, why do we bother with arguments at all? We could simply state, "I like this" or "I don't like this." Instead, we state, "The Super Mario Bros movie was excellent because..." giving our reasons for why we believe it is not just Quality to us but Quality for all.
 
 Because of this problem, I believe there is something deeper going on with Quality than "mere" opinion. So, before I can answer my esthetic question, I must first figure out what Quality is. To figure out what it is, I must figure out where to look.
 
