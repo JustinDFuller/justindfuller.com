@@ -53,11 +53,11 @@ It turns out I've got a bit of backup. You might even say I've got a heavyweight
 > Immanuel Kant
 > *Critique of the Power of Judgment* (paraphrase)
 
-Immanuel Kant goes to the Super Mario movie, finding himself deeply moved by the film. Afterwards, he reads a scathing review from The New York Times movie critic. The critic claims Super Mario was witless and pandering. Does Kant care? Kant does not care. He stuffs his fingers into his ears, chanting, "I can't hear you!" He argues the critic relies on *a priori* justifications for his critique. Meaning, the critic decided with reason alone—without emperical evidence—the movie should be witty and should not pander to superfan or childish desires. So, Kant shoots back his retort—complete with *a priori* justification—the movie should pander and need not be witty at all. His justifications are not important here. The point is that he is not moved by the critic's argument.
+Immanuel Kant goes to the Super Mario movie, finding himself deeply moved by the film. Afterwards, he reads a scathing review from The New York Times movie critic. The critic claims Super Mario was witless and pandering. Does Kant care? Kant does not care. He stuffs his fingers into his ears, chanting, "I can't hear you!" He argues the critic relies on *a priori* justifications for his critique. Meaning, the critic decided with reason alone—without emperical evidence—the movie should be witty and should not pander to superfan or childish desires. So, Kant shoots back his retort—complete with *a priori* justification—the movie should pander and need not be witty at all. What are his justifications? They are not important. The point is he is not moved by the critic's argument.
 
-What's this all about? Kant is saying arguments and reasons are not relevant when assessing traits such as goodness, beauty, or Quality. It is for each person to decide if the object fits the mold. He is not saying, "man is the measure of all things" but "each man is the measure of all things"—at least when it comes to esthetic value judgement.
+What's this all about? Kant is saying arguments and reasons are not relevant when assessing traits such as goodness, beauty, or Quality. It is for each person to decide if the object fits the mold. He is not only saying, "man is the measure of all things" but "each man is the measure of all things"—at least when it comes to esthetic value judgement.
 
-Now, this is a total bummer. Not for the subjecivist—content to lean against the fence to watch Quality graze—but absolutely for the person who desires to grab Quality by the horns and ride it into town. This is not to say that ones opinion is *merely* an opinion, without worth or weight of its own. It's simply to say that it's not *useful* for anyone who wants to consistently replicate Quality.
+Now, this is a total bummer. Not for the subjectivist—content to lean against the fence to watch Quality graze—but absolutely for the person who desires to grab Quality by the horns and ride it into town. This is not to say that one's opinion is *merely* an opinion, without worth or weight of its own. It's simply to say that it's not *useful* for anyone who wants to consistently replicate Quality.
 
 I remember my goal is to not only understand but to harness Quality. So, I must continue if I am to find anything useful. But continue where? For now, my only idea is to investigate the definition of the word: what does it mean? where does it come from?
 
@@ -75,45 +75,41 @@ These are the definitions of quality. However, the dictionary includes another t
 
 ![Little-q quality](/image/little_q_quality.png)
 
-This same little-q quality (ποιότης) appears in ancient Greek philosophy. Like in Plato's dialogue, Theaetetus, where he investigates the nature of knowledge.
+This same little-q quality (ποιότης) appears in ancient Greek philosophy. Like in Plato's dialogue, Theaetetus, where he investigates the nature of knowledge. Here's an excerpt where Socrates dicusses qualities.
 
 > **Socrates:**
 > Now perhaps quality *(ποιότης)* seems an extraordinary word, and you do not understand it when used with general application, so let me give particular examples. For the active element becomes neither heat nor whiteness, but hot or white, and other things in the same way.
 
 Here, quality is "hot" and "white"; quality is attributes. This type of quality can be observed and quantified. It's certainly not the Quality Kant referred to, saying he'd cover his ears if you dared contradict him. No, I expect he'd not cover his ears like a toddler, screaming, "Mario's hat is blue not red" when you attempt a description.
 
-So, here I suggest we pivot to the other. The Quality of, "goods; character; rank" according to our friend Webster. But here, he and his dictionary are of no further help to us. We've already tracked the etymology he provided and it led only to little-q quality. 
+Since this is not the difficult form of Quality, I suggest we pivot to the other. The Quality of, "goods; character; rank" according to our friend Webster. But here, he and his dictionary are of no further help to us. We've already tracked the etymology he provided and it led only to little-q quality. 
 
 To get us started, we can (carefully) venture into the world of pop-philosophy (OK I admit, we're already there). Robert M. Pirsig provides us with a few ideas in his philosophical novel "Zen and The Art of Motorcycle Maintenance." But we must tread carefully here, as many of his ideas are verifiably false. However, they may yet be salvaged.
 
-Pirsig explores the idea of Quality through the lens of an insane philosopher, Phaedrus. Eventually, Phaedrus runs across an ancient Greek definition if Quality.
+Pirsig explores the idea of Quality through the dual lenses of an insane philosopher, Phaedrus and a cross country motorcycle road trip with his son. During the long, quiet stretches of cycling through the northwest states, he recounts the story of Phaedrus' search for value. Eventually, after many missteps and failures, Phaedrus runs across an ancient Greek definition if Quality.
 
 > "What moves the Greek warrior to deeds of heroism is not a sense of duty as we understand it...duty towards others: it is rather duty towards himself. He strives after that which we translate ‘virtue’ but is in Greek **areté** (ἀρετή), ‘excellence’—we shall have much to say about areté. It runs through Greek life." 
 > 
 > There, Phædrus thinks, is a definition of Quality that existed a thousand years ago.
 
-Now this is an interesting definition of Quality, but it doesn't move the needle for us. "Excellence" is clearly related to big-Q Quality but is hardly different in definition than Quality. We don't know where it resides. 
+Now this is an interesting definition of Quality even though it doesn't move the needle for us. "Excellence" is clearly related to big-Q Quality but is hardly different in definition than Quality. We don't know where it resides. Does excellence reside in the observer or the observed? On the surface, it seems to be simply a synonym of Quality. 
 
 Also, Pirsig gets confused. He believes the Greeks *only* had this word for Quality (and quality). But just a moment ago, we saw definitively that they had two words: ἀρετή (areté) and ποιότης (poiótēs) — big Q and little q quality, respectively. Even so, it's clear at some point the two concepts merged into one: quality.
 
 ![Etymology of Quality](/image/etymology_of_quality.png)
 
-Now, if only Pirsig had looked a little further, he might have found this quote from Aristotle in his *Nicomachean Ethics*.
+Now, I said Pirsig's ideas may be salvagable, right? If only he had looked a little further, he might have found this quote from Aristotle in his *Nicomachean Ethics*.
 
-> It must then be premised that all excellence **(areté)** has a twofold effect on the thing to which it belongs: it not only renders the thing itself good, but it also causes it to perform its function well. For example, the effect of excellence **(areté)** in the eye is that the eye is good and functions well; since having good eyes means having good sight. Similarly excellence **(areté)** in a horse makes it a good horse, and also good at galloping, at carrying its rider, and at facing the enemy.
+> It must then be premised that all excellence **(areté)** has a twofold effect on the thing to which it belongs: it not only renders the thing itself good, but it also <u>causes it to perform its function well</u>. For example, the effect of excellence **(areté)** in the eye is that the eye is good and functions well; since having good eyes means having good sight. Similarly excellence **(areté)** in a horse makes it a good horse, and also good at galloping, at carrying its rider, and at facing the enemy.
 
-Now we're cooking! Not excellence but *fulfillment of purpose*. This definition changes everything about big-Q Quality. It's no longer a mystical, subjective "Excellence" but a specific *event*: the moment an object fulfills its purpose. Quality is not a *thing*. Quality is an *event*!
+Now we're cooking! Not excellence but "to perform its function well." In other words, *fulfillment of purpose*. This definition changes everything about big-Q Quality. It's no longer a mystical, subjective "Excellence" but a specific *event*: the moment an object fulfills its purpose. Quality is not a *thing*. Quality is an *event*!
 
 ![The Intersection of Quality](/image/the_quality_intersection.png)
 
-Why is this so important? Well, we can't find and measure Quality in an object; likewise, we can't measure internal, subjective definitions of excellence; but we can state our purposes and expectations, then measure when they are met.
+Why is this so important? Well, we can't find and measure Quality in an object; likewise, we can't measure internal, subjective definitions of excellence; but we can state our purposes and expectations, then observe and measure when they are met.
 
 When we meet with an object that fails to satisfy our expectations, we do not find Quality. But when we meet with an object that satisfies (or exceeds, or redefines) our expectations, we find Quality.
 
 ![What intersects?](/image/what_intersects.png)
 
-Here's what it looks like to evaluate this definition of Quality.
-
-1. We must figure out Quality for *who*? It might be Quality for myself, or another. 
-2. Next, we state the expectations. This could still be subjective, "I want to have a good time" or it could be objective, "I want to increase revenue by 5%."
-3. Finally, we look for the meeting of expectations. This could be as simple as asking, "Did you have a good time?" or as methodical as a scientific measurement.
+When Kit and I saw Super Mario, what did we expect? Not a witty, sophisticated exploration of the Super Mario world. No, we wanted to see Mario and Luigi's antics and Bowser wreck some stuff. When Calum Marsh wrote his piece for The New York Times review, what did he expect? I'm not sure, but his review gives a few hints. He complains of the irrationality of using go-karts as a mode of transportation and of the movie's efforts to please fans with nods to the games. This could explain why he could not find Quality but Kit and I could. What he complained about is exactly what we wanted!
