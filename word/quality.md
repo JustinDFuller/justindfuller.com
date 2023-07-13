@@ -2,11 +2,11 @@
 
 Quality fled across the desert, and the wordslinger followed.
 
-My favorite series of all time just might be the Dark Tower by Stephen King. The opening line irresistably sucks you in, "The man in black fled across the desert, and the gunslinger followed." It's impossible to stop reading. It's better than Harry Potter. Dare I say it? It's better than Lord of The Rings. (If they can't find me after this, you know which fan-base to investigate first.) But mega-fanbase or not, the Dark Tower series is of the highest Quality.
+My favorite series of all time just might be the Dark Tower by Stephen King. The opening line irresistably sucks you in, "The man in black fled across the desert, and the gunslinger followed." It's impossible to stop reading. It's better than Harry Potter. Dare I say it? It's better than Lord of The Rings. (If they can't find me after this, you know which fan-bases to investigate first.) But mega-fanbase or not, the Dark Tower series is of the highest Quality.
 
-I invite you to join me on a search for Quality. Like The Gunslinger's opening line, the idea of Quality irresistibly pulls me in. What on earth is it? More importantly: how can I have it? How can I make it? If the answer is obvious to you, it's not to me. I've tried so many times to capture Quality, only for it to slip through my fingers. I can assure you honestly at the outset that I have no idea where this search will lead.
+I invite you to join me on a search for Quality. Like The Gunslinger's opening line, the idea of Quality irresistibly pulls me in. What on earth is it? More importantly: how can I have it? How can I make it? If the answer is obvious to you, it's not to me. I've tried so many times to capture Quality, only for it to slip through my fingers. I can assure you honestly at the outset that I have no idea where this search will lead. So, let's step into the desert and give Quality a good chase.
 
-So, let's begin our search. And although searching for Quality in my favorite series would seem a sensible thing to do, I feel compelled to first look somewhere a bit more lighthearted. So, instead, let's turn our attention to Super Mario. 
+Although searching for Quality in my favorite series would seem a sensible thing to do, I feel compelled to first look somewhere a bit more lighthearted. So, instead, let's turn our attention to Super Mario. 
 
 Please hear me out as I assert this is a movie of highest Quality.
 
@@ -30,11 +30,13 @@ When we arrived at home, I began my routine of learning what others thought abou
 
 ![Super Mario Review](/image/super_mario_review.png)
 
-Witless and pandering? How could we end up at such a diffent evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, you might say this question is an important part of an entire Philsophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgement. 
+Bland, witless and pandering? How could we end up at such a diffent evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, you might say this question is an important part of an entire Philosophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgement. 
 
 At the beginning of our search I unknowingly laid out our ultimate esthetic goal: to discover what Quality is and how to harness it. But immediately I've run across another question that I must answer first: how can two people end up with opposing assessments of Quality for the same thing?
 
-This question is more difficult that it seems. You might respond, "because they like different things." This would define Quality as a part of the self, a part of each of us. But this presents problems. If Quality is only opinion or what we like, why do we bother with arguments at all? We could simply state, "I like this" or "I don't like this." Instead, we state, "The Super Mario Bros movie was excellent because..." giving our reasons for why we believe it is not just Quality to us but Quality for all. Now, by giving reasons, we're attempting to define Quality as part of the thing which we judge. This too is problematic. If Quality is a part of the observed, the judged, it would not change unless the thing itself changed. But we know this is not the case. I saw the same movie as the critic, yet we both evaluated it differently.
+This question is more difficult that it seems. You might respond, "because they like different things." This would define Quality as a part of the self, a part of each of us. But this presents problems. If Quality is only opinion or what we like, why do we bother with arguments at all? We could simply state, "I like this" or "I don't like this." Instead, we state, "The Super Mario Bros movie was excellent because..." giving our reasons for why we believe it is not just Quality to us but Quality for all. 
+
+On the other hand, by giving reasons, we're attempting to define Quality as part of the thing which we judge. For example, "The movie was good because the animation was realistic," attributes Quality to the movie's animation. This too is problematic. If Quality is a part of the observed it would not change unless the thing itself changed. But we know this is not the case. I saw the same movie as the critic, yet we disagreed.
 
 I feel another question coming on. Already I feel like I'm opening an esthetic russian nesting doll. Now I wonder, where does Quality exist? In the observer or the observed?
 
@@ -69,7 +71,7 @@ First, the easy part. What does Quality mean? For this, I'll consult my favorite
 
 We seem to have two types of Quality. The first is that which makes something what it is, its attributes (I'll call this "little-q quality"). The second is that which distinguishes something from others, its rank (big-Q Quality).
 
-These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *"L. qualitas"*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing from his time. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)".
+These are the definitions of quality. However, the dictionary includes another tidbit right at the top: *"L. qualitas"*. Indicating the etymology of this word; it comes from the Latin *qualitas*. The term was coined by Cicero; unsurprisingly, as he wrote three quarters of extant Latin writing from his time. Qualitas, in turn, is a calque of the ancient Greek "ποιότης" (poiótēs), literally: "the state of being (-της) a certain nature (ποιός)."
 
 ![Little-q quality](/image/little_q_quality.png)
 
@@ -82,7 +84,7 @@ Here, quality is "hot" and "white"; quality is attributes. This type of quality 
 
 So, here I suggest we pivot to the other. The Quality of, "goods; character; rank" according to our friend Webster. But here, he and his dictionary are of no further help to us. We've already tracked the etymology he provided and it led only to little-q quality. 
 
-To get us started, we can (carefully) venture into the world of pop-philosophy (OK I admit, we're already there). Robert M. Pirsig provides us with a few ideas in his philosophical novel "Zen and The Art of Motorcycle Maintenance". But we must tread carefully here, as many of his ideas are verifiably false. However, they may yet be salvaged.
+To get us started, we can (carefully) venture into the world of pop-philosophy (OK I admit, we're already there). Robert M. Pirsig provides us with a few ideas in his philosophical novel "Zen and The Art of Motorcycle Maintenance." But we must tread carefully here, as many of his ideas are verifiably false. However, they may yet be salvaged.
 
 Pirsig explores the idea of Quality through the lens of an insane philosopher, Phaedrus. Eventually, Phaedrus runs across an ancient Greek definition if Quality.
 
@@ -113,5 +115,5 @@ When we meet with an object that fails to satisfy our expectations, we do not fi
 Here's what it looks like to evaluate this definition of Quality.
 
 1. We must figure out Quality for *who*? It might be Quality for myself, or another. 
-2. Next, we state the expectations. This could still be subjective, "I want to have a good time" or it could be objective, "I want to increase revenue by 5%".
+2. Next, we state the expectations. This could still be subjective, "I want to have a good time" or it could be objective, "I want to increase revenue by 5%."
 3. Finally, we look for the meeting of expectations. This could be as simple as asking, "Did you have a good time?" or as methodical as a scientific measurement.
