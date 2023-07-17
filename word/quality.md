@@ -138,4 +138,6 @@ Here's how I think I can harness it.
 
 This may be uncomfortable. Quality is human-centric and therefor subjective. At the same time, Quality comes from the attributes of an object at a single point in time, making them (literally) objective. This duality does not need to be uncomfortable or frightening, however, because it enables us to benefit from the best of both.
 
+Yes, the quality-event still allows us to work within the predictable stability of objectivity. But more importantly, it encourages us to work in the world of humanity; with all its whimisical uniqueness and peculiarities that come from each of our unique perspectives. Blending the two, the quality-event provides a powerful model to pursue Quality.
+
 Thank you for chasing Quality across the Desert with me. As the Gunslinger would say, may you have long days and pleasant nights (in Quality).
