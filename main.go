@@ -13,9 +13,12 @@ import (
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
 	"github.com/justindfuller/justindfuller.com/word"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type data struct {
+	Title   string
 	Entries [][]byte
 	Entry   []byte
 }
@@ -45,6 +48,7 @@ func main() {
 		}
 
 		template.Must(template.ParseFiles("./word/entry.template.html")).Execute(w, data{
+			Title: "Quality",
 			Entry: entry,
 		})
 	})
@@ -101,6 +105,7 @@ func main() {
 		}
 
 		template.Must(template.ParseFiles("./story/story.template.html")).Execute(w, data{
+			Title: Title(paths[last]),
 			Entry: entry,
 		})
 	})
@@ -129,6 +134,7 @@ func main() {
 		}
 
 		template.Must(template.ParseFiles("./review/review.template.html")).Execute(w, data{
+			Title: Title(paths[last]),
 			Entry: entry,
 		})
 	})
@@ -156,4 +162,10 @@ func main() {
 
 	log.Printf("Listening on port http://localhost%s", port)
 	http.ListenAndServe(port, nil)
+}
+
+func Title(s string) string {
+	s = strings.ReplaceAll(s, "_", " ")
+	s = strings.ReplaceAll(s, "-", " ")
+	return cases.Title(language.AmericanEnglish).String(s)
 }

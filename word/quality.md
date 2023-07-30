@@ -1,4 +1,4 @@
-# Searching for Quality
+# Quality
 
 Quality fled across the desert, and the wordslinger followed.
 

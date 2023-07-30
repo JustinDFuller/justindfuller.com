@@ -61,3 +61,10 @@
 **Supererogatory**
 
 > Observed or performed to an extent not enjoined or required.
+
+<hr />
+
+[**Quality**](/word/quality)
+
+> The condition of being of such a sort as distinguished from others; nature or character relatively considered, as of goods; character; rank.
+
