@@ -38,21 +38,6 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/word/quality", func(w http.ResponseWriter, r *http.Request) {
-		entry, err := word.Entry("quality")
-		if err != nil {
-			http.Error(w, "Error reading Words", http.StatusInternalServerError)
-			log.Printf("Error reading Words: %s", err)
-
-			return
-		}
-
-		template.Must(template.ParseFiles("./word/entry.template.html")).Execute(w, data{
-			Title: "Quality",
-			Entry: entry,
-		})
-	})
-
 	http.HandleFunc("/word", func(w http.ResponseWriter, r *http.Request) {
 		entry, err := word.Entry("entries")
 		if err != nil {
@@ -63,6 +48,31 @@ func main() {
 		}
 
 		template.Must(template.ParseFiles("./word/main.template.html")).Execute(w, data{
+			Entry: entry,
+		})
+	})
+
+	http.HandleFunc("/word/", func(w http.ResponseWriter, r *http.Request) {
+		paths := strings.Split(r.URL.Path, "/")
+		last := len(paths) - 1
+
+		if len(paths) == 0 {
+			http.Error(w, "Word not found.", http.StatusNotFound)
+			log.Printf("Word not found: %s", r.URL.Path)
+
+			return
+		}
+
+		entry, err := word.Entry(paths[last])
+		if err != nil {
+			http.Error(w, "Error reading Words", http.StatusInternalServerError)
+			log.Printf("Error reading Words: %s", err)
+
+			return
+		}
+
+		template.Must(template.ParseFiles("./word/entry.template.html")).Execute(w, data{
+			Title: Title(paths[last]),
 			Entry: entry,
 		})
 	})
