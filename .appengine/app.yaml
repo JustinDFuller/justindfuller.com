@@ -7,7 +7,7 @@ automatic_scaling:
 
 handlers:
   - url: /image
-    static_dir: ./image
+    static_dir: .build/image
     secure: always
 
   - url: /aphorism

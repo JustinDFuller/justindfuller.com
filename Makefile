@@ -30,3 +30,4 @@ build:
 	@curl "http://localhost:9000/word" > ./.build/word.html;
 	@curl "http://localhost:9000/word/quality" > ./.build/quality.html;
 	@curl "http://localhost:9000/word/equipoise" > ./.build/equipoise.html;
+	@cp -r ./image ./.build
