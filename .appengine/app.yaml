@@ -6,6 +6,11 @@ automatic_scaling:
   max_idle_instances: 1
 
 handlers:
+  - url: /image
+    static_dir: image
+    upload: ./image/*
+    secure: always
+
   - url: /aphorism
     static_files: .build/aphorism.html
     upload: .build/aphorism.html
@@ -54,6 +59,11 @@ handlers:
   - url: /word/quality
     static_files: .build/quality.html
     upload: .build/quality.html
+    secure: always
+
+  - url: /word/equipoise
+    static_files: .build/equipoise.html
+    upload: .build/equipoise.html
     secure: always
 
   - url: /word
