@@ -70,7 +70,9 @@
         margin-bottom: 0;
       }
 
-      p {
+      button,
+      p,
+      progress {
         margin: 20px 0;
       }
 
@@ -110,20 +112,142 @@
       label {
         display: block;
       }
+
+      .day {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 40px;
+        border: 1px solid black;
+        border-radius: 4px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .day .evaporation {
+        background: #f06a6a;
+        width: 50%;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        height: 100%;
+        position: absolute;
+        right: 50%;
+        top: 0;
+        bottom: 0;
+      }
+
+      .day .rain {
+        background: #6a6af0;
+        width: 50%;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+      }
+
+      .day .title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+      }
     </style>
   </head>
 
   <body>
     <main>
       <h1>Grass Watering</h1>
-      <p id="summary"></p>
       <button id="getLocation" onclick="handleLocationClick()">
         Click here to begin
       </button>
-      <div id="precipitation"></div>
-      <div id="chooseGrassType"></div>
-      <div id="wateringNeeds"></div>
-      <div id="selectDays"></div>
+      <progress id="loading" class="hidden">Loading Forecast</progress>
+      <div id="precipitation" class="hidden">
+        <p>
+         Your forecast predicts 
+         <span id="precipitationTotalInches">?</span>
+         inches of rain during the next next seven days.
+        </p>
+      </div>
+      <div id="chooseGrassType" class="hidden">
+        <select id="chooseGrassTypeSelect" onchange="handleGrassSelect(this)">
+          <option selected="" disabled="" value="">Select a Grass Type</option>
+          <option value="Bermuda">Bermuda</option>
+          <option value="Zoysia">Zoysia</option>
+          <option value="St. Augustine">St. Augustine</option>
+          <option value="Kentucky Bluegrass">Kentucky Bluegrass</option>
+          <option value="Tall Fescue">Tall Fescue</option>
+          <option value="Ryegrass">Ryegrass</option>
+          <option value="Fine Fescue">Fine Fescue</option>
+        </select>
+      </div>
+      <div id="wateringNeeds" class="hidden">
+        <p>
+          Based on your grass type, you need 
+          <span id="wateringNeedsAmount">?</span> 
+          <span id="wateringNeedsInches">inches</span> 
+          of water each week. 
+          <strong>
+            Water three days this week for 
+            <span id="wateringMinutesEachDay">?</span> 
+            minutes each day.
+          </strong> 
+          This will make up the remaining 
+          <span id="wateringDeficiency">?</span> 
+          inches.
+         </p>
+      </div>
+      <div id="weekDays">
+        <div style="display: flex; flex-direction: row;">
+          <div style="width: 50%; display: inline-block; text-align:center;">Heat</div> 
+          <div style="width: 50%; display: inline-block; text-align:center;">Rain</div>
+        </div>
+        <div id="Sunday" class="day">
+          <div class="evaporation"></div>
+          <div class="rain"></div>
+          <span class="title">Sunday</span>
+        </div> 
+        <div id="Monday" class="day">
+          <div class="evaporation"></div>
+          <div class="rain"></div>
+          <span class="title">Monday</span>
+        </div> 
+        <div id="Tuesday" class="day">
+          <div class="evaporation"></div>
+          <div class="rain"></div>
+          <span class="title">Tuesday</span> 
+        </div> 
+        <div id="Wednesday" class="day">
+          <div class="evaporation"></div>
+          <div class="rain"></div>
+          <span class="title">Wednesday</span> 
+        </div> 
+        <div id="Thursday" class="day">
+          <div class="evaporation"></div>
+          <div class="rain"></div>
+          <span class="title">Thursday</span> 
+        </div> 
+        <div id="Friday" class="day">
+          <div class="evaporation"></div>
+          <div class="rain"></div>
+          <span class="title">Friday</span> 
+        </div> 
+        <div id="Saturday" class="day">
+          <div class="evaporation"></div>
+          <div class="rain"></div>
+          <span class="title">Saturday</span> 
+        </div> 
+      </div>
     </main>
 
     <!-- Simple script to hide main until fonts are loaded -->
@@ -133,6 +257,8 @@
       document.fonts.ready.then(function () {
         main.style.visibility = "visible";
       });
+
+      const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
       const grassTypes = [
         {
@@ -165,15 +291,24 @@
         },
       ];
 
-      const summary = document.getElementById("summary");
       const getLocation = document.getElementById("getLocation");
+      const loading = document.getElementById("loading");
       const precipitation = document.getElementById("precipitation");
+      const precipitationTotalInches = document.getElementById("precipitationTotalInches");
+
       const chooseGrassType = document.getElementById("chooseGrassType");
+      const chooseGrassTypeSelect = document.getElementById("chooseGrassTypeSelect");
+
       const wateringNeeds = document.getElementById("wateringNeeds");
+      const wateringNeedsAmount = document.getElementById("wateringNeedsAmount");
+      const wateringMinutesEachDay = document.getElementById("wateringMinutesEachDay");
+      const wateringDeficiency = document.getElementById("wateringDeficiency");
+
+      const forecast = {};
 
       async function handleLocationClick() {
-        summary.innerHTML = "Fetching Location...";
-        getLocation.remove();
+        getLocation.classList.add("hidden");
+        loading.classList.remove("hidden")
 
         const location = await new Promise(function (resolve) {
           navigator.geolocation.getCurrentPosition(async (position) => {
@@ -190,85 +325,95 @@
       }
 
       async function renderForecast(location) {
+        getLocation.classList.add("hidden");
+        loading.classList.remove("hidden")
+
         const point = await fetch(
           `https://api.weather.gov/points/${location.latitude},${location.longitude}`
         ).then((res) => res.json());
 
-        summary.innerHTML = "Fetching Weather Forecast...";
-
-        const forecast = await fetch(point.properties.forecastGridData).then(
+        const response = await fetch(point.properties.forecastGridData).then(
           (res) => res.json()
         );
 
         let total = 0;
+        const days = {};
 
-        for (const value of forecast.properties.quantitativePrecipitation
+        for (const value of response.properties.quantitativePrecipitation
           .values) {
           total = (total * 100 + value.value * 100) / 100;
+
+          const date = value.validTime.slice(0, 10)
+          const parsed = new Date(Number(date.slice(0, 4)), Number(date.slice(5, 7)) - 1, Number(date.slice(8, 10)))
+          let day = days[date]
+          if (!day) {
+            day = {
+              day: week[parsed.getDay()],
+              precipitationInches: 0,
+              temperatureF: 0,
+            }
+          }
+          day.precipitationInches += (value.value / 25.4)
+          days[date] = day
+        }
+
+        for (const value of response.properties.maxTemperature.values) {
+          const date = value.validTime.slice(0, 10)
+          const parsed = new Date(Number(date.slice(0, 4)), Number(date.slice(5, 7)) - 1, Number(date.slice(8, 10)))
+          let day = days[date]
+          if (!day) {
+            day = {
+              day: week[parsed.getDay()],
+              precipitationInches: 0,
+              temperatureF: 0,
+            }
+          }
+          day.temperatureF = Math.round((value.value * 1.8 + 32) * 100) / 100
+          days[date] = day
         }
 
         total = Number(Math.round(total * 100) / 100).toFixed(2);
 
         const totalInches = (total / 25.4).toFixed(2);
 
-        summary.remove();
-        precipitation.innerHTML = `
-     <p>
-           You will receive ${totalInches} inches (${total} millimeters) of rain over the next 7 days.
-            </p>
-         `;
+        forecast.totalInches = totalInches;
+        forecast.days = days;
+
+        precipitationTotalInches.innerText = totalInches
+        precipitation.classList.remove("hidden");
+        loading.classList.add("hidden");
+        chooseGrassType.classList.remove("hidden");
 
         const selectedGrass = window.localStorage.getItem("grass") || "";
-
-        chooseGrassType.innerHTML = `
-     <select value="${selectedGrass}" onchange="handleGrassSelect(this, { total: ${total}, totalInches: ${totalInches}  })">
-     <option selected disabled value="">Select a Grass Type</option>
-     ${grassTypes.reduce((sum, val) => {
-       return (
-         sum +
-         `<option value="${val.name}" ${
-           val.name === selectedGrass ? "selected" : ""
-         }>${val.name}</option>`
-       );
-     }, "")}
-         </select>
-       `;
-
         if (selectedGrass) {
-          handleGrassSelect({ value: selectedGrass }, { totalInches });
+          chooseGrassTypeSelect.value = selectedGrass
+          handleGrassSelect({ value: selectedGrass });
         }
       }
 
-      function handleGrassSelect(target, { totalInches }) {
-        window.localStorage.setItem("grass", target.value);
-
+      function handleGrassSelect(target) {
         const grass = grassTypes.find((g) => g.name === target.value);
-        const deficiency = Math.round((grass.inches - totalInches) * 100) / 100;
+
+        window.localStorage.setItem("grass", grass.name);
+        const deficiency = Math.round((grass.inches - forecast.totalInches) * 100) / 100;
         const third = Math.round((deficiency / 3) * 100) / 100;
 
-        wateringNeeds.innerHTML = `
-         <p>
-          You will get ${totalInches} of the needed ${grass.inches} ${
-          grass.inches > 1 ? "inches" : "inch"
-        } of rain this week. <strong>Water three days this week for ${Math.round(
-          60 * third
-        )} minutes each day.</strong> This will make up the remaining ${deficiency} inches.
-         </p>
-       `;
+        wateringNeedsAmount.innerText = grass.inches
+        wateringMinutesEachDay.innerText = Math.round(60 * third)
+        wateringDeficiency.innerText = deficiency;
+        wateringNeeds.classList.remove("hidden");
 
-        /*
-        selectDays.innerHTML = `
-          <p style="margin-bottom: 0;">Pick up three days to water your lawn.</p>
-          
-          <label for="Sunday"><input checked type="checkbox" id="Sunday" value="Sunday" /> Sunday</label>
-          <label for="Monday"><input type="checkbox" id="Monday" value="Monday" /> Monday</label>
-          <label for="Tuesday"><input checked type="checkbox" id="Tuesday" value="Tuesday" /> Tuesday</label>
-          <label for="Wednesday"><input type="checkbox" id="Wednesday" value="Wednesday" /> Wednesday</label>
-          <label for="Thursday"><input type="checkbox" id="Thursday" value="Thursday" /> Thursday</label>
-          <label for="Friday"><input checked type="checkbox" id="Friday" value="Friday" /> Friday</label>
-          <label for="Saturday"><input type="checkbox" id="Saturday" value="Saturday" /> Saturday</label>
-        `
-              */
+        for (const date in forecast.days) {
+          const day = forecast.days[date];
+
+          const maxHeat = Math.min(day.temperatureF, 95);
+          const minHeat = day.temperatureF - 40;
+          const maxDiff = 45;
+          const diff = ((day.temperatureF / 95) * 100) / 2;
+
+          document.getElementById(day.day).querySelector(".rain").style.width = `${(day.precipitationInches / grass.inches) * 100}%`;
+          document.getElementById(day.day).querySelector(".evaporation").style.width = `${diff}%`;
+        }
       }
 
       try {
