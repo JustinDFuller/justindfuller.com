@@ -174,9 +174,9 @@
       <progress id="loading" class="hidden">Loading Forecast</progress>
       <div id="precipitation" class="hidden">
         <p>
-         Your forecast predicts 
-         <span id="precipitationTotalInches">?</span>
-         inches of rain during the next next seven days.
+          Your forecast predicts
+          <span id="precipitationTotalInches">?</span>
+          inches of rain during the next next seven days.
         </p>
       </div>
       <div id="chooseGrassType" class="hidden">
@@ -193,60 +193,66 @@
       </div>
       <div id="wateringNeeds" class="hidden">
         <p>
-          Based on your grass type, you need 
-          <span id="wateringNeedsAmount">?</span> 
-          <span id="wateringNeedsInches">inches</span> 
-          of water each week. 
+          Based on your grass type, you need
+          <span id="wateringNeedsAmount">?</span>
+          <span id="wateringNeedsInches">inches</span>
+          of water each week.
           <strong>
-            Water three days this week for 
-            <span id="wateringMinutesEachDay">?</span> 
+            Water three days this week for
+            <span id="wateringMinutesEachDay">?</span>
             minutes each day.
-          </strong> 
-          This will make up the remaining 
-          <span id="wateringDeficiency">?</span> 
+          </strong>
+          This will make up the remaining
+          <span id="wateringDeficiency">?</span>
           inches.
-         </p>
+        </p>
       </div>
-      <div id="weekDays">
-        <div style="display: flex; flex-direction: row;">
-          <div style="width: 50%; display: inline-block; text-align:center;">Heat</div> 
-          <div style="width: 50%; display: inline-block; text-align:center;">Rain</div>
+      <div id="weekDays" class="hidden">
+        <div style="display: flex; flex-direction: row; height: 100%;">
+          <div style="width: 50%; display: inline-block; text-align: center">
+            Heat
+          </div>
+          <div style="width: 50%; display: inline-block; text-align: center">
+            Rain
+          </div>
         </div>
-        <div id="Sunday" class="day">
-          <div class="evaporation"></div>
-          <div class="rain"></div>
-          <span class="title">Sunday</span>
-        </div> 
-        <div id="Monday" class="day">
-          <div class="evaporation"></div>
-          <div class="rain"></div>
-          <span class="title">Monday</span>
-        </div> 
-        <div id="Tuesday" class="day">
-          <div class="evaporation"></div>
-          <div class="rain"></div>
-          <span class="title">Tuesday</span> 
-        </div> 
-        <div id="Wednesday" class="day">
-          <div class="evaporation"></div>
-          <div class="rain"></div>
-          <span class="title">Wednesday</span> 
-        </div> 
-        <div id="Thursday" class="day">
-          <div class="evaporation"></div>
-          <div class="rain"></div>
-          <span class="title">Thursday</span> 
-        </div> 
-        <div id="Friday" class="day">
-          <div class="evaporation"></div>
-          <div class="rain"></div>
-          <span class="title">Friday</span> 
-        </div> 
-        <div id="Saturday" class="day">
-          <div class="evaporation"></div>
-          <div class="rain"></div>
-          <span class="title">Saturday</span> 
-        </div> 
+        <div style="display: flex; flex-direction: column">
+          <div id="Sunday" class="day">
+            <div class="evaporation"></div>
+            <div class="rain"></div>
+            <span class="title">Sunday</span>
+          </div>
+          <div id="Monday" class="day">
+            <div class="evaporation"></div>
+            <div class="rain"></div>
+            <span class="title">Monday</span>
+          </div>
+          <div id="Tuesday" class="day">
+            <div class="evaporation"></div>
+            <div class="rain"></div>
+            <span class="title">Tuesday</span>
+          </div>
+          <div id="Wednesday" class="day">
+            <div class="evaporation"></div>
+            <div class="rain"></div>
+            <span class="title">Wednesday</span>
+          </div>
+          <div id="Thursday" class="day">
+            <div class="evaporation"></div>
+            <div class="rain"></div>
+            <span class="title">Thursday</span>
+          </div>
+          <div id="Friday" class="day">
+            <div class="evaporation"></div>
+            <div class="rain"></div>
+            <span class="title">Friday</span>
+          </div>
+          <div id="Saturday" class="day">
+            <div class="evaporation"></div>
+            <div class="rain"></div>
+            <span class="title">Saturday</span>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -258,7 +264,15 @@
         main.style.visibility = "visible";
       });
 
-      const week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      const week = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
 
       const grassTypes = [
         {
@@ -294,21 +308,29 @@
       const getLocation = document.getElementById("getLocation");
       const loading = document.getElementById("loading");
       const precipitation = document.getElementById("precipitation");
-      const precipitationTotalInches = document.getElementById("precipitationTotalInches");
+      const precipitationTotalInches = document.getElementById(
+        "precipitationTotalInches"
+      );
 
       const chooseGrassType = document.getElementById("chooseGrassType");
-      const chooseGrassTypeSelect = document.getElementById("chooseGrassTypeSelect");
+      const chooseGrassTypeSelect = document.getElementById(
+        "chooseGrassTypeSelect"
+      );
 
       const wateringNeeds = document.getElementById("wateringNeeds");
-      const wateringNeedsAmount = document.getElementById("wateringNeedsAmount");
-      const wateringMinutesEachDay = document.getElementById("wateringMinutesEachDay");
+      const wateringNeedsAmount = document.getElementById(
+        "wateringNeedsAmount"
+      );
+      const wateringMinutesEachDay = document.getElementById(
+        "wateringMinutesEachDay"
+      );
       const wateringDeficiency = document.getElementById("wateringDeficiency");
 
       const forecast = {};
 
       async function handleLocationClick() {
         getLocation.classList.add("hidden");
-        loading.classList.remove("hidden")
+        loading.classList.remove("hidden");
 
         const location = await new Promise(function (resolve) {
           navigator.geolocation.getCurrentPosition(async (position) => {
@@ -326,7 +348,7 @@
 
       async function renderForecast(location) {
         getLocation.classList.add("hidden");
-        loading.classList.remove("hidden")
+        loading.classList.remove("hidden");
 
         const point = await fetch(
           `https://api.weather.gov/points/${location.latitude},${location.longitude}`
@@ -343,33 +365,43 @@
           .values) {
           total = (total * 100 + value.value * 100) / 100;
 
-          const date = value.validTime.slice(0, 10)
-          const parsed = new Date(Number(date.slice(0, 4)), Number(date.slice(5, 7)) - 1, Number(date.slice(8, 10)))
-          let day = days[date]
+          const date = value.validTime.slice(0, 10);
+          const parsed = new Date(
+            Number(date.slice(0, 4)),
+            Number(date.slice(5, 7)) - 1,
+            Number(date.slice(8, 10))
+          );
+          let day = days[date];
           if (!day) {
             day = {
               day: week[parsed.getDay()],
+              dayInt: parsed.getDay(),
               precipitationInches: 0,
               temperatureF: 0,
-            }
+            };
           }
-          day.precipitationInches += (value.value / 25.4)
-          days[date] = day
+          day.precipitationInches += value.value / 25.4;
+          days[date] = day;
         }
 
         for (const value of response.properties.maxTemperature.values) {
-          const date = value.validTime.slice(0, 10)
-          const parsed = new Date(Number(date.slice(0, 4)), Number(date.slice(5, 7)) - 1, Number(date.slice(8, 10)))
-          let day = days[date]
+          const date = value.validTime.slice(0, 10);
+          const parsed = new Date(
+            Number(date.slice(0, 4)),
+            Number(date.slice(5, 7)) - 1,
+            Number(date.slice(8, 10))
+          );
+          let day = days[date];
           if (!day) {
             day = {
               day: week[parsed.getDay()],
+              dayInt: parsed.getDay(),
               precipitationInches: 0,
               temperatureF: 0,
-            }
+            };
           }
-          day.temperatureF = Math.round((value.value * 1.8 + 32) * 100) / 100
-          days[date] = day
+          day.temperatureF = Math.round((value.value * 1.8 + 32) * 100) / 100;
+          days[date] = day;
         }
 
         total = Number(Math.round(total * 100) / 100).toFixed(2);
@@ -379,14 +411,14 @@
         forecast.totalInches = totalInches;
         forecast.days = days;
 
-        precipitationTotalInches.innerText = totalInches
+        precipitationTotalInches.innerText = totalInches;
         precipitation.classList.remove("hidden");
         loading.classList.add("hidden");
         chooseGrassType.classList.remove("hidden");
 
         const selectedGrass = window.localStorage.getItem("grass") || "";
         if (selectedGrass) {
-          chooseGrassTypeSelect.value = selectedGrass
+          chooseGrassTypeSelect.value = selectedGrass;
           handleGrassSelect({ value: selectedGrass });
         }
       }
@@ -395,11 +427,12 @@
         const grass = grassTypes.find((g) => g.name === target.value);
 
         window.localStorage.setItem("grass", grass.name);
-        const deficiency = Math.round((grass.inches - forecast.totalInches) * 100) / 100;
+        const deficiency =
+          Math.round((grass.inches - forecast.totalInches) * 100) / 100;
         const third = Math.round((deficiency / 3) * 100) / 100;
 
-        wateringNeedsAmount.innerText = grass.inches
-        wateringMinutesEachDay.innerText = Math.round(60 * third)
+        wateringNeedsAmount.innerText = grass.inches;
+        wateringMinutesEachDay.innerText = Math.round(60 * third);
         wateringDeficiency.innerText = deficiency;
         wateringNeeds.classList.remove("hidden");
 
@@ -411,8 +444,25 @@
           const maxDiff = 45;
           const diff = ((day.temperatureF / 95) * 100) / 2;
 
-          document.getElementById(day.day).querySelector(".rain").style.width = `${(day.precipitationInches / grass.inches) * 100}%`;
-          document.getElementById(day.day).querySelector(".evaporation").style.width = `${diff}%`;
+          const currentDay = new Date().getDay()
+
+          let realDay = day.dayInt - currentDay
+          if (realDay < 0) {
+            realDay = 7 + realDay
+          }
+
+          document.getElementById(day.day).style.order = realDay
+
+          document
+            .getElementById(day.day)
+            .querySelector(".rain").style.width = `${
+            (day.precipitationInches / grass.inches) * 100
+          }%`;
+          document
+            .getElementById(day.day)
+            .querySelector(".evaporation").style.width = `${diff}%`;
+
+          document.getElementById("weekDays").classList.remove("hidden");
         }
       }
 
