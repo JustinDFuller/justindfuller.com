@@ -19,4 +19,3 @@ dispatch:
 
   - url: "justindfuller.com/*"
     service: default
-

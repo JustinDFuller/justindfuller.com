@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title>Make | Justin Fuller</title>
+    <meta name="description" content="Justin Fuller" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:title" content="Justin Fuller" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.png" />
+
+    <link rel="manifest" href="site.webmanifest" />
+    <meta name="theme-color" content="#fafafa" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        padding: 0 20px;
+        margin: 0;
+        width: 100%;
+        height: max-content;
+        display: block;
+        font-size: 24px;
+        font-family: "Amiri", serif;
+        background: #fcf9f4;
+      }
+
+      div {
+        width: 100%;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      main {
+        animation: fadeIn 1s;
+        height: max-content;
+        max-width: 500px;
+        margin: auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        padding-bottom: 60px;
+      }
+
+      h1 {
+        padding: 0;
+        margin-top: 20px;
+        margin-bottom: 0;
+      }
+
+      p {
+        margin: 20px 0;
+      }
+
+      select {
+        width: 100%;
+        padding: 10px 20px;
+        border: 2px solid black;
+        background: white;
+        color: black;
+      }
+
+      button {
+        padding: 10px 20px;
+        border-top: 2px solid black;
+        border-left: 2px solid black;
+        border-right: 4px solid black;
+        border-bottom: 4px solid black;
+        border-radius: 2px;
+        background: white;
+        color: black;
+        cursor: pointer;
+      }
+
+      button:hover {
+        border-top: 3px solid black;
+        border-left: 3px solid black;
+        border-right: 3px solid black;
+        border-bottom: 3px solid black;
+      }
+
+      select,
+      label,
+      input[type="checkbox"] {
+        cursor: pointer;
+      }
+
+      label {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>Grass Watering</h1>
+      <p id="summary"></p>
+      <button id="getLocation" onclick="handleLocationClick()">
+        Click here to begin
+      </button>
+      <div id="precipitation"></div>
+      <div id="chooseGrassType"></div>
+      <div id="wateringNeeds"></div>
+      <div id="selectDays"></div>
+    </main>
+
+    <!-- Simple script to hide main until fonts are loaded -->
+    <script>
+      const main = document.querySelector("main");
+      main.style.visibility = "hidden";
+      document.fonts.ready.then(function () {
+        main.style.visibility = "visible";
+      });
+
+      const grassTypes = [
+        {
+          name: "Bermuda",
+          inches: 1,
+        },
+        {
+          name: "Zoysia",
+          inches: 0.75,
+        },
+        {
+          name: "St. Augustine",
+          inches: 1.25,
+        },
+        {
+          name: "Kentucky Bluegrass",
+          inches: 2.5,
+        },
+        {
+          name: "Tall Fescue",
+          inches: 1.5,
+        },
+        {
+          name: "Ryegrass",
+          inches: 1.25,
+        },
+        {
+          name: "Fine Fescue",
+          inches: 1,
+        },
+      ];
+
+      const summary = document.getElementById("summary");
+      const getLocation = document.getElementById("getLocation");
+      const precipitation = document.getElementById("precipitation");
+      const chooseGrassType = document.getElementById("chooseGrassType");
+      const wateringNeeds = document.getElementById("wateringNeeds");
+
+      async function handleLocationClick() {
+        summary.innerHTML = "Fetching Location...";
+        getLocation.remove();
+
+        const location = await new Promise(function (resolve) {
+          navigator.geolocation.getCurrentPosition(async (position) => {
+            const location = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            window.localStorage.setItem("location", JSON.stringify(location));
+            resolve(location);
+          });
+        });
+
+        renderForecast(location);
+      }
+
+      async function renderForecast(location) {
+        const point = await fetch(
+          `https://api.weather.gov/points/${location.latitude},${location.longitude}`
+        ).then((res) => res.json());
+
+        summary.innerHTML = "Fetching Weather Forecast...";
+
+        const forecast = await fetch(point.properties.forecastGridData).then(
+          (res) => res.json()
+        );
+
+        let total = 0;
+
+        for (const value of forecast.properties.quantitativePrecipitation
+          .values) {
+          total = (total * 100 + value.value * 100) / 100;
+        }
+
+        total = Number(Math.round(total * 100) / 100).toFixed(2);
+
+        const totalInches = (total / 25.4).toFixed(2);
+
+        summary.remove();
+        precipitation.innerHTML = `
+     <p>
+           You will receive ${totalInches} inches (${total} millimeters) of rain over the next 7 days.
+            </p>
+         `;
+
+        const selectedGrass = window.localStorage.getItem("grass") || "";
+
+        chooseGrassType.innerHTML = `
+     <select value="${selectedGrass}" onchange="handleGrassSelect(this, { total: ${total}, totalInches: ${totalInches}  })">
+     <option selected disabled value="">Select a Grass Type</option>
+     ${grassTypes.reduce((sum, val) => {
+       return (
+         sum +
+         `<option value="${val.name}" ${
+           val.name === selectedGrass ? "selected" : ""
+         }>${val.name}</option>`
+       );
+     }, "")}
+         </select>
+       `;
+
+        if (selectedGrass) {
+          handleGrassSelect({ value: selectedGrass }, { totalInches });
+        }
+      }
+
+      function handleGrassSelect(target, { totalInches }) {
+        window.localStorage.setItem("grass", target.value);
+
+        const grass = grassTypes.find((g) => g.name === target.value);
+        const deficiency = Math.round((grass.inches - totalInches) * 100) / 100;
+        const third = Math.round((deficiency / 3) * 100) / 100;
+
+        wateringNeeds.innerHTML = `
+         <p>
+          You will get ${totalInches} of the needed ${grass.inches} ${
+          grass.inches > 1 ? "inches" : "inch"
+        } of rain this week. <strong>Water three days this week for ${Math.round(
+          60 * third
+        )} minutes each day.</strong> This will make up the remaining ${deficiency} inches.
+         </p>
+       `;
+
+        /*
+        selectDays.innerHTML = `
+          <p style="margin-bottom: 0;">Pick up three days to water your lawn.</p>
+          
+          <label for="Sunday"><input checked type="checkbox" id="Sunday" value="Sunday" /> Sunday</label>
+          <label for="Monday"><input type="checkbox" id="Monday" value="Monday" /> Monday</label>
+          <label for="Tuesday"><input checked type="checkbox" id="Tuesday" value="Tuesday" /> Tuesday</label>
+          <label for="Wednesday"><input type="checkbox" id="Wednesday" value="Wednesday" /> Wednesday</label>
+          <label for="Thursday"><input type="checkbox" id="Thursday" value="Thursday" /> Thursday</label>
+          <label for="Friday"><input checked type="checkbox" id="Friday" value="Friday" /> Friday</label>
+          <label for="Saturday"><input type="checkbox" id="Saturday" value="Saturday" /> Saturday</label>
+        `
+              */
+      }
+
+      try {
+        const location = window.localStorage.getItem("location");
+
+        if (location) {
+          parsed = JSON.parse(location);
+          getLocation.remove();
+          renderForecast(parsed);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    </script>
+  </body>
+</html>

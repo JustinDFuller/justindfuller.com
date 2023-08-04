@@ -55,6 +55,11 @@ handlers:
     upload: .build/make.html
     secure: always
 
+  - url: /grass
+    static_files: .build/grass.html
+    upload: .build/grass.html
+    secure: always
+
   - url: /word/quality
     static_files: .build/quality.html
     upload: .build/quality.html
