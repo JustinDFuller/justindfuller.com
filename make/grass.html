@@ -65,9 +65,9 @@
       }
 
       h1 {
-        padding: 0;
-        margin-top: 20px;
-        margin-bottom: 0;
+        line-height: 45px;
+        margin-top: 40px;
+        margin-bottom: 20px;
       }
 
       button,
@@ -113,55 +113,66 @@
         display: block;
       }
 
-      .day {
-        position: relative;
-        display: block;
-        width: 100%;
-        height: 40px;
-        border: 1px solid black;
-        border-radius: 4px;
-        text-align: center;
-        margin-bottom: 20px;
-      }
-
       .hidden {
         display: none;
       }
 
-      .day .evaporation {
-        background: #f06a6a;
-        width: 50%;
-        margin: 0;
-        padding: 0;
-        display: inline-block;
-        height: 100%;
-        position: absolute;
-        right: 50%;
-        top: 0;
-        bottom: 0;
+      #weekDays {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        align-items: flex-start;
       }
 
-      .day .rain {
-        background: #6a6af0;
-        width: 50%;
-        margin: 0;
-        padding: 0;
-        display: inline-block;
-        height: 100%;
-        position: absolute;
-        left: 50%;
-        top: 0;
-        bottom: 0;
+      .day {
+        text-align: center;
+        min-width: 150px;
+        max-width: 30%;
+        border-top: 2px solid black;
+        border-left: 2px solid black;
+        border-right: 4px solid black;
+        border-bottom: 4px solid black;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+
+      .day .icon {
+        height: 40px;
+        width: auto;
+      }
+
+      .day .icon.thermometer {
+        padding-bottom: 5px;
+        margin-left: -10px;
+      }
+
+      .day .icon.cloud {
+        padding-bottom: 2px;
+        margin-left: -10px;
+      }
+
+      .day .stat {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .day .title {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        display: block;
         text-align: center;
+        font-weight: bold;
       }
+
+      .day .rain {
+        min-width: 24px;
+      }
+
+
+      .day .evaporation {
+        min-width: 30px;
+      }
+
     </style>
   </head>
 
@@ -208,49 +219,81 @@
         </p>
       </div>
       <div id="weekDays" class="hidden">
-        <div style="display: flex; flex-direction: row; height: 100%;">
-          <div style="width: 50%; display: inline-block; text-align: center">
-            Heat
+        <div id="Sunday" class="day">
+          <span class="title">Sunday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />  
+            <span class="evaporation"></span>°F
           </div>
-          <div style="width: 50%; display: inline-block; text-align: center">
-            Rain
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />  
+            <span class="rain"></span>in
           </div>
         </div>
-        <div style="display: flex; flex-direction: column">
-          <div id="Sunday" class="day">
-            <div class="evaporation"></div>
-            <div class="rain"></div>
-            <span class="title">Sunday</span>
+        <div id="Monday" class="day">
+          <span class="title">Monday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />  
+            <span class="evaporation"></span>°F
           </div>
-          <div id="Monday" class="day">
-            <div class="evaporation"></div>
-            <div class="rain"></div>
-            <span class="title">Monday</span>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />  
+            <span class="rain"></span>in
           </div>
-          <div id="Tuesday" class="day">
-            <div class="evaporation"></div>
-            <div class="rain"></div>
-            <span class="title">Tuesday</span>
+        </div>
+        <div id="Tuesday" class="day">
+          <span class="title">Tuesday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />  
+            <span class="evaporation"></span>°F
           </div>
-          <div id="Wednesday" class="day">
-            <div class="evaporation"></div>
-            <div class="rain"></div>
-            <span class="title">Wednesday</span>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />  
+            <span class="rain"></span>in
           </div>
-          <div id="Thursday" class="day">
-            <div class="evaporation"></div>
-            <div class="rain"></div>
-            <span class="title">Thursday</span>
+        </div>
+        <div id="Wednesday" class="day">
+          <span class="title">Wednesday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />  
+            <span class="evaporation"></span>°F
           </div>
-          <div id="Friday" class="day">
-            <div class="evaporation"></div>
-            <div class="rain"></div>
-            <span class="title">Friday</span>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />  
+            <span class="rain"></span>in
           </div>
-          <div id="Saturday" class="day">
-            <div class="evaporation"></div>
-            <div class="rain"></div>
-            <span class="title">Saturday</span>
+        </div>
+        <div id="Thursday" class="day">
+          <span class="title">Thursday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />  
+            <span class="evaporation"></span>°F
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />  
+            <span class="rain"></span>in
+          </div>
+        </div>
+        <div id="Friday" class="day">
+          <span class="title">Friday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />  
+            <span class="evaporation"></span>°F
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />  
+            <span class="rain"></span>in
+          </div>
+        </div>
+        <div id="Saturday" class="day">
+          <span class="title">Saturday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />  
+            <span class="evaporation"></span>°F
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />  
+            <span class="rain"></span>in
           </div>
         </div>
       </div>
@@ -455,12 +498,11 @@
 
           document
             .getElementById(day.day)
-            .querySelector(".rain").style.width = `${
-            (day.precipitationInches / grass.inches) * 100
-          }%`;
+            .querySelector(".rain").innerText = day.precipitationInches;
+
           document
             .getElementById(day.day)
-            .querySelector(".evaporation").style.width = `${diff}%`;
+            .querySelector(".evaporation").innerText = day.temperatureF;
 
           document.getElementById("weekDays").classList.remove("hidden");
         }
