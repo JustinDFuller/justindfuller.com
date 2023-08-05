@@ -113,6 +113,7 @@
         display: block;
       }
 
+      #weekDays.hidden,
       .hidden {
         display: none;
       }
@@ -126,6 +127,8 @@
       }
 
       .day {
+        background: white;
+        cursor: pointer;
         text-align: center;
         min-width: 150px;
         max-width: 30%;
@@ -135,6 +138,13 @@
         border-bottom: 4px solid black;
         border-radius: 4px;
         margin-bottom: 20px;
+      }
+
+      .day:hover {
+        border-right: 3px solid black;
+        border-bottom: 3px solid black;
+        border-left: 3px solid black;
+        border-top: 3px solid black;
       }
 
       .day .icon {
@@ -217,6 +227,11 @@
           <span id="wateringDeficiency">?</span>
           inches.
         </p>
+      </div>
+      <div id="weekDayPrompt" class="hidden">
+        <p>
+        Next, choose which three days you want to water your lawn. 
+        </p> 
       </div>
       <div id="weekDays" class="hidden">
         <div id="Sunday" class="day">
@@ -482,11 +497,6 @@
         for (const date in forecast.days) {
           const day = forecast.days[date];
 
-          const maxHeat = Math.min(day.temperatureF, 95);
-          const minHeat = day.temperatureF - 40;
-          const maxDiff = 45;
-          const diff = ((day.temperatureF / 95) * 100) / 2;
-
           const currentDay = new Date().getDay()
 
           let realDay = day.dayInt - currentDay
@@ -505,6 +515,7 @@
             .querySelector(".evaporation").innerText = day.temperatureF;
 
           document.getElementById("weekDays").classList.remove("hidden");
+          document.getElementById("weekDayPrompt").classList.remove("hidden");
         }
       }
 
