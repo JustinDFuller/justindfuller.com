@@ -194,13 +194,9 @@
         font-weight: bold;
       }
 
-      .day .rain {
-        min-width: 24px;
-      }
-
-
+      .day .rain,
       .day .evaporation {
-        min-width: 30px;
+        min-width: 70px;
       }
 
     </style>
@@ -275,84 +271,100 @@
           <span class="title">Sunday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>°F
+            <span class="evaporation"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
-            <span class="rain"></span>in
+            <span class="rain"></span>
           </div>
           <div>
             <input id="sundayCheckbox" type="checkbox" name="Sunday" onchange="handleWaterLawnCheck(this)" />
           </div>
         </label>
-        <div id="Monday" class="day">
+        <label for="mondayCheckbox" id="Monday" class="day">
           <span class="title">Monday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>°F
+            <span class="evaporation"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
-            <span class="rain"></span>in
+            <span class="rain"></span>
           </div>
-        </div>
-        <div id="Tuesday" class="day">
+          <div>
+            <input id="mondayCheckbox" type="checkbox" name="Monday" onchange="handleWaterLawnCheck(this)" />
+          </div>
+        </label>
+        <label for="tuesdayCheckbox" id="Tuesday" class="day">
           <span class="title">Tuesday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>°F
+            <span class="evaporation"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
-            <span class="rain"></span>in
+            <span class="rain"></span>
           </div>
-        </div>
-        <div id="Wednesday" class="day">
+          <div>
+            <input id="tuesdayCheckbox" type="checkbox" name="Tuesday" onchange="handleWaterLawnCheck(this)" />
+          </div>
+        </label>
+        <label for="wednesdayCheckbox" id="Wednesday" class="day">
           <span class="title">Wednesday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>°F
+            <span class="evaporation"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
-            <span class="rain"></span>in
+            <span class="rain"></span>
           </div>
-        </div>
-        <div id="Thursday" class="day">
+          <div>
+            <input id="wednesdayCheckbox" type="checkbox" name="Wednesday" onchange="handleWaterLawnCheck(this)" />
+          </div>
+        </label>
+        <label for="thursdayCheckbox" id="Thursday" class="day">
           <span class="title">Thursday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>°F
+            <span class="evaporation"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
-            <span class="rain"></span>in
+            <span class="rain"></span>
           </div>
-        </div>
-        <div id="Friday" class="day">
+          <div>
+            <input id="thursdayCheckbox" type="checkbox" name="Thursday" onchange="handleWaterLawnCheck(this)" />
+          </div>
+        </label>
+        <label for="fridayCheckbox" id="Friday" class="day">
           <span class="title">Friday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>°F
+            <span class="evaporation"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
-            <span class="rain"></span>in
+            <span class="rain"></span>
           </div>
-        </div>
-        <div id="Saturday" class="day">
+          <div>
+            <input id="fridayCheckbox" type="checkbox" name="Friday" onchange="handleWaterLawnCheck(this)" />
+          </div>
+        </label>
+        <label for="saturdayCheckbox" id="Saturday" class="day">
           <span class="title">Saturday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>°F
+            <span class="evaporation"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
-            <span class="rain"></span>in
+            <span class="rain"></span>
           </div>
           <div>
+            <input id="saturdayCheckbox" type="checkbox" name="Saturday" onchange="handleWaterLawnCheck(this)" />
           </div>
-        </div>
+        </label>
       </div>
     </main>
 
@@ -548,13 +560,23 @@
 
           document.getElementById(day.day).style.order = realDay
 
-          document
-            .getElementById(day.day)
-            .querySelector(".rain").innerText = day.precipitationInches === 0 ? 0 : day.precipitationInches.toFixed(2);
+          if (day.dayInt === currentDay) {
+            document
+              .getElementById(day.day)
+              .querySelector(".title").innerText = "Today"
+          } else if (day.dayInt === (currentDay + 1)) {
+            document
+              .getElementById(day.day)
+              .querySelector(".title").innerText = "Tomorrow"
+          }
 
           document
             .getElementById(day.day)
-            .querySelector(".evaporation").innerText = day.temperatureF;
+            .querySelector(".rain").innerText = ( day.precipitationInches === 0 ? 0 : day.precipitationInches.toFixed(2)) + "in";
+
+          document
+            .getElementById(day.day)
+            .querySelector(".evaporation").innerText = day.temperatureF + "°F";
 
           document.getElementById("weekDays").classList.remove("hidden");
           document.getElementById("weekDayPrompt").classList.remove("hidden");
