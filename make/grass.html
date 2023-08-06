@@ -195,10 +195,9 @@
       }
 
       .day .rain,
-      .day .evaporation {
+      .day .temperature {
         min-width: 70px;
       }
-
     </style>
   </head>
 
@@ -263,7 +262,7 @@
       </div>
       <div id="weekDayPrompt" class="hidden">
         <p>
-        Next, choose which three days you want to water your grass. 
+        I've gone ahead and suggested the three optimal days to water your grass based on the projected rainfall and temperature. Feel free to choose different days, though. 
         </p> 
       </div>
       <div id="weekDays" class="hidden">
@@ -271,7 +270,7 @@
           <span class="title">Sunday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>
+            <span class="temperature"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
@@ -285,7 +284,7 @@
           <span class="title">Monday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>
+            <span class="temperature"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
@@ -299,7 +298,7 @@
           <span class="title">Tuesday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>
+            <span class="temperature"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
@@ -313,7 +312,7 @@
           <span class="title">Wednesday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>
+            <span class="temperature"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
@@ -327,7 +326,7 @@
           <span class="title">Thursday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>
+            <span class="temperature"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
@@ -341,7 +340,7 @@
           <span class="title">Friday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>
+            <span class="temperature"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
@@ -355,7 +354,7 @@
           <span class="title">Saturday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
-            <span class="evaporation"></span>
+            <span class="temperature"></span>
           </div>
           <div class="stat">
             <img class="icon cloud" src="/image/rain.png" />  
@@ -483,9 +482,18 @@
             Number(date.slice(5, 7)) - 1,
             Number(date.slice(8, 10))
           );
+
+          const today = new Date()
+          const sevenDays = new Date()
+          sevenDays.setDate(today.getDate() + 7)
+          if (parsed > sevenDays) {
+            continue
+          }
+
           let day = days[date];
           if (!day) {
             day = {
+              date,
               day: week[parsed.getDay()],
               dayInt: parsed.getDay(),
               precipitationInches: 0,
@@ -503,9 +511,18 @@
             Number(date.slice(5, 7)) - 1,
             Number(date.slice(8, 10))
           );
+
+          const today = new Date()
+          const sevenDays = new Date()
+          sevenDays.setDate(today.getDate() + 7)
+          if (parsed > sevenDays) {
+            continue
+          }
+
           let day = days[date];
           if (!day) {
             day = {
+              date,
               day: week[parsed.getDay()],
               dayInt: parsed.getDay(),
               precipitationInches: 0,
@@ -548,6 +565,31 @@
         wateringDeficiency.innerText = deficiency;
         wateringNeeds.classList.remove("hidden");
 
+        const sorted = Object.values(forecast.days).sort((a, b) => {
+          if (a.precipitationInches === 0 && b.precipitationInches === 0) {
+            return b.temperatureF - a.temperatureF;
+          }
+          return a.precipitationInches - b.precipitationInches
+        }).map((val, index) => {
+          if (index < 3) {
+            val.willWater = true        
+          } else {
+            val.willWater = false
+          }
+
+          return val
+        })
+
+        sorted.forEach(day => {
+          forecast.days[day.date] = day
+
+          if (day.willWater) {
+            document
+              .getElementById(day.day)
+              .querySelector("input").checked = "checked"
+          }
+        })
+
         for (const date in forecast.days) {
           const day = forecast.days[date];
 
@@ -576,7 +618,7 @@
 
           document
             .getElementById(day.day)
-            .querySelector(".evaporation").innerText = day.temperatureF + "°F";
+            .querySelector(".temperature").innerText = day.temperatureF + "°F";
 
           document.getElementById("weekDays").classList.remove("hidden");
           document.getElementById("weekDayPrompt").classList.remove("hidden");
