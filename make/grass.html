@@ -2,11 +2,11 @@
 <html class="no-js" lang="">
   <head>
     <meta charset="utf-8" />
-    <title>Make | Justin Fuller</title>
-    <meta name="description" content="Justin Fuller" />
+    <title>Grass | Justin Fuller</title>
+    <meta name="description" content="Grass | Justin Fuller" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="og:title" content="Justin Fuller" />
+    <meta property="og:title" content="Grass | Justin Fuller" />
 
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
@@ -37,6 +37,17 @@
         font-size: 24px;
         font-family: "Amiri", serif;
         background: #fcf9f4;
+      }
+
+      #getLocation {
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
+
+      .centered {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
       }
 
       div {
@@ -139,6 +150,10 @@
         margin-bottom: 20px;
       }
 
+      .day:has(input:checked) {
+        border-color: #0075ff;
+      }
+
       @media screen and (max-width: 400px) {
         .day {
           width: 100%;
@@ -193,11 +208,28 @@
 
   <body>
     <main>
-      <h1>Grass Watering</h1>
-      <button id="getLocation" onclick="handleLocationClick()">
-        Click here to begin
-      </button>
-      <progress id="loading" class="hidden">Loading Forecast</progress>
+      <h1>Grass</h1>
+      <p id="intro">
+        Hey there 👋 I'd like to help you figure out how much to water your grass.
+        This is trickier than it may seem. The amount changes based on the grass type and natural rainfall.
+        Overwatering wastes resources; hurts your grass; and may cause mold, fungus, and moss to grow in your yard. Underwatering will cause your grass to go dormant and eventually die.
+        <br />
+        <br />
+        To combat these problems, I'll use your area's forecast along with some information about your lawn's grass to create a custom watering plan.
+        <br />
+        <br />
+        To get started, click the button below to grant the page access to your latitude and longitude.
+        I'll send this over to <a href="https://www.weather.gov/documentation/services-web-api">weather.gov</a> to get your seven day forecast.
+
+        <button id="getLocation" class="centered" onclick="handleLocationClick()">
+          Grant Access to Location & Begin
+        </button>
+      </p>
+      
+      <div id="loading" class="hidden" >
+        Loading your seven-day forecast from <a href="https://www.weather.gov/documentation/services-web-api">weather.gov</a>. This may take a few moments.
+        <progress id="loading" class="centered" aria-hidden="true"></progress>
+      </div>
       <div id="precipitation" class="hidden">
         <p>
           Your forecast predicts
@@ -235,11 +267,11 @@
       </div>
       <div id="weekDayPrompt" class="hidden">
         <p>
-        Next, choose which three days you want to water your lawn. 
+        Next, choose which three days you want to water your grass. 
         </p> 
       </div>
       <div id="weekDays" class="hidden">
-        <div id="Sunday" class="day">
+        <label for="sundayCheckbox" id="Sunday" class="day">
           <span class="title">Sunday</span>
           <div class="stat">
             <img class="icon thermometer" src="/image/temperature.png" />  
@@ -249,7 +281,10 @@
             <img class="icon cloud" src="/image/rain.png" />  
             <span class="rain"></span>in
           </div>
-        </div>
+          <div>
+            <input id="sundayCheckbox" type="checkbox" name="Sunday" onchange="handleWaterLawnCheck(this)" />
+          </div>
+        </label>
         <div id="Monday" class="day">
           <span class="title">Monday</span>
           <div class="stat">
@@ -315,6 +350,8 @@
             <img class="icon cloud" src="/image/rain.png" />  
             <span class="rain"></span>in
           </div>
+          <div>
+          </div>
         </div>
       </div>
     </main>
@@ -368,7 +405,7 @@
         },
       ];
 
-      const getLocation = document.getElementById("getLocation");
+      const intro = document.getElementById("intro");
       const loading = document.getElementById("loading");
       const precipitation = document.getElementById("precipitation");
       const precipitationTotalInches = document.getElementById(
@@ -392,7 +429,7 @@
       const forecast = {};
 
       async function handleLocationClick() {
-        getLocation.classList.add("hidden");
+        intro.classList.add("hidden");
         loading.classList.remove("hidden");
 
         const location = await new Promise(function (resolve) {
@@ -410,7 +447,7 @@
       }
 
       async function renderForecast(location) {
-        getLocation.classList.add("hidden");
+        intro.classList.add("hidden");
         loading.classList.remove("hidden");
 
         const point = await fetch(
@@ -513,7 +550,7 @@
 
           document
             .getElementById(day.day)
-            .querySelector(".rain").innerText = day.precipitationInches.toFixed(2);
+            .querySelector(".rain").innerText = day.precipitationInches === 0 ? 0 : day.precipitationInches.toFixed(2);
 
           document
             .getElementById(day.day)
@@ -524,12 +561,24 @@
         }
       }
 
+      function handleWaterLawnCheck(event) {
+        for (const date in forecast.days) {
+          const day = forecast.days[date];
+                
+          if (day.day !== event.name) {
+            continue;
+          }
+
+          day.willWater = event.checked;
+        }
+      }
+
       try {
         const location = window.localStorage.getItem("location");
 
         if (location) {
           parsed = JSON.parse(location);
-          getLocation.remove();
+          intro.classList.add("hidden");
           renderForecast(parsed);
         }
       } catch (e) {
