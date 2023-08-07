@@ -55,6 +55,11 @@ handlers:
     upload: .build/make.html
     secure: always
 
+  - url: /grass/service-worker.js
+    static_files: .build/grass-service-worker.html
+    upload: .build/grass-service-worker.html
+    secure: always
+
   - url: /grass
     static_files: .build/grass.html
     upload: .build/grass.html

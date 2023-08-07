@@ -91,6 +91,10 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/grass/service-worker.js", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./make/grass-sevice-worker.js")
+	})
+
 	http.HandleFunc("/grass", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./make/grass.html")
 	})
