@@ -1,0 +1,7 @@
+{
+  "name": "Grass",
+  "short_name": "Grass",
+  "start_url": "/grass",
+  "display": "standalone",
+  "background_color": "#fff"
+}

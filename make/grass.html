@@ -277,9 +277,9 @@
       </div>
       <div id="weekDayPrompt" class="hidden">
         <p>
-          I've gone ahead and suggested the three optimal days to water your
+          Below I suggest three optimal days to water your
           grass based on the projected rainfall and temperature. Feel free to
-          choose different days, though.
+          choose different days.
         </p>
       </div>
       <div id="weekDays" class="hidden">
@@ -417,7 +417,7 @@
           </div>
         </label>
       </div>
-      <div id="notifications">
+      <div id="notifications" class="hidden">
         If you want, I can remind you to water your lawn on these days.
 
         <button class="centered" onclick="handleReminderClick()">
@@ -428,9 +428,9 @@
 
     <!-- Simple script to hide main until fonts are loaded -->
     <script>
-      if ('serviceworker' in navigator) {
+      if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/grass/service-worker.js');
-      }
+      } 
 
       const main = document.querySelector("main");
       main.style.visibility = "hidden";
@@ -685,6 +685,7 @@
 
           document.getElementById("weekDays").classList.remove("hidden");
           document.getElementById("weekDayPrompt").classList.remove("hidden");
+          // document.getElementById("notifications").classList.remove("hidden");
         }
       }
 
@@ -701,27 +702,33 @@
       }
 
       async function handleReminderClick() {
-        const reg = await navigator.serviceWorker.getRegistration();
-        console.log(reg)
+        const reg = await navigator.serviceWorker.getRegistration("/grass/service-worker.js");
+        if (!reg) {
+          alert("Unable to set up notifications.")
+          console.error("Service worker not found")
+
+          return
+        }
 
         Notification.requestPermission().then(permission => {
           if (permission !== 'granted') {
-            alert('you need to allow push notifications');
+            alert('Unable to set up notifications.');
+            console.log("Permission not granted.", permission);
+
+            return
           } else {
-            const timestamp = new Date().getTime() + 5 * 1000; // now plus 5000ms
+            const timestamp = new Date().getTime() + (50 * 1000); // now plus 5000ms
+                  console.log(new Date().getTime(), timestamp, timestamp - new Date().getTime())
             reg.showNotification(
-              'Demo Push Notification',
+              'Grass | Justin Fuller',
             {
-              tag: timestamp, // a unique ID
-              body: 'Hello World', // content of the push notification
-              showTrigger: new TimestampTrigger(timestamp), // set the time for the push notification
-              data: {
-                url: window.location.href, // pass the current url to the notification
-              },
-              badge: './assets/badge.png',
-              icon: './assets/icon.png',
+              body: "It's time to water your lawn.",
+              timestamp: timestamp,
             });
           }
+        }).catch((e) => {
+          alert("Unable to set up notifications.")
+          console.error("Unable to set up notifications", e)
         });
       }
 

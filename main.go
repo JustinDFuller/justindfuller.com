@@ -90,9 +90,12 @@ func main() {
 			Entries: entries,
 		})
 	})
+	http.HandleFunc("/grass.webmanifest", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./make/grass.webmanifest")
+	})
 
 	http.HandleFunc("/grass/service-worker.js", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./make/grass-sevice-worker.js")
+		http.ServeFile(w, r, "./make/grass-service-worker.js")
 	})
 
 	http.HandleFunc("/grass", func(w http.ResponseWriter, r *http.Request) {
