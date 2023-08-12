@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{ template "meta.template.html" . }}
+    {{ template "grass.css" . }} 
+  </head>
+
+  <body>
+    <main>
+      <h1>Grass</h1>
+      <p id="intro">
+        Hey there 👋 I'd like to help you figure out how much to water your
+        grass. This is trickier than it may seem. The amount changes based on
+        the grass type and natural rainfall. Overwatering wastes resources;
+        hurts your grass; and may cause mold, fungus, and moss to grow in your
+        yard. Underwatering will cause your grass to go dormant and eventually
+        die.
+        <br />
+        <br />
+        To combat these problems, I'll use your area's forecast along with some
+        information about your lawn's grass to create a custom watering plan.
+        <br />
+        <br />
+        To get started, click the button below to grant the page access to your
+        latitude and longitude. I'll send this over to
+        <a href="https://www.weather.gov/documentation/services-web-api"
+          >weather.gov</a
+        >
+        to get your seven day forecast.
+
+        <button
+          id="getLocation"
+          class="centered"
+          onclick="handleLocationClick()"
+        >
+          Grant Access to Location & Begin
+        </button>
+      </p>
+
+      <div id="loading" class="hidden">
+        Loading your seven-day forecast from
+        <a href="https://www.weather.gov/documentation/services-web-api"
+          >weather.gov</a
+        >. This may take a few moments.
+        <progress id="loading" class="centered" aria-hidden="true"></progress>
+      </div>
+      <div id="precipitation" class="hidden">
+        <p>
+          Your forecast predicts
+          <span id="precipitationTotalInches">?</span>
+          inches of rain during the next next seven days.
+        </p>
+      </div>
+      <div id="chooseGrassType" class="hidden">
+        <select id="chooseGrassTypeSelect" onchange="handleGrassSelect(this)">
+          <option selected="" disabled="" value="">Select a Grass Type</option>
+          <option value="Bermuda">Bermuda</option>
+          <option value="Zoysia">Zoysia</option>
+          <option value="St. Augustine">St. Augustine</option>
+          <option value="Kentucky Bluegrass">Kentucky Bluegrass</option>
+          <option value="Tall Fescue">Tall Fescue</option>
+          <option value="Ryegrass">Ryegrass</option>
+          <option value="Fine Fescue">Fine Fescue</option>
+        </select>
+      </div>
+      <div id="wateringNeeds" class="hidden">
+        <p>
+          Based on your grass type, you need
+          <span id="wateringNeedsAmount">?</span>
+          <span id="wateringNeedsInches">inches</span>
+          of water each week.
+          <strong>
+            Water three days this week for
+            <span id="wateringMinutesEachDay">?</span>
+            minutes each day.
+          </strong>
+          This will make up the remaining
+          <span id="wateringDeficiency">?</span>
+          inches.
+        </p>
+      </div>
+      <div id="weekDayPrompt" class="hidden">
+        <p>
+          Below I suggest three optimal days to water your
+          grass based on the projected rainfall and temperature. Feel free to
+          choose different days.
+        </p>
+      </div>
+      <div id="weekDays" class="hidden">
+        <label for="sundayCheckbox" id="Sunday" class="day">
+          <span class="title">Sunday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />
+            <span class="temperature"></span>
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />
+            <span class="rain"></span>
+          </div>
+          <div>
+            <input
+              id="sundayCheckbox"
+              type="checkbox"
+              name="Sunday"
+              onchange="handleWaterLawnCheck(this)"
+            />
+          </div>
+        </label>
+        <label for="mondayCheckbox" id="Monday" class="day">
+          <span class="title">Monday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />
+            <span class="temperature"></span>
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />
+            <span class="rain"></span>
+          </div>
+          <div>
+            <input
+              id="mondayCheckbox"
+              type="checkbox"
+              name="Monday"
+              onchange="handleWaterLawnCheck(this)"
+            />
+          </div>
+        </label>
+        <label for="tuesdayCheckbox" id="Tuesday" class="day">
+          <span class="title">Tuesday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />
+            <span class="temperature"></span>
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />
+            <span class="rain"></span>
+          </div>
+          <div>
+            <input
+              id="tuesdayCheckbox"
+              type="checkbox"
+              name="Tuesday"
+              onchange="handleWaterLawnCheck(this)"
+            />
+          </div>
+        </label>
+        <label for="wednesdayCheckbox" id="Wednesday" class="day">
+          <span class="title">Wednesday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />
+            <span class="temperature"></span>
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />
+            <span class="rain"></span>
+          </div>
+          <div>
+            <input
+              id="wednesdayCheckbox"
+              type="checkbox"
+              name="Wednesday"
+              onchange="handleWaterLawnCheck(this)"
+            />
+          </div>
+        </label>
+        <label for="thursdayCheckbox" id="Thursday" class="day">
+          <span class="title">Thursday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />
+            <span class="temperature"></span>
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />
+            <span class="rain"></span>
+          </div>
+          <div>
+            <input
+              id="thursdayCheckbox"
+              type="checkbox"
+              name="Thursday"
+              onchange="handleWaterLawnCheck(this)"
+            />
+          </div>
+        </label>
+        <label for="fridayCheckbox" id="Friday" class="day">
+          <span class="title">Friday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />
+            <span class="temperature"></span>
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />
+            <span class="rain"></span>
+          </div>
+          <div>
+            <input
+              id="fridayCheckbox"
+              type="checkbox"
+              name="Friday"
+              onchange="handleWaterLawnCheck(this)"
+            />
+          </div>
+        </label>
+        <label for="saturdayCheckbox" id="Saturday" class="day">
+          <span class="title">Saturday</span>
+          <div class="stat">
+            <img class="icon thermometer" src="/image/temperature.png" />
+            <span class="temperature"></span>
+          </div>
+          <div class="stat">
+            <img class="icon cloud" src="/image/rain.png" />
+            <span class="rain"></span>
+          </div>
+          <div>
+            <input
+              id="saturdayCheckbox"
+              type="checkbox"
+              name="Saturday"
+              onchange="handleWaterLawnCheck(this)"
+            />
+          </div>
+        </label>
+      </div>
+      <div id="notifications" class="hidden">
+        If you want, I can remind you to water your lawn on these days.
+
+        <button class="centered" onclick="handleReminderClick()">
+          Sounds good. Set up reminders.
+        </button>
+      </div>
+    </main>
+
+    {{ template "grass.js" . }} 
+  </body>
+</html>

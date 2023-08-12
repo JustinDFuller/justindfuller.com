@@ -1,0 +1,32 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#fafafa" />
+
+{{ if eq .Title "" }}
+<title>Justin Fuller</title>
+<meta name="description" content="Justin Fuller" />
+<meta property="og:title" content="Justin Fuller" />
+{{ else }}
+<title>{{ .Title }} | Justin Fuller</title>
+<meta name="description" content="{{ .Title }} | Justin Fuller" />
+<meta property="og:title" content="{{ .Title }} | Justin Fuller" />
+{{ end }}
+
+{{ if eq .Meta "" }}
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="icon" href="/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icon.png" />
+<link rel="manifest" href="site.webmanifest" />
+{{ else }}
+<link rel="icon" href="/image/{{ .Meta }}.ico" sizes="any" />
+<link rel="icon" href="/image/{{ .Meta }}.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/image/{{ .Meta }}-apple-touch-icon.png" />
+<link rel="manifest" href="/{{ .Meta }}.webmanifest" />
+{{ end }}
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Amiri&display=swap"
+  rel="stylesheet"
+/>

@@ -19,6 +19,7 @@ import (
 
 type data struct {
 	Title   string
+	Meta    string
 	Entries [][]byte
 	Entry   []byte
 }
@@ -99,7 +100,12 @@ func main() {
 	})
 
 	http.HandleFunc("/grass", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./make/grass.html")
+		if err := template.Must(template.ParseFiles("./make/grass.template.html", "./make/grass.js", "./make/grass.css", "./meta.template.html")).Execute(w, data{
+			Title: "Grass",
+			Meta:  "grass",
+		}); err != nil {
+			log.Printf("Error: %s", err)
+		}
 	})
 
 	http.HandleFunc("/story", func(w http.ResponseWriter, r *http.Request) {

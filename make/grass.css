@@ -1,0 +1,177 @@
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    padding: 0 20px;
+    margin: 0;
+    width: 100%;
+    height: max-content;
+    display: block;
+    font-size: 24px;
+    font-family: "Amiri", serif;
+    background: #fcf9f4;
+  }
+
+  #getLocation {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .centered {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+
+  div {
+    width: 100%;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  main {
+    animation: fadeIn 1s;
+    height: max-content;
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 60px;
+  }
+
+  h1 {
+    line-height: 45px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+
+  button,
+  p,
+  progress {
+    margin: 20px 0;
+  }
+
+  select {
+    width: 100%;
+    padding: 10px 20px;
+    border: 2px solid black;
+    background: white;
+    color: black;
+  }
+
+  button {
+    padding: 10px 20px;
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
+    border-radius: 2px;
+    background: white;
+    color: black;
+    cursor: pointer;
+  }
+
+  button:hover {
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+  }
+
+  select,
+  label,
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+
+  label {
+    display: block;
+  }
+
+  #weekDays.hidden,
+  .hidden {
+    display: none;
+  }
+
+  #weekDays {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .day {
+    background: white;
+    cursor: pointer;
+    text-align: center;
+    width: 45%;
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  .day:has(input:checked) {
+    border-color: #0075ff;
+  }
+
+  @media screen and (max-width: 400px) {
+    .day {
+      width: 100%;
+    }
+  }
+
+  .day:hover {
+    border-right: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: 3px solid black;
+    border-top: 3px solid black;
+  }
+
+  .day .icon {
+    height: 40px;
+    width: auto;
+  }
+
+  .day .icon.thermometer {
+    padding-bottom: 5px;
+    margin-left: -10px;
+  }
+
+  .day .icon.cloud {
+    padding-bottom: 2px;
+    margin-left: -10px;
+  }
+
+  .day .stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .day .title {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .day .rain,
+  .day .temperature {
+    min-width: 70px;
+  }
+</style>
