@@ -1,28 +1,27 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#fafafa" />
-
-{{ if eq .Title "" }}
+{{ if eq .Title "" -}}
 <title>Justin Fuller</title>
 <meta name="description" content="Justin Fuller" />
 <meta property="og:title" content="Justin Fuller" />
-{{ else }}
+{{ else -}}
 <title>{{ .Title }} | Justin Fuller</title>
 <meta name="description" content="{{ .Title }} | Justin Fuller" />
 <meta property="og:title" content="{{ .Title }} | Justin Fuller" />
-{{ end }}
+{{ end -}}
 
-{{ if eq .Meta "" }}
+{{ if eq .Meta "" -}}
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" href="/icon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="icon.png" />
 <link rel="manifest" href="site.webmanifest" />
-{{ else }}
+{{ else -}}
 <link rel="icon" href="/image/{{ .Meta }}.ico" sizes="any" />
 <link rel="icon" href="/image/{{ .Meta }}.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/image/{{ .Meta }}-apple-touch-icon.png" />
 <link rel="manifest" href="/{{ .Meta }}.webmanifest" />
-{{ end }}
+{{ end -}}
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

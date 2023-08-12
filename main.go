@@ -167,7 +167,11 @@ func main() {
 	})
 
 	http.HandleFunc("/make", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./make/main.template.html")
+		if err := template.Must(template.ParseFiles("./make/main.template.html", "./make/main.js", "./make/main.css", "./meta.template.html")).Execute(w, data{
+			Title: "Make",
+		}); err != nil {
+			log.Printf("Error: %s", err)
+		}
 	})
 
 	http.HandleFunc("/image/", func(w http.ResponseWriter, r *http.Request) {
@@ -176,7 +180,9 @@ func main() {
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./main.template.html")
+		if err := template.Must(template.ParseFiles("./main.template.html", "./main.js", "./main.css", "./meta.template.html")).Execute(w, data{}); err != nil {
+			log.Printf("Error: %s", err)
+		}
 	})
 
 	port := os.Getenv("PORT")
