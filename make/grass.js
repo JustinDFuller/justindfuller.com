@@ -1,6 +1,6 @@
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/grass/service-worker.js');
+    navigator.serviceWorker.register('/grass/worker.js');
   } 
 
   const main = document.querySelector("main");
