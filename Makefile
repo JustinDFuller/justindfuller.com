@@ -1,3 +1,4 @@
+export GOOGLE_CLOUD_PROJECT=justindfuller
 export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
 

@@ -190,13 +190,14 @@
     const grass = grassTypes.find((g) => g.name === target.value);
 
     window.localStorage.setItem("grass", grass.name);
-    const deficiency =
+    forecast.deficiency =
       Math.round((grass.inches - forecast.totalInches) * 100) / 100;
-    const third = Math.round((deficiency / 3) * 100) / 100;
+    forecast.third = Math.round((forecast.deficiency / 3) * 100) / 100;
+    forecast.minutesEachDay = Math.round(60 * forecast.third);
 
     wateringNeedsAmount.innerText = grass.inches;
-    wateringMinutesEachDay.innerText = Math.round(60 * third);
-    wateringDeficiency.innerText = deficiency;
+    wateringMinutesEachDay.innerText = forecast.minutesEachDay;
+    wateringDeficiency.innerText = forecast.deficiency;
     wateringNeeds.classList.remove("hidden");
 
     const sorted = Object.values(forecast.days).sort((a, b) => {
@@ -273,6 +274,8 @@
   }
 
   async function handleReminderClick() {
+    document.getElementById("notifications").classList.add("hidden");
+
     const reg = await navigator.serviceWorker.getRegistration("/grass/service-worker.js");
     if (!reg) {
       alert("Unable to set up notifications.")
@@ -292,7 +295,30 @@
           userVisibleOnly: true,
           applicationServerKey: "BMhhlc_OBTiPkzt6sYneuv_kWlgWATUFANJr5x1PBWpT7eMeVHLcW-oIzhOrZiiTGRITeqGVAphu1dGEpT_tYG0",
         }).then((subscription) => {
-          console.log({ subscription })
+
+          for (const date in forecast.days) {
+            const day = forecast.days[date];
+            
+            if (day.willWater === true) {
+              const enc = new TextDecoder("utf-8");
+
+              const body = {
+                time: new Date(date),
+                minutes: forecast.minutesEachDay,
+                subscription: subscription.toJSON(),
+              };
+
+              const stringified = JSON.stringify(body);
+
+              console.log("Setting reminder for", { body, stringified })
+
+              fetch("/reminder/set", {
+                method: "POST",
+                body: stringified,
+              })
+            }
+          }
+          
         });
       }
     }).catch((e) => {
