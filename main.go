@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 	"text/template"
 
 	"github.com/justindfuller/justindfuller.com/aphorism"
@@ -63,25 +64,34 @@ func main() {
 
 	suffixes := []string{".js", ".css", ".html"}
 
+	var wg sync.WaitGroup
+
 	for i := 0; i < len(files); i++ {
 		file := files[i]
 
 		if file.Dir {
-			log.Printf("Sub-directory: %s", file.Path)
-			dir, err := os.ReadDir("." + file.Path)
-			if err != nil {
-				log.Fatalf("Error reading dir: %s", file.Path)
-			}
+			wg.Add(1)
 
-			for _, entry := range dir {
-				files = append(files, File{
-					Path: file.Path + "/" + entry.Name(),
-					Dir:  entry.IsDir(),
-				})
-			}
+			go func() {
+				log.Printf("Sub-directory: %s", file.Path)
+				dir, err := os.ReadDir("." + file.Path)
+				if err != nil {
+					log.Fatalf("Error reading dir: %s", file.Path)
+				}
+
+				for _, entry := range dir {
+					files = append(files, File{
+						Path: file.Path + "/" + entry.Name(),
+						Dir:  entry.IsDir(),
+					})
+				}
+				wg.Done()
+			}()
 
 			continue
 		}
+
+		wg.Wait()
 
 		var found bool
 
@@ -89,14 +99,20 @@ func main() {
 			if strings.HasSuffix(file.Path, suffix) {
 				found = true
 
-				b, err := os.ReadFile("." + file.Path)
-				if err != nil {
-					log.Fatalf("File read error=%s file=%s", err, file.Path)
-				}
+				wg.Add(1)
 
-				if _, err := templates.New(file.Path).Parse(string(b)); err != nil {
-					log.Fatalf("Template parse error=%s path=%s", err, file.Path)
-				}
+				go func() {
+					b, err := os.ReadFile("." + file.Path)
+					if err != nil {
+						log.Fatalf("File read error=%s file=%s", err, file.Path)
+					}
+
+					if _, err := templates.New(file.Path).Parse(string(b)); err != nil {
+						log.Fatalf("Template parse error=%s path=%s", err, file.Path)
+					}
+
+					wg.Done()
+				}()
 
 				break
 			}
@@ -106,6 +122,8 @@ func main() {
 			log.Printf("Unknown file type: %s", file.Path)
 		}
 	}
+
+	wg.Wait()
 
 	log.Printf("Templates: %s", templates.DefinedTemplates())
 
