@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html class="no-js" lang="">
+<html lang="en">
   <head>
-    {{ template "meta.template.html" . }}
-    {{ template "main.css" . }}
+    {{ template "/meta.template.html" . }} {{ template "/make/main.css" . }}
   </head>
 
   <body>
@@ -12,6 +11,6 @@
       <a href="/grass">Grass</a>
     </main>
 
-    {{ template "main.js" . }} 
+    {{ template "/make/main.js" . }}
   </body>
 </html>

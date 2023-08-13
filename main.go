@@ -32,6 +32,83 @@ func main() {
 		log.Printf("Error reading secrets: %s", err)
 	}
 
+	dir, err := os.ReadDir("./")
+	if err != nil {
+		log.Fatalf("Error reading dir: %s", err)
+
+		return
+	}
+
+	type File struct {
+		Path string
+		Dir  bool
+	}
+
+	var files []File
+
+	for _, entry := range dir {
+		if strings.HasPrefix(entry.Name(), ".") {
+			log.Printf("Skipping dot file: %s", entry.Name())
+
+			continue
+		}
+
+		files = append(files, File{
+			Path: "/" + entry.Name(),
+			Dir:  entry.IsDir(),
+		})
+	}
+
+	templates := template.New("").Option("missingkey=error")
+
+	suffixes := []string{".js", ".css", ".html"}
+
+	for i := 0; i < len(files); i++ {
+		file := files[i]
+
+		if file.Dir {
+			log.Printf("Sub-directory: %s", file.Path)
+			dir, err := os.ReadDir("." + file.Path)
+			if err != nil {
+				log.Fatalf("Error reading dir: %s", file.Path)
+			}
+
+			for _, entry := range dir {
+				files = append(files, File{
+					Path: file.Path + "/" + entry.Name(),
+					Dir:  entry.IsDir(),
+				})
+			}
+
+			continue
+		}
+
+		var found bool
+
+		for _, suffix := range suffixes {
+			if strings.HasSuffix(file.Path, suffix) {
+				found = true
+
+				b, err := os.ReadFile("." + file.Path)
+				if err != nil {
+					log.Fatalf("File read error=%s file=%s", err, file.Path)
+				}
+
+				if _, err := templates.New(file.Path).Parse(string(b)); err != nil {
+					log.Fatalf("Template parse error=%s path=%s", err, file.Path)
+				}
+
+				break
+			}
+		}
+
+		if found == false {
+			log.Printf("Unknown file type: %s", file.Path)
+		}
+	}
+
+	log.Printf("Templates: %s", templates.DefinedTemplates())
+
 	http.HandleFunc("/aphorism", func(w http.ResponseWriter, r *http.Request) {
 		entries, err := aphorism.Entries()
 		if err != nil {
@@ -41,9 +118,13 @@ func main() {
 			return
 		}
 
-		template.Must(template.ParseFiles("./aphorism/main.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/aphorism/main.template.html", data{
+			Title:   "Aphorism",
 			Entries: entries,
-		})
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/aphorism/main.template.html")
+			http.Error(w, "Error reading Aphorisms", http.StatusInternalServerError)
+		}
 	})
 
 	http.HandleFunc("/word", func(w http.ResponseWriter, r *http.Request) {
@@ -55,9 +136,12 @@ func main() {
 			return
 		}
 
-		template.Must(template.ParseFiles("./word/main.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/word/main.template.html", data{
+			Title: "Word",
 			Entry: entry,
-		})
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
+		}
 	})
 
 	http.HandleFunc("/word/", func(w http.ResponseWriter, r *http.Request) {
@@ -79,10 +163,12 @@ func main() {
 			return
 		}
 
-		template.Must(template.ParseFiles("./word/entry.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data{
 			Title: Title(paths[last]),
 			Entry: entry,
-		})
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
+		}
 	})
 
 	http.HandleFunc("/poem", func(w http.ResponseWriter, r *http.Request) {
@@ -94,9 +180,12 @@ func main() {
 			return
 		}
 
-		template.Must(template.ParseFiles("./poem/main.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/poem/main.template.html", data{
+			Title:   "Poem",
 			Entries: entries,
-		})
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/poem/main.template.html")
+		}
 	})
 	http.HandleFunc("/grass.webmanifest", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./make/grass.webmanifest")
@@ -107,16 +196,20 @@ func main() {
 	})
 
 	http.HandleFunc("/grass", func(w http.ResponseWriter, r *http.Request) {
-		if err := template.Must(template.ParseFiles("./make/grass.template.html", "./make/grass.js", "./make/grass.css", "./meta.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/make/grass.template.html", data{
 			Title: "Grass",
 			Meta:  "grass",
 		}); err != nil {
-			log.Printf("Error: %s", err)
+			log.Printf("template execution error=%s template=%s", err, "/make/grass.template.html")
 		}
 	})
 
 	http.HandleFunc("/story", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./story/main.template.html")
+		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data{
+			Title: "Story",
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/story/main.template.html")
+		}
 	})
 
 	http.HandleFunc("/story/", func(w http.ResponseWriter, r *http.Request) {
@@ -138,14 +231,20 @@ func main() {
 			return
 		}
 
-		template.Must(template.ParseFiles("./story/story.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/story/story.template.html", data{
 			Title: Title(paths[last]),
 			Entry: entry,
-		})
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/story/story.template.html")
+		}
 	})
 
 	http.HandleFunc("/review", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./review/main.template.html")
+		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data{
+			Title: "Review",
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/review/main.template.html")
+		}
 	})
 
 	http.HandleFunc("/review/", func(w http.ResponseWriter, r *http.Request) {
@@ -167,17 +266,19 @@ func main() {
 			return
 		}
 
-		template.Must(template.ParseFiles("./review/review.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/review/review.template.html", data{
 			Title: Title(paths[last]),
 			Entry: entry,
-		})
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
+		}
 	})
 
 	http.HandleFunc("/make", func(w http.ResponseWriter, r *http.Request) {
-		if err := template.Must(template.ParseFiles("./make/main.template.html", "./make/main.js", "./make/main.css", "./meta.template.html")).Execute(w, data{
+		if err := templates.ExecuteTemplate(w, "/make/main.template.html", data{
 			Title: "Make",
 		}); err != nil {
-			log.Printf("Error: %s", err)
+			log.Printf("template execution error=%s template=%s", err, "/make/main.template.html")
 		}
 	})
 
@@ -190,9 +291,13 @@ func main() {
 
 	http.HandleFunc("/reminder/send", grass.SendHandler(reminderConfig))
 
+	http.HandleFunc("/site.webmanifest", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./site.webmanifest")
+	})
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if err := template.Must(template.ParseFiles("./main.template.html", "./main.js", "./main.css", "./meta.template.html")).Execute(w, data{}); err != nil {
-			log.Printf("Error: %s", err)
+		if err := templates.ExecuteTemplate(w, "/main.template.html", data{}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/main.template.html")
 		}
 	})
 

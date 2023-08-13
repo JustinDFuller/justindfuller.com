@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {{ template "meta.template.html" . }}
-    {{ template "grass.css" . }} 
+    {{ template "/meta.template.html" . }} {{ template "/make/grass.css" . }}
   </head>
 
   <body>
@@ -81,9 +80,9 @@
       </div>
       <div id="weekDayPrompt" class="hidden">
         <p>
-          Below I suggest three optimal days to water your
-          grass based on the projected rainfall and temperature. Feel free to
-          choose different days.
+          Below I suggest three optimal days to water your grass based on the
+          projected rainfall and temperature. Feel free to choose different
+          days.
         </p>
       </div>
       <div id="weekDays" class="hidden">
@@ -230,6 +229,6 @@
       </div>
     </main>
 
-    {{ template "grass.js" . }} 
+    {{ template "/make/grass.js" . }}
   </body>
 </html>

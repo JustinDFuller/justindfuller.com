@@ -1,0 +1,52 @@
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: max-content;
+    display: block;
+    font-size: 24px;
+    font-family: "Amiri", serif;
+    background: #fcf9f4;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  main {
+    animation: fadeIn 1s;
+    padding: 20px;
+    height: max-content;
+    width: 100%;
+    display: block;
+  }
+
+  section {
+    display: block;
+    height: max-content;
+    max-width: 400px;
+    margin: auto;
+  }
+
+  p {
+    font-family: "Amiri", serif;
+    margin-bottom: 40px;
+    line-height: 36px;
+    white-space: pre;
+  }
+
+  hr {
+    margin-top: 30px;
+  }
+</style>
