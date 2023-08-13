@@ -14,76 +14,106 @@ handlers:
     static_files: .build/aphorism.html
     upload: .build/aphorism.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /poem
     static_files: .build/poem.html
     upload: .build/poem.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /story
     static_files: .build/story.html
     upload: .build/story.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /story/the_philosophy_of_trees
     static_files: .build/the_philosophy_of_trees.html
     upload: .build/the_philosophy_of_trees.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /story/bridge
     static_files: .build/bridge.html
     upload: .build/bridge.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /story/nothing
     static_files: .build/nothing.html
     upload: .build/nothing.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /review
     static_files: .build/review.html
     upload: .build/review.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /review/zen-and-the-art-of-motorcycle-maintenance
     static_files: .build/zen-and-the-art-of-motorcycle-maintenance.html
     upload: .build/zen-and-the-art-of-motorcycle-maintenance.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /make
     static_files: .build/make.html
     upload: .build/make.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
-  - url: /grass/service-worker.js
+  - url: /grass/worker.js
     static_files: .build/grass-service-worker.html
     upload: .build/grass-service-worker.html
     secure: always
+    http_headers:
+      Content-Type: application/javascript
 
   - url: /grass
     static_files: .build/grass.html
     upload: .build/grass.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /word/quality
     static_files: .build/quality.html
     upload: .build/quality.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /word/equipoise
     static_files: .build/equipoise.html
     upload: .build/equipoise.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /word
     static_files: .build/word.html
     upload: .build/word.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /
     static_files: .build/index.html
     upload: .build/index.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /.*
     script: auto
