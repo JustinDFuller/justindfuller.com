@@ -46,9 +46,7 @@ type ReminderConfig struct {
 func main() {
 	var reminderConfig ReminderConfig
 	if err := secretmanager.Parse(&reminderConfig); err != nil {
-		log.Fatalf("Error reading secrets: %s", err)
-
-		return
+		log.Printf("Error reading secrets: %s", err)
 	}
 
 	http.HandleFunc("/aphorism", func(w http.ResponseWriter, r *http.Request) {
