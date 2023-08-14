@@ -74,8 +74,8 @@ handlers:
       Content-Type: text/html; charset=utf-8
 
   - url: /grass/worker.js
-    static_files: .build/grass-service-worker.html
-    upload: .build/grass-service-worker.html
+    static_files: .build/grass-service-worker.js
+    upload: .build/grass-service-worker.js
     secure: always
     http_headers:
       Content-Type: application/javascript
