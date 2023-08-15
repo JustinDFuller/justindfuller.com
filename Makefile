@@ -13,7 +13,7 @@ deploy:
 
 format:
 	@go fmt ./...;
-	@npx prettier -w **/*.js **/*.css **/*.html **/*.webmanifest;
+	@npm run test;
 
 build:
 	@rm -rf ./.build;

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {{ template "/meta.template.html" . }} {{ template "/poem/main.css" . }}
+    {{ template "/meta.template.html" . }}
+
+    <style>
+      {{ template "/poem/main.css" . }}
+    </style>
   </head>
 
   <body>
@@ -18,6 +22,8 @@
       </section>
     </main>
 
-    {{ template "/poem/main.js" . }}
+    <script>
+      {{ template "/poem/main.js" . }}
+    </script>
   </body>
 </html>

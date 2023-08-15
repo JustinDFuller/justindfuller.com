@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {{ template "/meta.template.html" . }} {{ template "/make/grass.css" . }}
+    {{ template "/meta.template.html" . }}
+    <style>
+      {{ template "/make/grass.css" . }}
+    </style>
   </head>
 
   <body>
@@ -229,6 +232,8 @@
       </div>
     </main>
 
-    {{ template "/make/grass.js" . }}
+    <script>
+      {{ template "/make/grass.js" . }}
+    </script>
   </body>
 </html>

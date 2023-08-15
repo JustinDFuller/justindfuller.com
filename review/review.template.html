@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {{ template "/meta.template.html" . }} {{ template "/review/review.css" . }}
+    {{ template "/meta.template.html" . }}
+
+    <style>
+      {{ template "/review/review.css" . }}
+    </style>
   </head>
 
   <body>
@@ -9,6 +13,8 @@
       <section>{{ printf "%s" .Entry }}</section>
     </main>
 
-    {{ template "/review/review.js" . }}
+    <script>
+      {{ template "/review/review.js" . }}
+    </script>
   </body>
 </html>

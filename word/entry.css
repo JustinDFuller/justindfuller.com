@@ -1,102 +1,100 @@
-<style>
-  * {
-    box-sizing: border-box;
-  }
+* {
+  box-sizing: border-box;
+}
 
-  html,
-  body {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: max-content;
-    display: block;
-    font-size: 24px;
-    font-family: "Amiri", serif;
-    background: #fcf9f4;
-  }
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: max-content;
+  display: block;
+  font-size: 24px;
+  font-family: "Amiri", serif;
+  background: #fcf9f4;
+}
 
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
+  100% {
+    opacity: 1;
+  }
+}
 
-  main {
-    animation: fadeIn 1s;
-    padding: 20px;
-    height: max-content;
-    width: 100%;
-    display: block;
-  }
+main {
+  animation: fadeIn 1s;
+  padding: 20px;
+  height: max-content;
+  width: 100%;
+  display: block;
+}
 
-  section {
-    display: block;
-    height: max-content;
-    max-width: 600px;
-    margin: auto;
-  }
+section {
+  display: block;
+  height: max-content;
+  max-width: 600px;
+  margin: auto;
+}
 
-  p {
-    font-family: "Amiri", serif;
-    margin: 0;
-    line-height: 36px;
-    margin-bottom: 30px;
-    text-align: left;
-  }
+p {
+  font-family: "Amiri", serif;
+  margin: 0;
+  line-height: 36px;
+  margin-bottom: 30px;
+  text-align: left;
+}
 
-  blockquote > p + p {
-    margin-top: 30px;
-  }
+blockquote > p + p {
+  margin-top: 30px;
+}
 
-  hr {
-    margin-top: 30px;
-  }
+hr {
+  margin-top: 30px;
+}
 
-  h1 {
-    font-size: 1.5em;
-    line-height: 1.2em;
-  }
+h1 {
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
 
-  h1,
-  h2 {
-    text-align: center;
-  }
+h1,
+h2 {
+  text-align: center;
+}
 
-  blockquote {
-    border-left: 3px solid #444955;
-    margin: 0;
-    padding: 0 2em;
-    margin-bottom: 30px;
-  }
+blockquote {
+  border-left: 3px solid #444955;
+  margin: 0;
+  padding: 0 2em;
+  margin-bottom: 30px;
+}
 
-  blockquote p {
-    margin-bottom: 0;
-  }
+blockquote p {
+  margin-bottom: 0;
+}
 
-  a {
-    color: black;
-    position: relative;
-    text-decoration: underline;
-    text-decoration-style: dotted;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 6px;
-  }
+a {
+  color: black;
+  position: relative;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+}
 
-  a:hover {
-    color: white;
-    background: black;
-    padding: 0 6px;
-    border-radius: 6px;
-  }
+a:hover {
+  color: white;
+  background: black;
+  padding: 0 6px;
+  border-radius: 6px;
+}
 
-  img {
-    max-height: 250px;
-    max-width: 100%;
-    width: auto;
-    display: block;
-    margin: auto;
-  }
-</style>
+img {
+  max-height: 250px;
+  max-width: 100%;
+  width: auto;
+  display: block;
+  margin: auto;
+}

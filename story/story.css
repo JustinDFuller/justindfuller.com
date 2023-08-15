@@ -1,59 +1,57 @@
-<style>
-  * {
-    box-sizing: border-box;
-  }
+* {
+  box-sizing: border-box;
+}
 
-  html,
-  body {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: max-content;
-    display: block;
-    font-size: 24px;
-    font-family: "Amiri", serif;
-    background: #fcf9f4;
-  }
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: max-content;
+  display: block;
+  font-size: 24px;
+  font-family: "Amiri", serif;
+  background: #fcf9f4;
+}
 
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
   }
+  100% {
+    opacity: 1;
+  }
+}
 
-  main {
-    animation: fadeIn 1s;
-    padding: 20px;
-    height: max-content;
-    width: 100%;
-    display: block;
-  }
+main {
+  animation: fadeIn 1s;
+  padding: 20px;
+  height: max-content;
+  width: 100%;
+  display: block;
+}
 
-  section {
-    display: block;
-    height: max-content;
-    max-width: 600px;
-    margin: auto;
-  }
+section {
+  display: block;
+  height: max-content;
+  max-width: 600px;
+  margin: auto;
+}
 
-  p {
-    font-family: "Amiri", serif;
-    margin: 0;
-    line-height: 36px;
-    text-align: justify;
-    text-indent: 36px;
-    margin-bottom: 10px;
-  }
+p {
+  font-family: "Amiri", serif;
+  margin: 0;
+  line-height: 36px;
+  text-align: justify;
+  text-indent: 36px;
+  margin-bottom: 10px;
+}
 
-  hr {
-    margin-top: 30px;
-  }
+hr {
+  margin-top: 30px;
+}
 
-  h1,
-  h2 {
-    text-align: center;
-  }
-</style>
+h1,
+h2 {
+  text-align: center;
+}

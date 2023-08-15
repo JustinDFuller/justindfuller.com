@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {{ template "/meta.template.html" . }} {{ template "/aphorism/main.css" . }}
+    {{ template "/meta.template.html" . }}
+
+    <style>
+      {{ template "/aphorism/main.css" . }}
+    </style>
   </head>
 
   <body>
@@ -14,6 +18,8 @@
       </section>
     </main>
 
-    {{ template "/aphorism/main.js" . }}
+    <script>
+      {{ template "/aphorism/main.js" . }}
+    </script>
   </body>
 </html>

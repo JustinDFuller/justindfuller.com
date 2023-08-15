@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {{ template "/meta.template.html" . }} {{ template "/story/main.css" . }}
+    {{ template "/meta.template.html" . }}
+
+    <style>
+      {{ template "/story/main.css" . }}
+    </style>
   </head>
 
   <body>
@@ -11,6 +15,8 @@
       <a href="/story/bridge">Bridge</a>
     </main>
 
-    {{ template "/story/main.js" . }}
+    <script>
+      {{ template "/story/main.js" . }}
+    </script>
   </body>
 </html>
