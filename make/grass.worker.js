@@ -1,5 +1,4 @@
-self.addEventListener("install", (event) =>
-  console.log("ServiceWorker installed"));
+self.addEventListener("install", (event) => console.log("ServiceWorker installed"));
 
 self.addEventListener("push", (event) => {
   const data = event?.data?.json();

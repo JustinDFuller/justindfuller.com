@@ -98,6 +98,10 @@ module.exports = {
       },
     ],
     "getter-return": "error",
+    "implicit-arrow-linebreak": [
+"error",
+"beside",
+],
     "no-async-promise-executor": "error",
     "no-await-in-loop": "off",
     "no-class-assign": "error",

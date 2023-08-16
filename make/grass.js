@@ -82,8 +82,7 @@ async function renderForecast(location) {
   loading.classList.remove("hidden");
 
   const point = await fetch(`https://api.weather.gov/points/${location.latitude},${location.longitude}`).then((res) => res.json());
-  const response = await fetch(point.properties.forecastGridData).then((res) =>
-    res.json());
+  const response = await fetch(point.properties.forecastGridData).then((res) => res.json());
 
   let total = 0;
   const days = {};
