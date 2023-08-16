@@ -50,16 +50,12 @@ const grassTypes = [
 const intro = document.getElementById("intro");
 const loading = document.getElementById("loading");
 const precipitation = document.getElementById("precipitation");
-const precipitationTotalInches = document.getElementById(
-  "precipitationTotalInches",
-);
+const precipitationTotalInches = document.getElementById("precipitationTotalInches");
 const chooseGrassType = document.getElementById("chooseGrassType");
 const chooseGrassTypeSelect = document.getElementById("chooseGrassTypeSelect");
 const wateringNeeds = document.getElementById("wateringNeeds");
 const wateringNeedsAmount = document.getElementById("wateringNeedsAmount");
-const wateringMinutesEachDay = document.getElementById(
-  "wateringMinutesEachDay",
-);
+const wateringMinutesEachDay = document.getElementById("wateringMinutesEachDay");
 const wateringDeficiency = document.getElementById("wateringDeficiency");
 const forecast = {};
 
@@ -85,12 +81,9 @@ async function renderForecast(location) {
   intro.classList.add("hidden");
   loading.classList.remove("hidden");
 
-  const point = await fetch(
-    `https://api.weather.gov/points/${location.latitude},${location.longitude}`,
-  ).then((res) => res.json());
+  const point = await fetch(`https://api.weather.gov/points/${location.latitude},${location.longitude}`).then((res) => res.json());
   const response = await fetch(point.properties.forecastGridData).then((res) =>
-    res.json(),
-  );
+    res.json());
 
   let total = 0;
   const days = {};
@@ -260,9 +253,7 @@ function handleWaterLawnCheck(event) {
 async function handleReminderClick() {
   document.getElementById("notifications").classList.add("hidden");
 
-  const reg = await navigator.serviceWorker.getRegistration(
-    "/grass/service-worker.js",
-  );
+  const reg = await navigator.serviceWorker.getRegistration("/grass/service-worker.js");
   if (!reg) {
     alert("Unable to set up notifications.");
     console.error("Service worker not found");

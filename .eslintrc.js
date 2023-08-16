@@ -8,11 +8,14 @@ module.exports = {
     "array-bracket-newline": [
       "error",
       {
-        minItems: 3,
+        minItems: 2,
         multiline: true,
       },
     ],
-    "array-bracket-spacing": ["error", "never"],
+    "array-bracket-spacing": [
+"error",
+"never",
+],
     "array-callback-return": [
       "error",
       {
@@ -23,13 +26,77 @@ module.exports = {
     "array-element-newline": [
       "error",
       {
-        minItems: 3,
+        minItems: 2,
         multiline: true,
       },
     ],
-    "arrow-parens": ["error", "always"],
+    "arrow-parens": [
+"error",
+"always",
+],
+    "arrow-spacing": [
+      "error",
+      {
+        after: true,
+        before: true,
+      },
+    ],
+    "block-spacing": [
+"error",
+"always",
+],
+    "brace-style": [
+"error",
+"1tbs",
+],
+    "comma-dangle": [
+"error",
+"always-multiline",
+],
+    "comma-spacing": [
+      "error",
+      {
+        after: true,
+        before: false,
+      },
+    ],
+    "comma-style": [
+"error",
+"last",
+],
+    "computed-property-spacing": [
+"error",
+"never",
+],
     "constructor-super": "error",
+    "dot-location": [
+"error",
+"property",
+],
+    "eol-last": [
+"error",
+"always",
+],
     "for-direction": "error",
+    "func-call-spacing": [
+"error",
+"never",
+],
+    "function-call-argument-newline": [
+"error",
+"consistent",
+],
+    "function-paren-newline": [
+"error",
+"multiline",
+],
+    "generator-star-spacing": [
+      "error",
+      {
+        after: false,
+        before: true,
+      },
+    ],
     "getter-return": "error",
     "no-async-promise-executor": "error",
     "no-await-in-loop": "off",
@@ -74,10 +141,19 @@ module.exports = {
     "no-obj-calls": "error",
     "no-promise-executor-return": "error",
     "no-var": "error",
-    "object-shorthand": ["error", "always"],
-    "one-var": ["error", "never"],
+    "object-shorthand": [
+"error",
+"always",
+],
+    "one-var": [
+"error",
+"never",
+],
     "one-var-declaration-per-line": "error",
-    "operator-assignment": ["error", "always"],
+    "operator-assignment": [
+"error",
+"always",
+],
     "prefer-arrow-callback": "error",
     "prefer-const": "error",
     "prefer-object-has-own": "error",
@@ -98,7 +174,7 @@ module.exports = {
 "none",
 "all",
 "multiple",
-"single"
+"single",
 ],
       },
     ],
@@ -112,7 +188,10 @@ module.exports = {
         natural: true,
       },
     ],
-    "spaced-comment": ["error", "always"],
+    "spaced-comment": [
+"error",
+"always",
+],
     yoda: "error",
   },
 };

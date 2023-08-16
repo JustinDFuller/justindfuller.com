@@ -4,7 +4,7 @@
   "description": "My website",
   "main": "main.js",
   "scripts": {
-    "test": "prettier --write **/*.js **/*.css **/*.html **/*.webmanifest && eslint --fix ./**/*.js",
+    "test": "prettier --write **/*.css **/*.html **/*.webmanifest && eslint --fix ./**/*.js",
     "prepare": "husky install"
   },
   "repository": {
