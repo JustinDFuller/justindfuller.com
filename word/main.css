@@ -67,7 +67,10 @@ a {
   color: black;
   padding: 10px 0;
   border-radius: 2px;
-  transition: background 500ms, color 500ms, padding 500ms;
+  transition:
+    background 500ms,
+    color 500ms,
+    padding 500ms;
   width: 200px;
   max-width: 100%;
   text-align: center;

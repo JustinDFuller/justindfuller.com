@@ -1,8 +1,8 @@
 self.addEventListener("install", (event) =>
-  console.log("ServiceWorker installed")
+  console.log("ServiceWorker installed"),
 );
 
-self.addEventListener("push", function (event) {
+self.addEventListener("push", (event) => {
   const data = event?.data?.json();
 
   event.waitUntil(
@@ -11,11 +11,11 @@ self.addEventListener("push", function (event) {
         ? `Water for ${data?.minutes} minutes. Click to see your schedule.`
         : "Click to see today's watering times.",
       icon: "/image/grass.png",
-    })
+    }),
   );
 });
 
-self.addEventListener("notificationclick", function (event) {
+self.addEventListener("notificationclick", (event) => {
   console.log("[Service Worker] Notification click received.");
 
   event.notification.close();

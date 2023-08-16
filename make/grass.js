@@ -4,7 +4,7 @@ if ("serviceWorker" in navigator) {
 
 const main = document.querySelector("main");
 main.style.visibility = "hidden";
-document.fonts.ready.then(function () {
+document.fonts.ready.then(() => {
   main.style.visibility = "visible";
 });
 
@@ -17,62 +17,57 @@ const week = [
   "Friday",
   "Saturday",
 ];
-
 const grassTypes = [
   {
+    inches: 1,
     name: "Bermuda",
-    inches: 1,
   },
   {
-    name: "Zoysia",
     inches: 0.75,
+    name: "Zoysia",
   },
   {
+    inches: 1.25,
     name: "St. Augustine",
-    inches: 1.25,
   },
   {
-    name: "Kentucky Bluegrass",
     inches: 2.5,
+    name: "Kentucky Bluegrass",
   },
   {
-    name: "Tall Fescue",
     inches: 1.5,
+    name: "Tall Fescue",
   },
   {
-    name: "Ryegrass",
     inches: 1.25,
+    name: "Ryegrass",
   },
   {
-    name: "Fine Fescue",
     inches: 1,
+    name: "Fine Fescue",
   },
 ];
-
 const intro = document.getElementById("intro");
 const loading = document.getElementById("loading");
 const precipitation = document.getElementById("precipitation");
 const precipitationTotalInches = document.getElementById(
-  "precipitationTotalInches"
+  "precipitationTotalInches",
 );
-
 const chooseGrassType = document.getElementById("chooseGrassType");
 const chooseGrassTypeSelect = document.getElementById("chooseGrassTypeSelect");
-
 const wateringNeeds = document.getElementById("wateringNeeds");
 const wateringNeedsAmount = document.getElementById("wateringNeedsAmount");
 const wateringMinutesEachDay = document.getElementById(
-  "wateringMinutesEachDay"
+  "wateringMinutesEachDay",
 );
 const wateringDeficiency = document.getElementById("wateringDeficiency");
-
 const forecast = {};
 
 async function handleLocationClick() {
   intro.classList.add("hidden");
   loading.classList.remove("hidden");
 
-  const location = await new Promise(function (resolve) {
+  const location = await new Promise((resolve) => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const location = {
         latitude: position.coords.latitude,
@@ -91,11 +86,10 @@ async function renderForecast(location) {
   loading.classList.remove("hidden");
 
   const point = await fetch(
-    `https://api.weather.gov/points/${location.latitude},${location.longitude}`
+    `https://api.weather.gov/points/${location.latitude},${location.longitude}`,
   ).then((res) => res.json());
-
   const response = await fetch(point.properties.forecastGridData).then((res) =>
-    res.json()
+    res.json(),
   );
 
   let total = 0;
@@ -108,9 +102,8 @@ async function renderForecast(location) {
     const parsed = new Date(
       Number(date.slice(0, 4)),
       Number(date.slice(5, 7)) - 1,
-      Number(date.slice(8, 10))
+      Number(date.slice(8, 10)),
     );
-
     const today = new Date();
     const sevenDays = new Date();
     sevenDays.setDate(today.getDate() + 7);
@@ -137,9 +130,8 @@ async function renderForecast(location) {
     const parsed = new Date(
       Number(date.slice(0, 4)),
       Number(date.slice(5, 7)) - 1,
-      Number(date.slice(8, 10))
+      Number(date.slice(8, 10)),
     );
-
     const today = new Date();
     const sevenDays = new Date();
     sevenDays.setDate(today.getDate() + 7);
@@ -222,7 +214,6 @@ function handleGrassSelect(target) {
 
   for (const date in forecast.days) {
     const day = forecast.days[date];
-
     const currentDay = new Date().getDay();
 
     let realDay = day.dayInt - currentDay;
@@ -240,12 +231,13 @@ function handleGrassSelect(target) {
         "Tomorrow";
     }
 
-    document.getElementById(day.day).querySelector(".rain").innerText =
-      (day.precipitationInches === 0 ? 0 : day.precipitationInches.toFixed(2)) +
-      "in";
+    document.getElementById(day.day).querySelector(".rain").innerText = `${
+      day.precipitationInches === 0 ? 0 : day.precipitationInches.toFixed(2)
+    }in`;
 
-    document.getElementById(day.day).querySelector(".temperature").innerText =
-      day.temperatureF + "°F";
+    document
+      .getElementById(day.day)
+      .querySelector(".temperature").innerText = `${day.temperatureF}°F`;
 
     document.getElementById("weekDays").classList.remove("hidden");
     document.getElementById("weekDayPrompt").classList.remove("hidden");
@@ -269,7 +261,7 @@ async function handleReminderClick() {
   document.getElementById("notifications").classList.add("hidden");
 
   const reg = await navigator.serviceWorker.getRegistration(
-    "/grass/service-worker.js"
+    "/grass/service-worker.js",
   );
   if (!reg) {
     alert("Unable to set up notifications.");
@@ -288,9 +280,9 @@ async function handleReminderClick() {
       } else {
         reg.pushManager
           .subscribe({
-            userVisibleOnly: true,
             applicationServerKey:
               "BMhhlc_OBTiPkzt6sYneuv_kWlgWATUFANJr5x1PBWpT7eMeVHLcW-oIzhOrZiiTGRITeqGVAphu1dGEpT_tYG0",
+            userVisibleOnly: true,
           })
           .then((subscription) => {
             for (const date in forecast.days) {
@@ -298,20 +290,18 @@ async function handleReminderClick() {
 
               if (day.willWater === true) {
                 const enc = new TextDecoder("utf-8");
-
                 const body = {
-                  time: new Date(date),
                   minutes: forecast.minutesEachDay,
                   subscription: subscription.toJSON(),
+                  time: new Date(date),
                 };
-
                 const stringified = JSON.stringify(body);
 
                 console.log("Setting reminder for", { body, stringified });
 
                 fetch("/reminder/set", {
-                  method: "POST",
                   body: stringified,
+                  method: "POST",
                 });
               }
             }

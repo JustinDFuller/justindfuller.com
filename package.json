@@ -4,7 +4,7 @@
   "description": "My website",
   "main": "main.js",
   "scripts": {
-    "test": "prettier-eslint --write **/*.js **/*.css **/*.html **/*.webmanifest",
+    "test": "prettier --write **/*.js **/*.css **/*.html **/*.webmanifest && eslint --fix ./**/*.js",
     "prepare": "husky install"
   },
   "repository": {
@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
+    "eslint": "^8.47.0",
     "husky": "^8.0.3",
-    "prettier-eslint-cli": "^7.1.0"
+    "prettier": "^3.0.1"
   }
 }
