@@ -2,5 +2,5 @@
 const main = document.querySelector("main");
 main.style.visibility = "hidden";
 document.fonts.ready.then(() => {
-  main.style.visibility = "visible";
+	main.style.visibility = "visible";
 });
