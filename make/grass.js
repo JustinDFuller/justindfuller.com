@@ -20,31 +20,31 @@ const week = [
 const grassTypes = [
 	{
 		inches: 1,
-		name: "Bermuda",
+		name:   "Bermuda",
 	},
 	{
 		inches: 0.75,
-		name: "Zoysia",
+		name:   "Zoysia",
 	},
 	{
 		inches: 1.25,
-		name: "St. Augustine",
+		name:   "St. Augustine",
 	},
 	{
 		inches: 2.5,
-		name: "Kentucky Bluegrass",
+		name:   "Kentucky Bluegrass",
 	},
 	{
 		inches: 1.5,
-		name: "Tall Fescue",
+		name:   "Tall Fescue",
 	},
 	{
 		inches: 1.25,
-		name: "Ryegrass",
+		name:   "Ryegrass",
 	},
 	{
 		inches: 1,
-		name: "Fine Fescue",
+		name:   "Fine Fescue",
 	},
 ];
 const intro = document.getElementById("intro");
@@ -66,7 +66,7 @@ async function handleLocationClick() {
 	const location = await new Promise((resolve) => {
 		navigator.geolocation.getCurrentPosition(async (position) => {
 			const location = {
-				latitude: position.coords.latitude,
+				latitude:  position.coords.latitude,
 				longitude: position.coords.longitude,
 			};
 			window.localStorage.setItem("location", JSON.stringify(location));
@@ -107,10 +107,10 @@ async function renderForecast(location) {
 		if (!day) {
 			day = {
 				date,
-				day: week[parsed.getDay()],
-				dayInt: parsed.getDay(),
+				day:                 week[parsed.getDay()],
+				dayInt:              parsed.getDay(),
 				precipitationInches: 0,
-				temperatureF: 0,
+				temperatureF:        0,
 			};
 		}
 		day.precipitationInches += value.value / 25.4;
@@ -135,10 +135,10 @@ async function renderForecast(location) {
 		if (!day) {
 			day = {
 				date,
-				day: week[parsed.getDay()],
-				dayInt: parsed.getDay(),
+				day:                 week[parsed.getDay()],
+				dayInt:              parsed.getDay(),
 				precipitationInches: 0,
-				temperatureF: 0,
+				temperatureF:        0,
 			};
 		}
 		day.temperatureF = Math.round((value.value * 1.8 + 32) * 100) / 100;
@@ -281,16 +281,16 @@ async function handleReminderClick() {
 							if (day.willWater === true) {
 								const enc = new TextDecoder("utf-8");
 								const body = {
-									minutes: forecast.minutesEachDay,
+									minutes:      forecast.minutesEachDay,
 									subscription: subscription.toJSON(),
-									time: new Date(date),
+									time:         new Date(date),
 								};
 								const stringified = JSON.stringify(body);
 
 								console.log("Setting reminder for", { body, stringified });
 
 								fetch("/reminder/set", {
-									body: stringified,
+									body:   stringified,
 									method: "POST",
 								});
 							}
