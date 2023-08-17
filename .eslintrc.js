@@ -172,18 +172,7 @@ module.exports = {
 			"error",
 			"always",
 		],
-		"max-len": [
-			"error",
-			{
-				code:                   250,
-				ignoreComments:         true,
-				ignoreRegExpLiterals:   true,
-				ignoreStrings:          true,
-				ignoreTemplateLiterals: true,
-				ignoreUrls:             true,
-				tabWidth:               4,
-			},
-		],
+		"max-len":                 "off",
 		"max-statements-per-line": [
 			"error",
 			{
@@ -245,12 +234,54 @@ module.exports = {
 		"no-misleading-character-class": "error",
 		"no-mixed-spaces-and-tabs":      "error",
 		"no-multi-spaces":               "error",
-		"no-new-native-nonconstructor":  "error",
-		"no-new-symbol":                 "error",
-		"no-obj-calls":                  "error",
-		"no-promise-executor-return":    "error",
-		"no-var":                        "error",
-		"object-shorthand":              [
+		"no-multiple-empty-lines":       [
+			"error",
+			{
+				max:    1,
+				maxBOF: 1,
+				maxEOF: 1,
+			},
+		],
+		"no-new-native-nonconstructor": "error",
+		"no-new-symbol":                "error",
+		"no-obj-calls":                 "error",
+		"no-promise-executor-return":   "error",
+		"no-tabs":                      "off",
+		"no-trailing-spaces":           [
+			"error",
+			{
+				ignoreComments: false,
+				skipBlankLines: false,
+			},
+		],
+		"no-var":                           "error",
+		"no-whitespace-before-property":    "error",
+		"nonblock-statement-body-position": [
+			"error",
+			"below",
+		],
+		"object-curly-newline": [
+			"error",
+			{
+				consistent: true,
+				multiline:  true,
+			},
+		],
+		"object-curly-spacing": [
+			"error",
+			"always",
+			{
+				arraysInObjects:  true,
+				objectsInObjects: true,
+			},
+		],
+		"object-property-newline": [
+			"error",
+			{
+				allowAllPropertiesOnSameLine: true,
+			},
+		],
+		"object-shorthand": [
 			"error",
 			"always",
 		],
@@ -262,6 +293,10 @@ module.exports = {
 		"operator-assignment":          [
 			"error",
 			"always",
+		],
+		"operator-linebreak": [
+			"error",
+			"none",
 		],
 		"prefer-arrow-callback":        "error",
 		"prefer-const":                 "error",

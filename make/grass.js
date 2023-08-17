@@ -168,8 +168,7 @@ function handleGrassSelect(target) {
 	const grass = grassTypes.find((g) => g.name === target.value);
 
 	window.localStorage.setItem("grass", grass.name);
-	forecast.deficiency =
-    Math.round((grass.inches - forecast.totalInches) * 100) / 100;
+	forecast.deficiency = Math.round((grass.inches - forecast.totalInches) * 100) / 100;
 	forecast.third = Math.round(forecast.deficiency / 3 * 100) / 100;
 	forecast.minutesEachDay = Math.round(60 * forecast.third);
 
@@ -199,8 +198,7 @@ function handleGrassSelect(target) {
 		forecast.days[day.date] = day;
 
 		if (day.willWater) {
-			document.getElementById(day.day).querySelector("input").checked =
-        "checked";
+			document.getElementById(day.day).querySelector("input").checked = "checked";
 		}
 	});
 
@@ -216,11 +214,9 @@ function handleGrassSelect(target) {
 		document.getElementById(day.day).style.order = realDay;
 
 		if (day.dayInt === currentDay) {
-			document.getElementById(day.day).querySelector(".title").innerText =
-        "Today";
+			document.getElementById(day.day).querySelector(".title").innerText = "Today";
 		} else if (day.dayInt === currentDay + 1) {
-			document.getElementById(day.day).querySelector(".title").innerText =
-        "Tomorrow";
+			document.getElementById(day.day).querySelector(".title").innerText = "Tomorrow";
 		}
 
 		document.getElementById(day.day).querySelector(".rain").innerText = `${

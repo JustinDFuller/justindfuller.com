@@ -4,9 +4,7 @@ self.addEventListener("push", (event) => {
 	const data = event?.data?.json();
 
 	event.waitUntil(self.registration.showNotification("Remember to water your lawn!", {
-		body: data?.minutes
-			? `Water for ${data?.minutes} minutes. Click to see your schedule.`
-			: "Click to see today's watering times.",
+		body: data?.minutes			? `Water for ${data?.minutes} minutes. Click to see your schedule.`			: "Click to see today's watering times.",
 		icon: "/image/grass.png",
 	}));
 });
