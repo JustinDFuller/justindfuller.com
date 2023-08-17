@@ -96,8 +96,8 @@ async function renderForecast(location) {
 			Number(date.slice(5, 7)) - 1,
 			Number(date.slice(8, 10)),
 		);
-		const today = new Date();
-		const sevenDays = new Date();
+		const today = new Date;
+		const sevenDays = new Date;
 		sevenDays.setDate(today.getDate() + 7);
 		if (parsed > sevenDays) {
 			continue;
@@ -124,8 +124,8 @@ async function renderForecast(location) {
 			Number(date.slice(5, 7)) - 1,
 			Number(date.slice(8, 10)),
 		);
-		const today = new Date();
-		const sevenDays = new Date();
+		const today = new Date;
+		const sevenDays = new Date;
 		sevenDays.setDate(today.getDate() + 7);
 		if (parsed > sevenDays) {
 			continue;
@@ -170,7 +170,7 @@ function handleGrassSelect(target) {
 	window.localStorage.setItem("grass", grass.name);
 	forecast.deficiency =
     Math.round((grass.inches - forecast.totalInches) * 100) / 100;
-	forecast.third = Math.round((forecast.deficiency / 3) * 100) / 100;
+	forecast.third = Math.round(forecast.deficiency / 3 * 100) / 100;
 	forecast.minutesEachDay = Math.round(60 * forecast.third);
 
 	wateringNeedsAmount.innerText = grass.inches;
@@ -206,7 +206,7 @@ function handleGrassSelect(target) {
 
 	for (const date in forecast.days) {
 		const day = forecast.days[date];
-		const currentDay = new Date().getDay();
+		const currentDay = (new Date).getDay();
 
 		let realDay = day.dayInt - currentDay;
 		if (realDay < 0) {

@@ -102,6 +102,7 @@ module.exports = {
 			"error",
 			"beside",
 		],
+
 		// Same as gofmt
 		indent: [
 			"error",
@@ -111,6 +112,7 @@ module.exports = {
 			"error",
 			"prefer-double",
 		],
+
 		// As close to gofmt as possible
 		"key-spacing": [
 			"error",
@@ -133,7 +135,71 @@ module.exports = {
 				},
 			},
 		],
-		"no-async-promise-executor":     "error",
+		"keyword-spacing": [
+			"error",
+			{
+				after:  true,
+				before: true,
+			},
+		],
+		"line-comment-position": [
+			"error",
+			"above",
+		],
+		"linebreak-style": [
+			"error",
+			"unix",
+		],
+		"lines-around-comment": [
+			"error",
+			{
+				afterBlockComment:    true,
+				afterHashbangComment: true,
+				afterLineComment:     false,
+				allowArrayEnd:        false,
+				allowArrayStart:      false,
+				allowBlockEnd:        false,
+				allowBlockStart:      false,
+				allowClassEnd:        false,
+				allowClassStart:      false,
+				allowObjectEnd:       false,
+				allowObjectStart:     false,
+				beforeBlockComment:   true,
+				beforeLineComment:    true,
+			},
+		],
+		"lines-between-class-members": [
+			"error",
+			"always",
+		],
+		"max-len": [
+			"error",
+			{
+				code:                   250,
+				ignoreComments:         true,
+				ignoreRegExpLiterals:   true,
+				ignoreStrings:          true,
+				ignoreTemplateLiterals: true,
+				ignoreUrls:             true,
+				tabWidth:               4,
+			},
+		],
+		"max-statements-per-line": [
+			"error",
+			{
+				max: 1,
+			},
+		],
+		"multiline-ternary": [
+			"error",
+			"always-multiline",
+		],
+		"new-parens": [
+			"error",
+			"never",
+		],
+		"no-async-promise-executor": "error",
+
 		"no-await-in-loop":              "off",
 		"no-class-assign":               "error",
 		"no-compare-neg-zero":           "error",
@@ -141,25 +207,31 @@ module.exports = {
 		"no-constant-binary-expression": "error",
 		"no-constant-condition":         "error",
 		"no-constructor-return":         "error",
+
 		// control regex chars allowed in golang
-		"no-control-regex":              "off",
-		"no-debugger":                   "error",
-		"no-dupe-args":                  "error",
-		"no-dupe-class-members":         "error",
-		"no-dupe-else-if":               "error",
-		"no-dupe-keys":                  "error",
-		"no-duplicate-case":             "error",
-		"no-duplicate-imports":          "error",
+		"no-control-regex":      "off",
+		"no-debugger":           "error",
+		"no-dupe-args":          "error",
+		"no-dupe-class-members": "error",
+		"no-dupe-else-if":       "error",
+		"no-dupe-keys":          "error",
+		"no-duplicate-case":     "error",
+		"no-duplicate-imports":  "error",
+
 		// empty char class is an error in golang
-		"no-empty-character-class":      "error",
-		"no-empty-pattern":              "error",
-		"no-ex-assign":                  "error",
-		"no-fallthrough":                "error",
-		"no-func-assign":                "error",
-		"no-import-assign":              "error",
-		"no-inner-declarations":         "error",
-		"no-invalid-regexp":             "error",
-		"no-irregular-whitespace":       [
+		"no-empty-character-class": "error",
+		"no-empty-pattern":         "error",
+		"no-ex-assign":             "error",
+		"no-extra-parens":          [
+			"error",
+			"all",
+		],
+		"no-fallthrough":          "error",
+		"no-func-assign":          "error",
+		"no-import-assign":        "error",
+		"no-inner-declarations":   "error",
+		"no-invalid-regexp":       "error",
+		"no-irregular-whitespace": [
 			"error",
 			{
 				skipComments:  true,
@@ -171,6 +243,8 @@ module.exports = {
 		],
 		"no-loss-of-precision":          "error",
 		"no-misleading-character-class": "error",
+		"no-mixed-spaces-and-tabs":      "error",
+		"no-multi-spaces":               "error",
 		"no-new-native-nonconstructor":  "error",
 		"no-new-symbol":                 "error",
 		"no-obj-calls":                  "error",
