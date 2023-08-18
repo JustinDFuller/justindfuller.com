@@ -302,6 +302,12 @@ module.exports = {
 			"error",
 			"never",
 		],
+
+		// Padding line rules:
+		//  Terminating statements always have a break around them.
+		//  Block-like-structures always have a break before and after.
+		//  Expression-like structures always have a break before and after block-like structures.
+		//  Expression-like structures never have a break between the same structure.
 		"padding-line-between-statements": [
 			"error",
 
@@ -310,22 +316,37 @@ module.exports = {
 			{ blankLine: "always", next: "continue", prev: "*" },
 			{ blankLine: "always", next: "return", prev: "*" },
 			{ blankLine: "always", next: "debugger", prev: "*" },
-			{ blankLine: "always", next: "debugger", prev: "*" },
+			{ blankLine: "always", next: "throw", prev: "*" },
+			{ blankLine: "always", next: "try", prev: "*" },
 			{ blankLine: "always", next: "export", prev: "*" },
 			{ blankLine: "always", next: "case", prev: "*" },
 			{ blankLine: "always", next: "if", prev: "*" },
 			{ blankLine: "always", next: "expression", prev: "*" },
+			{ blankLine: "always", next: "for", prev: "*" },
+			{ blankLine: "always", next: "function", prev: "*" },
+			{ blankLine: "always", next: "iife", prev: "*" },
+			{ blankLine: "always", next: "with", prev: "*" },
 
 			// These always have a blank line AFTER
 			{ blankLine: "always", next: "*", prev: "const" },
+			{ blankLine: "always", next: "*", prev: "var" },
+			{ blankLine: "always", next: "*", prev: "let" },
 			{ blankLine: "always", next: "*", prev: "import" },
 			{ blankLine: "always", next: "*", prev: "export" },
 			{ blankLine: "always", next: "*", prev: "directive" },
+			{ blankLine: "always", next: "*", prev: "debugger" },
+			{ blankLine: "always", next: "*", prev: "throw" },
+			{ blankLine: "always", next: "*", prev: "try" },
 			{ blankLine: "always", next: "*", prev: "if" },
 			{ blankLine: "always", next: "*", prev: "case" },
 			{ blankLine: "always", next: "*", prev: "expression" },
+			{ blankLine: "always", next: "*", prev: "for" },
+			{ blankLine: "always", next: "*", prev: "function" },
+			{ blankLine: "always", next: "*", prev: "iife" },
+			{ blankLine: "always", next: "*", prev: "with" },
 
 			// These never have a line BETWEEN
+			{ blankLine: "never", next: "var", prev: "var" },
 			{ blankLine: "never", next: "const", prev: "const" },
 			{ blankLine: "never", next: "let", prev: "let" },
 			{ blankLine: "never", next: "import", prev: "import" },

@@ -83,11 +83,11 @@ async function renderForecast(location) {
 	intro.classList.add("hidden");
 	loading.classList.remove("hidden");
 
+	const days = {};
 	const point = await fetch(`https://api.weather.gov/points/${location.latitude},${location.longitude}`).then((res) => res.json());
 	const response = await fetch(point.properties.forecastGridData).then((res) => res.json());
 
 	let total = 0;
-	const days = {};
 
 	for (const value of response.properties.quantitativePrecipitation.values) {
 		total = (total * 100 + value.value * 100) / 100;
