@@ -13,14 +13,16 @@
   },
   "keywords": [],
   "author": "Justin Fuller <me@justindfuller.com>",
-  "license": "PRIVATE",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/JustinDFuller/justindfuller.com/issues"
   },
+  "private": true,
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
     "eslint": "^8.47.0",
     "husky": "^8.0.3",
-    "prettier": "^3.0.1"
+    "prettier": "^3.0.1",
+    "eslint-config-justindfuller": "git://github.com/justindfuller/eslint-config"
   }
 }
