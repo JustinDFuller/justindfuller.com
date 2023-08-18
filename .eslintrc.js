@@ -314,23 +314,22 @@ module.exports = {
 			{ blankLine: "always", next: "export", prev: "*" },
 			{ blankLine: "always", next: "case", prev: "*" },
 			{ blankLine: "always", next: "if", prev: "*" },
-
-			// These always have a line BETWEEN
-			{ blankLine: "always", next: "const", prev: "if" },
-			{ blankLine: "always", next: "let", prev: "if" },
-			{ blankLine: "always", next: "const", prev: "expression" },
-			{ blankLine: "always", next: "let", prev: "expression" },
+			{ blankLine: "always", next: "expression", prev: "*" },
 
 			// These always have a blank line AFTER
 			{ blankLine: "always", next: "*", prev: "const" },
 			{ blankLine: "always", next: "*", prev: "import" },
 			{ blankLine: "always", next: "*", prev: "export" },
 			{ blankLine: "always", next: "*", prev: "directive" },
+			{ blankLine: "always", next: "*", prev: "if" },
+			{ blankLine: "always", next: "*", prev: "case" },
+			{ blankLine: "always", next: "*", prev: "expression" },
 
 			// These never have a line BETWEEN
 			{ blankLine: "never", next: "const", prev: "const" },
 			{ blankLine: "never", next: "let", prev: "let" },
 			{ blankLine: "never", next: "import", prev: "import" },
+			{ blankLine: "never", next: "expression", prev: "expression" },
 		],
 		"prefer-arrow-callback":        "error",
 		"prefer-const":                 "error",

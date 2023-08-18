@@ -118,6 +118,7 @@ async function renderForecast(location) {
 				temperatureF:        0,
 			};
 		}
+
 		day.precipitationInches += value.value / 25.4;
 		days[date] = day;
 	}
@@ -149,6 +150,7 @@ async function renderForecast(location) {
 				temperatureF:        0,
 			};
 		}
+
 		day.temperatureF = Math.round((value.value * 1.8 + 32) * 100) / 100;
 		days[date] = day;
 	}
@@ -159,7 +161,6 @@ async function renderForecast(location) {
 
 	forecast.totalInches = totalInches;
 	forecast.days = days;
-
 	precipitationTotalInches.innerText = totalInches;
 	precipitation.classList.remove("hidden");
 	loading.classList.add("hidden");
@@ -180,7 +181,6 @@ function handleGrassSelect(target) {
 	forecast.deficiency = Math.round((grass.inches - forecast.totalInches) * 100) / 100;
 	forecast.third = Math.round(forecast.deficiency / 3 * 100) / 100;
 	forecast.minutesEachDay = Math.round(60 * forecast.third);
-
 	wateringNeedsAmount.innerText = grass.inches;
 	wateringMinutesEachDay.innerText = forecast.minutesEachDay;
 	wateringDeficiency.innerText = forecast.deficiency;
@@ -233,11 +233,9 @@ function handleGrassSelect(target) {
 		document.getElementById(day.day).querySelector(".rain").innerText = `${
 			day.precipitationInches === 0 ? 0 : day.precipitationInches.toFixed(2)
 		}in`;
-
 		document
 			.getElementById(day.day)
 			.querySelector(".temperature").innerText = `${day.temperatureF}°F`;
-
 		document.getElementById("weekDays").classList.remove("hidden");
 		document.getElementById("weekDayPrompt").classList.remove("hidden");
 		document.getElementById("notifications").classList.remove("hidden");
@@ -296,7 +294,6 @@ async function handleReminderClick() {
 								const stringified = JSON.stringify(body);
 
 								console.log("Setting reminder for", { body, stringified });
-
 								fetch("/reminder/set", {
 									body:   stringified,
 									method: "POST",

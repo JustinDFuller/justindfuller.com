@@ -1,5 +1,4 @@
 self.addEventListener("install", (event) => console.log("ServiceWorker installed"));
-
 self.addEventListener("push", (event) => {
 	const data = event?.data?.json();
 
@@ -8,11 +7,8 @@ self.addEventListener("push", (event) => {
 		icon: "/image/grass.png",
 	}));
 });
-
 self.addEventListener("notificationclick", (event) => {
 	console.log("[Service Worker] Notification click received.");
-
 	event.notification.close();
-
 	event.waitUntil(clients.openWindow("https://justindfuller.com/grass"));
 });
