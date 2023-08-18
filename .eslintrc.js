@@ -351,6 +351,10 @@ module.exports = {
 			{ blankLine: "never", next: "let", prev: "let" },
 			{ blankLine: "never", next: "import", prev: "import" },
 			{ blankLine: "never", next: "expression", prev: "expression" },
+			{ blankLine: "never", next: "*", prev: "case" },
+			{ blankLine: "never", next: "case", prev: "*" },
+			{ blankLine: "never", next: "*", prev: "default" },
+			{ blankLine: "never", next: "default", prev: "*" },
 		],
 		"prefer-arrow-callback":        "error",
 		"prefer-const":                 "error",
@@ -417,9 +421,63 @@ module.exports = {
 				natural:                  true,
 			},
 		],
+		"space-before-function-paren": [
+			"error",
+			{
+				anonymous:  "never",
+				asyncArrow: "always",
+				named:      "never",
+			},
+		],
+		"space-in-parens": [
+			"error",
+			"never",
+		],
+		"space-infix-ops": [
+			"error",
+			{ int32Hint: true },
+		],
+		"space-unary-ops": [
+			"error",
+			{
+				nonwords: false,
+				words:    true,
+			},
+		],
 		"spaced-comment": [
 			"error",
 			"always",
+		],
+		"switch-colon-spacing": [
+			"error",
+			{
+				after:  true,
+				before: false,
+			},
+		],
+		"template-curly-spacing": [
+			"error",
+			"never",
+		],
+		"template-tag-spacing": [
+			"error",
+			"never",
+		],
+		"unicode-bom": [
+			"error",
+			"never",
+		],
+		"wrap-iife": [
+			"error",
+			"outside",
+		],
+		"wrap-regex":         "off",
+		"yield-star-spacing": [
+			"error",
+			{
+				after:  true,
+				before: false,
+			},
 		],
 		yoda: "error",
 	},
