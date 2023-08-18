@@ -3,6 +3,7 @@ if ("serviceWorker" in navigator) {
 }
 
 const main = document.querySelector("main");
+
 main.style.visibility = "hidden";
 document.fonts.ready.then(() => {
 	main.style.visibility = "visible";
@@ -69,6 +70,7 @@ async function handleLocationClick() {
 				latitude:  position.coords.latitude,
 				longitude: position.coords.longitude,
 			};
+
 			window.localStorage.setItem("location", JSON.stringify(location));
 			resolve(location);
 		});
@@ -98,6 +100,7 @@ async function renderForecast(location) {
 		);
 		const today = new Date;
 		const sevenDays = new Date;
+
 		sevenDays.setDate(today.getDate() + 7);
 		if (parsed > sevenDays) {
 			continue;
@@ -126,6 +129,7 @@ async function renderForecast(location) {
 		);
 		const today = new Date;
 		const sevenDays = new Date;
+
 		sevenDays.setDate(today.getDate() + 7);
 		if (parsed > sevenDays) {
 			continue;
@@ -158,6 +162,7 @@ async function renderForecast(location) {
 	chooseGrassType.classList.remove("hidden");
 
 	const selectedGrass = window.localStorage.getItem("grass") || "";
+
 	if (selectedGrass) {
 		chooseGrassTypeSelect.value = selectedGrass;
 		handleGrassSelect({ value: selectedGrass });
@@ -250,6 +255,7 @@ async function handleReminderClick() {
 	document.getElementById("notifications").classList.add("hidden");
 
 	const reg = await navigator.serviceWorker.getRegistration("/grass/service-worker.js");
+
 	if (!reg) {
 		alert("Unable to set up notifications.");
 		console.error("Service worker not found");

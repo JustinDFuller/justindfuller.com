@@ -304,7 +304,13 @@ module.exports = {
 		],
 		"padding-line-between-statements": [
 			"error",
+			{ blankLine: "always", next: "*", prev: "directive" },
+			{ blankLine: "always", next: "break", prev: "*" },
+			{ blankLine: "always", next: "continue", prev: "*" },
 			{ blankLine: "always", next: "return", prev: "*" },
+			{ blankLine: "always", next: "*", prev: "const" },
+			{ blankLine: "always", next: "const", prev: "if" },
+			{ blankLine: "always", next: "const", prev: "expression" },
 			{ blankLine: "never", next: "const", prev: "const" },
 		],
 		"prefer-arrow-callback":        "error",
