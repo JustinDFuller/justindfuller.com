@@ -102,11 +102,13 @@ async function renderForecast(location) {
 		const sevenDays = new Date;
 
 		sevenDays.setDate(today.getDate() + 7);
+
 		if (parsed > sevenDays) {
 			continue;
 		}
 
 		let day = days[date];
+
 		if (!day) {
 			day = {
 				date,
@@ -131,11 +133,13 @@ async function renderForecast(location) {
 		const sevenDays = new Date;
 
 		sevenDays.setDate(today.getDate() + 7);
+
 		if (parsed > sevenDays) {
 			continue;
 		}
 
 		let day = days[date];
+
 		if (!day) {
 			day = {
 				date,
@@ -213,6 +217,7 @@ function handleGrassSelect(target) {
 		const currentDay = (new Date).getDay();
 
 		let realDay = day.dayInt - currentDay;
+
 		if (realDay < 0) {
 			realDay = 7 + realDay;
 		}

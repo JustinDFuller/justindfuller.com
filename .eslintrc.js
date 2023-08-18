@@ -304,14 +304,33 @@ module.exports = {
 		],
 		"padding-line-between-statements": [
 			"error",
-			{ blankLine: "always", next: "*", prev: "directive" },
+
+			// These always have a blank line BEFORE
 			{ blankLine: "always", next: "break", prev: "*" },
 			{ blankLine: "always", next: "continue", prev: "*" },
 			{ blankLine: "always", next: "return", prev: "*" },
-			{ blankLine: "always", next: "*", prev: "const" },
+			{ blankLine: "always", next: "debugger", prev: "*" },
+			{ blankLine: "always", next: "debugger", prev: "*" },
+			{ blankLine: "always", next: "export", prev: "*" },
+			{ blankLine: "always", next: "case", prev: "*" },
+			{ blankLine: "always", next: "if", prev: "*" },
+
+			// These always have a line BETWEEN
 			{ blankLine: "always", next: "const", prev: "if" },
+			{ blankLine: "always", next: "let", prev: "if" },
 			{ blankLine: "always", next: "const", prev: "expression" },
+			{ blankLine: "always", next: "let", prev: "expression" },
+
+			// These always have a blank line AFTER
+			{ blankLine: "always", next: "*", prev: "const" },
+			{ blankLine: "always", next: "*", prev: "import" },
+			{ blankLine: "always", next: "*", prev: "export" },
+			{ blankLine: "always", next: "*", prev: "directive" },
+
+			// These never have a line BETWEEN
 			{ blankLine: "never", next: "const", prev: "const" },
+			{ blankLine: "never", next: "let", prev: "let" },
+			{ blankLine: "never", next: "import", prev: "import" },
 		],
 		"prefer-arrow-callback":        "error",
 		"prefer-const":                 "error",
