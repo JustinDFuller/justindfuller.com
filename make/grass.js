@@ -182,6 +182,7 @@ function handleGrassSelect(target) {
 			if (a.precipitationInches === 0 && b.precipitationInches === 0) {
 				return b.temperatureF - a.temperatureF;
 			}
+
 			return a.precipitationInches - b.precipitationInches;
 		})
 		.map((val, index) => {

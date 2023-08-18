@@ -298,6 +298,15 @@ module.exports = {
 			"error",
 			"none",
 		],
+		"padded-blocks": [
+			"error",
+			"never",
+		],
+		"padding-line-between-statements": [
+			"error",
+			{ blankLine: "always", next: "return", prev: "*" },
+			{ blankLine: "never", next: "const", prev: "const" },
+		],
 		"prefer-arrow-callback":        "error",
 		"prefer-const":                 "error",
 		"prefer-object-has-own":        "error",
@@ -307,7 +316,38 @@ module.exports = {
 		"prefer-rest-params":           "error",
 		"prefer-spread":                "error",
 		"prefer-template":              "error",
-		"sort-imports":                 [
+		quotes:                         [
+			"error",
+			"double",
+			{
+				allowTemplateLiterals: true,
+				avoidEscape:           true,
+			},
+		],
+		"rest-spread-spacing": [
+			"error",
+			"never",
+		],
+		semi: [
+			"error",
+			"always",
+			{
+				omitLastInOneLineBlock:     false,
+				omitLastInOneLineClassBody: false,
+			},
+		],
+		"semi-spacing": [
+			"error",
+			{
+				after:  true,
+				before: false,
+			},
+		],
+		"semi-style": [
+			"error",
+			"last",
+		],
+		"sort-imports": [
 			"error",
 			{
 				allowSeparatedGroups:  false,
