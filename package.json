@@ -23,6 +23,6 @@
     "eslint": "^8.47.0",
     "husky": "^8.0.3",
     "prettier": "^3.0.1",
-    "eslint-config-justindfuller": "git://github.com/justindfuller/eslint-config"
+    "eslint-config-jsfmt": "git://github.com/justindfuller/jsfmt"
   }
 }

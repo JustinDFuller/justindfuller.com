@@ -54,6 +54,12 @@ func main() {
 			continue
 		}
 
+		if strings.HasPrefix(entry.Name(), "node_modules") {
+			log.Printf("Skipping dot file: %s", entry.Name())
+
+			continue
+		}
+
 		files = append(files, File{
 			Path: "/" + entry.Name(),
 			Dir:  entry.IsDir(),
