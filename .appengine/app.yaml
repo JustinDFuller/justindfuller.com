@@ -68,7 +68,7 @@ handlers:
 
   - url: /review/living-on-24-hours-a-day
     static_files: .build/living-on-24-hours-a-day.html
-    upload: .build/zen-and-the-art-of-motorcycle-maintenance.html
+    upload: .build/living-on-24-hours-a-day.html
     secure: always
     http_headers:
       Content-Type: text/html; charset=utf-8
