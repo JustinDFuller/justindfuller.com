@@ -85,3 +85,10 @@ a:hover {
   padding: 0 6px;
   border-radius: 6px;
 }
+
+img {
+  width: 100%;
+  height: auto;
+  margin: auto;
+  display: block;
+}
