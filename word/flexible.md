@@ -22,9 +22,9 @@ By the end of the night, after several hours of spinning and a lot of mess, I en
 
 ### Connection
 
-We all know about flexible things and rigid things. We see the flexibility of the clay and understand that the clay that can, with just a bit of time and pressure, take on the shape of (almost) anything we desire. I believe we connect this to the reality of our daily routine, which for most of us involves being asked to do a diverse set of tasks. We think of the clay and dream of tools that we could just as easily mold to fit the diversity of problems we want to solve.
+We all know about flexible things and rigid things. We see the flexibility of the clay and understand that the clay that can, with just a bit of time and pressure, take on the shape of (almost) anything we desire. I believe we connect this to the reality of our daily routine, which for most of us involves being asked to solve a diverse set of problems. We think of the clay and dream of tools that we could just as easily mold to fit the diversity of problems we want to solve.
 
-Let’s imagine a general contractor (the construction kind) for a moment. As they work on the various jobs across many different client’s houses, they find themselves lugging around a truck full of tools. One day, they wish they had less tools and ask a friend of theirs to make them a “flexible tool that can handle all of my different problems.” The friend responds, “Sure, I know just the thing.” Returning a day later with a large piece of clay.
+Let’s imagine a general contractor (the construction kind) for a moment. As they work on the various jobs across many different client’s houses, they find themselves lugging around a truck full of tools. One day, they wish they had fewer tools and ask a friend of theirs to make them a “flexible tool that can handle all of my different problems.” The friend responds, “Sure, I know just the thing.” Returning a day later with a large piece of clay.
 
 Good for a laugh, sure. But not useful.
 
