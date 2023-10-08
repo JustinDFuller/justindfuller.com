@@ -98,3 +98,11 @@ img {
   display: block;
   margin: auto;
 }
+
+img.no-max-height {
+  max-height: 100%;
+}
+
+h3 {
+  margin-bottom: 0;
+}

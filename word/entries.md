@@ -76,3 +76,10 @@
 
 > Equality of weight or force; hence, equilibrium; a state in which the two ends or sides of a thing are balanced, and hence equal; state of being equally balanced; -- said of moral, political, or social interests or forces.
 
+
+<hr />
+
+-[**Flexible**](/word/flexible)
+
+> Capable or being adapted or molded
+

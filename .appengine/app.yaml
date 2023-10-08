@@ -108,6 +108,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /word/flexible
+    static_files: .build/flexible.html
+    upload: .build/flexible.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /word
     static_files: .build/word.html
     upload: .build/word.html
