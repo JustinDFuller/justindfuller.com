@@ -22,7 +22,7 @@ By the end of the night, after several hours of spinning and a lot of mess, I en
 
 ### Connection
 
-We all know about flexible things and rigid things. We see the flexibility of the clay and understand that the clay that can, with just a bit of time and pressure, take on the shape of (almost) anything we desire. I believe we connect this to the reality of our daily routine, which for most of us involves being asked to solve a diverse set of problems. We think of the clay and dream of tools that we could just as easily mold to fit the diversity of problems we want to solve.
+We all know about flexible things and rigid things. We see the flexibility of the clay and understand that the clay can, with just a bit of time and pressure, take on the shape of (almost) anything we desire. I believe we connect this to the reality of our daily routine, which for most of us involves being asked to solve a diverse set of problems. We think of the clay and dream of tools that we could just as easily mold to fit the diversity of problems we want to solve.
 
 Let’s imagine a general contractor (the construction kind) for a moment. As they work on the various jobs across many different client’s houses, they find themselves lugging around a truck full of tools. One day, they wish they had fewer tools and ask a friend of theirs to make them a “flexible tool that can handle all of my different problems.” The friend responds, “Sure, I know just the thing.” Returning a day later with a large piece of clay.
 
@@ -34,7 +34,7 @@ It turns out, we Software Engineers already have flexible tools. They just aren�
 
 But that’s the key, you can *use them* to build useful things. They aren’t useful themselves. I'm not aware of anyone who “uses” the Operating System. But everyone I know uses the applications running on them.
 
-The flexibility of these things also comes at great cost. They are quite abstract and what we might refer to as “low-level” because they operate on moving bytes instead of representing businesses, projects, and features. They must also find a way to ensure they work without actually knowing exactly how they will be used. This work is difficult and abstract. Most of us don’t want to — and wouldn’t benefit from — work like that.
+The flexibility of these things also comes at great cost. They are quite abstract and what we might refer to as “low-level” (abstract *and* low-level, quite the contradiction) because they operate on moving bytes instead of representing businesses, projects, and features. They must also find a way to ensure they work without actually knowing exactly how they will be used. This work is difficult and abstract. Most of us don’t want to — and wouldn’t benefit from — work like that.
 
 ### Instead
 
@@ -42,7 +42,7 @@ I recommend building *focused and useful* — rather than flexible — things.
 
 When encountering new problems, don’t try to re-shape the useful tool in your hand. Instead, put it down for a moment, and try finding (or making) one suited for the unique task at hand.
 
-Eventually, opportunities for consolidation may appear. I’m sure at some point someone realized they were constantly using their crowbar to pull out the bent nails and thought “it sure would be nice if these two things went together.”
+Eventually, opportunities for consolidation may appear. I’m sure at some point someone realized they were constantly using their crowbar to pull out the nails their hammer bent and thought “it sure would be nice if these two things went together.”
 
 But, on the other hand, could you imagine the monstrosity of a tool that would arise from someone attempting to imagine every possible problem one would try to solve with it? It would be incredibly difficult to use, let alone produce and maintain.
 
