@@ -2,7 +2,7 @@
 
 If I were to ask you to build a platform on which others will stand, work, and use as a jumping-off point to achieve their goals — here, I am speaking of a literal platform on which real people will stand — what kind of building materials would you use? Likely, you would choose some strong, sturdy material. If you were to pick something flexible (say, rubber) I would send you packing and hire a new contractor. 
 
-Yet, as I close in on ten years of Software Engineering (not very long in the grand scheme, I know) — where I have primarily engineered Software “platforms” — I have almost always been asked to build flexible platforms.
+Yet, as I close in on ten years of Software Engineering (not long in the grand scheme, I know) — where I have primarily engineered Software “platforms” — I have almost always been asked to build flexible platforms.
 
 It seems, perhaps long before my time, something happened in the Software world that associated flexibility with good and rigidity with bad.
 
@@ -32,11 +32,11 @@ Good for a laugh, sure. But not useful.
 
 It turns out, we Software Engineers already have flexible tools. They just aren’t *useful* tools. Think about it: The operating systems, the networking, even the programming languages. All of these are flexible tools. You can use them to build almost anything. 
 
-But that’s the key, you can *use them* to build useful things. They aren’t useful themselves. No one “uses” the Operating System. They use the applications running on them.
+But that’s the key, you can *use them* to build useful things. They aren’t useful themselves. I'm not aware of anyone who “uses” the Operating System. But everyone I know uses the applications running on them.
 
 The flexibility of these things also comes at great cost. They are quite abstract and what we might refer to as “low-level” because they operate on moving bytes instead of representing businesses, projects, and features. They must also find a way to ensure they work without actually knowing exactly how they will be used. This work is difficult and abstract. Most of us don’t want to — and wouldn’t benefit from — work like that.
 
-## Instead
+### Instead
 
 I recommend building *focused and useful* — rather than flexible — things. 
 
@@ -50,23 +50,26 @@ But, on the other hand, could you imagine the monstrosity of a tool that would a
 
 It may be helpful to see this visually. 
 
-First, here’s a chart of my clay mug’s journey. In its first phase, as unused dry clay, it essentially has no flexibility and no potential (in its current state).
+First, here’s a chart of a clay mug’s journey (I know it was bowls before but I'm ready to move on).
+
+<img src="/image/flexible_vs_potential.png" width="100%" class="no-max-height space-below" />
+
+In its first phase, as unused dry clay, it essentially has no flexibility and no potential (in its current state).
 
 Next, once I add water, it rockets up to the top right; becoming both flexible and full of nearly infinite potential.
 
 Finally, once I shape and fire it in the kiln, it takes on a fixed state (zero flexibility) with a finite amount of potential (basically, holding things).
 
-<img src="/image/flexible_vs_potential.png" width="100%" class="no-max-height" />
 
-This is how we often look at things. Flexibility and Potential. And it’s no wonder we prefer flexibility. We see that wet clay scoring high on both counts, so it looks very desirable.
+This is how we often look at things. Flexibility and Potential. And it’s no wonder we prefer flexibility. We see that wet clay scoring high on both counts, so it looks desirable.
 
 But there is another angle we must consider: usefulness.
 
-<img src="/image/flexible_vs_useful.png" width="100%" class="no-max-height" />
+<img src="/image/flexible_vs_useful.png" width="100%" class="no-max-height space-below" />
 
 This chart tells a different story.
 
-Now, we see that the unshaped wet clay is high in flexibility, but zero utility.
+Now, we see that the unshaped wet clay scores high on flexibility, but zero on utility.
 
 On the other side, we see the fired clay mug is sky high in utility (it sure is good at holding my morning coffee!) even though it is low flexibility. 
 

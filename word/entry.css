@@ -103,6 +103,11 @@ img.no-max-height {
   max-height: 100%;
 }
 
+img.space-below {
+  margin-bottom: 20px;
+}
+
 h3 {
   margin-bottom: 0;
 }
+
