@@ -79,7 +79,7 @@
 
 <hr />
 
--[**Flexible**](/word/flexible)
+[**Flexible**](/word/flexible)
 
 > Capable or being adapted or molded
 
