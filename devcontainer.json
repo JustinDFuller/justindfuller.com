@@ -13,5 +13,10 @@
     "hostRequirements": {
         "cpus": 1
     },
-    "postStartCommand": "make run-watch"
+    "initializeCommand": "echo 'initialize command'",
+    "updateContentCommand": "echo 'update content command'",
+    "onCreateCommand": "echo 'on create command",
+    "postCreateCommand": "echo 'post create command'",
+    "postAttachCommand": "echo 'post attach command",
+    "postStartCommand": "echo 'post start command"
 }
