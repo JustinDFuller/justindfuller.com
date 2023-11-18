@@ -1,0 +1,17 @@
+{
+    "name": "justindfuller",
+    "forwardPorts": [9000],
+    "containerEnv": {
+        "PORT": "9000"
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/go:1": {
+            "version": "1.21.1",
+            "golangciLintVersion": "1.54.2"
+        }
+    },
+    "hostRequirements": {
+        "cpus": 1
+    },
+    "postCreateCommand": "make server-watch"
+}
