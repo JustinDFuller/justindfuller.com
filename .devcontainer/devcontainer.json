@@ -1,9 +1,6 @@
 {
+    "init": true,
     "name": "justindfuller",
-    "forwardPorts": [9000],
-    "containerEnv": {
-        "PORT": "9000"
-    },
     "features": {
         "ghcr.io/devcontainers/features/go:1": {
             "version": "1.21.1",
@@ -13,5 +10,34 @@
     "hostRequirements": {
         "cpus": 1
     },
-    "postCreateCommand": "make server-watch"
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "waitFor": "onCreateCommand",
+    "updateContentCommand": "go mod download",
+    "postCreateCommand": "go install github.com/cespare/reflex@latest",
+    "postAttachCommand": {
+      "server": "make server-watch"
+    },
+    "customizations": {
+      "codespaces": {
+        "openFiles": [
+          "README"
+        ]
+      },
+      "vscode": {
+        "settings": {},
+        "extensions": [
+          "golang.go",
+          "dbaeumer.vscode-eslint",
+          "ms-vscode.makefile-tools",
+          "DavidAnson.vscode-markdownlint",
+          "eamodio.gitlens"
+        ]
+      }
+    },
+    "portsAttributes": {
+      "9000": {
+        "label": "Application",
+        "onAutoForward": "openBrowserOnce"
+      }
+    }
 }
