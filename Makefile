@@ -15,6 +15,9 @@ format:
 	@go fmt ./...;
 	@npm run test;
 
+format-watch:
+	@reflex -s -- sh -c "$(MAKE) format";
+
 build:
 	@rm -rf ./.build;
 	@mkdir ./.build;
@@ -37,3 +40,6 @@ build:
 	@curl "http://localhost:9000/word/equipoise" > ./.build/equipoise.html;
 	@curl "http://localhost:9000/word/flexible" > ./.build/flexible.html;
 	@cp -r ./image ./.build
+
+build-watch:
+	@reflex -s -- sh -c "$(MAKE) build";

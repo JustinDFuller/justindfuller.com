@@ -83,3 +83,22 @@ a:active {
   background: black;
   color: white;
 }
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: black;
+    color: white;
+  }
+
+  a {
+    color: white;
+  }
+
+  a:hover,
+  a:focus,
+  a:active {
+    background: white;
+    color: black;
+  }
+}

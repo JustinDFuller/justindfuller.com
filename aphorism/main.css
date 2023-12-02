@@ -47,3 +47,22 @@ hr {
   margin-top: 30px;
   margin-bottom: 50px;
 }
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: black;
+    color: white;
+  }
+
+  main > a {
+    color: white;
+  }
+
+  main > a:hover,
+  main > a:focus,
+  main > a:active {
+    background: white;
+    color: black;
+  }
+}
