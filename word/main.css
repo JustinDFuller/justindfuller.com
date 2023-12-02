@@ -64,7 +64,7 @@ img {
 }
 
 a {
-  color: black;
+  color: #020215;
   padding: 10px 0;
   border-radius: 2px;
   transition:
@@ -80,14 +80,14 @@ a:hover,
 a:focus,
 a:active {
   padding: 10px 20px;
-  background: black;
+  background: #020215;
   color: white;
 }
 
 @media (prefers-color-scheme: dark) {
   html,
   body {
-    background-color: black;
+    background-color: #020215;
     color: white;
   }
 
@@ -99,6 +99,6 @@ a:active {
   a:focus,
   a:active {
     background: white;
-    color: black;
+    color: #020215;
   }
 }

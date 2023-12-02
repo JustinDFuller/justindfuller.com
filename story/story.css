@@ -59,7 +59,7 @@ h2 {
 @media (prefers-color-scheme: dark) {
   html,
   body {
-    background-color: black;
+    background-color: #020215;
     color: white;
   }
 
@@ -71,6 +71,6 @@ h2 {
   main > a:focus,
   main > a:active {
     background: white;
-    color: black;
+    color: #020215;
   }
 }
