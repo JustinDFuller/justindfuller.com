@@ -94,6 +94,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /kit
+    static_files: .build/kit.html
+    upload: .build/kit.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /word/quality
     static_files: .build/quality.html
     upload: .build/quality.html

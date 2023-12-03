@@ -18,9 +18,7 @@
     "updateContentCommand": "go mod download",
     "postCreateCommand": "go install github.com/cespare/reflex@latest",
     "postAttachCommand": {
-      "server": "make server-watch",
-      // "format": "make format-watch",
-      // "build": "make build-watch"
+      "server": "make server-watch"
     },
     "customizations": {
       "codespaces": {
