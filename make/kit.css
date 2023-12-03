@@ -1,7 +1,7 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
-  
+
 html,
 body {
   padding: 0;
@@ -15,7 +15,7 @@ body {
 }
 
 main {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 #root {
@@ -86,8 +86,8 @@ main {
 }
 
 #wizard {
-    position: absolute;
-    top: -25px;
+  position: absolute;
+  top: -25px;
 }
 
 #wizard p {
@@ -104,7 +104,7 @@ main {
 }
 
 #wizard img {
-    transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 #wizard.success {
@@ -121,8 +121,8 @@ main {
 }
 
 blockquote {
-    max-width: 500px;
-    margin: auto;
-    border-left: 3px solid #020215;
-    padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  border-left: 3px solid #020215;
+  padding: 20px;
 }
