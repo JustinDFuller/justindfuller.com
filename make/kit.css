@@ -18,14 +18,19 @@ main {
   padding-bottom: 20px;
 }
 
+#world,
+#root {
+  width: 600px;
+  margin: auto;
+}
+
 #root {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  max-height: 300px;
-  min-width: 600px;
+  max-height: 200px;
 }
 
 .step {
@@ -52,15 +57,16 @@ main {
 }
 
 #world {
+  margin-top: 10px;
   position: relative;
   height: 100px;
-  width: 100%;
-  min-width: 600px;
 }
 
 #floor {
   position: absolute;
-  bottom: 0;
+  top: 110px;
+  left: 0;
+  right: 0;
   z-index: 1;
   border-bottom: 3px solid brown;
   width: 100%;
@@ -72,7 +78,7 @@ main {
     left: 0px;
   }
   100% {
-    left: calc(100vw - 220px);
+    left: 433px;
   }
 }
 
@@ -87,14 +93,16 @@ main {
 
 #wizard {
   position: absolute;
-  top: -25px;
+  bottom: 0;
+  top: 0;
+  left: 30px;
 }
 
 #wizard p {
   visibility: hidden;
   position: relative;
-  left: 100px;
-  bottom: 140px;
+  left: 65px;
+  bottom: 131px;
 }
 
 #wizard.success p {
@@ -105,6 +113,7 @@ main {
 
 #wizard img {
   transform: scaleX(-1);
+  height: 100px;
 }
 
 #wizard.success {
@@ -116,13 +125,21 @@ main {
 #rabbit {
   transform: scaleX(-1);
   position: absolute;
+  height: 50px;
   right: 50px;
   bottom: 0;
 }
 
 blockquote {
+  width: 100vw;
   max-width: 500px;
   margin: auto;
   border-left: 3px solid #020215;
   padding: 20px;
+}
+
+@media (max-width: 500px) {
+  blockquote {
+    margin: 5px;
+  }
 }
