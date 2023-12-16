@@ -20,11 +20,17 @@ dispatch:
   - url: "justindfuller.com/*"
     service: default
 
-  - url: "laurensfuller-dot-justindfuller.uc.r.appspot.com/"
+  - url: "laurensfuller-dot-justindfuller.uc.r.appspot.com/*"
     service: laurensfuller
 
   - url: "www.laurensfuller.com/*"
     service: laurensfuller
 
-  - url: "justindfuller.com/*"
+  - url: "laurensfuller.com/*"
+    service: laurensfuller
+
+  - url: "www.laurenfullerpaints.com/*"
+    service: laurensfuller
+
+  - url: "laurenfullerpaints.com/*"
     service: laurensfuller
