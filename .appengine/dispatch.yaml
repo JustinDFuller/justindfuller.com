@@ -19,3 +19,12 @@ dispatch:
 
   - url: "justindfuller.com/*"
     service: default
+
+  - url: "laurensfuller-dot-justindfuller.uc.r.appspot.com/"
+    service: laurensfuller
+
+  - url: "www.laurensfuller.com/*"
+    service: laurensfuller
+
+  - url: "justindfuller.com/*"
+    service: laurensfuller
