@@ -2,7 +2,7 @@ name: Build and Deploy to GAE
 
 on:
   push:
-    branches: ["master", "redesign", "main"]
+    branches: ["main"]
 
 jobs:
   setup-build-publish-deploy:
@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           lfs: true
 
@@ -28,7 +28,8 @@ jobs:
         with:
           node-version: '20.x'
 
-      - run: npm ci
+      - name: Install npm
+        run: npm ci
 
       - name: Set up Go
         uses: actions/setup-go@v4
