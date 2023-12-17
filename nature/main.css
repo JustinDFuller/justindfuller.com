@@ -36,3 +36,26 @@ img {
   border-radius: 6px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #020215;
+    color: white;
+  }
+
+  main > a {
+    color: white;
+  }
+
+  main > a:hover,
+  main > a:focus,
+  main > a:active {
+    background: white;
+    color: #020215;
+  }
+
+  img {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px, -5px 10px 47px 0px rgba(255,255,255,1);
+  }
+}
