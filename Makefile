@@ -67,6 +67,7 @@ deploy: build
 
 .PHONY: build
 build: validate tidy generate vet format lint
+	@echo ${COLOR_GRAY}Begin build process.${COLOR_NC};
 	@rm -rf ./.build;
 	@mkdir ./.build;
 	@curl -s "http://localhost:9000/" > ./.build/index.html;
