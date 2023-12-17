@@ -2,23 +2,34 @@ export GOOGLE_CLOUD_PROJECT=justindfuller
 export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
 
-server:
+generate:
+	@echo "Begin go generate.";
+	@go generate ./...;
+
+vet:
+	@echo "Begin go vet.";
+	@go vet ./...;
+
+format:
+	@echo "Begin go fmt.";
+	@go fmt ./...;
+	@echo "Begin npm test.";
+	@npm run test;
+
+server: generate vet format
+	@echo "Begin go run.";
 	@go run main.go;
 
 server-watch:
 	@reflex -s -- sh -c "$(MAKE) server";
 
-deploy:
-	@gcloud app deploy;
-
-format:
-	@go fmt ./...;
-	@npm run test;
-
 format-watch:
 	@reflex -s -- sh -c "$(MAKE) format";
 
-build:
+deploy: build
+	@gcloud app deploy;
+
+build: generate vet format
 	@rm -rf ./.build;
 	@mkdir ./.build;
 	@curl "http://localhost:9000/" > ./.build/index.html;
