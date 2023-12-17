@@ -56,6 +56,8 @@ img {
   }
 
   img {
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px, -5px 10px 47px 0px rgba(255,255,255,1);
+    box-shadow:
+      rgba(0, 0, 0, 0.35) 0px 5px 15px,
+      -5px 10px 47px 0px rgba(255, 255, 255, 1);
   }
 }
