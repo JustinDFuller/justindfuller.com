@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    <style>
+      {{ template "/make/kit.css" . }}
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <div id="world">
+        <div id="wizard">
+          <img src="/image/wizard.jpg" />
+          <p>WooHoo!</p>
+        </div>
+        <img id="rabbit" src="/image/rabbit.jpg" />
+      </div>
+      <div id="floor"></div>
+      <div id="root"></div>
+
+      <blockquote>
+        <strong>Kit:</strong> Dad, Can we make a game?
+        <br />
+        <strong>Me:</strong> Sure, buddy. What kind of game?
+        <br />
+        <strong>Kit:</strong> On the computer! Let's make a game with a bunch of
+        numbers all mixed up. You have to switch the numbers to put them in
+        order. And on the left side there is a wizard who lost his rabbit. On
+        the right side is his rabbit. When you get the numbers in the right
+        order the Wizard crosses to the other side and says, "Woohoo!"
+      </blockquote>
+    </main>
+
+    <script>
+      {{ template "/make/kit.js" . }}
+    </script>
+  </body>
+</html>

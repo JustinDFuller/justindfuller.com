@@ -65,28 +65,28 @@ progress {
 select {
   width: 100%;
   padding: 10px 20px;
-  border: 2px solid black;
+  border: 2px solid #020215;
   background: white;
-  color: black;
+  color: #020215;
 }
 
 button {
   padding: 10px 20px;
-  border-top: 2px solid black;
-  border-left: 2px solid black;
-  border-right: 4px solid black;
-  border-bottom: 4px solid black;
+  border-top: 2px solid #020215;
+  border-left: 2px solid #020215;
+  border-right: 4px solid #020215;
+  border-bottom: 4px solid #020215;
   border-radius: 2px;
   background: white;
-  color: black;
+  color: #020215;
   cursor: pointer;
 }
 
 button:hover {
-  border-top: 3px solid black;
-  border-left: 3px solid black;
-  border-right: 3px solid black;
-  border-bottom: 3px solid black;
+  border-top: 3px solid #020215;
+  border-left: 3px solid #020215;
+  border-right: 3px solid #020215;
+  border-bottom: 3px solid #020215;
 }
 
 select,
@@ -117,10 +117,10 @@ label {
   cursor: pointer;
   text-align: center;
   width: 45%;
-  border-top: 2px solid black;
-  border-left: 2px solid black;
-  border-right: 4px solid black;
-  border-bottom: 4px solid black;
+  border-top: 2px solid #020215;
+  border-left: 2px solid #020215;
+  border-right: 4px solid #020215;
+  border-bottom: 4px solid #020215;
   border-radius: 4px;
   margin-bottom: 20px;
 }
@@ -136,10 +136,10 @@ label {
 }
 
 .day:hover {
-  border-right: 3px solid black;
-  border-bottom: 3px solid black;
-  border-left: 3px solid black;
-  border-top: 3px solid black;
+  border-right: 3px solid #020215;
+  border-bottom: 3px solid #020215;
+  border-left: 3px solid #020215;
+  border-top: 3px solid #020215;
 }
 
 .day .icon {
@@ -172,4 +172,27 @@ label {
 .day .rain,
 .day .temperature {
   min-width: 70px;
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #020215;
+    color: white;
+  }
+
+  main > a {
+    color: white;
+  }
+
+  main > a:hover,
+  main > a:focus,
+  main > a:active {
+    background: white;
+    color: #020215;
+  }
+
+  .day {
+    color: #020215;
+  }
 }

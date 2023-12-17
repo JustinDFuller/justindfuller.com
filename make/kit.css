@@ -1,0 +1,145 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+  min-height: 100vh;
+  max-height: 300px;
+  min-width: 600px;
+  font-size: 20px;
+  font-family: "Amiri", serif;
+}
+
+main {
+  padding-bottom: 20px;
+}
+
+#world,
+#root {
+  width: 600px;
+  margin: auto;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  max-height: 200px;
+}
+
+.step {
+  padding: 30px;
+  border: 1px solid black;
+}
+
+.step:hover {
+  font-weight: bold;
+  color: lightblue;
+  border: 3px solid lightblue;
+}
+
+.step.selected {
+  font-weight: bold;
+  color: blue;
+  border: 3px solid blue;
+}
+
+.step.correct {
+  font-weight: bold;
+  color: green;
+  border: 2px solid green;
+}
+
+#world {
+  margin-top: 10px;
+  position: relative;
+  height: 100px;
+}
+
+#floor {
+  position: absolute;
+  top: 110px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  border-bottom: 3px solid brown;
+  width: 100%;
+  min-width: 600px;
+}
+
+@keyframes move {
+  0% {
+    left: 0px;
+  }
+  100% {
+    left: 433px;
+  }
+}
+
+@keyframes talk {
+  0% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
+
+#wizard {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 30px;
+}
+
+#wizard p {
+  visibility: hidden;
+  position: relative;
+  left: 65px;
+  bottom: 131px;
+}
+
+#wizard.success p {
+  animation-delay: 2s;
+  animation-name: talk;
+  animation-fill-mode: forwards;
+}
+
+#wizard img {
+  transform: scaleX(-1);
+  height: 100px;
+}
+
+#wizard.success {
+  animation-duration: 2s;
+  animation-name: move;
+  animation-fill-mode: forwards;
+}
+
+#rabbit {
+  transform: scaleX(-1);
+  position: absolute;
+  height: 50px;
+  right: 50px;
+  bottom: 0;
+}
+
+blockquote {
+  width: 100vw;
+  max-width: 500px;
+  margin: auto;
+  border-left: 3px solid #020215;
+  padding: 20px;
+}
+
+@media (max-width: 500px) {
+  blockquote {
+    margin: 5px;
+  }
+}

@@ -35,7 +35,7 @@ main {
 }
 
 main > a {
-  color: black;
+  color: #020215;
   padding: 10px 20px;
   border-radius: 2px;
   transition:
@@ -48,6 +48,25 @@ main > a {
 main > a:hover,
 main > a:focus,
 main > a:active {
-  background: black;
+  background: #020215;
   color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #020215;
+    color: white;
+  }
+
+  main > a {
+    color: white;
+  }
+
+  main > a:hover,
+  main > a:focus,
+  main > a:active {
+    background: white;
+    color: #020215;
+  }
 }

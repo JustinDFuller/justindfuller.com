@@ -71,7 +71,7 @@ blockquote p {
 }
 
 a {
-  color: black;
+  color: #020215;
   position: relative;
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -81,7 +81,7 @@ a {
 
 a:hover {
   color: white;
-  background: black;
+  background: #020215;
   padding: 0 6px;
   border-radius: 6px;
 }
@@ -91,4 +91,23 @@ img {
   height: auto;
   margin: auto;
   display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #020215;
+    color: white;
+  }
+
+  a {
+    color: white;
+  }
+
+  a:hover,
+  a:focus,
+  a:active {
+    background: white;
+    color: #020215;
+  }
 }

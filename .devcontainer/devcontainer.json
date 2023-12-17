@@ -1,0 +1,51 @@
+{
+    "init": true,
+    "name": "justindfuller.com",
+    "features": {
+        "ghcr.io/devcontainers/features/go:1": {
+            "version": "1.21.4",
+            "golangciLintVersion": "1.55.2"
+        },
+        "ghcr.io/devcontainers/features/node:1": {
+          "version": "20.9.0"
+        }
+    },
+    "hostRequirements": {
+        "cpus": 1
+    },
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "waitFor": "onCreateCommand",
+    "updateContentCommand": "go mod download",
+    "postCreateCommand": "go install github.com/cespare/reflex@latest",
+    "postAttachCommand": {
+      "server": "make server-watch"
+    },
+    "customizations": {
+      "codespaces": {
+        "openFiles": [
+          "README"
+        ]
+      },
+      "vscode": {
+        "settings": {
+          "workbench.iconTheme": "fira-code-material-minimal",
+          "editor.fontFamily": "fira-code-nerd, FiraCode Nerd Font, Consolas, 'Courier New', monospace",
+          "editor.fontLigatures": true
+        },
+        "extensions": [
+          "golang.go",
+          "dbaeumer.vscode-eslint",
+          "ms-vscode.makefile-tools",
+          "DavidAnson.vscode-markdownlint",
+          "eamodio.gitlens",
+          "Entuent.fira-code-nerd-font"
+        ]
+      }
+    },
+    "portsAttributes": {
+      "9000": {
+        "label": "Application",
+        "onAutoForward": "openBrowserOnce"
+      }
+    }
+}

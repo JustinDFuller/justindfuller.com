@@ -38,6 +38,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /story/the_philosophy_of_lovers
+    static_files: .build/the_philosophy_of_lovers.html
+    upload: .build/the_philosophy_of_lovers.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /story/bridge
     static_files: .build/bridge.html
     upload: .build/bridge.html
@@ -90,6 +97,13 @@ handlers:
   - url: /grass
     static_files: .build/grass.html
     upload: .build/grass.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /kit
+    static_files: .build/kit.html
+    upload: .build/kit.html
     secure: always
     http_headers:
       Content-Type: text/html; charset=utf-8
