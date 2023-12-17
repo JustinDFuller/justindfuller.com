@@ -32,10 +32,10 @@ server: tidy generate vet format lint
 	@go run main.go;
 
 server-watch:
-	@reflex -s -- sh -c "$(MAKE) server";
+	@reflex -s --inverse-regex=".build" -- sh -c "$(MAKE) server";
 
 format-watch:
-	@reflex -s -- sh -c "$(MAKE) format";
+	@reflex -s --inverse-regex=".build"-- sh -c "$(MAKE) format";
 
 deploy: build
 	@gcloud app deploy;
