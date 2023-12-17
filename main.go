@@ -68,7 +68,7 @@ func main() {
 
 	templates := template.New("").Option("missingkey=error")
 
-	suffixes := []string{".js", ".css", ".html"}
+	suffixes := []string{".js", ".css", ".html", ".tmpl"}
 
 	var wg sync.WaitGroup
 
@@ -306,6 +306,29 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/nature", func(w http.ResponseWriter, r *http.Request) {
+		var entries [][]byte
+
+		files, err := os.ReadDir("./image/nature")
+		if err != nil {
+			log.Printf("Error reading ./image/nature: %s", err)
+			http.Error(w, "Error loading page.", http.StatusInternalServerError)
+
+			return
+		}
+
+		for _, file := range files {
+			entries = append(entries, []byte(file.Name()))
+		}
+
+		if err := templates.ExecuteTemplate(w, "/nature/main.html.tmpl", data{
+			Title:   "Nature",
+			Entries: entries,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/nature/main.html.tmpl")
+		}
+	})
+
 	http.HandleFunc("/image/", func(w http.ResponseWriter, r *http.Request) {
 		log.Print(r.URL.Path)
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
@@ -334,7 +357,9 @@ func main() {
 	}
 
 	log.Printf("Listening on port http://localhost%s", port)
-	http.ListenAndServe(port, nil)
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func Title(s string) string {

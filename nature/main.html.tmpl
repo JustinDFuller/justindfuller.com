@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    {{ template "/meta.template.html" . }}
+    <style>
+    {{ template "/nature/main.css" . }} 
+    </style>
+  </head>
+
+  <body>
+    <main>
+      {{ range .Entries }}
+        <img src="/image/nature/{{ printf "%s" . }}" alt="{{ printf "%s" . }}" />
+      {{ end }}
+    </main>
+  </body>
+</html>
