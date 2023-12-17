@@ -24,6 +24,7 @@ build:
 	@curl "http://localhost:9000/" > ./.build/index.html;
 	@curl "http://localhost:9000/site.webmanifest" > ./.build/site.webmanifest;
 	@curl "http://localhost:9000/make" > ./.build/make.html;
+	@curl "http://localhost:9000/nature" > ./.build/nature.html;
 	@curl "http://localhost:9000/grass" > ./.build/grass.html;
 	@curl "http://localhost:9000/grass/worker.js" > ./.build/grass-service-worker.js;
 	@curl "http://localhost:9000/kit" > ./.build/kit.html;
