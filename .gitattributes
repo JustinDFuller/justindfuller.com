@@ -1,4 +1,4 @@
-*.md linguist-detectable
+*.md -linguist-detectable
 Makefile -linguist-detectable
 yaml -linguist-detectable
 yml -linguist-detectable
