@@ -4,7 +4,7 @@
   "description": "My website",
   "main": "main.js",
   "scripts": {
-    "test": "prettier --write **/*.css **/*.html **/*.webmanifest && eslint --fix ./**/*.js"
+    "test": "prettier --log-level=error --write **/*.css **/*.html **/*.webmanifest && eslint --quiet --fix ./**/*.js"
   },
   "repository": {
     "type": "git",

@@ -27,17 +27,27 @@ type data struct {
 	Entry   []byte
 }
 
+func logWarning(message string, err error) {
+	log.Print("⚠️  \033[33m"+message+":\033[0m ", err)
+}
+
+func logError(message string, err error) {
+	log.Fatal("🛑  \033[31m"+message+":\033[0m ", err)
+}
+
+func logInfo(message string, info string) {
+	log.Print("\033[34m🛈  "+message+":\033[0m ", info)
+}
+
 func main() {
 	var reminderConfig grass.ReminderConfig
 	if err := secretmanager.Parse(&reminderConfig); err != nil {
-		log.Printf("Error reading secrets: %s", err)
+		logWarning("Error reading secrets", err)
 	}
 
 	dir, err := os.ReadDir("./")
 	if err != nil {
-		log.Fatalf("Error reading dir: %s", err)
-
-		return
+		logError("Error reading dir", err)
 	}
 
 	type File struct {
@@ -49,14 +59,10 @@ func main() {
 
 	for _, entry := range dir {
 		if strings.HasPrefix(entry.Name(), ".") {
-			log.Printf("Skipping dot file: %s", entry.Name())
-
 			continue
 		}
 
 		if strings.HasPrefix(entry.Name(), "node_modules") {
-			log.Printf("Skipping dot file: %s", entry.Name())
-
 			continue
 		}
 
@@ -79,7 +85,6 @@ func main() {
 			wg.Add(1)
 
 			go func() {
-				log.Printf("Sub-directory: %s", file.Path)
 				dir, err := os.ReadDir("." + file.Path)
 				if err != nil {
 					log.Fatalf("Error reading dir: %s", file.Path)
@@ -99,12 +104,8 @@ func main() {
 
 		wg.Wait()
 
-		var found bool
-
 		for _, suffix := range suffixes {
 			if strings.HasSuffix(file.Path, suffix) {
-				found = true
-
 				wg.Add(1)
 
 				go func() {
@@ -123,15 +124,9 @@ func main() {
 				break
 			}
 		}
-
-		if !found {
-			log.Printf("Unknown file type: %s", file.Path)
-		}
 	}
 
 	wg.Wait()
-
-	log.Printf("Templates: %s", templates.DefinedTemplates())
 
 	http.HandleFunc("/aphorism", func(w http.ResponseWriter, r *http.Request) {
 		entries, err := aphorism.Entries()
@@ -365,7 +360,7 @@ func main() {
 		port = ":" + port
 	}
 
-	log.Printf("Listening on port http://localhost%s", port)
+	logInfo("Listening on port", "http://localhost"+port)
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatal(err)
 	}
