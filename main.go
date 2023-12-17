@@ -28,15 +28,16 @@ type data struct {
 }
 
 func logWarning(message string, err error) {
-	log.Print("⚠️  \033[33m"+message+":\033[0m ", err)
+	fmt.Println("⚠️  \033[33m"+message+":\033[0m", err)
 }
 
-func logError(message string, err error) {
-	log.Fatal("🛑  \033[31m"+message+":\033[0m ", err)
+func logError(message string, err any) {
+	fmt.Println("🛑  \033[31m"+message+":\033[0m", err)
+	os.Exit(1)
 }
 
 func logInfo(message string, info string) {
-	log.Print("\033[34m🛈  "+message+":\033[0m ", info)
+	fmt.Println("\033[34m🛈  "+message+":\033[0m", info)
 }
 
 func main() {
@@ -87,7 +88,7 @@ func main() {
 			go func() {
 				dir, err := os.ReadDir("." + file.Path)
 				if err != nil {
-					log.Fatalf("Error reading dir: %s", file.Path)
+					logError("Error reading dir", file.Path)
 				}
 
 				for _, entry := range dir {
@@ -132,7 +133,7 @@ func main() {
 		entries, err := aphorism.Entries()
 		if err != nil {
 			http.Error(w, "Error reading Aphorisms", http.StatusInternalServerError)
-			log.Printf("Error reading Aphorisms: %s", err)
+			logWarning("Error reading Aphorisms", err)
 
 			return
 		}
@@ -150,7 +151,7 @@ func main() {
 		entry, err := word.Entry("entries")
 		if err != nil {
 			http.Error(w, "Error reading Words", http.StatusInternalServerError)
-			log.Printf("Error reading Words: %s", err)
+			logWarning("Error reading Words", err)
 
 			return
 		}
@@ -362,7 +363,7 @@ func main() {
 
 	logInfo("Listening on port", "http://localhost"+port)
 	if err := http.ListenAndServe(port, nil); err != nil {
-		log.Fatal(err)
+		logError("Error listening to port", err)
 	}
 }
 
