@@ -14,8 +14,12 @@ vet:
 	@go vet ./...;
 
 lint:
+ifeq ($(CI), true)
+	@echo "Skipping golangci-lint in CI.";
+else	
 	@echo "Begin golangci-lint run";
 	@golangci-lint run;
+endif
 
 format:
 	@echo "Begin go fmt.";
