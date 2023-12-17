@@ -4,8 +4,7 @@
   "description": "My website",
   "main": "main.js",
   "scripts": {
-    "test": "prettier --write **/*.css **/*.html **/*.webmanifest && eslint --fix ./**/*.js",
-    "prepare": "husky install"
+    "test": "prettier --write **/*.css **/*.html **/*.webmanifest && eslint --fix ./**/*.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +20,6 @@
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
     "eslint": "^8.47.0",
-    "husky": "^8.0.3",
     "prettier": "^3.0.1",
     "eslint-config-jsfmt": "git://github.com/justindfuller/jsfmt"
   }
