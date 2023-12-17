@@ -124,7 +124,7 @@ func main() {
 			}
 		}
 
-		if found == false {
+		if !found {
 			log.Printf("Unknown file type: %s", file.Path)
 		}
 	}

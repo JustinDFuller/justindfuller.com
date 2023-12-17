@@ -2,6 +2,10 @@ export GOOGLE_CLOUD_PROJECT=justindfuller
 export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
 
+tidy:
+	@echo "Begin go mod tidy.";
+	@go mod tidy;
+
 generate:
 	@echo "Begin go generate.";
 	@go generate ./...;
@@ -10,13 +14,17 @@ vet:
 	@echo "Begin go vet.";
 	@go vet ./...;
 
+lint:
+	@echo "Begin golangci-lint run";
+	@golangci-lint run;
+
 format:
 	@echo "Begin go fmt.";
 	@go fmt ./...;
 	@echo "Begin npm test.";
 	@npm run test;
 
-server: generate vet format
+server: tidy generate vet format lint
 	@echo "Begin go run.";
 	@go run main.go;
 
@@ -29,7 +37,7 @@ format-watch:
 deploy: build
 	@gcloud app deploy;
 
-build: generate vet format
+build: tidy generate vet format lint
 	@rm -rf ./.build;
 	@mkdir ./.build;
 	@curl "http://localhost:9000/" > ./.build/index.html;

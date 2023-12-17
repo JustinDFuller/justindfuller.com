@@ -43,7 +43,7 @@ func Entries() ([][]byte, error) {
 		return n2 > n1
 	})
 
-	contents := make([][]byte, len(names), len(names))
+	contents := make([][]byte, len(names))
 	var wg errgroup.Group
 
 	for i, name := range names {
