@@ -102,3 +102,9 @@ a:active {
     color: #020215;
   }
 }
+
+@media (max-width: 500px) {
+  blockquote {
+    padding: 0 1em 0 2em;
+  }
+}
