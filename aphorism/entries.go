@@ -23,6 +23,7 @@ func Entries() ([][]byte, error) {
 
 	low := 0
 	high := len(split) - 1
+
 	for high > low {
 		split[low], split[high] = split[high], split[low]
 		low++

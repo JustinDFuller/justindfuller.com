@@ -20,6 +20,7 @@ func Entries() ([][]byte, error) {
 	}
 
 	var names []string
+
 	for _, dir := range files {
 		if name := dir.Name(); strings.HasSuffix(name, ".md") && !dir.IsDir() {
 			names = append(names, name)

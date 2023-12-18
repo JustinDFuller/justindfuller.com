@@ -1,9 +1,85 @@
 {
   "run": {
+    "go": "1.21.5",
+    "tests": true,
+    "skip-dirs-use-default": true,
+    "modules-download-mode": "readonly",
     "timeout": "5m",
     "skip-dirs": [
       ".build",
       ".git"
     ]
+  },
+  "output": {
+    "format": "colored-line-number",
+    "print-issued-lines": true,
+    "print-linter-name": true,
+    "uniq-by-line": true,
+    "sort-results": true
+  },
+  "linters": {
+    "enable-all": true,
+    "disable": [
+      "nosnakecase",
+      "deadcode",
+      "interfacer",
+      "structcheck",
+      "scopelint",
+      "maligned",
+      "varcheck",
+      "golint",
+      "ifshort",
+      "exhaustivestruct",
+      "funlen",
+      "cyclop",
+      "gocognit",
+      "forbidigo",
+      "gocyclo",
+      "maintidx"
+    ]
+  },
+  "issues": {
+    "max-issues-per-linter": 0,
+    "max-same-issues": 0,
+    "fix": true
+  },
+  "linters-settings": {
+    "depguard": {
+      "rules": {
+        "main": {
+          "allow": [
+            "$gostd",
+            "github.com/pkg/errors",
+            "github.com/justindfuller",
+            "github.com/yuin",
+            "github.com/SherClockHolmes/webpush-go",
+            "cloud.google.com/go/cloudtasks/apiv2"
+          ]
+        }
+      }    
+    },
+    "varnamelen": {
+      "max-distance": 40,
+      "ignore-type-assert-ok": true,
+      "ignore-map-index-ok": true,
+      "ignore-chan-recv-ok": true,
+      "ignore-names": [
+        "i",
+        "md"
+      ],
+      "ignore-decls": [
+        "wg errgroup.Group",
+        "wg sync.WaitGroup",
+        "w http.ResponseWriter",
+        "r *http.Request"
+      ]
+    },
+    "wsl": {
+      "allow-cuddle-declarations": true,
+      "force-err-cuddling": true
+    },
+    "exhaustruct": {
+      "include": [".+\\.Test"]
+    }
   }
 }

@@ -25,17 +25,17 @@ validate:
 .PHONY: tidy
 tidy:
 	@echo ${COLOR_GRAY}Begin go mod tidy.${COLOR_NC};
-	@go mod tidy;
+	@go1.21.5 mod tidy;
 
 .PHONY: generate
 generate:
 	@echo ${COLOR_GRAY}Begin go generate.${COLOR_NC};
-	@go generate ./...;
+	@go1.21.5 generate ./...;
 
 .PHONY: vet
 vet:
 	@echo ${COLOR_GRAY}Begin go vet.${COLOR_NC};
-	@go vet ./...;
+	@go1.21.5 vet ./...;
 
 .PHONY: lint
 lint:
@@ -49,14 +49,14 @@ endif
 .PHONY: format
 format:
 	@echo ${COLOR_GRAY}Begin go fmt.${COLOR_NC};
-	@go fmt ./...;
+	@go1.21.5 fmt ./...;
 	@echo ${COLOR_GRAY}Begin npm test.${COLOR_NC};
 	@npm run test --silent;
 
 .PHONY: server
 server: validate tidy generate vet format lint
 	@echo ${COLOR_GRAY}Begin go run.${COLOR_NC};
-	@go run main.go;
+	@go1.21.5 run -race main.go;
 
 .PHONY: server-watch
 server-watch:

@@ -12,6 +12,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+const twelveHours = 1000 * 60 * 60 * 12
+
 type Reminder struct {
 	Time         time.Time             `json:"time"`
 	Minutes      int                   `json:"minutes"`
@@ -106,7 +108,7 @@ func SendHandler(reminderConfig ReminderConfig) func(http.ResponseWriter, *http.
 			Subscriber:      reminderConfig.Subscriber,
 			VAPIDPublicKey:  reminderConfig.PublicKey,
 			VAPIDPrivateKey: reminderConfig.PrivateKey,
-			TTL:             1000 * 60 * 60 * 12, // 12 hours
+			TTL:             twelveHours,
 		})
 		if err != nil {
 			log.Printf("Error sending push notification: %s", err)

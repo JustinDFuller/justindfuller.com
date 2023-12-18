@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 	"text/template"
+	"time"
 
 	"github.com/justindfuller/justindfuller.com/aphorism"
 	grass "github.com/justindfuller/justindfuller.com/make"
@@ -27,17 +28,24 @@ type data struct {
 	Entry   []byte
 }
 
+const (
+	yellow  = "\033[33m"
+	red     = "\033[31m"
+	blue    = "\033[34m"
+	noColor = "\033[0m"
+)
+
 func logWarning(message string, err error) {
-	fmt.Println("⚠️  \033[33m"+message+":\033[0m", err)
+	fmt.Println("⚠️  "+yellow+message+":"+noColor, err)
 }
 
 func logError(message string, err any) {
-	fmt.Println("🛑  \033[31m"+message+":\033[0m", err)
+	fmt.Println("🛑  "+red+message+":"+noColor, err)
 	os.Exit(1)
 }
 
 func logInfo(message string, info string) {
-	fmt.Println("\033[34m🛈  "+message+":\033[0m", info)
+	fmt.Println(blue+"🛈  "+message+":"+noColor, info)
 }
 
 func main() {
@@ -56,7 +64,7 @@ func main() {
 		Dir  bool
 	}
 
-	var files []File
+	var files []File //nolint:prealloc // false positive
 
 	for _, entry := range dir {
 		if strings.HasPrefix(entry.Name(), ".") {
@@ -97,6 +105,7 @@ func main() {
 						Dir:  entry.IsDir(),
 					})
 				}
+
 				wg.Done()
 			}()
 
@@ -357,12 +366,23 @@ func main() {
 	if port == "" {
 		port = "3000"
 	}
+
 	if !strings.HasPrefix(port, ":") {
 		port = ":" + port
 	}
 
 	logInfo("Listening on port", "http://localhost"+port)
-	if err := http.ListenAndServe(port, nil); err != nil {
+
+	s := http.Server{
+		Addr:              port,
+		Handler:           nil,
+		ReadTimeout:       time.Second,
+		ReadHeaderTimeout: time.Second,
+		WriteTimeout:      time.Second,
+		IdleTimeout:       time.Second,
+	}
+
+	if err := s.ListenAndServe(); err != nil {
 		logError("Error listening to port", err)
 	}
 }
@@ -370,5 +390,6 @@ func main() {
 func Title(s string) string {
 	s = strings.ReplaceAll(s, "_", " ")
 	s = strings.ReplaceAll(s, "-", " ")
+
 	return cases.Title(language.AmericanEnglish).String(s)
 }
