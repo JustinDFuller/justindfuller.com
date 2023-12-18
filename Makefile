@@ -8,6 +8,10 @@ export COLOR_BLUE='\e[0;34m'
 export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
 
+ifeq ($(go1.21.5),)
+	go1.21.5 := go
+endif
+
 .PHONY: validate
 validate:
 	@echo ${COLOR_GRAY}Validating files.${COLOR_NC};
