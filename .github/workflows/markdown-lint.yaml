@@ -1,4 +1,5 @@
 name: markdown-lint
+
 on:
   push:
     branches:
@@ -16,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-			- uses: DavidAnson/markdownlint-cli2-action@v14
-				with:
-					globs: '**/*.md'
+
+      - uses: DavidAnson/markdownlint-cli2-action@v14
+        with:
+          globs: '**/*.md'
