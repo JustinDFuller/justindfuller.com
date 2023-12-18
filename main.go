@@ -64,6 +64,7 @@ func main() {
 		Dir  bool
 	}
 
+	var mut sync.Mutex
 	var files []File //nolint:prealloc // false positive
 
 	for _, entry := range dir {
@@ -75,68 +76,53 @@ func main() {
 			continue
 		}
 
+		mut.Lock()
+
 		files = append(files, File{
 			Path: "/" + entry.Name(),
 			Dir:  entry.IsDir(),
 		})
+
+		mut.Unlock()
 	}
 
 	templates := template.New("").Option("missingkey=error")
 
 	suffixes := []string{".js", ".css", ".html", ".tmpl"}
 
-	var wg sync.WaitGroup
-
 	for i := 0; i < len(files); i++ {
 		file := files[i]
+		path := file.Path
 
 		if file.Dir {
-			wg.Add(1)
+			dir, err := os.ReadDir("." + path)
+			if err != nil {
+				logError("Error reading dir", path)
+			}
 
-			go func() {
-				dir, err := os.ReadDir("." + file.Path)
-				if err != nil {
-					logError("Error reading dir", file.Path)
-				}
-
-				for _, entry := range dir {
-					files = append(files, File{
-						Path: file.Path + "/" + entry.Name(),
-						Dir:  entry.IsDir(),
-					})
-				}
-
-				wg.Done()
-			}()
-
-			continue
+			for _, entry := range dir {
+				files = append(files, File{
+					Path: path + "/" + entry.Name(),
+					Dir:  entry.IsDir(),
+				})
+			}
 		}
-
-		wg.Wait()
 
 		for _, suffix := range suffixes {
 			if strings.HasSuffix(file.Path, suffix) {
-				wg.Add(1)
+				b, err := os.ReadFile("." + file.Path)
+				if err != nil {
+					log.Fatalf("File read error=%s file=%s", err, file.Path)
+				}
 
-				go func() {
-					b, err := os.ReadFile("." + file.Path)
-					if err != nil {
-						log.Fatalf("File read error=%s file=%s", err, file.Path)
-					}
-
-					if _, err := templates.New(file.Path).Parse(string(b)); err != nil {
-						log.Fatalf("Template parse error=%s path=%s", err, file.Path)
-					}
-
-					wg.Done()
-				}()
+				if _, err := templates.New(file.Path).Parse(string(b)); err != nil {
+					log.Fatalf("Template parse error=%s path=%s", err, file.Path)
+				}
 
 				break
 			}
 		}
 	}
-
-	wg.Wait()
 
 	http.HandleFunc("/aphorism", func(w http.ResponseWriter, r *http.Request) {
 		entries, err := aphorism.Entries()
