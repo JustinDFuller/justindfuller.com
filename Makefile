@@ -54,11 +54,11 @@ server: validate tidy generate vet format lint
 
 .PHONY: server-watch
 server-watch:
-	@reflex -s --decoration=none --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server";
+	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server";
 
 .PHONY: format-watch
 format-watch:
-	@reflex -s --decoration=none --inverse-regex=".build"-- sh -c "clear && $(MAKE) -s format";
+	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build"-- sh -c "clear && $(MAKE) -s format";
 
 .PHONY: deploy
 deploy: build
@@ -87,6 +87,7 @@ build: validate tidy generate vet format lint
 	@curl -s "http://localhost:9000/review" > ./.build/review.html;
 	@curl -s "http://localhost:9000/review/zen-and-the-art-of-motorcycle-maintenance" > ./.build/zen-and-the-art-of-motorcycle-maintenance.html;
 	@curl -s "http://localhost:9000/review/living-on-24-hours-a-day" > ./.build/living-on-24-hours-a-day.html;
+	@curl -s "http://localhost:9000/review/howards-end" > ./.build/howards-end.html;
 	@curl -s "http://localhost:9000/word" > ./.build/word.html;
 	@curl -s "http://localhost:9000/word/quality" > ./.build/quality.html;
 	@curl -s "http://localhost:9000/word/equipoise" > ./.build/equipoise.html;
