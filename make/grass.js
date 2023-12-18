@@ -249,7 +249,7 @@ function handleGrassSelect(target) {
 		document
 			.getElementById(day.day)
 			.querySelector(".temperature").innerText = `${day.temperatureF}°F`;
-		document.getElementById("weekDays").classList.remove("hidden");
+		document.getElementById("week-days").classList.remove("hidden");
 		document.getElementById("weekDayPrompt").classList.remove("hidden");
 		document.getElementById("notifications").classList.remove("hidden");
 	}

@@ -8,21 +8,22 @@ body {
   margin: 0;
   display: block;
   font-size: 24px;
-  font-family: "Amiri", serif;
+  font-family: Amiri, serif;
   background: #fcf9f4;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
 
 main {
-  animation: fadeIn 1s;
+  animation: fade-in 1s;
   max-width: 700px;
   margin: auto;
 }
@@ -34,10 +35,10 @@ img {
   width: 100%;
   height: auto;
   border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
 }
 
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   html,
   body {
     background-color: #020215;
@@ -57,7 +58,7 @@ img {
 
   img {
     box-shadow:
-      rgba(0, 0, 0, 0.35) 0px 5px 25px 25px,
-      0px 0px 40px 0px rgba(255, 255, 255, 0.2);
+      rgb(0 0 0 / 35%) 0 5px 25px 25px,
+      0 0 40px 0 rgb(255 255 255 / 20%);
   }
 }

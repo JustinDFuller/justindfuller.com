@@ -10,21 +10,22 @@ body {
   height: max-content;
   display: block;
   font-size: 24px;
-  font-family: "Amiri", serif;
+  font-family: Amiri, serif;
   background: #fcf9f4;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
 
 main {
-  animation: fadeIn 1s;
+  animation: fade-in 1s;
   padding: 20px;
   height: max-content;
   width: 100%;
@@ -39,7 +40,7 @@ section {
 }
 
 p {
-  font-family: "Amiri", serif;
+  font-family: Amiri, serif;
   margin: 0;
   line-height: 36px;
   margin-bottom: 30px;
@@ -93,7 +94,7 @@ img {
   display: block;
 }
 
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   html,
   body {
     background-color: #020215;
@@ -112,7 +113,7 @@ img {
   }
 }
 
-@media (max-width: 500px) {
+@media screen and (width <= 500px) {
   blockquote {
     padding: 0 1em 0 2em;
   }

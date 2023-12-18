@@ -10,11 +10,11 @@ body {
   height: max-content;
   display: block;
   font-size: 24px;
-  font-family: "Amiri", serif;
+  font-family: Amiri, serif;
   background: #fcf9f4;
 }
 
-#getLocation {
+#get-location {
   margin-top: 40px;
   margin-bottom: 40px;
 }
@@ -29,17 +29,18 @@ div {
   width: 100%;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
 
 main {
-  animation: fadeIn 1s;
+  animation: fade-in 1s;
   height: max-content;
   max-width: 500px;
   margin: auto;
@@ -99,16 +100,15 @@ label {
   display: block;
 }
 
-#weekDays.hidden,
+#week-days.hidden,
 .hidden {
   display: none;
 }
 
-#weekDays {
+#week-days {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: space-between;
-  flex-wrap: wrap;
   align-items: flex-start;
 }
 
@@ -125,11 +125,7 @@ label {
   margin-bottom: 20px;
 }
 
-.day:has(input:checked) {
-  border-color: #0075ff;
-}
-
-@media screen and (max-width: 400px) {
+@media screen and (width <= 400px) {
   .day {
     width: 100%;
   }
@@ -140,6 +136,10 @@ label {
   border-bottom: 3px solid #020215;
   border-left: 3px solid #020215;
   border-top: 3px solid #020215;
+}
+
+.day:has(input:checked) {
+  border-color: #0075ff;
 }
 
 .day .icon {

@@ -15,6 +15,8 @@ validate:
 	@python3 -mjson.tool ".golangci.json" > /dev/null;
 	@echo ${COLOR_GRAY}Validating .devcontainer/devcontainer.json${COLOR_NC};
 	@python3 -mjson.tool ".devcontainer/devcontainer.json" > /dev/null;
+	@echo ${COLOR_GRAY}Validating .stylelintrc.json${COLOR_NC};
+	@python3 -mjson.tool ".stylelintrc.json" > /dev/null;
 
 .PHONY: tidy
 tidy:

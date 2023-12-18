@@ -10,21 +10,22 @@ body {
   height: 100%;
   display: block;
   font-size: 24px;
-  font-family: "Amiri", serif;
+  font-family: Amiri, serif;
   background: #fcf9f4;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
 
 main {
-  animation: fadeIn 1s;
+  animation: fade-in 1s;
   height: 100%;
   max-width: 700px;
   margin: auto;
@@ -52,7 +53,7 @@ main > a:active {
   color: white;
 }
 
-@media (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
   html,
   body {
     background-color: #020215;

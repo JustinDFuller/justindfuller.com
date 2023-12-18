@@ -4,7 +4,10 @@
   "description": "My website",
   "main": "main.js",
   "scripts": {
-    "test": "prettier --log-level=error --write **/*.css **/*.html **/*.webmanifest && eslint --quiet --fix ./**/*.js"
+    "format": "prettier --log-level=error --write **/*.css **/*.html **/*.webmanifest",
+    "lint:js": "eslint --quiet --fix ./**/*.js",
+    "lint:css": "stylelint --fix **/*.css",
+    "test": "npm run format && npm run lint:js && npm run lint:css"
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,9 @@
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
     "eslint": "^8.47.0",
+    "eslint-config-jsfmt": "git://github.com/justindfuller/jsfmt",
     "prettier": "^3.0.1",
-    "eslint-config-jsfmt": "git://github.com/justindfuller/jsfmt"
+    "stylelint": "^16.0.2",
+    "stylelint-config-standard": "^35.0.0"
   }
 }

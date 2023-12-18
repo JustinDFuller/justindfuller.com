@@ -6,12 +6,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-size: 18px;
   min-height: 100vh;
   max-height: 300px;
   min-width: 600px;
   font-size: 20px;
-  font-family: "Amiri", serif;
+  font-family: Amiri, serif;
 }
 
 main {
@@ -75,8 +74,9 @@ main {
 
 @keyframes move {
   0% {
-    left: 0px;
+    left: 0;
   }
+
   100% {
     left: 433px;
   }
@@ -86,6 +86,7 @@ main {
   0% {
     visibility: hidden;
   }
+
   100% {
     visibility: visible;
   }
@@ -138,7 +139,7 @@ blockquote {
   padding: 20px;
 }
 
-@media (max-width: 500px) {
+@media (width <= 500px) {
   blockquote {
     margin: 5px;
   }
