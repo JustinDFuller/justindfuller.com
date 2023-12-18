@@ -1,0 +1,9 @@
+{
+ "noProgress": true,
+ "showFound": false,
+ "config": {
+   "line-length": false,
+   "no-inline-html": false,
+   "no-blanks-blockquote": false
+ }
+}

@@ -49,4 +49,3 @@ Below are a collection of my favorite quotes, presented in order of appearance i
 > Remorse is not among the eternal verities, The Greeks were right to dethrone her. Her action is too capricious, as though the Erinyes selected for punishment only certain men and certain sins. And of all means to regeneration Remorse is surely the most wasteful. It cuts away healthy tissues with the poisoned. It is a knife that probes far deeper than the evil.
 
 > He has worked very hard all his life, and noticed nothing. Those are the people who collapse when they do notice a thing.
-

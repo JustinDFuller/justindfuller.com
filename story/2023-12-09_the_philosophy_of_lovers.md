@@ -13,9 +13,7 @@ images:
 tags: [Story]
 ---
 
-# The Philosophy of Lovers
-
-# I
+## I
 
 Raemi sat on his favorite stone at the edge of the garden that surrounded the market. Before him huddled a group of a dozen women with their children and bored teenagers who were looking for something to do. Scanning the group, he asked, "Who wants to try today's question first?"
 
@@ -55,7 +53,7 @@ Answering the question with another question. Raemi was honestly surprised, as t
 
 “Did you go alone?” Aviit asks.
 
-More questions. Impressive. Raemi thinks for a few moments, enjoying the silence between himself, Aviit, and the crowd. “No.” He answers, with no further explanation. 
+More questions. Impressive. Raemi thinks for a few moments, enjoying the silence between himself, Aviit, and the crowd. “No.” He answers, with no further explanation.
 
 Aviit watches him for a moment, probably wondering if Raemi would explain more. When he does not, Aviit asks yet another question, “Have you ever played marbles?”
 

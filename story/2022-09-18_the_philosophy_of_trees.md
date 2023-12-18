@@ -13,8 +13,6 @@ images:
 tags: [Story]
 ---
 
-# The Philosophy of Trees
-
 The story I have to tell you today is not the story I wished to tell. In fact, I am loath to repeat much of it. I pray antiquity and modernity alike judge me not as an author, nor even as editor, but as a trembling witness. Reluctant to confess what he has seen, yet compelled by his conscience to reveal the devilry that took place at the autumn equinox on the outskirts of a great Carolina wilderness.
 
 ## I
@@ -23,11 +21,11 @@ Whether it benefit you or not, reader, I must explain what innocent circumstance
 
 My ill-fated venture began six days before the equinox when my local chapter of ornithology began circulating reports that were of the utmost interest to me. Locals of a certain mountain town were reporting signs of both Dryocopus Pileatus and Alcedinidae. Both rare species that I have long sought to observe. Upon hearing these rumors, and admittedly without ascertaining their veracity, I promptly notified my employer of my immediate absence until the following week. Securing a little cash and transportation, of which my benefactor surely would have rejected had she known the bedeviled thoughts her charity would unleash upon the world, I set out to find lodging near the reported sightings.
 
-Half a day later I drove through the foggy conifers into a town near the fabled Clingmans Dome. Upon entering the town, the eldritch forest–as I would later come to think of it–cleared. In its place stood several dozen houses, a postal office, as well as a grocers and general store. It was evident none of this construction was from the current century, bespeaking the simpler architecture of another time. 
+Half a day later I drove through the foggy conifers into a town near the fabled Clingmans Dome. Upon entering the town, the eldritch forest–as I would later come to think of it–cleared. In its place stood several dozen houses, a postal office, as well as a grocers and general store. It was evident none of this construction was from the current century, bespeaking the simpler architecture of another time.
 
 Despite my conspicuous arrival in a town that, as I took it, saw few visitors, I was warmly welcomed by a man exiting the post office with a small brown package. Since I had not been sure where to go, I was driving slowly with my window rolled down. After a moment of obvious confusion, he adjusted his demeanor and hailed me to pull the old station wagon onto a dirt patch in front of the ancient building. After a brief introduction I declared my intention and my credentials, the latter of which he seemed to take no notice of, whereby he directed me to the only person in town who might possibly have any interest in communicating with ornithologists. Rather, I should say, he directed me several miles out of town, to a small estate known to belong to an eccentric writer and discredited scientist.
 
-If only I could have known what that fateful advice would bring about, I could have thanked the man, turned around my mother’s old station wagon, and driven back east. As it stands, I was overcome with no such foresight and set out in earnest search of my host. 
+If only I could have known what that fateful advice would bring about, I could have thanked the man, turned around my mother’s old station wagon, and driven back east. As it stands, I was overcome with no such foresight and set out in earnest search of my host.
 
 Even though the distance was but a few miles, it took several hours to find my destination. The roads at this point were merely dirt and gravel, if that. On one occasion I became so tired of driving that I pulled the car over to what one might call the side of the road. Fetching my binoculars, pencils, and notebook, I attempted to find some recuperation in my profession. Unfortunately, there was nothing in sight except common Mimus Polyglottos. However, I knew that a bit of rest would do wonders for my aching legs, so I resigned myself to illustrating the diving form of these common and brilliant creatures.
 
@@ -54,9 +52,11 @@ Across the fireplace sat my host. The young doctor Thales. Not a disheveled old 
 “Well, I admit I don’t know of the creatures you’re seeking. But there are many excellent foot trails beyond this property. I cannot quite describe the sensations, but I often feel that, when I walk through these trees, they speak to me. You said you have a few days, yes? So I entreat you, stay a while, and see what comes of it.”
 
 ## IV
+
 I woke in the night to the reverberant melody of the majestic Bubo Virginianus. Not another sound was to be heard. But, I must admit, the hospitable manner of my reception was not enough to prevent me from creeping to my bedroom door, ensuring the lock was still securely fastened.
 
 ## V
+
 The house was empty the next morning. On the stove sat a kettle, the tea still hot. On the table, a few breakfast items and a note.
 
 <div style="display: flex; justify-content: center; align-items: center; margin: 40px 0;">
@@ -70,7 +70,7 @@ The house was empty the next morning. On the stove sat a kettle, the tea still h
 
 After eating what was set out, I regrettably found myself to still be quite hungry. With a tinge of regret, I foraged my host’s storage closet to find enough sustenance. His letter was no lie. The remaining supplies were meager, but as he was resupplying, and I felt it would not be wise to traverse a strange mountain on an empty stomach, I almost depleted the remainder of his store.
 
-I now set out for what I hoped to be a fine morning of hiking; bringing, as always, my binoculars, notebook, and pencils. Oddly, at this late morning hour, the sun scarcely peeked over the hills and through the trees. Perhaps due to this, there was a late-hanging morning fog and refreshing dew suspended from each leaf. One might expect a wood such as this to teem with life, but to the contrary I found it almost eerily silent. I was neither able to glimpse the movement of a squirrel in a tree nor even the gentle glide of a cherry millipede, so common on a Carolina trail floor. 
+I now set out for what I hoped to be a fine morning of hiking; bringing, as always, my binoculars, notebook, and pencils. Oddly, at this late morning hour, the sun scarcely peeked over the hills and through the trees. Perhaps due to this, there was a late-hanging morning fog and refreshing dew suspended from each leaf. One might expect a wood such as this to teem with life, but to the contrary I found it almost eerily silent. I was neither able to glimpse the movement of a squirrel in a tree nor even the gentle glide of a cherry millipede, so common on a Carolina trail floor.
 
 And with that, you know. I have explained myself, and you may plainly see how it is I arrived on that trail. You can also understand why there was no witness but myself, and why my own witness, due to an underprovisioning of food, may not hold up under scrutiny.
 
@@ -86,9 +86,9 @@ After overcoming my shock at seeing another, I raised my hand in greeting, but n
 
 For a long while I watched him, wondering what he might see. As for my own profession, I was accustomed to staring for long periods in order to be absolutely sure of even the most minute detail. Yet, there was something different about his stare. As I mentioned before there was a foreboding absence of wildlife in this forest. Something I eventually attributed to a strange aspect of Hangman’s Dome. Perhaps he was not an Ornithologist like myself, but instead an Arborist who had just discovered some vital peculiarity in a species of his own interest.
 
-It was only after a long and frankly loud growl of my own stomach that I woke from the trance. The two of us had stood for I know not how long; the man staring at the tree, me, at him. At this point my worry overcame my fear. I approached him, offering a tentative call. Do you guess the result? Of course. He did not move. Indeed, he shew not a sign of having heard me. At this I began to worry with increasing urgency. Had he been struck dead and yet remained standing by some devilish miracle? Was he frozen by some predator's venom? Would I soon be the next victim? 
+It was only after a long and frankly loud growl of my own stomach that I woke from the trance. The two of us had stood for I know not how long; the man staring at the tree, me, at him. At this point my worry overcame my fear. I approached him, offering a tentative call. Do you guess the result? Of course. He did not move. Indeed, he shew not a sign of having heard me. At this I began to worry with increasing urgency. Had he been struck dead and yet remained standing by some devilish miracle? Was he frozen by some predator's venom? Would I soon be the next victim?
 
-As I grew closer, I detected the slight movement of breathing. This discovery ruled out death, but not venom. A braver man might have run right up to this poor fellow, shaking him and calling for him to awake. I, however, now understand that I am not that kind of man. My steps were slow, cautious, even fearful. After my first call, I let out only a small, “Hello?” and later, “Sir?” 
+As I grew closer, I detected the slight movement of breathing. This discovery ruled out death, but not venom. A braver man might have run right up to this poor fellow, shaking him and calling for him to awake. I, however, now understand that I am not that kind of man. My steps were slow, cautious, even fearful. After my first call, I let out only a small, “Hello?” and later, “Sir?”
 
 Finally, there was no option left. I was standing but a foot away from him–my whispers having no effect. It happened only when I grew the courage to touch his shoulder.
 
@@ -144,7 +144,7 @@ At this, I felt my case was made, but his reply struck me down.
 
 ## VIII
 
-Our debate continued in this fashion for some time. Eventually, I was overcome with hunger and frightened by the sunken state of the sky. I bid this strange fellow come with me, but to this he did not reply. I then begged him to remain where he was, promising that I would return with help. I made my way back to the cabin as quickly as I could in my famished state. 
+Our debate continued in this fashion for some time. Eventually, I was overcome with hunger and frightened by the sunken state of the sky. I bid this strange fellow come with me, but to this he did not reply. I then begged him to remain where he was, promising that I would return with help. I made my way back to the cabin as quickly as I could in my famished state.
 
 Upon my arrival, it was now very dark indeed, the young doctor Thales greeted me with unmasked anxiety. Apparently, he had been quite worried at the late hour of my arrival, having understood that I had not returned home, due to my station wagon remaining in the driveway. As I explained the strange occurrence, he prepared me a meal. At my insistence, he and I ventured back out, bringing flashlights and extra water for the old man. However, upon our arrival at the top of that fateful hill, we found it empty.
 

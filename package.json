@@ -4,10 +4,15 @@
   "description": "My website",
   "main": "main.js",
   "scripts": {
+    "preformat": "chalk grey 'Begin formatting css html webmanifest'",
     "format": "prettier --log-level=error --write **/*.css **/*.html **/*.webmanifest",
+    "prelint:js": "chalk grey 'Begin linting JS files'", 
     "lint:js": "eslint --quiet --fix ./**/*.js",
+    "prelint:css": "chalk grey 'Begin linting CSS files'",
     "lint:css": "stylelint --fix **/*.css",
-    "test": "npm run format && npm run lint:js && npm run lint:css"
+    "prelint:md": "chalk grey 'Begin linting markdown files'",
+    "lint:md": "NODE_OPTIONS='--no-deprecation' markdownlint-cli2  **/*.md \"#node_modules\" --config .markdownlint-cli2.jsonc --fix | sed --expression='s/markdownlint-cli2 v0.11.0 (markdownlint v0.32.1)//g'",
+    "test": "npm run format && npm run lint:js && npm run lint:css && npm run lint:md"
   },
   "repository": {
     "type": "git",
@@ -22,8 +27,11 @@
   "private": true,
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
+    "chalk": "^5.3.0",
+    "chalk-cli": "^5.0.1",
     "eslint": "^8.47.0",
     "eslint-config-jsfmt": "git://github.com/justindfuller/jsfmt",
+    "markdownlint-cli2": "^0.11.0",
     "prettier": "^3.0.1",
     "stylelint": "^16.0.2",
     "stylelint-config-standard": "^35.0.0"

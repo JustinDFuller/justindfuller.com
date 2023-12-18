@@ -11,6 +11,10 @@ export PORT=9000
 .PHONY: validate
 validate:
 	@echo ${COLOR_GRAY}Validating files.${COLOR_NC};
+	@echo ${COLOR_GRAY}Validating package.json${COLOR_NC};
+	@python3 -mjson.tool "package.json" > /dev/null;
+	@echo ${COLOR_GRAY}Validating .markdownlint-cli2.jsonc${COLOR_NC};
+	@python3 -mjson.tool ".markdownlint-cli2.jsonc" > /dev/null;
 	@echo ${COLOR_GRAY}Validating .golangci.json${COLOR_NC};
 	@python3 -mjson.tool ".golangci.json" > /dev/null;
 	@echo ${COLOR_GRAY}Validating .devcontainer/devcontainer.json${COLOR_NC};

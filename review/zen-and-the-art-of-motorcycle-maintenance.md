@@ -1,6 +1,6 @@
 # Zen and the Art of <br />  Motorcycle Maintenance
 
-[Zen and the Art of Motorcycle Maintenance](https://amzn.to/3MJ9kpd) is the story of a man (or is it a ghost, a wolf, a lunatic?) searching for Quality. 
+[Zen and the Art of Motorcycle Maintenance](https://amzn.to/3MJ9kpd) is the story of a man (or is it a ghost, a wolf, a lunatic?) searching for Quality.
 
 Yes indeed, "Quality". Capital Q.
 
@@ -11,7 +11,7 @@ He rightfully questions others' approach to quality. First, his road trip compan
 Phaedrus, who the story follows through the narrator's memories, is equally unable to connect with Quality. Precisely because he is unable to connect with those around him, he is unable to see that Quality is the connection of perception and expectation. Instead, defining quality as the intersection of reality and perception, believing that Quality itself is the creator of reality, not a part of it, he misses that without expectation, there can be no Quality. There can, of course, be perception, but without the expectation of that perception, there is no Quality.
 
 Consider an example. You go to the furniture store and spend thousands on a new couch. In the store, the couch passes the first tests of quality: it looks nice, it sits comfortably, and it is in your price range. At their intersection, reality and perception met with your expectations, creating Quality.
- 
+
 Since you discovered Quality in the couch, you bring it home. You set it up, and settle in for a movie. But! Your kid spills their drink all over your new couch. You furiously pause the movie, taking care not to take your anger out on your kid (after all, accidents happen). But the couch will not clean. You try sprays, you try the vacuum, you get out the steam cleaner, but the stain perseveres. Now, your perception and reality have met with expectation again. This time they did not live up to it. You no longer have Quality. You *expected* the couch to be easier to clean, more resilient to stains.
 
 Nothing changed about the couch. It's still the same couch you found Quality in. Nothing changed about you, you had the same expectations the entire time. But expectation, perception, and reality intersected in a new way. This time, instead of forming Quality, it destroyed it.
@@ -40,7 +40,7 @@ This idea flows naturally from another that came before it:
 
 > For every fact there is an infinity of hypotheses.
 
-When generating ideas, whether in a laboratory or a journal, it's the ideas that are infinite and cheap. What is difficult is understanding. What is difficult is follow-through. So, when you set out with the *expectation* that the right idea will flow out of the ether — straight to your brain — you are bound to miss Quality. You are waiting for the right idea, but that's not how it works. Ideas are cheap, infinite, worthless. Moreover, just because you have an idea doesn't mean you understand it. So, what's the solution? To get stuck. To empty yourself of ideas. To empty yourself of the idea that you understand your ideas. 
+When generating ideas, whether in a laboratory or a journal, it's the ideas that are infinite and cheap. What is difficult is understanding. What is difficult is follow-through. So, when you set out with the *expectation* that the right idea will flow out of the ether — straight to your brain — you are bound to miss Quality. You are waiting for the right idea, but that's not how it works. Ideas are cheap, infinite, worthless. Moreover, just because you have an idea doesn't mean you understand it. So, what's the solution? To get stuck. To empty yourself of ideas. To empty yourself of the idea that you understand your ideas.
 
 Once you're stuck, you no longer expect the idea to just come to you. Once you're stuck, you no longer think you understand what you don't understand. Now, you can do something, anything, just to get moving. You can focus on that one thing without pretension, without *expectation* that anything will come from it. Then, you'll find that you've once again intersected with Quality. Because it all comes from expectation. In this case, you removed rather than set expectations. Or, the right expectation was to have no expectation at all. Or, the right expectation all along was that you had to work thoroughly through an idea before you could know if it was right or wrong.
 

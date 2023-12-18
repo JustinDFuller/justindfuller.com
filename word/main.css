@@ -14,6 +14,14 @@ body {
   background: #fcf9f4;
 }
 
+h1 {
+  text-align: center;
+}
+
+h2 {
+  font-size: 24px;
+}
+
 @keyframes fade-in {
   0% {
     opacity: 0;

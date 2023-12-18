@@ -59,6 +59,7 @@ func Entries() ([][]byte, error) {
 			}
 
 			content := file
+			content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
 			content = bytes.Split(content, []byte("```"))[1]
 			contents[i] = content
 

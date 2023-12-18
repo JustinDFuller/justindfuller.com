@@ -10,7 +10,10 @@
 
   <body>
     <main>
-      <section>{{ printf "%s" .Entry }}</section>
+      <section>
+        <h1>{{ .Title }}</h1>
+        {{ printf "%s" .Entry }}
+      </section>
     </main>
 
     <script>

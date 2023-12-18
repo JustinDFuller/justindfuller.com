@@ -6,7 +6,7 @@ My favorite series of all time just might be The Dark Tower by Stephen King. The
 
 I invite you to join me in a search for Quality. Like The Gunslinger's opening line, the idea of Quality irresistibly pulls me in. What on earth is it? More importantly: how can I have it? How can I make it? If the answer is obvious to you, it's not to me. I've tried so many times to capture Quality, only for it to slip through my fingers. I can assure you honestly at the outset that, although I have a few vague ideas, I have no clue where this search will lead. So, let's step into the desert and give Quality a good chase.
 
-Although searching for Quality in my favorite series would seem a sensible thing to do, I feel compelled to first look somewhere a bit more lighthearted. So, instead, let's turn our attention to Super Mario. 
+Although searching for Quality in my favorite series would seem a sensible thing to do, I feel compelled to first look somewhere a bit more lighthearted. So, instead, let's turn our attention to Super Mario.
 
 Please hear me out as I assert this is a movie of highest Quality.
 
@@ -14,7 +14,7 @@ Please hear me out as I assert this is a movie of highest Quality.
 
 I'm joking, right? It's a fun movie, sure. But high Quality? Surely I should be embarrassed to mention "The Super Mario Bros" in the same post about Quality as "Lord of The Rings."
 
-Shouldn't it matter that: Chris Pratt doesn't know how to do an Italian accent? Half the scenes are in slow-motion? It's clearly trying to jumpstart a cinematic universe? They never really bother to explain *why* the Mario Bros are sucked into another universe? 
+Shouldn't it matter that: Chris Pratt doesn't know how to do an Italian accent? Half the scenes are in slow-motion? It's clearly trying to jumpstart a cinematic universe? They never really bother to explain *why* the Mario Bros are sucked into another universe?
 
 No!
 
@@ -22,9 +22,9 @@ Why not? Because of this guy:
 
 ![Kit + Mario](/image/kit_mario.jpg)
 
-My son Kit *loves* Mario. Mario Kart is his favorite game. Catch him in his Super Mario shirt, his Mario Kart shirt, or (in cold weather) his Super Mario sweater. Did I mention he asked for (and got) a Mario-themed birthday this year? It's a fairly common occurrence in my house to be relaxing in the morning, drinking coffee, only to hear (in the deepest growly voice a five-year-old can muster), "BOWSER". I know I better put my coffee down because things are about to get real. 
+My son Kit *loves* Mario. Mario Kart is his favorite game. Catch him in his Super Mario shirt, his Mario Kart shirt, or (in cold weather) his Super Mario sweater. Did I mention he asked for (and got) a Mario-themed birthday this year? It's a fairly common occurrence in my house to be relaxing in the morning, drinking coffee, only to hear (in the deepest growly voice a five-year-old can muster), "BOWSER". I know I better put my coffee down because things are about to get real.
 
-So, when I went to see the Super Mario Bros movie, I didn't care about: the animation style, the soundtrack, or the story. Although, to be honest, I liked all of them. I just cared that I could enjoy seeing some Super Mario action on the big screen with my little guy. 
+So, when I went to see the Super Mario Bros movie, I didn't care about: the animation style, the soundtrack, or the story. Although, to be honest, I liked all of them. I just cared that I could enjoy seeing some Super Mario action on the big screen with my little guy.
 
 We laughed, we cried, and we cheered when our favorite characters showed up on the screen (Donkey Kong for me, Peach for my daughter Max, and of course, Mario for Kit). We walked out of that movie with smiles on our faces and Quality in our hearts.
 
@@ -32,11 +32,11 @@ When we arrived home, I began my routine of learning what others thought about t
 
 ![Super Mario Review](/image/super_mario_review.png)
 
-Bland, witless, and pandering? How could this critic and I end up with such a different evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, I'd say this question is an important part of an entire Philosophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgment. 
+Bland, witless, and pandering? How could this critic and I end up with such a different evaluation of Quality? This is (of course) an absurd question. I might as well ask, "How can people have different opinions?" But I do believe it's a useful question to ask, even if it's absurd. Indeed, I'd say this question is an important part of an entire Philosophy field: esthetics. Esthetics (or aesthetics) is focused on the idea of value judgment.
 
 At the beginning of our search, I unknowingly laid out our ultimate esthetic goal: to discover what Quality is and how to harness it. But immediately I've run across another question that I must answer first: how can two people end up with opposing assessments of Quality for the same thing?
 
-This question is more difficult than it seems. One might respond, "because they like different things." This would define Quality as a part of the self, a part of each of us. But this presents problems. If Quality is only opinion or what one likes, why do people bother with arguments at all? We could simply state, "I like this" or "I don't like this." Instead, we say things like, "The Super Mario Bros movie was excellent because..." giving reasons for why we believe it is not just Quality to us but Quality for all. 
+This question is more difficult than it seems. One might respond, "because they like different things." This would define Quality as a part of the self, a part of each of us. But this presents problems. If Quality is only opinion or what one likes, why do people bother with arguments at all? We could simply state, "I like this" or "I don't like this." Instead, we say things like, "The Super Mario Bros movie was excellent because..." giving reasons for why we believe it is not just Quality to us but Quality for all.
 
 So, by giving reasons, we're attempting to define Quality as part of the thing which we judge. For example, "The movie was good because the animation was realistic," attributes Quality to the movie's animation. This too is problematic. If Quality is a part of the observed it would not change unless the thing itself changed. But we know this is not the case. I saw the same movie as the critic, yet we disagreed.
 
@@ -51,7 +51,7 @@ Just a moment ago, we saw this play out over Super Mario. The critic placed qual
 It turns out I've got a bit of backup. You might even say I've got a heavyweight in my corner. Just take a look at this quote from the philosopher Kant, from back in the year 1790.
 
 > If someone takes me to ~~a play~~ **the Super Mario movie** and it pleases my taste, then he can adduce all the rules established as proofs that the ~~play~~ **movie** lacks ~~beauty~~ **Quality**. I will stop my ears, listen to no reasons and arguments, and would rather believe that those rules of the critics are false than allow that my judgment should be determined by means of *a priori* grounds of proof, since it is supposed to be a judgment of taste and not of the understanding of reason.
-> 
+>
 > Immanuel Kant
 > *Critique of the Power of Judgment* (paraphrase)
 
@@ -67,6 +67,7 @@ First, the easy part. What does Quality mean? For this, I'll consult my favorite
 
 > **Quality**
 > Noun
+>
 > 1. That which makes, or helps to make, anything such as it is; anything belonging to a subject, or predicable of it; distinguishing property, characteristic, or attribute.
 > <br />
 > 2. The condition of being of such a sort as distinguished from others; nature or character relatively considered, as of goods; character; rank.
@@ -84,17 +85,17 @@ This same little-q quality (ποιότης) appears in ancient Greek philosophy.
 
 Here, quality is "hot" and "white"; quality is attributes. This type of quality can be observed and quantified. It's certainly not the Quality Kant referred to, saying he'd cover his ears if one dared contradict him. No, I expect he'd not cover his ears like a toddler, screaming, "Mario's hat is blue, not red" when someone attempts a description.
 
-Since this is not the difficult form of Quality, I suggest pivoting to the other. The Quality of, "goods; character; rank" according to my friend Webster. But here, he and his dictionary are of no further help. I've already tracked the etymology he provided and it led only to little-q quality. 
+Since this is not the difficult form of Quality, I suggest pivoting to the other. The Quality of, "goods; character; rank" according to my friend Webster. But here, he and his dictionary are of no further help. I've already tracked the etymology he provided and it led only to little-q quality.
 
 To get started, I will (carefully) venture into the world of pop-philosophy (OK I admit, I am already there). Robert M. Pirsig provides us with a few ideas in his philosophical novel "Zen and The Art of Motorcycle Maintenance." But I must tread carefully here, as many of his ideas are verifiably false. However, they may yet be salvaged.
 
 Pirsig explores the idea of Quality through two lenses. First, of an insane philosopher, Phaedrus. And second, a cross-country motorcycle road trip with his son. During the long, quiet stretches of motoring through the northwest states, he recounts the story of Phaedrus' search for value. Eventually, after many missteps and failures, Phaedrus runs across an ancient Greek definition of Quality.
 
-> "What moves the Greek warrior to deeds of heroism is not a sense of duty as we understand it...duty towards others: it is rather duty towards himself. He strives after that which we translate ‘virtue’ but is in Greek **areté (ἀρετή)**, ‘excellence’—we shall have much to say about **areté**. It runs through Greek life." 
-> 
+> "What moves the Greek warrior to deeds of heroism is not a sense of duty as we understand it...duty towards others: it is rather duty towards himself. He strives after that which we translate ‘virtue’ but is in Greek **areté (ἀρετή)**, ‘excellence’—we shall have much to say about **areté**. It runs through Greek life."
+>
 > There, Phædrus thinks, is a definition of Quality that existed a thousand years ago.
 
-Now this is an interesting definition of Quality even though it doesn't move the needle for us. "Excellence" is clearly related to big-Q Quality but is hardly different in definition than Quality. We don't know where it resides. Does excellence reside in the observer or the observed? On the surface, it seems to be simply a synonym for Quality. 
+Now this is an interesting definition of Quality even though it doesn't move the needle for us. "Excellence" is clearly related to big-Q Quality but is hardly different in definition than Quality. We don't know where it resides. Does excellence reside in the observer or the observed? On the surface, it seems to be simply a synonym for Quality.
 
 Also, Pirsig gets confused. He believes the Greeks *only* had this word for Quality (and quality). But just a moment ago, I showed they had another word for quality: ποιότης (poiótēs) in addition to his ἀρετή (areté) — little-q and big-Q quality, respectively. Even so, it's clear at some point the two concepts merged into one: quality.
 
@@ -128,7 +129,7 @@ Do you see the utility here? We are now able to chase Quality without needing to
 
 I've been chasing Quality for some time now. At this moment, I am close enough to extend my hand and grasp it. When I open my palm, what do I find? (Alternatively, get on with the point already.)
 
-When we started I said I wanted to learn what Quality is and how to harness it. I found that Quality is not a thing, it's an event. Quality occurs when the observed fulfills the expectations of the observer. 
+When we started I said I wanted to learn what Quality is and how to harness it. I found that Quality is not a thing, it's an event. Quality occurs when the observed fulfills the expectations of the observer.
 
 Here's how I think I can harness it.
 
