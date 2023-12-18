@@ -8,10 +8,6 @@ export COLOR_BLUE='\e[0;34m'
 export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
 
-ifeq ($(go1.21.5),)
-	go1.21.5 := go
-endif
-
 .PHONY: validate
 validate:
 	@echo ${COLOR_GRAY}Validating files.${COLOR_NC};
@@ -29,17 +25,17 @@ validate:
 .PHONY: tidy
 tidy:
 	@echo ${COLOR_GRAY}Begin go mod tidy.${COLOR_NC};
-	@go1.21.5 mod tidy;
+	@go mod tidy;
 
 .PHONY: generate
 generate:
 	@echo ${COLOR_GRAY}Begin go generate.${COLOR_NC};
-	@go1.21.5 generate ./...;
+	@go generate ./...;
 
 .PHONY: vet
 vet:
 	@echo ${COLOR_GRAY}Begin go vet.${COLOR_NC};
-	@go1.21.5 vet ./...;
+	@go vet ./...;
 
 .PHONY: lint
 lint:
@@ -53,14 +49,14 @@ endif
 .PHONY: format
 format:
 	@echo ${COLOR_GRAY}Begin go fmt.${COLOR_NC};
-	@go1.21.5 fmt ./...;
+	@go fmt ./...;
 	@echo ${COLOR_GRAY}Begin npm test.${COLOR_NC};
 	@npm run test --silent;
 
 .PHONY: server
 server: validate tidy generate vet format lint
 	@echo ${COLOR_GRAY}Begin go run.${COLOR_NC};
-	@go1.21.5 run -race main.go;
+	@go run -race main.go;
 
 .PHONY: server-watch
 server-watch:
