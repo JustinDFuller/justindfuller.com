@@ -44,4 +44,4 @@ jobs:
           go-version-file: "./go.mod"
 
       - name: "build"
-        run: "echo \"::error file=main.go,line=10,col=15::Something went wrong\""
+        run: "echo \"::error file=main.go,line=10,col=15::Something went wrong\" && exit 1"
