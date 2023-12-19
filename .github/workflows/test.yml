@@ -15,7 +15,6 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    environment: production
 
     permissions:
       contents: "read"
@@ -44,4 +43,4 @@ jobs:
           go-version-file: "./go.mod"
 
       - name: "build"
-        run: "echo \"::error file=.routes/main.go,line=10,col=5::Something went wrong\" && exit 1"
+        run: echo "::error file=.routes/main.go,line=10,col=5::Something went wrong" 
