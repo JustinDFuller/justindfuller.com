@@ -34,5 +34,5 @@ jobs:
         with:
           go-version-file: "./go.mod"
 
-			- name: Go Test Action
+			- name: Test
 				uses: robherley/go-test-action@v0.1.0
