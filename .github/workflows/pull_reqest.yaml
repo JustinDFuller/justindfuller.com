@@ -44,6 +44,7 @@ jobs:
     permissions:
       contents: "read"
       id-token: "write"
+      pull-requests: "write"
 
     steps:
       - name: Checkout
