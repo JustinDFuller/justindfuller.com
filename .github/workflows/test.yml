@@ -39,4 +39,3 @@ jobs:
 
 			- name: Description
 				uses: jadrol/pr-description-checker-action@v1.0.0
-            
