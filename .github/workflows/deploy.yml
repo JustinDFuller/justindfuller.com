@@ -1,3 +1,5 @@
+---
+
 name: Build and Deploy to GAE
 
 on:
@@ -45,7 +47,9 @@ jobs:
         run: "timeout 120 .appengine/build.sh"
 
       - name: "prep"
-        run: "rm main.go && mv .appengine/main.go .appengine/app.yaml .appengine/dispatch.yaml ./"
+        run: |
+          rm main.go
+          mv .appengine/main.go .appengine/app.yaml .appengine/dispatch.yaml ./
 
       - name: "auth"
         uses: "google-github-actions/auth@v1"

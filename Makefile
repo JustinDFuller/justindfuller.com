@@ -21,6 +21,8 @@ validate:
 	@python3 -mjson.tool ".devcontainer/devcontainer.json" > /dev/null;
 	@echo ${COLOR_GRAY}Validating .stylelintrc.json${COLOR_NC};
 	@python3 -mjson.tool ".stylelintrc.json" > /dev/null;
+	@echo ${COLOR_GRAY}Validating Yaml Files${COLOR_NC};
+	@yamllint .;
 
 .PHONY: tidy
 tidy:
