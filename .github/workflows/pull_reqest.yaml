@@ -1,6 +1,6 @@
 ---
 
-name: test
+name: Pull Request
 
 on:
   push:
@@ -14,8 +14,8 @@ permissions:
   pull-requests: read
 
 jobs:
-  test:
-    name: Test
+  Golang:
+    name: Golang
     runs-on: ubuntu-latest
 
     permissions:
@@ -28,9 +28,6 @@ jobs:
         with:
           lfs: true
 
-      - name: Checkout LFS
-        run: git lfs checkout
-
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -39,5 +36,21 @@ jobs:
       - name: Test
         uses: robherley/go-test-action@v0.1.0
 
-      - name: Description
-        uses: jadrol/pr-description-checker-action@v1.0.0
+
+  description:
+    name: Description
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            lfs: true
+
+        - uses: jadrol/pr-description-checker-action@v1.0.0
+          id: description-checker
+          with:
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
