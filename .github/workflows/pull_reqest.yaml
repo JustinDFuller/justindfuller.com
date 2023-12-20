@@ -56,3 +56,6 @@ jobs:
         id: description-checker
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-empty-description: "Hi! It looks like you forgot to add a description. Pull Request descriptions help reviewers understand the change and provide everyone with a history of changes. This action will block the pull request until a description exists."
+          comment-template-not-filled: "Hi! It looks like you forgot to fill out the Pull Request template. Pull Request descriptions help reviewers understand the change and provide everyone with a history of changes. This action will block the pull request until a description exists."
+
