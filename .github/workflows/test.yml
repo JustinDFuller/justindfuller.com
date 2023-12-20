@@ -29,18 +29,10 @@ jobs:
       - name: Checkout LFS
         run: git lfs checkout
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.x'
-
-      - name: Install npm
-        run: npm ci
-
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version-file: "./go.mod"
 
-      - name: "build"
-        run: echo "::error file=.routes/main.go,line=10,col=5::Something went wrong" && exit 1
+			- name: Go Test Action
+				uses: robherley/go-test-action@v0.1.0
