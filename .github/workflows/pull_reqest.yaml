@@ -9,9 +9,8 @@ on:
   pull_request:
 
 permissions:
-  contents: read
-  # Optional: allow read access to pull request. Use with `only-new-issues` option.
-  pull-requests: read
+  contents: write
+  pull-requests: write
 
 jobs:
   Golang:
