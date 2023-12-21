@@ -13,8 +13,9 @@ jobs:
     environment: production
 
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: read
+      id-token: write
+      checks: write
 
     steps:
       - name: Checkout
