@@ -1,0 +1,40 @@
+---
+
+name: Pull Request
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: write
+
+jobs:
+  Golang:
+    name: Golang
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: "./go.mod"
+
+      - name: Test
+        uses: robherley/go-test-action@v0.1.0
+        with:
+          omitPie: true
+          omitUntestedPackages: true

@@ -1,0 +1,50 @@
+---
+
+name: Pull Request Description
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - labeled
+      - unlabeled
+      - ready_for_review
+      - review_requested
+      - auto_merge_enabled
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+
+jobs:
+  description:
+    name: Description
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: "read"
+      id-token: "write"
+      pull-requests: "write"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      - uses: jadrol/pr-description-checker-action@v1.0.0
+        id: description-checker
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-empty-description: "Hi! It looks like you forgot to add a description. Pull Request descriptions help reviewers understand the change and provide everyone with a history of changes. This action will block the pull request until a description exists."
+          comment-template-not-filled: "Hi! It looks like you forgot to fill out the Pull Request template. Pull Request descriptions help reviewers understand the change and provide everyone with a history of changes. This action will block the pull request until a description exists."
+
+  wip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wip/action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

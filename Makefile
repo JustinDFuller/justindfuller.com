@@ -21,6 +21,8 @@ validate:
 	@python3 -mjson.tool ".devcontainer/devcontainer.json" > /dev/null;
 	@echo ${COLOR_GRAY}Validating .stylelintrc.json${COLOR_NC};
 	@python3 -mjson.tool ".stylelintrc.json" > /dev/null;
+	@echo ${COLOR_GRAY}Validating Yaml Files${COLOR_NC};
+	@yamllint .;
 
 .PHONY: tidy
 tidy:
@@ -56,7 +58,8 @@ format:
 .PHONY: server
 server: validate tidy generate vet format lint
 	@echo ${COLOR_GRAY}Begin go run.${COLOR_NC};
-	@go run -race main.go;
+	@sudo docker build -t justindfuller-build .;
+	@sudo docker run -it --rm --name justindfuller-server justindfuller-build;
 
 .PHONY: server-watch
 server-watch:
