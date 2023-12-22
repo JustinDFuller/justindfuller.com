@@ -58,8 +58,7 @@ format:
 .PHONY: server
 server: validate tidy generate vet format lint
 	@echo ${COLOR_GRAY}Begin go run.${COLOR_NC};
-	@sudo docker build -t justindfuller-build .;
-	@sudo docker run -it --rm --name justindfuller-server justindfuller-build;
+	@go run -race main.go;
 
 .PHONY: server-watch
 server-watch:
