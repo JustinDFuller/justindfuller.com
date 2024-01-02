@@ -12,10 +12,12 @@ type Route struct {
 	File        string
 	Directory   string
 	ContentType string
+	Template    string
 }
 
 func main() {
 	var appYamlTmpl = template.Must(template.ParseFiles("./.routes/app.yaml.tmpl"))
+	var buildShTmpl = template.Must(template.ParseFiles("./.routes/build.sh.tmpl"))
 
 	routes := []Route{
 		{
@@ -25,50 +27,62 @@ func main() {
 		{
 			Path:        "/aphorism",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/aphorism/main.template.html",
 		},
 		{
 			Path:        "/poem",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/poem/main.template.html",
 		},
 		{
 			Path:        "/story",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/story/main.template.html",
 		},
 		{
 			Path:        "/story/the_philosophy_of_trees",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/story/story.template.html",
 		},
 		{
 			Path:        "/story/the_philosophy_of_lovers",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/story/story.template.html",
 		},
 		{
 			Path:        "/story/bridge",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/story/story.template.html",
 		},
 		{
 			Path:        "/story/nothing",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/story/story.template.html",
 		},
 		{
 			Path:        "/review",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/review/main.template.html",
 		},
 		{
 			Path:        "/review/zen-and-the-art-of-motorcycle-maintenance",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/review/review.template.html",
 		},
 		{
 			Path:        "/review/living-on-24-hours-a-day",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/review/review.template.html",
 		},
 		{
 			Path:        "/review/howards-end",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/review/review.template.html",
 		},
 		{
 			Path:        "/make",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/make/main.template.html",
 		},
 		{
 			Path:        "/grass/worker.js",
@@ -86,22 +100,27 @@ func main() {
 		{
 			Path:        "/word/quality",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/word/entry.template.html",
 		},
 		{
 			Path:        "/word/equipoise",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/word/entry.template.html",
 		},
 		{
 			Path:        "/word/flexible",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/word/entry.template.html",
 		},
 		{
 			Path:        "/word",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/word/main.template.html",
 		},
 		{
 			Path:        "/nature",
 			ContentType: "text/html; charset=utf-8",
+			Template:    "/nature/main.html.tmpl",
 		},
 		{
 			Path:        "/site.webmanifest",
@@ -146,9 +165,32 @@ func main() {
 	}
 
 	if err := f.Close(); err != nil {
-		log.Fatalf("ERror closing app.yaml file: %s", err)
+		log.Fatalf("Error closing app.yaml file: %s", err)
 	}
 
 	log.Print("Wrote app.yaml file")
+
+	if err := os.MkdirAll("./.build", 0766); err != nil {
+		log.Fatalf("Error creating .build dir: %s", err)
+	}
+
+	if err := os.RemoveAll("./.build/build.sh"); err != nil {
+		log.Fatalf("Error removing .build/build.sh: %s", err)
+	}
+
+	f, err = os.OpenFile("./.build/build.sh", os.O_RDWR|os.O_CREATE, 0766)
+	if err != nil {
+		log.Fatalf("Error opening .build/build.sh file: %s", err)
+	}
+
+	if err := buildShTmpl.Execute(f, routes); err != nil {
+		log.Fatalf("Error executing .build/build.sh.tmpl: %s", err)
+	}
+
+	if err := f.Close(); err != nil {
+		log.Fatalf("Error closing .build/build.sh file: %s", err)
+	}
+
+	log.Print("Wrote .build/build.sh file")
 
 }
