@@ -72,7 +72,7 @@ format-watch:
 .PHONY: deploy
 deploy: build
 	@echo ${COLOR_GRAY}Begin gcloud app deploy.${COLOR_NC};
-	@gcloud app deploy;
+	@gcloud app deploy --appyaml=./.appengine/app.yaml;
 
 .PHONY: build
 build: validate tidy generate vet format lint
