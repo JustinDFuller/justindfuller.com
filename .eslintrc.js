@@ -4,5 +4,4 @@ module.exports = {
 		es2024:  true,
 		worker:  true,
 	},
-	extends: "jsfmt",
 };
