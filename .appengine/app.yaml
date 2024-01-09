@@ -15,8 +15,8 @@ handlers:
     secure: always
 
   - url: /index.xml
-    static_files: .routes/sitemap.xml
-    upload: .routes/sitemap.xml
+    static_files: .routes/index.xml
+    upload: .routes/index.xml
     secure: always
     http_headers:
       Content-Type: application/xml; charset=utf-8
