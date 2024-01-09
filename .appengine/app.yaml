@@ -14,6 +14,20 @@ handlers:
     static_dir: .build/image
     secure: always
 
+  - url: /index.xml
+    static_files: .routes/sitemap.xml
+    upload: .routes/sitemap.xml
+    secure: always
+    http_headers:
+      Content-Type: application/xml; charset=utf-8
+
+  - url: /robots.txt
+    static_files: .routes/robots.txt
+    upload: .routes/robots.txt
+    secure: always
+    http_headers:
+      Content-Type: text/plain; charset=utf-8
+
   - url: /aphorism
     static_files: .build/aphorism.html
     upload: .build/aphorism.html
