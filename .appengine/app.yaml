@@ -14,6 +14,10 @@ handlers:
     static_dir: .build/image
     secure: always
 
+  - url: /(.*\.(gif|png|jpg|ico|svg))$
+    static_files: ./build/image/\1
+    upload: ./build/image/.*\.(gif|png|jpg|ico|svg)$
+
   - url: /index.xml
     static_files: .routes/index.xml
     upload: .routes/index.xml
@@ -168,13 +172,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /2022/01/living-on-24-hours-a-day
+    script: auto
+    secure: always
+
   - url: /
     static_files: .build/index.html
     upload: .build/index.html
     secure: always
     http_headers:
       Content-Type: text/html; charset=utf-8
-
-  - url: /.*
-    script: auto
-    secure: always
