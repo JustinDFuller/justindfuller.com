@@ -14,9 +14,9 @@ handlers:
     static_dir: .build/image
     secure: always
 
-  - url: /(.*\.(gif|png|jpg|ico|svg))$
+  - url: /(.*\.(gif|png|jpg|jpeg|ico|svg))$
     static_files: ./build/image/\1
-    upload: ./build/image/.*\.(gif|png|jpg|ico|svg)$
+    upload: ./build/image/.*\.(gif|png|jpg|jpeg|ico|svg)$
 
   - url: /index.xml
     static_files: .routes/index.xml
