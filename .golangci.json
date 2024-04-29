@@ -35,8 +35,7 @@
       "gocognit",
       "forbidigo",
       "gocyclo",
-      "maintidx",
-      "perfsprint"
+      "maintidx"
     ]
   },
   "issues": {
