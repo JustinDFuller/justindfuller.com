@@ -124,7 +124,7 @@ func main() {
 		}
 	}
 
-	http.HandleFunc("/aphorism", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/aphorism", func(w http.ResponseWriter, _ *http.Request) {
 		entries, err := aphorism.Entries()
 		if err != nil {
 			http.Error(w, "Error reading Aphorisms", http.StatusInternalServerError)
@@ -142,7 +142,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/word", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/word", func(w http.ResponseWriter, _ *http.Request) {
 		entry, err := word.Entry("entries")
 		if err != nil {
 			http.Error(w, "Error reading Words", http.StatusInternalServerError)
@@ -186,7 +186,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/poem", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/poem", func(w http.ResponseWriter, _ *http.Request) {
 		entries, err := poem.Entries()
 		if err != nil {
 			http.Error(w, "Error reading poems.", http.StatusInternalServerError)
@@ -210,7 +210,7 @@ func main() {
 		http.ServeFile(w, r, "./make/grass.worker.js")
 	})
 
-	http.HandleFunc("/grass", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/grass", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/grass.template.html", data{
 			Title: "Grass",
 			Meta:  "grass",
@@ -219,7 +219,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/kit", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/kit", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/kit.template.html", data{
 			Title: "A Game with Kit",
 			Meta:  "kit",
@@ -228,7 +228,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/story", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/story", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data{
 			Title: "Story",
 		}); err != nil {
@@ -263,7 +263,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/review", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/review", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data{
 			Title: "Review",
 		}); err != nil {
@@ -298,7 +298,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/make", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/make", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/main.template.html", data{
 			Title: "Make",
 		}); err != nil {
@@ -306,7 +306,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/nature", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/nature", func(w http.ResponseWriter, _ *http.Request) {
 		var entries [][]byte
 
 		files, err := os.ReadDir("./image/nature")
@@ -342,7 +342,7 @@ func main() {
 		http.ServeFile(w, r, "./site.webmanifest")
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/main.template.html", data{}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/main.template.html")
 		}
