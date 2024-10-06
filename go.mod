@@ -8,7 +8,7 @@ require github.com/pkg/errors v0.9.1
 require golang.org/x/sync v0.8.0
 
 require (
-	cloud.google.com/go/cloudtasks v1.13.0
+	cloud.google.com/go/cloudtasks v1.13.1
 	github.com/SherClockHolmes/webpush-go v1.2.0
 	github.com/golangci/golangci-lint v1.61.0
 	github.com/justindfuller/secretmanager v0.0.4
@@ -214,7 +214,7 @@ require (
 	golang.org/x/time v0.6.0 // indirect
 	google.golang.org/api v0.196.0 // indirect
 	google.golang.org/genproto v0.0.0-20240903143218-8af14fe29dc1 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240827150818-7e3bb234dfed // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/grpc v1.66.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
