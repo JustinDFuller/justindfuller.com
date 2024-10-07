@@ -14,7 +14,7 @@ require (
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.5.4
 	github.com/yuin/goldmark-meta v1.1.0
-	golang.org/x/text v0.18.0
+	golang.org/x/text v0.19.0
 	golang.org/x/tools v0.24.0
 	google.golang.org/protobuf v1.34.2
 )
