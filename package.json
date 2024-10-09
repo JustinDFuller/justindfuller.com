@@ -7,7 +7,7 @@
     "preformat": "chalk grey 'Begin formatting css html webmanifest'",
     "format": "prettier --log-level=error --write **/*.css **/*.html **/*.webmanifest",
     "prelint:js": "chalk grey 'Begin linting JS files'", 
-    "lint:js": "eslint --quiet --fix ./**/*.js",
+    "lint:js": "eslint -c eslint.config.mjs --quiet --fix './**/*.js'",
     "prelint:css": "chalk grey 'Begin linting CSS files'",
     "lint:css": "stylelint --fix **/*.css",
     "prelint:md": "chalk grey 'Begin linting markdown files'",
