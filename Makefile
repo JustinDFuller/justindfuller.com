@@ -85,6 +85,7 @@ build: validate tidy generate vet format lint
 	@curl -s "http://localhost:9000/grass" > ./.build/grass.html;
 	@curl -s "http://localhost:9000/grass/worker.js" > ./.build/grass-service-worker.js;
 	@curl -s "http://localhost:9000/kit" > ./.build/kit.html;
+	@curl -s "http://localhost:9000/avatar" > ./.build/avatar.html;
 	@curl -s "http://localhost:9000/aphorism" > ./.build/aphorism.html;
 	@curl -s "http://localhost:9000/poem" > ./.build/poem.html;
 	@curl -s "http://localhost:9000/story" > ./.build/story.html;
