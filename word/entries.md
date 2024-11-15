@@ -88,4 +88,4 @@
 
 ## Dilettante
 
-> An admirer or lover of the fine arts: popularly, an amateur; especially, one who follows an art of a branc of knowledge, desultorily, or for amusement only.
+> An admirer or lover of the fine arts: popularly, an amateur; especially, one who follows an art or a branch of knowledge, desultorily, or for amusement only.
