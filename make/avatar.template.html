@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    <style>
+      {{ template "/make/avatar.css" . }}
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <h1>Create an avatar to show your support for a better contract!</h1>
+      <p>To save an image, right click it and select "Save Image".</p>
+      <div id="main">
+        <div class="input">
+          <div id="uploaded-frame"></div>
+          <button id="inp-button">upload an image</button>
+          <input type="file" id="inp" />
+        </div>
+        <div id="frames" class="default-frames">Loading...</div>
+      </div>
+      <p style="font-size: 12px">
+        Note: Images are not transferred or stored remotely; processing is
+        completed on your computer.
+      </p>
+    </main>
+
+    <script>
+      {{ template "/make/avatar.js" . }}
+    </script>
+  </body>
+</html>

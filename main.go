@@ -228,6 +228,15 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/avatar", func(w http.ResponseWriter, _ *http.Request) {
+		if err := templates.ExecuteTemplate(w, "/make/avatar.template.html", data{
+			Title: "Guild Avatars",
+			Meta:  "Avatar",
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/make/avatar.template.html")
+		}
+	})
+
 	http.HandleFunc("/story", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data{
 			Title: "Story",
