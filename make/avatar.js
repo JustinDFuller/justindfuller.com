@@ -11,7 +11,9 @@ async function loadImageManifest() {
     '/image/00-ready-to-vote-no_avatar.png',
     '/image/01-just-cause_avatar.png',
     '/image/02-lower-pay_avatar.png',
-    // '/image/03-forced-rto_avatar.png',
+    '/image/03-net-comp_avatar.png',
+    '/image/04-any-rto_avatar.png',
+    '/image/05-dues_avatar.png',
   ];
 }
 
