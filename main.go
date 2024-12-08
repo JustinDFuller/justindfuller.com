@@ -237,6 +237,15 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/remaining-life", func(w http.ResponseWriter, _ *http.Request) {
+		if err := templates.ExecuteTemplate(w, "/make/death.template.html", data{
+			Title: "Remaining Life",
+			Meta:  "Remaining Life",
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/make/death.template.html")
+		}
+	})
+
 	http.HandleFunc("/story", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data{
 			Title: "Story",
