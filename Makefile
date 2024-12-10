@@ -60,9 +60,18 @@ server: validate tidy generate vet format lint
 	@echo ${COLOR_GRAY}Begin go run.${COLOR_NC};
 	@go run -race .;
 
+.PHONY: server-fast
+server-fast:
+	@echo ${COLOR_GRAY}Begin go run.${COLOR_NC};
+	@go run -race .;
+
 .PHONY: server-watch
 server-watch:
 	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server";
+
+.PHONY: server-watch-fast
+server-watch-fast:
+	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server-fast";
 
 .PHONY: format-watch
 format-watch:
@@ -85,6 +94,7 @@ build: validate tidy generate vet format lint
 	@curl -s "http://localhost:9000/grass" > ./.build/grass.html;
 	@curl -s "http://localhost:9000/grass/worker.js" > ./.build/grass-service-worker.js;
 	@curl -s "http://localhost:9000/kit" > ./.build/kit.html;
+	@curl -s "http://localhost:9000/weeks-remaining" > ./.build/weeks-remaining.html;
 	@curl -s "http://localhost:9000/avatar" > ./.build/avatar.html;
 	@curl -s "http://localhost:9000/aphorism" > ./.build/aphorism.html;
 	@curl -s "http://localhost:9000/poem" > ./.build/poem.html;

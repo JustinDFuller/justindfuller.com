@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: max-content;
+  display: block;
+  font-size: 24px;
+  font-family: Amiri, serif;
+  background: #fcf9f4;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+main {
+  animation: fade-in 1s;
+  padding: 20px;
+  height: max-content;
+  width: 100%;
+  display: block;
+}
+
+section {
+  max-width: 500px;
+  margin: auto;
+}
+
+input,
+select {
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 10px 5px;
+  margin-bottom: 10px;
+}
+
+h1,
+h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 36px;
+}
+
+h2 {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+p,
+select,
+input {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+button {
+  background: white;
+  color: black;
+  padding: 5px 0;
+  border-radius: 2px;
+  transition:
+    border 500ms,
+    background 500ms,
+    color 500ms,
+    padding 500ms;
+  width: 100%;
+  font-size: 20px;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid #020215;
+}
+
+button:hover,
+button:focus,
+button:active {
+  background: #020215;
+  color: white;
+  border: 1px solid white;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #020215;
+    color: white;
+  }
+
+  main > a {
+    color: white;
+  }
+
+  main > a:hover,
+  main > a:focus,
+  main > a:active {
+    background: white;
+    color: #020215;
+  }
+
+  img {
+    background: white;
+  }
+}

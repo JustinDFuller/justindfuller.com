@@ -151,6 +151,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /weeks-remaining
+    static_files: .build/weeks-remaining.html
+    upload: .build/weeks-remaining.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /word/quality
     static_files: .build/quality.html
     upload: .build/quality.html

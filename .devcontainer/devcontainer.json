@@ -3,25 +3,17 @@
     "name": "justindfuller.com",
     "features": {
         "ghcr.io/devcontainers/features/go:1": {
-            "version": "1.22.5",
-            "golangciLintVersion": "1.55.2"
+            "version": "1.23.4",
+            "golangciLintVersion": "1.62.2"
         },
         "ghcr.io/devcontainers/features/node:1": {
           "version": "20.9.0"
-        },
-        "ghcr.io/devcontainers-extra/features/yamllint:latest": {},
-        "mcr.microsoft.com/devcontainers/python:3": {}
+        }
     },
     "hostRequirements": {
         "cpus": 1
     },
     "image": "mcr.microsoft.com/devcontainers/universal:2",
-    "waitFor": "onCreateCommand",
-    "updateContentCommand": "go mod download",
-    "postCreateCommand": "go install github.com/cespare/reflex@latest",
-    "postAttachCommand": {
-      "server": "make server-watch"
-    },
     "customizations": {
       "codespaces": {
         "openFiles": [
