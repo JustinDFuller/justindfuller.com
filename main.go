@@ -237,12 +237,12 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/remaining-life", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/make/death.template.html", data{
-			Title: "Remaining Life",
-			Meta:  "Remaining Life",
+	http.HandleFunc("/weeks-remaining", func(w http.ResponseWriter, _ *http.Request) {
+		if err := templates.ExecuteTemplate(w, "/make/remaining.template.html", data{
+			Title: "Weeks Remaining",
+			Meta:  "Weeks Remaining",
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/make/death.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/make/remaining.template.html")
 		}
 	})
 

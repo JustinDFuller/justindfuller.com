@@ -8,20 +8,12 @@
         },
         "ghcr.io/devcontainers/features/node:1": {
           "version": "20.9.0"
-        },
-        "ghcr.io/devcontainers-extra/features/yamllint:latest": {},
-        "mcr.microsoft.com/vscode/devcontainers/python:3": {}
+        }
     },
     "hostRequirements": {
         "cpus": 1
     },
     "image": "mcr.microsoft.com/devcontainers/universal:2",
-    "waitFor": "onCreateCommand",
-    "updateContentCommand": "go mod download",
-    "postCreateCommand": "go install github.com/cespare/reflex@latest",
-    "postAttachCommand": {
-      "server": "make server-watch"
-    },
     "customizations": {
       "codespaces": {
         "openFiles": [
