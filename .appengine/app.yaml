@@ -151,7 +151,7 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
- - url: /weeks-remaining
+  - url: /weeks-remaining
     static_files: .build/weeks-remaining.html
     upload: .build/weeks-remaining.html
     secure: always
