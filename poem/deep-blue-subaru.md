@@ -11,10 +11,11 @@ I see a blue Subaru and wonder if it's you.
 
 Just the other day, I doubled back to check.
 It wasn't you.
-But it was at IKEA,
-where we stole Lingonberry juice.
+It was at IKEA,
+where we walked the loop
+and stole Lingonberry juice.
 Where you stared out the window,
-admiring your deep blue Subaru.
+admiring your cute little Subaru.
 
 Just the other day, I saw a blue SUV 
 with Christmas stickers down the side.
