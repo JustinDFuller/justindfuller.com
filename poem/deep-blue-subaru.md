@@ -12,6 +12,8 @@ I see a blue Subaru and wonder if it's you.
 Just the other day, I doubled back to check.
 It wasn't you.
 But it was at IKEA — a place you took me to.
+A place where we stole Lingonberry juice
+while you stole my heart.
 And it was a deep blue Subaru.
 
 Just the other day, I saw a blue SUV 
