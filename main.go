@@ -186,6 +186,23 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/poem/deep-blue-subaru", func(w http.ResponseWriter, _ *http.Request) {
+		entries, err := poem.Entry("deep-blue-subaru")
+		if err != nil {
+			http.Error(w, "Error reading poem: deep-blue-subaru.", http.StatusInternalServerError)
+			log.Printf("Error reading poems: %s", err)
+
+			return
+		}
+
+		if err := templates.ExecuteTemplate(w, "/poem/main.template.html", data{
+			Title:   "Deep Blue Subaru",
+			Entries: entries,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/poem/main.template.html")
+		}
+	})
+
 	http.HandleFunc("/poem", func(w http.ResponseWriter, _ *http.Request) {
 		entries, err := poem.Entries()
 		if err != nil {
@@ -202,6 +219,7 @@ func main() {
 			log.Printf("template execution error=%s template=%s", err, "/poem/main.template.html")
 		}
 	})
+
 	http.HandleFunc("/grass.webmanifest", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./make/grass.webmanifest")
 	})

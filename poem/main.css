@@ -50,6 +50,17 @@ hr {
   margin-top: 30px;
 }
 
+a {
+  color: #020215;
+}
+
+a:hover,
+a:focus,
+a:active {
+  background: #020215;
+  color: white;
+}
+
 @media screen and (prefers-color-scheme: dark) {
   html,
   body {
@@ -57,13 +68,13 @@ hr {
     color: white;
   }
 
-  main > a {
+  a {
     color: white;
   }
 
-  main > a:hover,
-  main > a:focus,
-  main > a:active {
+  a:hover,
+  a:focus,
+  a:active {
     background: white;
     color: #020215;
   }

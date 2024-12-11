@@ -22,9 +22,40 @@ func Entries() ([][]byte, error) {
 	var names []string
 
 	for _, dir := range files {
-		if name := dir.Name(); strings.HasSuffix(name, ".md") && !dir.IsDir() {
-			names = append(names, name)
+		name := dir.Name()
+
+		// skip non-markdown files
+		if !strings.HasSuffix(name, ".md") {
+			log.Printf("Skipping %s because it does not end with .md", name)
+
+			continue
 		}
+
+		// skip sub-dirs
+		if dir.IsDir() {
+			log.Printf("Skipping %s because it is a directory", dir.Name())
+
+			continue
+		}
+
+		split := strings.Split(name, ".")
+
+		if len(split) != 2 {
+			log.Printf("Skipping %s because it was not split in two.", name)
+
+			continue
+		}
+
+		fileName := split[0]
+
+		// skip any files that are not numeric
+		if _, err := strconv.Atoi(fileName); err != nil {
+			fmt.Printf("Skipping %s because it is not a number.", name)
+			
+			continue
+		}
+
+		names = append(names, name)
 	}
 
 	sort.Slice(names, func(i, j int) bool {
@@ -82,4 +113,19 @@ func Entries() ([][]byte, error) {
 	}
 
 	return contents, nil
+}
+
+func Entry(name string) ([][]byte, error) {
+	path := fmt.Sprintf("./poem/%s.md", name)
+
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return nil, errors.Wrapf(err, "error reading file: %s", path)
+	}
+
+	content := file
+	content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
+	content = bytes.Split(content, []byte("```"))[1]
+
+	return [][]byte{content}, nil
 }
