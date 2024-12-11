@@ -19,10 +19,10 @@ admiring your cute little Subaru.
 
 Just the other day, I saw a blue SUV 
 with Christmas stickers down the side.
-But it wasn't a Subaru.
-Even so, it ripped the breath from my lungs.
+It wasn't a Subaru.
+It stole the breath from my lungs.
 I remember the first time I saw yours,
-decorated in Halloween stickers — all down the side.
+decorated in Halloween stickers all down the side.
 That was the first night we kissed.
 That wasn't the first night I failed
 to tell you what you deserved to know.
