@@ -19,7 +19,7 @@ func Entries() ([][]byte, error) {
 		return nil, errors.Wrap(err, "error reading poetry entries")
 	}
 
-	var names []string
+	names := make([]string, 0, len(files))
 
 	for _, dir := range files {
 		name := dir.Name()
@@ -40,7 +40,7 @@ func Entries() ([][]byte, error) {
 
 		split := strings.Split(name, ".")
 
-		if len(split) != 2 {
+		if len(split) != 2 { //nolint:mnd
 			log.Printf("Skipping %s because it was not split in two.", name)
 
 			continue
@@ -51,7 +51,7 @@ func Entries() ([][]byte, error) {
 		// skip any files that are not numeric
 		if _, err := strconv.Atoi(fileName); err != nil {
 			fmt.Printf("Skipping %s because it is not a number.", name)
-			
+
 			continue
 		}
 
