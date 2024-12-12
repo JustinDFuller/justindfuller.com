@@ -13,7 +13,7 @@ Just the other day, I doubled back to check.
 It wasn't you.
 It was at IKEA,
 where we walked the loop
-and stole Lingonberry juice.
+and stole lingonberry juice.
 Where you stared out the window,
 admiring your cute little Subaru.
 
@@ -22,17 +22,18 @@ with Christmas stickers down the side.
 It wasn't a Subaru.
 It stole the breath from my lungs.
 I remember the first time I saw yours,
-decorated in Halloween stickers all down the side.
+decorated in Halloween stickers down the side.
 That was the first night we kissed.
 That wasn't the first night I failed
 to tell you what you deserved to know.
 
 Tomorrow I will see a Subaru 
-and think fondly of the times we had.
+and think fondly of the time we shared.
 Today I see one and my chest pulls tight.
 I held your hand in that Subaru, 
 I stared into your eyes, 
-I kissed you and asked,
+we showed each other our scars.
+I kissed you, then asked,
 what are you thinking about?
 If only you had told me.
 Maybe things would be different.
