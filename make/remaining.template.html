@@ -18,35 +18,10 @@
         <form id="form" onsubmit="handleSubmit(event, this)">
           <h2>When were you born?</h2>
           <input
-            name="year"
+            name="birthdate"
             required
-            type="number"
-            max="2024"
-            min="1900"
-            placeholder="Year"
-          />
-          <select name="month" required value="">
-            <option disabled value="" selected>Select a Month</option>
-            <option value="0">January</option>
-            <option value="1">February</option>
-            <option value="2">March</option>
-            <option value="3">April</option>
-            <option value="4">May</option>
-            <option value="5">June</option>
-            <option value="6">July</option>
-            <option value="7">August</option>
-            <option value="8">September</option>
-            <option value="9">October</option>
-            <option value="10">November</option>
-            <option value="11">December</option>
-          </select>
-          <input
-            name="day"
-            required
-            type="number"
-            placeholder="Day"
-            max="31"
-            min="1"
+            type="date"
+            id="birthdate"
           />
           <button type="submit">Calculate</button>
         </form>
