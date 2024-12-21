@@ -11,12 +11,15 @@
   <body>
     <main>
       <section>
-        {{ range .Entries }}
+        {{ $lastIndex := (sub1 (len .Entries)) }} {{ range $i, $entry :=
+        .Entries }}
         <div style="text-align: center">
           <p style="text-align: left; display: inline-block">
-            {{ printf "%s" . }}
+            {{ printf "%s" $entry }}
           </p>
+          {{ if ne $i $lastIndex }}
           <hr />
+          {{ end }}
         </div>
         {{ end }}
       </section>

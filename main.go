@@ -86,7 +86,11 @@ func main() {
 		mut.Unlock()
 	}
 
-	templates := template.New("").Option("missingkey=error")
+	funcs := template.FuncMap{
+		"sub1": func(x int) int { return x - 1 },
+	}
+
+	templates := template.New("").Funcs(funcs).Option("missingkey=error")
 
 	suffixes := []string{".js", ".css", ".html", ".tmpl"}
 

@@ -52,6 +52,9 @@ hr {
 
 a {
   color: #020215;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #020215;
 }
 
 a:hover,
@@ -59,6 +62,7 @@ a:focus,
 a:active {
   background: #020215;
   color: white;
+  border-bottom: none;
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -70,6 +74,7 @@ a:active {
 
   a {
     color: white;
+    text-decoration-color: #aaa;
   }
 
   a:hover,
