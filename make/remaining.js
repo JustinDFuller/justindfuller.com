@@ -20,10 +20,18 @@ function process(birthdate) {
     const expectedWeeks = 79 * 52;
     const expected = expectedWeeks - age
 
+    if (expected <= 0) {
+        document.getElementById("unexpected-results").style.display = "block";
+        document.getElementById("expected-results").style.display = "none";
+
+        return;
+    }
+
     document.getElementById("age").innerText = age;
     document.getElementById("remaining").innerText = expected;
     document.getElementById("percent").innerText = Math.round(((expectedWeeks - age) / expectedWeeks) * 100);
-    document.getElementById("results").style.display = "block";
+    document.getElementById("expected-results").style.display = "block";
+    document.getElementById("unexpected-results").style.display = "none";
 }
 
 try {
