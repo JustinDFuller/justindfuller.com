@@ -34,7 +34,7 @@ jobs:
           go-version-file: "./go.mod"
 
       - name: Test
-        uses: robherley/go-test-action@v0.5.0
+        uses: robherley/go-test-action@v0.6.0
         with:
           omitPie: true
           omitUntestedPackages: true
