@@ -1,18 +1,18 @@
 # The History of Modern Political Philosophy
 
-I took a class called “The History of Modern Political Philosophy” at UNC Charlotte in fall of 2024 with Dr. Amber Knight. The following “review” is not critical but simply my act of reviewing what I learned during the class. I will focus on sharing the parts I found most interesting instead of being comprehensive. It is not meant to be an academic piece, so there will be no references and almost everything is from memory.
+_I took a class called “The History of Modern Political Philosophy” at UNC Charlotte in fall of 2024 with [Dr. Amber Knight](https://politicalscience.charlotte.edu/directory/amber-r-knight). The following “review” is not critical but simply my act of reviewing what I learned during the class. I will focus on sharing the parts I found most interesting instead of being comprehensive. It is not meant to be academic; so there will be no references and almost everything is from memory._
 
 The Modern era of political philosophy lasted from roughly the 17th to 20th century. The ranks of Philosophers from this time include some as early as Machiavelli (born 1469) and as late as Engels (born 1820). A wide range, for sure.
 
 You see, it is not the colloquial Modern in Modern Political Philosophy—meaning the opposite of ancient. Instead, it is a specific period of time and cultural norms that followed the renaissance. It’s an era.
 
-Even wider than the range of time is its range of topics. Reading the political philosophers of this age, you’ll encounter ideas ranging from the ideal way for a prince to commit atrocities to consolidate power to arguments for feminism and communism.
+Even wider than the range of time is its range of topics. Reading the political philosophers of this age, you’ll encounter ideas ranging from the ideal way for a prince to consolidate power by committing atrocities all the way to arguments for feminism and communism.
 
 I invite you to join me for a brief stroll through some of the era’s biggest topics and most famous thinkers.
 
 ## State of Nature
 
-Many of the big ideas of political philosophy are rooted in or explained by a “State of Nature” hypothesis. Our imperfect state of society naturally leads us to wonder: what came before? Was it better or worse? Importantly, could that pre-society period contain any insights we could learn from or warnings we should heed? Canonical political philosophers such as Hobbes, Locke, Rousseau, and even Marx used State of Nature hypotheses to explain and justify their ideas.
+Some of the big ideas of political philosophy are rooted in a “State of Nature” hypothesis. Our imperfect state of society naturally leads us to wonder: what came before? Was it better or worse? Importantly, could that pre-society period contain any insights we could learn from or warnings we should heed? Canonical political philosophers such as Hobbes, Locke, Rousseau, and even Marx used State of Nature hypotheses to explain and justify their ideas.
 
 ### Hobbes
 
@@ -78,15 +78,15 @@ When I think about politics, I can’t help but think about power. The same goes
 
 ### Machiavelli
 
-You may have heard the term “Machiavellian” to describe someone who is conniving, brutal, or sly. This term describes the rulers and advice described by Machiavelli in his book, “The Prince.” Some debate if Machiavelli was a philosopher or historian because the content of his books, like The Prince, contain advice given by way of historical examples. Those given in The Prince are designed to keep a Prince in power during a period of struggle in Italy. When alliances were forming and breaking, kings were hiring mercenaries to fight their enemies, and a Prince could be deposed by those around him — Machiavelli provided the examples he believed would lead to success. 
+You may have heard the term “Machiavellian” used to describe someone who is conniving, brutal, or sly. This term describes the rulers admired by Machiavelli in his book, “The Prince.” Some debate if Machiavelli was a philosopher or historian because the content of his books, like The Prince, contain advice given by way of historical examples. Those given in The Prince are designed to keep a Prince in power during a period of struggle in Italy. When alliances were forming and breaking, kings were hiring mercenaries to fight their enemies, and a Prince could be deposed by those around him — Machiavelli provided the examples he believed would lead to success.
 
-The problem is the examples are what most contemporary people would describe as inhumane, brutal, even as war crimes. But that’s the difference between Machiavelli and other thinkers. While others were thinking about what is right, he was thinking about what is necessary to survive.
+The problem is: the examples are what most contemporary people would describe as inhumane, brutal, even as war crimes. But that’s the difference between Machiavelli and other thinkers. While others were thinking about what is right, he was thinking about what is necessary to survive.
 
 A prince who is to survive must understand how to act like both the lion and the fox, according to Machiavelli. The lion is strong and others have a healthy fear of it. Meanwhile, the fox is cunning and sly, so no one even suspects they should fear it. The prince must switch between these modes based on the need.
 
 To be a lion, one must be ready for war at all times. They must not use mercenaries or another’s troops, but keep theirs ready and trained at all times. The prince himself must think of hardly anything but war strategy so he will be ready for any and every attack.
 
-The fox, however, must be easy to do any trick, betrayal, or heinous act necessary to survive. However, the fox must also be careful to ensure he never becomes associated with these acts. The fox does detestable things while maintaining a facade of virtue. This is what is meant by “Machiavellian.”
+The fox, however, must be ready to use any trick, betrayal, or heinous act necessary to survive. However, the fox must also be careful to ensure he never becomes associated with these acts. The fox does detestable things while maintaining a facade of virtue.
 
 One of Machiavellian’s examples demonstrates how to act like a fox to enforce peace in the land. The prince hires a brutal enforcer who terrorizes the people but also successfully reigns in crime. The land is safe but people hate the kings enforcer. So, what does he do? The king publicly kills the enforcer, winning both the confused awe and appreciation of the people, while still benefiting from the peace his enforcer created. 
 
