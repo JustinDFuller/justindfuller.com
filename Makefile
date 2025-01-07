@@ -109,6 +109,7 @@ build: validate tidy generate vet format lint
 	@curl -s "http://localhost:9000/review/living-on-24-hours-a-day" > ./.build/living-on-24-hours-a-day.html;
 	@curl -s "http://localhost:9000/review/howards-end" > ./.build/howards-end.html;
 	@curl -s "http://localhost:9000/review/walden" > ./.build/walden.html;
+	@curl -s "http://localhost:9000/review/the-history-of-modern-political-philosophy" > ./.build/the-history-of-modern-political-philosophy.html;
 	@curl -s "http://localhost:9000/word" > ./.build/word.html;
 	@curl -s "http://localhost:9000/word/quality" > ./.build/quality.html;
 	@curl -s "http://localhost:9000/word/equipoise" > ./.build/equipoise.html;

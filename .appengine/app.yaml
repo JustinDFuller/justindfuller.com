@@ -123,6 +123,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /review/the-history-of-modern-political-philosophy
+    static_files: .build/the-history-of-modern-political-philosophy.html
+    upload: .build/the-history-of-modern-political-philosophy.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /make
     static_files: .build/make.html
     upload: .build/make.html
