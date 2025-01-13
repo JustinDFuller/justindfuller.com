@@ -17,7 +17,7 @@ require (
 	github.com/yuin/goldmark-meta v1.1.0
 	golang.org/x/text v0.20.0
 	golang.org/x/tools v0.27.0
-	google.golang.org/protobuf v1.35.2
+	google.golang.org/protobuf v1.36.2
 )
 
 require (
