@@ -78,6 +78,8 @@ input {
   background: white;
   color: #020215;
   width: 100%;
+  min-width: 100%;
+  max-width: 100%;
   font-size: 20px;
   font-family: inherit;
   border: 1px solid #020215;
