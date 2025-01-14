@@ -1,6 +1,6 @@
 # The History of Modern Political Philosophy
 
-_I took a class called “The History of Modern Political Philosophy” at UNC Charlotte in fall 2024. The following “review” is not critical but simply my review of what I learned during the class. I will focus on sharing the parts I found most interesting instead of being comprehensive. It is not meant to be academic; so there will be no references and almost everything is from memory._
+_I took a class called “The History of Modern Political Philosophy” at UNC Charlotte in fall 2024 with [Dr. Amber Knight](https://politicalscience.charlotte.edu/directory/amber-r-knight). The following “review” is not critical but simply my review of what I learned during the class. I will focus on sharing the parts I found most interesting instead of being comprehensive. It is not meant to be academic; so there will be no references and almost everything is from memory._
 
 The Modern era of political philosophy lasted from roughly the 17th to 20th century. The ranks of Philosophers from this time include some as early as Machiavelli (born 1469) and as late as Engels (born 1820). A wide range, for sure.
 
@@ -154,3 +154,15 @@ There is so much more to the History of Modern Political Philosophy. Yet, as I s
 I hope you are able to see the value in studying where our political ideas came from and how they evolved. I imagine you see many glaring omissions of either topic or thinker. Perhaps you strongly disagree with one or many of the ideas presented above. In my view, that is the point of philosophy! One idea sparks another, and so the great wheel of human consciousness grows in power and speed.
 
 Finally, please forgive me for any errors I’ve made in this piece. The intent was to summarize–from memory–what I learned in this class. While I did reference my notes a few times, I tried to pull it out of my head. For that reason, there are no citations and there certainly must be errors. If you find any, please let me know!
+
+## Reading List
+
+Just in case you are interested, here is what we read in this class.
+
+* [Strauss: What is Political Philosophy?](https://www.jstor.org/stable/2126765)
+* [Machiavelli: Selected Political Writings](https://amzn.to/3WlXV4n)
+* [Hobbes: Leviathan](https://amzn.to/42ba8fZ)
+* [Locke: Second Treatise of Government](https://amzn.to/3DX64pO)
+* [Rousseau: The Basic Political Writings](https://amzn.to/4jdXKSB)
+* [Wollstonecraft: A Vindication of the Rights of Woman](https://amzn.to/40uULhk)
+* [Marx: Selected Writings](https://amzn.to/4gTQzNU)
