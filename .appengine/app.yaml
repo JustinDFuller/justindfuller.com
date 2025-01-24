@@ -39,13 +39,6 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
-  - url: /poem/deep-blue-subaru
-    static_files: .build/poem-deep-blue-subaru.html
-    upload: .build/poem-deep-blue-subaru.html
-    secure: always
-    http_headers:
-      Content-Type: text/html; charset=utf-8
-
   - url: /poem
     static_files: .build/poem.html
     upload: .build/poem.html
