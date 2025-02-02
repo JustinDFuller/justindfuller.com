@@ -22,19 +22,21 @@ type Entry struct {
 	Markdown string
 }
 
-var entries []Entry
-var entryError error
+var (
+	entries  []Entry //nolint:gochecknoglobals
+	errEntry error   //nolint:gochecknoglobals
+)
 
-func init() {
-	var images []string
-
+func init() { //nolint:gochecknoinits
 	files, err := os.ReadDir("./image/nature")
 	if err != nil {
 		entries = nil
-		entryError = errors.Wrap(err, "error reading nature image directory")
+		errEntry = errors.Wrap(err, "error reading nature image directory")
 
 		return
 	}
+
+	images := make([]string, 0, len(files))
 
 	for _, file := range files {
 		images = append(images, file.Name())
@@ -89,11 +91,11 @@ func init() {
 	}
 
 	entries = hardCodedEntries
-	entryError = nil
+	errEntry = nil
 }
 
 func Entries() ([]Entry, error) {
-	return entries, entryError
+	return entries, errEntry
 }
 
 func EntryBySlug(slug string) (Entry, error) {

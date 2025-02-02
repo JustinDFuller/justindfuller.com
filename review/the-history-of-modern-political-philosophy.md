@@ -89,9 +89,9 @@ To be a lion, one must be ready for war at all times. They must not use mercenar
 
 The fox must be ready to use any trick, betrayal, or heinous act necessary to survive. However, the fox must also be careful to ensure he never becomes associated with these acts. The fox does detestable things while maintaining a facade of virtue.
 
-One of Machiavellian’s examples demonstrates how to act like a fox to enforce peace in the land. The prince hires a brutal enforcer who terrorizes the people but also successfully reigns in crime. The land is safe but people hate the king's enforcer. So, what does he do? The king publicly kills the enforcer, winning both the confused awe and appreciation of the people, while still benefiting from the peace his enforcer created. 
+One of Machiavellian’s examples demonstrates how to act like a fox to enforce peace in the land. The prince hires a brutal enforcer who terrorizes the people but also successfully reigns in crime. The land is safe but people hate the king's enforcer. So, what does he do? The king publicly kills the enforcer, winning both the confused awe and appreciation of the people, while still benefiting from the peace his enforcer created.
 
-But there is a side to Machiavelli that many do not know. You see, he wrote another book called, “The Discourses” where he describes how to form and maintain a successful republic (instead of a principality). 
+But there is a side to Machiavelli that many do not know. You see, he wrote another book called, “The Discourses” where he describes how to form and maintain a successful republic (instead of a principality).
 
 The two books could not be more opposed. Where the prince advocates for anything that is necessary to maintain power, the republic seeks to build a society where all ranks can live in peace together. In this society, public debate and even protest are encouraged. The power is balanced between the people and the ruling class and the focus is on creating good laws and good societies.
 
@@ -111,7 +111,7 @@ Hobbes’ contract could be entered even when the sovereign coerced the people i
 
 ### Locke
 
-Locke believed the people needed to question power more than Hobbes’ contract allowed for. Going so far as to even outline the circumstances when the people were validated if they chose to overthrow their government. 
+Locke believed the people needed to question power more than Hobbes’ contract allowed for. Going so far as to even outline the circumstances when the people were validated if they chose to overthrow their government.
 
 He outlined three scenarios in which the people can overthrow their government and place power in the hands of someone they prefer. First, when the government ceases to administer justice. Second, when the state fails to protect private property. Third, if the government delivers the people into the hands of a foreign power.
 

@@ -16,13 +16,29 @@ a {
   text-align: center;
   padding-top: 40px;
   display: block;
+  color: #020215;
+  position: relative;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
 }
 
-a>img {
+img {
+  display: block;
+  margin: 40px auto;
+  max-width: 450px;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
+}
+
+a > img {
   margin-top: 0;
 }
 
-a>span {
+a > span {
   color: #020215;
   padding: 10px 20px;
   border-radius: 2px;
@@ -31,15 +47,6 @@ a>span {
     color 500ms;
   max-width: 100%;
   text-align: center;
-}
-
-a {
-  color: #020215;
-  position: relative;
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 6px;
 }
 
 @keyframes fade-in {
@@ -58,18 +65,7 @@ main {
   margin: auto;
 }
 
-img {
-  display: block;
-  margin: 40px auto;
-  max-width: 450px;
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
-}
-
 @media screen and (prefers-color-scheme: dark) {
-
   html,
   body {
     background-color: #020215;
@@ -77,13 +73,13 @@ img {
   }
 
   a,
-  a>span {
+  a > span {
     color: white;
   }
 
-  a:hover>span,
-  a:focus>span,
-  a:active>span {
+  a:hover > span,
+  a:focus > span,
+  a:active > span {
     background: white;
     color: #020215;
   }
