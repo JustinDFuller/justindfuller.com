@@ -195,7 +195,7 @@ handlers:
 
   - url: /nature/anolis-carolinensis
     static_files: .build/nature-anolis-carolinensis.html
-    upload: .build/natur-anolis-carolinensis.html
+    upload: .build/nature-anolis-carolinensis.html
     secure: always
     http_headers:
       Content-Type: text/html; charset=utf-8
