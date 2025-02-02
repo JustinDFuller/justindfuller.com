@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    {{ template "/meta.template.html" . }}
+    <style>
+    {{ template "/nature/entry.css" . }} 
+    </style>
+  </head>
+
+  <body>
+    <main>
+        {{ with .Entry }}
+        <h1>{{ .Title }}</h1>
+        <h2>({{ .SubTitle }})</h2>
+        <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" />
+        <section>
+        {{ .Markdown }}
+        </section>
+        {{ end }}
+    </main>
+  </body>
+</html>

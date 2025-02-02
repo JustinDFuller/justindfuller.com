@@ -71,7 +71,7 @@ server-watch:
 
 .PHONY: server-watch-fast
 server-watch-fast:
-	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server-fast";
+	@reflex -s --decoration=none --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server-fast";
 
 .PHONY: format-watch
 format-watch:

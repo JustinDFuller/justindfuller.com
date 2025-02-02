@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    display: block;
+    font-size: 24px;
+    font-family: Amiri, serif;
+    background: #fcf9f4;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 0;
+    font-size: 36px;
+    line-height: 36px;
+    font-style: italic;
+}
+
+h2 {
+    text-align: center;
+    color: #ccc;
+    font-size: 20px;
+    line-height: 20px;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+section {
+    display: block;
+    height: max-content;
+    max-width: 600px;
+    margin: auto;
+}
+
+p {
+    font-family: Amiri, serif;
+    margin: 0;
+    line-height: 36px;
+    margin-bottom: 30px;
+}
+
+a {
+    text-align: center;
+    padding-top: 40px;
+    display: block;
+}
+
+a>img {
+    margin-top: 0;
+}
+
+a>span {
+    color: #020215;
+    padding: 10px 20px;
+    border-radius: 2px;
+    transition:
+        background 500ms,
+        color 500ms;
+    max-width: 100%;
+    text-align: center;
+}
+
+a {
+    color: #020215;
+    position: relative;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+main {
+    animation: fade-in 1s;
+    max-width: 700px;
+    margin: auto;
+}
+
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 350px;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+
+    html,
+    body {
+        background-color: #020215;
+        color: white;
+    }
+
+    a,
+    a>span {
+        color: white;
+    }
+
+    a:hover>span,
+    a:focus>span,
+    a:active>span {
+        background: white;
+        color: #020215;
+    }
+
+    img {
+        box-shadow:
+            rgb(0 0 0 / 35%) 0 5px 25px 25px,
+            0 0 40px 0 rgb(255 255 255 / 20%);
+    }
+}
