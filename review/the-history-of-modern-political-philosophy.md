@@ -147,11 +147,13 @@ The revolution in education brings both boys and girls to a fully funded public 
 
 Finally, bringing their full virtue, logic, and education to bear on society, women should be free from the practice of coverture. Their rights are no longer subsumed by their husbands, but they are fully legal, political humans. Their role, according to Wollstonecraft, may still primarily be raising children in the home, but they are active political participants in their society. They are raising the next generation of outstanding citizens.
 
+<!--
 ### Marx
 
 Of course, we can't talk about the philosophy of political power without talking about Karl Marx. After all, he's the one who claimed that all of history is the history of class struggle and warfare.
 
 Marx believed the bourgousie, those who owned the means of production, held all of the power. Yet, it was the proletariat, those who labored and produced everything, that truly had the power and could take it back, if only they could unite.
+-->
 
 ### Remaining
 
