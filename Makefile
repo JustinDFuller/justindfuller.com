@@ -91,7 +91,7 @@ build: validate tidy generate vet format lint
 	@curl -s "http://localhost:9000/site.webmanifest" > ./.build/site.webmanifest;
 	@curl -s "http://localhost:9000/make" > ./.build/make.html;
 	@curl -s "http://localhost:9000/nature" > ./.build/nature.html;
-	@curl -s "http://localhost:9000/nature/anolis-carolinensis" > ./.build/nature/anolis-carolinensis.html;
+	@curl -s "http://localhost:9000/nature/anolis-carolinensis" > ./.build/nature-anolis-carolinensis.html;
 	@curl -s "http://localhost:9000/grass" > ./.build/grass.html;
 	@curl -s "http://localhost:9000/grass/worker.js" > ./.build/grass-service-worker.js;
 	@curl -s "http://localhost:9000/kit" > ./.build/kit.html;
