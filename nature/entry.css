@@ -38,9 +38,10 @@ section {
 
 p {
   font-family: Amiri, serif;
-  margin: 0;
+  margin: 0 auto;
   line-height: 36px;
   margin-bottom: 30px;
+  max-width: 90vw;
 }
 
 a {
