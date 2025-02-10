@@ -6,7 +6,7 @@ toolchain go1.22.5
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.9.0
+require golang.org/x/sync v0.11.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.1
