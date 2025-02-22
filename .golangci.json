@@ -4,11 +4,7 @@
     "tests": true,
     "skip-dirs-use-default": true,
     "modules-download-mode": "readonly",
-    "timeout": "5m",
-    "skip-dirs": [
-      ".build",
-      ".git"
-    ]
+    "timeout": "5m"
   },
   "output": {
     "format": "colored-line-number",
@@ -43,7 +39,13 @@
     "exclude-use-default": true,
     "max-issues-per-linter": 0,
     "max-same-issues": 0,
-    "fix": true
+    "fix": true,
+    "exclude-dirs": [
+      ".build",
+      ".git",
+      ".devcontainer",
+      ".github"
+    ]
   },
   "linters-settings": {
     "depguard": {
