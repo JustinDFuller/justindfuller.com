@@ -1,3 +1,4 @@
+<!-- markdownlint-disable-next-line -->
 The Carolina Anole is one of over four hundred and fifty species of the genus Anolis. It is a member of the family Dactyloidae, Suborder Iguania, Class Reptilia. It primarily resides in the southeastern United States.
 
 It is most notable for its ability to change several shades from brown to green; for its adhesive-covered toe pads that facilitate climbing; and for their bright pink dewlaps, which are primarily (but not exclusively) present in males.

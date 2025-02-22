@@ -2,12 +2,15 @@
   "run": {
     "go": "1.21.5",
     "tests": true,
-    "skip-dirs-use-default": true,
     "modules-download-mode": "readonly",
     "timeout": "5m"
   },
   "output": {
-    "format": "colored-line-number",
+    "formats": [
+      {
+        "format": "colored-line-number"
+      }
+    ],
     "print-issued-lines": true,
     "print-linter-name": true,
     "uniq-by-line": true,
@@ -45,7 +48,8 @@
       ".git",
       ".devcontainer",
       ".github"
-    ]
+    ],
+    "exclude-dirs-use-default": true
   },
   "linters-settings": {
     "depguard": {
