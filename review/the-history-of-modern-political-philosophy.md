@@ -99,6 +99,7 @@ How could one person hold such opposing ideas at the same time? Truthfully, no o
 
 We may never know which Machiavelli truly believed in but we can still think for ourselves: who deserves power and how far should one go to hold on to it?
 
+<!-- markdownlint-disable-next-line -->
 ### Hobbes
 
 Earlier, I said Hobbes proposed a “surprisingly liberal” system. What did I mean by that? Well, before Hobbes, thinkers seemed to assume (like Machiavelli) that power belonged to whoever could get it. Alternatively, they may have believed that some ruled by divine right. But when Hobbes designed his system, he explicitly stated that the sovereign would rule by contract. This was a big change.
@@ -109,6 +110,7 @@ However, Hobbes’ idea of a contract was extremely limited. The people cannot e
 
 Hobbes’ contract could be entered even when the sovereign coerced the people into it and it could never be exited, except when one's life is threatened directly. The next thinkers take this idea of a contract or covenant and begin to place limitations on it.
 
+<!-- markdownlint-disable-next-line -->
 ### Locke
 
 Locke believed the people needed to question power more than Hobbes’ contract allowed for. Going so far as to even outline the circumstances when the people were validated if they chose to overthrow their government.
@@ -121,6 +123,7 @@ Some thought Locke was going too far and his ideas would lead to the people over
 
 However, there was one way in which Locke remained consistent with Hobbes: consent. Locke took the time to separate tacit and express consent. Express consent would be something akin to a verbal or written agreement, perhaps even a vote. Tacit consent would be the absence of counteraction. For someone to not leave their country or not attempt to overthrow their government, would be to provide tacit consent. Locke felt this was a necessary reality of a long-lived government. Our next thinker had other ideas.
 
+<!-- markdownlint-disable-next-line -->
 ### Rousseau
 
 Locke allowed the people to exit the contract with their government. But Rousseau disallowed the contract to begin through coercion. In Locke’s system, the people are only optionally (at best) involved in running the government. However, Rousseau’s conception of government requires each citizen’s active involvement in the pursuit of the general will. So, Locke’s citizens could completely disagree with how their government runs, yet tacitly consent to it by simply ignoring it. In Rousseau’s government, the citizens must come together to search for the general will. This active involvement, in my opinion, brings each citizen out of tacit consent and into express–through their involvement.

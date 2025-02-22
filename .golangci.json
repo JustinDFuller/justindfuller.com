@@ -2,16 +2,15 @@
   "run": {
     "go": "1.21.5",
     "tests": true,
-    "skip-dirs-use-default": true,
     "modules-download-mode": "readonly",
-    "timeout": "5m",
-    "skip-dirs": [
-      ".build",
-      ".git"
-    ]
+    "timeout": "5m"
   },
   "output": {
-    "format": "colored-line-number",
+    "formats": [
+      {
+        "format": "colored-line-number"
+      }
+    ],
     "print-issued-lines": true,
     "print-linter-name": true,
     "uniq-by-line": true,
@@ -43,7 +42,14 @@
     "exclude-use-default": true,
     "max-issues-per-linter": 0,
     "max-same-issues": 0,
-    "fix": true
+    "fix": true,
+    "exclude-dirs": [
+      ".build",
+      ".git",
+      ".devcontainer",
+      ".github"
+    ],
+    "exclude-dirs-use-default": true
   },
   "linters-settings": {
     "depguard": {

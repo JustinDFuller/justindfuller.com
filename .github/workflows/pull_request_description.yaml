@@ -4,15 +4,6 @@ name: Pull Request Description
 
 on:
   pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - labeled
-      - unlabeled
-      - ready_for_review
-      - review_requested
-      - auto_merge_enabled
 
 permissions:
   contents: read
