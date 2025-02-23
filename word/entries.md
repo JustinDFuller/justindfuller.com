@@ -89,3 +89,10 @@
 ## Dilettante
 
 > An admirer or lover of the fine arts: popularly, an amateur; especially, one who follows an art or a branch of knowledge, desultorily, or for amusement only.
+
+<hr />
+
+## Apologue
+
+> A story or relation of fictitious events, intended to convey some moral truth; a moral fable.
+> An apologue differs from a parable in this: the parable is drawn from events which take place among mankind, and therefore requires probability in the narrative; the apologue is founded on supposed actions of animals or inanimate things, and therefore is not limited by strict rules of probability. Æsop's fables are examples of apologues.
