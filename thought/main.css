@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  font-size: 24px;
+  font-family: Amiri, serif;
+  background: #fcf9f4;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+main {
+  animation: fade-in 1s;
+  height: 100%;
+  max-width: 700px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+main > a {
+  color: #020215;
+  padding: 10px 20px;
+  border-radius: 2px;
+  transition:
+    background 500ms,
+    color 500ms;
+  max-width: 100%;
+  text-align: center;
+}
+
+main > a:hover,
+main > a:focus,
+main > a:active {
+  background: #020215;
+  color: white;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #020215;
+    color: white;
+  }
+
+  main > a {
+    color: white;
+  }
+
+  main > a:hover,
+  main > a:focus,
+  main > a:active {
+    background: white;
+    color: #020215;
+  }
+}

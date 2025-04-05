@@ -1,6 +1,6 @@
 ---
 
-runtime: go121
+runtime: go123
 service: default
 
 automatic_scaling:
