@@ -17,6 +17,7 @@ import (
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
 	"github.com/justindfuller/justindfuller.com/word"
+	"github.com/justindfuller/justindfuller.com/thought"
 	"github.com/justindfuller/secretmanager"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -314,11 +315,11 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/thought/thought.template.html", data[[]byte]{
+		if err := templates.ExecuteTemplate(w, "/thought/entry.template.html", data[[]byte]{
 			Title: Title(paths[last]),
 			Entry: entry,
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/thought/thought.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/thought/entry.template.html")
 		}
 	})
 
