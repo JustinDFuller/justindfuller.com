@@ -79,9 +79,6 @@ func Entries() ([][]byte, error) {
 	var wg errgroup.Group
 
 	for i, name := range names {
-		i := i
-		name := name
-
 		wg.Go(func() error {
 			path := fmt.Sprintf("./poem/%s", name)
 
