@@ -1,12 +1,11 @@
 module github.com/justindfuller/justindfuller.com
 
 go 1.22.1
-
-toolchain go1.22.5
+toolchain go1.24.1
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.10.0
+require golang.org/x/sync v0.12.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.1
@@ -15,7 +14,7 @@ require (
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.7.8
 	github.com/yuin/goldmark-meta v1.1.0
-	golang.org/x/text v0.21.0
+	golang.org/x/text v0.23.0
 	golang.org/x/tools v0.27.0
 	google.golang.org/protobuf v1.35.2
 )
