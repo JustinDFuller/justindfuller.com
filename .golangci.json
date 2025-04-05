@@ -1,6 +1,6 @@
 {
   "run": {
-    "go": "1.21.5",
+    "go": "1.23.8",
     "tests": true,
     "modules-download-mode": "readonly",
     "timeout": "5m"

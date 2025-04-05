@@ -1,8 +1,6 @@
 module github.com/justindfuller/justindfuller.com
 
-go 1.22.1
-
-toolchain go1.22.5
+go 1.23.8
 
 require github.com/pkg/errors v0.9.1
 
