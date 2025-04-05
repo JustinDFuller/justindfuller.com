@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+
+    <style>
+      {{ template "/story/story.css" . }}
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <section>
+        <h1>{{ .Title }}</h1>
+        {{ printf "%s" .Entry }}
+      </section>
+    </main>
+
+    <script>
+      {{ template "/story/story.js" . }}
+    </script>
+  </body>
+</html>

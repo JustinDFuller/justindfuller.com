@@ -287,6 +287,41 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/thought", func(w http.ResponseWriter, _ *http.Request) {
+		if err := templates.ExecuteTemplate(w, "/thought/main.template.html", data[[]byte]{
+			Title: "Thought",
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/thought/main.template.html")
+		}
+	})
+
+	http.HandleFunc("/thought/", func(w http.ResponseWriter, r *http.Request) {
+		paths := strings.Split(r.URL.Path, "/")
+		last := len(paths) - 1
+
+		if len(paths) == 0 {
+			http.Error(w, "thought not found.", http.StatusNotFound)
+			log.Printf("thought not found: %s", r.URL.Path)
+
+			return
+		}
+
+		entry, err := thought.Entry(paths[last])
+		if err != nil {
+			http.Error(w, "Error reading thought.", http.StatusInternalServerError)
+			log.Printf("Error reading thought: %s", err)
+
+			return
+		}
+
+		if err := templates.ExecuteTemplate(w, "/thought/thought.template.html", data[[]byte]{
+			Title: Title(paths[last]),
+			Entry: entry,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/thought/thought.template.html")
+		}
+	})
+
 	http.HandleFunc("/review", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[[]byte]{
 			Title: "Review",
