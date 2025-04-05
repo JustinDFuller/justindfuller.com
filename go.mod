@@ -4,7 +4,7 @@ go 1.23.8
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.10.0
+require golang.org/x/sync v0.11.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.1
@@ -13,7 +13,7 @@ require (
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.7.8
 	github.com/yuin/goldmark-meta v1.1.0
-	golang.org/x/text v0.21.0
+	golang.org/x/text v0.22.0
 	golang.org/x/tools v0.27.0
 	google.golang.org/protobuf v1.36.6
 )
@@ -206,13 +206,13 @@ require (
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/crypto v0.35.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20241108190413-2d47ceb2692f // indirect
 	golang.org/x/mod v0.22.0 // indirect
-	golang.org/x/net v0.31.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
 	golang.org/x/oauth2 v0.23.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/time v0.6.0 // indirect
 	google.golang.org/api v0.198.0 // indirect
 	google.golang.org/genproto v0.0.0-20240903143218-8af14fe29dc1 // indirect
