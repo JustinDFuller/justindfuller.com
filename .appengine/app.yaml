@@ -123,6 +123,20 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /thought
+    static_files: .build/thought.html
+    upload: .build/thought.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /thought/responses
+    static_files: .build/thought-responses.html
+    upload: .build/thought-responses.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /make
     static_files: .build/make.html
     upload: .build/make.html
