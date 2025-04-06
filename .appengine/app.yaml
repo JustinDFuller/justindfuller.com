@@ -222,8 +222,18 @@ handlers:
       Content-Type: text/html; charset=utf-8
 
   - url: /2022/01/living-on-24-hours-a-day
-    script: auto
+    static_files: .build/living-on-24-hours-a-day.html
+    upload: .build/living-on-24-hours-a-day.html
     secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /review/living-on-24-hours-a-day
+    static_files: .build/living-on-24-hours-a-day.html
+    upload: .build/living-on-24-hours-a-day.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
 
   - url: /
     static_files: .build/index.html

@@ -83,39 +83,11 @@ deploy: build
 	@gcloud app deploy --appyaml=./.appengine/app.yaml;
 
 .PHONY: build
-build: validate tidy generate vet format lint
+build:
 	@echo ${COLOR_GRAY}Begin build process.${COLOR_NC};
 	@rm -rf ./.build;
 	@mkdir ./.build;
-	@curl -s "http://localhost:9000/" > ./.build/index.html;
-	@curl -s "http://localhost:9000/site.webmanifest" > ./.build/site.webmanifest;
-	@curl -s "http://localhost:9000/make" > ./.build/make.html;
-	@curl -s "http://localhost:9000/nature" > ./.build/nature.html;
-	@curl -s "http://localhost:9000/nature/anolis-carolinensis" > ./.build/nature-anolis-carolinensis.html;
-	@curl -s "http://localhost:9000/grass" > ./.build/grass.html;
-	@curl -s "http://localhost:9000/grass/worker.js" > ./.build/grass-service-worker.js;
-	@curl -s "http://localhost:9000/kit" > ./.build/kit.html;
-	@curl -s "http://localhost:9000/weeks-remaining" > ./.build/weeks-remaining.html;
-	@curl -s "http://localhost:9000/avatar" > ./.build/avatar.html;
-	@curl -s "http://localhost:9000/aphorism" > ./.build/aphorism.html;
-	@curl -s "http://localhost:9000/poem" > ./.build/poem.html;
-	@curl -s "http://localhost:9000/story" > ./.build/story.html;
-	@curl -s "http://localhost:9000/story/the_philosophy_of_trees" > ./.build/the_philosophy_of_trees.html;
-	@curl -s "http://localhost:9000/story/the_philosophy_of_lovers" > ./.build/the_philosophy_of_lovers.html;
-	@curl -s "http://localhost:9000/story/bridge" > ./.build/bridge.html;
-	@curl -s "http://localhost:9000/story/nothing" > ./.build/nothing.html;
-	@curl -s "http://localhost:9000/thought" > ./.build/thought.html;
-	@curl -s "http://localhost:9000/thought/responses" > ./.build/thought-responses.html;
-	@curl -s "http://localhost:9000/review" > ./.build/review.html;
-	@curl -s "http://localhost:9000/review/zen-and-the-art-of-motorcycle-maintenance" > ./.build/zen-and-the-art-of-motorcycle-maintenance.html;
-	@curl -s "http://localhost:9000/review/living-on-24-hours-a-day" > ./.build/living-on-24-hours-a-day.html;
-	@curl -s "http://localhost:9000/review/howards-end" > ./.build/howards-end.html;
-	@curl -s "http://localhost:9000/review/walden" > ./.build/walden.html;
-	@curl -s "http://localhost:9000/review/the-history-of-modern-political-philosophy" > ./.build/the-history-of-modern-political-philosophy.html;
-	@curl -s "http://localhost:9000/word" > ./.build/word.html;
-	@curl -s "http://localhost:9000/word/quality" > ./.build/quality.html;
-	@curl -s "http://localhost:9000/word/equipoise" > ./.build/equipoise.html;
-	@curl -s "http://localhost:9000/word/flexible" > ./.build/flexible.html;
+	@go run ./build/main.go;
 	@cp -r ./image ./.build
 
 .PHONY: build-watch
