@@ -22,40 +22,40 @@ type Page struct {
 	ContentType  string
 }
 
-var pages = []Page{
-	{URL: "/aphorism", File: "aphorism.html"},
-	{URL: "/poem", File: "poem.html"},
-	{URL: "/story", File: "story.html"},
-	{URL: "/story/the_philosophy_of_trees", File: "the_philosophy_of_trees.html"},
-	{URL: "/story/the_philosophy_of_lovers", File: "the_philosophy_of_lovers.html"},
-	{URL: "/story/bridge", File: "bridge.html"},
-	{URL: "/story/nothing", File: "nothing.html"},
-	{URL: "/review", File: "review.html"},
-	{URL: "/review/zen-and-the-art-of-motorcycle-maintenance", File: "zen-and-the-art-of-motorcycle-maintenance.html"},
-	{URL: "/review/living-on-24-hours-a-day", File: "living-on-24-hours-a-day.html"},
-	{URL: "/review/howards-end", File: "howards-end.html"},
-	{URL: "/review/walden", File: "walden.html"},
-	{URL: "/review/the-history-of-modern-political-philosophy", File: "the-history-of-modern-political-philosophy.html"},
-	{URL: "/thought", File: "thought.html"},
-	{URL: "/thought/responses", File: "thought-responses.html"},
-	{URL: "/make", File: "make.html"},
-	{URL: "/grass/worker.js", File: "grass-service-worker.js", ContentType: "application/javascript"},
-	{URL: "/grass", File: "grass.html"},
-	{URL: "/kit", File: "kit.html"},
-	{URL: "/avatar", File: "avatar.html"},
-	{URL: "/weeks-remaining", File: "weeks-remaining.html"},
-	{URL: "/word/quality", File: "quality.html"},
-	{URL: "/word/equipoise", File: "equipoise.html"},
-	{URL: "/word/flexible", File: "flexible.html"},
-	{URL: "/word", File: "word.html"},
-	{URL: "/nature/anolis-carolinensis", File: "nature-anolis-carolinensis.html"},
-	{URL: "/nature", File: "nature.html"},
-	{URL: "/2022/01/living-on-24-hours-a-day", ReadFileFrom: "/review/living-on-24-hours-a-day", File: "living-on-24-hours-a-day.html"},
-	{URL: "/review/living-on-24-hours-a-day", File: "living-on-24-hours-a-day.html"},
-	{URL: "/", File: "index.html"},
-}
-
 func main() {
+	var pages = []Page{
+		{URL: "/aphorism", File: "aphorism.html"},
+		{URL: "/poem", File: "poem.html"},
+		{URL: "/story", File: "story.html"},
+		{URL: "/story/the_philosophy_of_trees", File: "the_philosophy_of_trees.html"},
+		{URL: "/story/the_philosophy_of_lovers", File: "the_philosophy_of_lovers.html"},
+		{URL: "/story/bridge", File: "bridge.html"},
+		{URL: "/story/nothing", File: "nothing.html"},
+		{URL: "/review", File: "review.html"},
+		{URL: "/review/zen-and-the-art-of-motorcycle-maintenance", File: "zen-and-the-art-of-motorcycle-maintenance.html"},
+		{URL: "/review/living-on-24-hours-a-day", File: "living-on-24-hours-a-day.html"},
+		{URL: "/review/howards-end", File: "howards-end.html"},
+		{URL: "/review/walden", File: "walden.html"},
+		{URL: "/review/the-history-of-modern-political-philosophy", File: "the-history-of-modern-political-philosophy.html"},
+		{URL: "/thought", File: "thought.html"},
+		{URL: "/thought/responses", File: "thought-responses.html"},
+		{URL: "/make", File: "make.html"},
+		{URL: "/grass/worker.js", File: "grass-service-worker.js", ContentType: "application/javascript"},
+		{URL: "/grass", File: "grass.html"},
+		{URL: "/kit", File: "kit.html"},
+		{URL: "/avatar", File: "avatar.html"},
+		{URL: "/weeks-remaining", File: "weeks-remaining.html"},
+		{URL: "/word/quality", File: "quality.html"},
+		{URL: "/word/equipoise", File: "equipoise.html"},
+		{URL: "/word/flexible", File: "flexible.html"},
+		{URL: "/word", File: "word.html"},
+		{URL: "/nature/anolis-carolinensis", File: "nature-anolis-carolinensis.html"},
+		{URL: "/nature", File: "nature.html"},
+		{URL: "/2022/01/living-on-24-hours-a-day", ReadFileFrom: "/review/living-on-24-hours-a-day", File: "living-on-24-hours-a-day.html"},
+		{URL: "/review/living-on-24-hours-a-day", File: "living-on-24-hours-a-day.html"},
+		{URL: "/", File: "index.html"},
+	}
+
 	ctx := context.Background()
 	buildDir := ".build"
 
@@ -87,6 +87,7 @@ func main() {
 
 	wgMain.Go(func() error {
 		tmplPath := filepath.FromSlash(".appengine/app.tmpl.yaml")
+		
 		tmpl, err := template.ParseFiles(tmplPath)
 		if err != nil {
 			return fmt.Errorf("parsing template: %w", err)
@@ -97,7 +98,7 @@ func main() {
 			return fmt.Errorf("executing template: %w", err)
 		}
 
-		if err := os.WriteFile("./.appengine/app.yaml", buf.Bytes(), 0644); err != nil {
+		if err := os.WriteFile("./.appengine/app.yaml", buf.Bytes(), 0600); err != nil {
 			return fmt.Errorf("writing app.yaml: %w", err)
 		}
 
