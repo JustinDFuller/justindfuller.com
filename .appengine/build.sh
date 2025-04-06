@@ -1,2 +1,2 @@
 #!/bin/bash
-make server & (sleep 60 && make build)
+make server-fast & (sleep 60 && make build)
