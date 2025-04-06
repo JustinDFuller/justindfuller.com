@@ -98,7 +98,7 @@ func main() {
 			return fmt.Errorf("executing template: %w", err)
 		}
 
-		if err := os.WriteFile("./.appengine/app.yaml", buf.Bytes(), 0600); err != nil {
+		if err := os.WriteFile("./.appengine/app.yaml", buf.Bytes(), 0600); err != nil { //nolint:mnd
 			return fmt.Errorf("writing app.yaml: %w", err)
 		}
 
