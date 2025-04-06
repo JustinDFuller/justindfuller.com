@@ -39,6 +39,7 @@ func main() {
 		{URL: "/review/the-history-of-modern-political-philosophy", File: "the-history-of-modern-political-philosophy.html"},
 		{URL: "/thought", File: "thought.html"},
 		{URL: "/thought/responses", File: "thought-responses.html"},
+		{URL: "/thought/existence", File: "thought-existence.html"},
 		{URL: "/make", File: "make.html"},
 		{URL: "/grass/worker.js", File: "grass-service-worker.js", ContentType: "application/javascript"},
 		{URL: "/grass", File: "grass.html"},

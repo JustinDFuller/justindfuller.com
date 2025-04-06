@@ -137,6 +137,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /thought/existence
+    static_files: .build/thought-existence.html
+    upload: .build/thought-existence.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /make
     static_files: .build/make.html
     upload: .build/make.html
