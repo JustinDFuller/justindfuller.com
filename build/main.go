@@ -60,9 +60,9 @@ func main() {
 	buildDir := ".build"
 
 	var wgMain errgroup.Group
-	var wgPages errgroup.Group
-
 	wgMain.Go(func() error {
+		var wgPages errgroup.Group
+	
 		for _, page := range pages {
 			wgPages.Go(func() error {
 				u := page.URL
