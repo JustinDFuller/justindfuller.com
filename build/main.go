@@ -60,18 +60,40 @@ func main() {
 	buildDir := ".build"
 
 	var wgMain errgroup.Group
+	
 	wgMain.Go(func() error {
 		var wgPages errgroup.Group
-	
+
 		for _, page := range pages {
 			wgPages.Go(func() error {
-				u := page.URL
-				if u == "" {
-					u = page.File
+				dest := filepath.Join(buildDir, page.File)
+
+				urlPath := page.URL
+				if urlPath == "" {
+					urlPath = page.File
 				}
 
-				if err := downloadFile(ctx, u, filepath.Join(buildDir, page.File)); err != nil {
-					return errors.Wrapf(err, "error reading %s", u)
+				url := fmt.Sprintf("http://localhost:9000%s", urlPath)
+
+				req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+				if err != nil {
+					return errors.Wrap(err, "error generating request")
+				}
+
+				resp, err := http.DefaultClient.Do(req)
+				if err != nil {
+					return fmt.Errorf("fetching %s: %w", url, err)
+				}
+				defer resp.Body.Close()
+
+				out, err := os.Create(dest)
+				if err != nil {
+					return fmt.Errorf("creating %s: %w", dest, err)
+				}
+				defer out.Close()
+
+				if _, err := io.Copy(out, resp.Body); err != nil {
+					return fmt.Errorf("writing to %s: %w", dest, err)
 				}
 
 				return nil
@@ -87,7 +109,7 @@ func main() {
 
 	wgMain.Go(func() error {
 		tmplPath := filepath.FromSlash(".appengine/app.tmpl.yaml")
-		
+
 		tmpl, err := template.ParseFiles(tmplPath)
 		if err != nil {
 			return fmt.Errorf("parsing template: %w", err)
@@ -108,31 +130,4 @@ func main() {
 	if err := wgMain.Wait(); err != nil {
 		log.Fatalf("Error building: %s", err)
 	}
-}
-
-func downloadFile(ctx context.Context, urlPath, dest string) error {
-	url := fmt.Sprintf("http://localhost:9000%s", urlPath)
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return errors.Wrap(err, "error generating request")
-	}
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return fmt.Errorf("fetching %s: %w", url, err)
-	}
-	defer resp.Body.Close()
-
-	out, err := os.Create(dest)
-	if err != nil {
-		return fmt.Errorf("creating %s: %w", dest, err)
-	}
-	defer out.Close()
-
-	if _, err := io.Copy(out, resp.Body); err != nil {
-		return fmt.Errorf("writing to %s: %w", dest, err)
-	}
-
-	return nil
 }
