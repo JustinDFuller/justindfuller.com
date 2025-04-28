@@ -26,7 +26,7 @@ jobs:
         with:
           lfs: true
 
-      - uses: jadrol/pr-description-checker-action@v1.0.0
+      - uses: jadrol/pr-description-checker-action@v1.2.0
         id: description-checker
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
