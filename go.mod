@@ -4,7 +4,7 @@ go 1.23.8
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.13.0
+require golang.org/x/sync v0.14.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.5
@@ -13,7 +13,7 @@ require (
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.7.8
 	github.com/yuin/goldmark-meta v1.1.0
-	golang.org/x/text v0.23.0
+	golang.org/x/text v0.25.0
 	golang.org/x/tools v0.31.0
 	google.golang.org/protobuf v1.36.6
 )
