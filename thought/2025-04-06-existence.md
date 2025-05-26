@@ -13,7 +13,7 @@ However, these two possibilities are, as far as we know, impossible. We know of 
 
 *A common rebutal for this point is quantum physics where it is observed that particles can pop into and out of existence. At least, that is how it is commonly talked about. However, we do not know enough to say for sure that these particles truly pop into and out of existence. They may simply move in a way we cannot yet observe. Further, we do not know that they come from nothing. In fact, it is possible they may use some aspect of existing particles in their process of generation.
 
-**A common rebutal to this point is a circle. However, I contend it is different. The beginning of the circle's existence and the beginning of the circle's path are two different things. We can easily imagine a walking trail with no beginning and no end. However, no one would contend the fact that the path is a circle proves it was never created. There is also no reason to believe eternity or eternal timelines take the form of a circle. The circle represent recursion, which is different than eternity or being without beginning.
+**A common rebutal to this point is a circle. However, I contend it is different. The beginning of the circle's existence and the beginning of the circle's path are two different things. We can easily imagine a walking trail with no beginning and no end. However, no one would contend the fact that the path is a circle proves it was never created. There is also no reason to believe eternity or eternal timelines take the form of a circle. The circle represents recursion, which is different than eternity or being without beginning.
 
 So, the two possibilities available to us are not comprehensible to us.
 
