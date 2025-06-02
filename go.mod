@@ -11,7 +11,7 @@ require (
 	github.com/SherClockHolmes/webpush-go v1.3.0
 	github.com/golangci/golangci-lint v1.62.2
 	github.com/justindfuller/secretmanager v0.0.4
-	github.com/yuin/goldmark v1.7.8
+	github.com/yuin/goldmark v1.7.12
 	github.com/yuin/goldmark-meta v1.1.0
 	golang.org/x/text v0.25.0
 	golang.org/x/tools v0.31.0
