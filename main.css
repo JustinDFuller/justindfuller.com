@@ -1,4 +1,37 @@
 <style>
+  /* Font Declarations */
+  @font-face {
+    font-family: 'Wotfard';
+    src: url('/fonts/wotfard/wotfard-regular-webfont.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Wotfard';
+    src: url('/fonts/wotfard/wotfard-regular-italic-webfont.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Wotfard';
+    src: url('/fonts/wotfard/wotfard-medium-webfont.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Wotfard';
+    src: url('/fonts/wotfard/wotfard-semibold-webfont.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
   /* CSS Variables for Design System */
   :root {
     /* Colors - Dark Theme (Default) */
@@ -25,7 +58,7 @@
       hsl(222deg 47% 11%) 100%);
     
     /* Typography */
-    --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+    --font-family-sans: 'Wotfard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
     --font-family-mono: 'JetBrains Mono', 'Consolas', 'Monaco', 'Andale Mono', monospace;
     --font-size-xs: 0.75rem;
     --font-size-sm: 0.875rem;
