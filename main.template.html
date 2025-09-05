@@ -6,16 +6,65 @@
   </head>
 
   <body>
+    <header>
+      <div class="header-container">
+        <a href="/" class="nav-logo">Justin Fuller</a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="/poem" class="nav-link">Poems</a></li>
+            <li><a href="/story" class="nav-link">Stories</a></li>
+            <li><a href="/thought" class="nav-link">Thoughts</a></li>
+            <li><a href="/make" class="nav-link">Projects</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
     <main>
-      <a href="/aphorism">Aphorism</a>
-      <a href="/poem">Poem</a>
-      <a href="/story">Story</a>
-      <a href="/word">Word</a>
-      <a href="/make">Make</a>
-      <a href="/review">Review</a>
-      <a href="/nature">Nature</a>
-      <a href="/thought">Thought</a>
+      <div class="hero-section">
+        <div class="hero-background"></div>
+        <h1>Creative Works & Thoughts</h1>
+      </div>
+      
+      <div class="homepage-grid">
+        <a href="/aphorism" class="category-card">Aphorism</a>
+        <a href="/poem" class="category-card">Poem</a>
+        <a href="/story" class="category-card">Story</a>
+        <a href="/word" class="category-card">Word</a>
+        <a href="/make" class="category-card">Make</a>
+        <a href="/review" class="category-card">Review</a>
+        <a href="/nature" class="category-card">Nature</a>
+        <a href="/thought" class="category-card">Thought</a>
+      </div>
     </main>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Writing</h3>
+            <ul class="footer-links">
+              <li><a href="/poem" class="footer-link">Poems</a></li>
+              <li><a href="/story" class="footer-link">Stories</a></li>
+              <li><a href="/aphorism" class="footer-link">Aphorisms</a></li>
+              <li><a href="/review" class="footer-link">Reviews</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Creative</h3>
+            <ul class="footer-links">
+              <li><a href="/make" class="footer-link">Projects</a></li>
+              <li><a href="/word" class="footer-link">Words</a></li>
+              <li><a href="/nature" class="footer-link">Nature</a></li>
+              <li><a href="/thought" class="footer-link">Thoughts</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2024 Justin Fuller. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
 
     {{ template "/main.js" . }} 
   </body>
