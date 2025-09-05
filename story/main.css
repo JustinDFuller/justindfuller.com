@@ -1,8 +1,4 @@
 /* Stories Page Specific Styles */
-.page-header h1 {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--space-lg);
-}
 
 .stories-list {
   display: flex;
@@ -58,9 +54,6 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .page-header h1 {
-    font-size: var(--font-size-2xl);
-  }
   .story-link {
     padding: var(--space-lg);
     font-size: var(--font-size-base);

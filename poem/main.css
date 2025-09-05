@@ -1,8 +1,4 @@
 /* Poems Page Specific Styles */
-.page-header h1 {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--space-lg);
-}
 
 .poems-grid {
   display: flex;
@@ -40,9 +36,6 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .page-header h1 {
-    font-size: var(--font-size-2xl);
-  }
   .poems-grid {
     gap: var(--space-lg);
     padding: 0 var(--space-md);

@@ -514,10 +514,11 @@
 
   .page-header {
     text-align: center;
-    margin-bottom: var(--space-2xl); /* Consistent spacing below title */
+    margin-bottom: var(--space-lg); /* Reduced spacing below title */
   }
 
   .page-header h1 {
+    font-size: 2.25rem; /* Consistent smaller font size for all page headers */
     margin-top: 0;
     margin-bottom: 0; /* Remove default h1 margins since page-header handles it */
   }
@@ -549,7 +550,11 @@
     }
 
     .page-header {
-      margin-bottom: var(--space-xl); /* Less spacing on mobile */
+      margin-bottom: var(--space-md); /* Reduced spacing on mobile */
+    }
+
+    .page-header h1 {
+      font-size: 1.75rem; /* Smaller font size on mobile */
     }
 
     .content-container {

@@ -13,9 +13,7 @@
     {{ template "/header.template.html" . }}
 
     <main class="content-page">
-      <div class="page-header">
-        <h1>Words</h1>
-      </div>
+      {{ template "/page-title.template.html" "Words" }}
       
       <div class="content-container">
         <section class="word-content">{{ printf "%s" .Entry }}</section>

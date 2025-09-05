@@ -1,8 +1,4 @@
 /* Words Page Specific Styles */
-.page-header h1 {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--space-lg);
-}
 
 .word-content {
   font-family: var(--font-family-sans);
@@ -72,9 +68,6 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .page-header h1 {
-    font-size: var(--font-size-2xl);
-  }
   .word-content {
     padding: 0 var(--space-md);
   }

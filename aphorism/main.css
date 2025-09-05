@@ -4,16 +4,6 @@
   padding-top: var(--space-2xl);
 }
 
-.page-header {
-  text-align: center;
-  margin-bottom: var(--space-xl);
-  padding: 0 var(--space-lg);
-}
-
-.page-header h1 {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--space-lg);
-}
 
 .content-container {
   max-width: var(--max-width-narrow);
@@ -56,9 +46,6 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .page-header h1 {
-    font-size: var(--font-size-2xl);
-  }
   
   .aphorisms-list {
     gap: var(--space-lg);
