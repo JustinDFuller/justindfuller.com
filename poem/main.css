@@ -1,86 +1,67 @@
-* {
-  box-sizing: border-box;
+/* Poems Page Specific Styles */
+.poems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
 }
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: max-content;
-  display: block;
-  font-size: 24px;
-  font-family: Amiri, serif;
-  background: #fcf9f4;
+.poem-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-base);
 }
 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
+.poem-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    var(--color-accent-blue) 0%, 
+    var(--color-accent-purple) 50%, 
+    var(--color-accent-pink) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
+}
+
+.poem-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.poem-card:hover::after {
+  transform: scaleX(1);
+}
+
+.poem-content {
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-base);
+  line-height: 1.8;
+  color: var(--color-text-primary);
+  white-space: pre-line;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .poems-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
   }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-main {
-  animation: fade-in 1s;
-  padding: 20px;
-  height: max-content;
-  width: 100%;
-  display: block;
-}
-
-section {
-  display: block;
-  height: max-content;
-  max-width: 400px;
-  margin: auto;
-}
-
-p {
-  font-family: Amiri, serif;
-  margin-bottom: 40px;
-  line-height: 36px;
-  white-space: pre;
-}
-
-hr {
-  margin-top: 30px;
-}
-
-a {
-  color: #020215;
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: #020215;
-}
-
-a:hover,
-a:focus,
-a:active {
-  background: #020215;
-  color: white;
-  border-bottom: none;
-}
-
-@media screen and (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #020215;
-    color: white;
-  }
-
-  a {
-    color: white;
-    text-decoration-color: #aaa;
-  }
-
-  a:hover,
-  a:focus,
-  a:active {
-    background: white;
-    color: #020215;
+  
+  .poem-card {
+    padding: var(--space-lg);
+    min-height: 150px;
   }
 }
