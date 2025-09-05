@@ -126,10 +126,9 @@
     font-size: var(--font-size-4xl);
     text-align: center;
     margin-bottom: var(--space-2xl);
-    background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-text-primary);
+    position: relative;
+    z-index: 1;
   }
 
   a {
@@ -170,21 +169,25 @@
     text-align: center;
     position: relative;
     padding: var(--space-2xl) 0;
+    overflow: hidden;
+    isolation: isolate;
   }
 
   .hero-background {
     position: absolute;
-    top: -50px;
-    left: 0;
-    right: 0;
-    height: 300px;
-    background: linear-gradient(135deg, 
-      hsl(245deg 100% 60% / 0.1) 0%,
-      hsl(280deg 100% 65% / 0.15) 50%,
-      hsl(329deg 100% 65% / 0.1) 100%);
-    filter: blur(80px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 400px;
+    background: radial-gradient(ellipse at center, 
+      hsl(280deg 100% 65% / 0.25) 0%,
+      hsl(245deg 100% 60% / 0.15) 40%,
+      hsl(329deg 100% 65% / 0.05) 100%);
+    filter: blur(100px);
     z-index: -1;
     pointer-events: none;
+    opacity: 0.8;
   }
 
   /* Homepage Categories Grid */
@@ -255,6 +258,7 @@
     border-bottom: 1px solid var(--color-border);
     backdrop-filter: blur(10px);
     width: 100%;
+    isolation: isolate;
   }
 
   .header-container {
@@ -264,7 +268,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: transparent;
   }
 
   .nav-logo {
