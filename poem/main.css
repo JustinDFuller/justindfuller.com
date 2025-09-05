@@ -46,9 +46,9 @@
 }
 
 .poem-content {
-  font-family: var(--font-family-serif);
+  font-family: var(--font-family-sans);
   font-size: var(--font-size-base);
-  line-height: 1.8;
+  line-height: var(--line-height-relaxed);
   color: var(--color-text-primary);
   white-space: pre-line;
 }
