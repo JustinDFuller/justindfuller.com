@@ -11,7 +11,7 @@
   background: var(--gradient-card);
   border-left: 3px solid var(--color-accent-blue);
   border-radius: var(--border-radius-md);
-  padding: var(--space-xs) var(--space-xl);
+  padding: var(--space-xs) var(--space-xl) var(--space-lg) var(--space-xl);
   position: relative;
   overflow: hidden;
   transition: all var(--transition-fast);
@@ -27,10 +27,11 @@
   font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
   color: var(--color-text-secondary);
-  white-space: pre-wrap;
+  white-space: pre-line;
   font-style: italic;
   display: block;
   margin: 0;
+  text-align: left;
 }
 
 /* Mobile Responsive */

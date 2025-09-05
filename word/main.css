@@ -30,7 +30,7 @@
 .word-content blockquote {
   border-left: 3px solid var(--color-accent-blue);
   margin: 0;
-  padding: 0 var(--space-xl);
+  padding: var(--space-xl);
   margin-bottom: var(--space-xl);
   font-style: italic;
   background: var(--gradient-card);
