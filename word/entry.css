@@ -1,142 +1,142 @@
-* {
-  box-sizing: border-box;
+/* Word Entry Specific Styles - Complements Main Design */
+.word-content {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
 }
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: max-content;
-  display: block;
-  font-size: 24px;
-  font-family: Amiri, serif;
-  background: #fcf9f4;
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-main {
-  animation: fade-in 1s;
-  padding: 20px;
-  height: max-content;
-  width: 100%;
-  display: block;
-}
-
-section {
-  display: block;
-  height: max-content;
-  max-width: 600px;
-  margin: auto;
-}
-
-p {
-  font-family: Amiri, serif;
-  margin: 0;
-  line-height: 36px;
-  margin-bottom: 30px;
-  text-align: left;
-}
-
-hr {
-  margin-top: 30px;
-}
-
-h1 {
-  font-size: 1.5em;
-  line-height: 1.2em;
-}
-
-h1,
-h2 {
+.word-content h1 {
+  font-size: var(--font-size-3xl);
+  color: var(--color-accent-pink);
   text-align: center;
+  margin-bottom: var(--space-2xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, var(--color-accent-pink), var(--color-accent-yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-blockquote {
-  border-left: 3px solid #444955;
+.word-content h2 {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-accent-blue);
+  padding-bottom: var(--space-sm);
+}
+
+.word-content h3 {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+  font-weight: 500;
+}
+
+.word-content p {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-lg);
+}
+
+.word-content hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-3xl) 0;
+}
+
+.word-content blockquote {
+  border-left: 3px solid var(--color-accent-blue);
   margin: 0;
-  padding: 0 2em;
-  margin-bottom: 30px;
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+  font-style: italic;
+  background: var(--gradient-card);
+  border-radius: var(--border-radius-md);
 }
 
-blockquote p {
+.word-content blockquote p {
   margin-bottom: 0;
 }
 
-blockquote > p + p {
-  margin-top: 30px;
+.word-content blockquote > p + p {
+  margin-top: var(--space-lg);
 }
 
-a {
-  color: #020215;
+.word-content a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--transition-fast);
   position: relative;
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 6px;
 }
 
-a:hover {
-  color: white;
-  background: #020215;
-  padding: 0 6px;
-  border-radius: 6px;
+.word-content a:hover {
+  color: var(--color-link-hover);
 }
 
-img {
+.word-content img {
   max-height: 250px;
   max-width: 100%;
   width: auto;
   display: block;
-  margin: auto;
+  margin: var(--space-xl) auto;
+  border-radius: var(--border-radius-md);
 }
 
-img.no-max-height {
+.word-content img.no-max-height {
   max-height: 100%;
 }
 
-img.space-below {
-  margin-bottom: 20px;
+.word-content img.space-below {
+  margin-bottom: var(--space-lg);
 }
 
-h3 {
-  margin-bottom: 0;
+/* Back Link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--color-accent-blue);
+  font-weight: 500;
+  margin-bottom: var(--space-xl);
+  transition: all var(--transition-fast);
+  text-decoration: none;
 }
 
-@media screen and (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #020215;
-    color: white;
-  }
+.back-link:hover {
+  color: var(--color-accent-pink);
+  transform: translateX(-4px);
+}
 
-  main > a {
-    color: white;
-  }
+.back-link svg {
+  transition: transform var(--transition-fast);
+}
 
-  main > a:hover,
-  main > a:focus,
-  main > a:active {
-    background: white;
-    color: #020215;
-  }
+.back-link:hover svg {
+  transform: translateX(-4px);
+}
 
-  img {
-    background: white;
+/* Responsive */
+@media (max-width: 768px) {
+  .word-content {
+    padding: 0 var(--space-md);
+  }
+  
+  .word-content h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .word-content blockquote {
+    padding: var(--space-md) var(--space-lg);
   }
 }
 
-@media screen and (width <= 500px) {
-  blockquote {
-    padding: 0 1em 0 2em;
+@media (max-width: 500px) {
+  .word-content blockquote {
+    padding: var(--space-sm) var(--space-md);
   }
 }

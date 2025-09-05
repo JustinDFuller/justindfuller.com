@@ -372,20 +372,18 @@
     transition: transform var(--transition-base);
   }
   
-  .logo-accent {
+  .logo-name {
     color: var(--color-accent-pink);
     display: inline-block;
-    transition: transform var(--transition-base), color var(--transition-base);
-  }
-
-  .nav-logo:hover {
-    transform: scale(1.05);
   }
   
-  .nav-logo:hover .logo-accent {
-    color: var(--color-accent-yellow);
-    transform: rotate(-2deg);
+  .logo-middle {
+    color: var(--color-text-secondary);
+    display: inline-block;
+    font-weight: 500;
   }
+
+  /* Removed hover animation for cleaner aesthetic */
 
   nav {
     display: flex;
