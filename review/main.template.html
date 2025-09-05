@@ -10,17 +10,67 @@
   </head>
 
   <body>
-    <main>
-      <a href="/review/zen-and-the-art-of-motorcycle-maintenance"
-        >Zen and The Art of Motorcycle Maintenance</a
-      >
-      <a href="/review/living-on-24-hours-a-day">Living on 24 Hours a Day</a>
-      <a href="/review/howards-end">Howards End</a>
-      <a href="/review/walden">Walden</a>
-      <a href="/review/the-history-of-modern-political-philosophy"
-        >The History of Modern Political Philosophy</a
-      >
+    <header>
+      <div class="header-container">
+        <a href="/" class="nav-logo">Justin Fuller</a>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="/poem" class="nav-link">Poems</a></li>
+            <li><a href="/story" class="nav-link">Stories</a></li>
+            <li><a href="/thought" class="nav-link">Thoughts</a></li>
+            <li><a href="/make" class="nav-link">Projects</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="content-page">
+      <div class="page-header">
+        <h1>Reviews</h1>
+      </div>
+      
+      <div class="content-container">
+        <div class="reviews-list">
+          <a href="/review/zen-and-the-art-of-motorcycle-maintenance" class="review-link"
+            >Zen and The Art of Motorcycle Maintenance</a
+          >
+          <a href="/review/living-on-24-hours-a-day" class="review-link">Living on 24 Hours a Day</a>
+          <a href="/review/howards-end" class="review-link">Howards End</a>
+          <a href="/review/walden" class="review-link">Walden</a>
+          <a href="/review/the-history-of-modern-political-philosophy" class="review-link"
+            >The History of Modern Political Philosophy</a
+          >
+        </div>
+      </div>
     </main>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Writing</h3>
+            <ul class="footer-links">
+              <li><a href="/poem" class="footer-link">Poems</a></li>
+              <li><a href="/story" class="footer-link">Stories</a></li>
+              <li><a href="/aphorism" class="footer-link">Aphorisms</a></li>
+              <li><a href="/review" class="footer-link">Reviews</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Creative</h3>
+            <ul class="footer-links">
+              <li><a href="/make" class="footer-link">Projects</a></li>
+              <li><a href="/word" class="footer-link">Words</a></li>
+              <li><a href="/nature" class="footer-link">Nature</a></li>
+              <li><a href="/thought" class="footer-link">Thoughts</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2024 Justin Fuller. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
 
     <script>
       {{ template "/review/main.js" . }}

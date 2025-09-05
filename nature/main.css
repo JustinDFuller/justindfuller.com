@@ -9,7 +9,6 @@ body {
   display: block;
   font-size: 24px;
   font-family: Amiri, serif;
-  background: #fcf9f4;
 }
 
 a {
@@ -66,12 +65,6 @@ main {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #020215;
-    color: white;
-  }
-
   a,
   a > span {
     color: white;
