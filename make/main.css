@@ -1,4 +1,9 @@
 /* Projects Page Specific Styles */
+.page-header h1 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-lg);
+}
+
 .projects-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -57,6 +62,9 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .page-header h1 {
+    font-size: var(--font-size-2xl);
+  }
   .projects-list {
     grid-template-columns: 1fr;
     gap: var(--space-lg);

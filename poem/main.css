@@ -1,4 +1,9 @@
 /* Poems Page Specific Styles */
+.page-header h1 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-lg);
+}
+
 .poems-grid {
   display: flex;
   flex-direction: column;
@@ -11,7 +16,7 @@
   background: var(--gradient-card);
   border-left: 3px solid var(--color-accent-blue);
   border-radius: var(--border-radius-md);
-  padding: var(--space-xs) var(--space-xl) var(--space-lg) var(--space-xl);
+  padding: var(--space-lg) var(--space-xl) var(--space-lg) var(--space-xl);
   position: relative;
   overflow: hidden;
   transition: all var(--transition-fast);
@@ -27,15 +32,17 @@
   font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
   color: var(--color-text-secondary);
-  white-space: pre-line;
+  white-space: pre-wrap;
   font-style: italic;
   display: block;
   margin: 0;
-  text-align: left;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .page-header h1 {
+    font-size: var(--font-size-2xl);
+  }
   .poems-grid {
     gap: var(--space-lg);
     padding: 0 var(--space-md);

@@ -1,4 +1,9 @@
 /* Nature Page Specific Styles */
+.page-header h1 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-lg);
+}
+
 .nature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -63,6 +68,9 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .page-header h1 {
+    font-size: var(--font-size-2xl);
+  }
   .nature-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: var(--space-lg);

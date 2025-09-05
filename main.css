@@ -315,6 +315,13 @@
     align-items: center;
     gap: var(--space-sm);
   }
+
+  .card-title svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--color-accent-yellow);
+    flex-shrink: 0;
+  }
   
   .card-cta {
     display: inline-flex;
@@ -500,6 +507,28 @@
     margin: 0;
   }
 
+  /* Content Page Styles */
+  .content-page {
+    padding-top: var(--space-xl); /* Reduced from default */
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl); /* Consistent spacing below title */
+  }
+
+  .page-header h1 {
+    margin-top: 0;
+    margin-bottom: 0; /* Remove default h1 margins since page-header handles it */
+  }
+
+  /* Content Container */
+  .content-container {
+    max-width: var(--max-width-container);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .homepage-grid {
@@ -513,6 +542,18 @@
     
     main {
       padding: var(--space-md) 0;
+    }
+
+    .content-page {
+      padding-top: var(--space-lg); /* Even less on mobile */
+    }
+
+    .page-header {
+      margin-bottom: var(--space-xl); /* Less spacing on mobile */
+    }
+
+    .content-container {
+      padding: 0 var(--space-md);
     }
 
     .category-card {
