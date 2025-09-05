@@ -90,6 +90,7 @@ func Entries() ([][]byte, error) {
 			content := file
 			content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
 			content = bytes.Split(content, []byte("```"))[1]
+			content = bytes.TrimSpace(content)
 			contents[i] = content
 
 			return nil
@@ -123,6 +124,7 @@ func Entry(name string) ([][]byte, error) {
 	content := file
 	content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
 	content = bytes.Split(content, []byte("```"))[1]
+	content = bytes.TrimSpace(content)
 
 	return [][]byte{content}, nil
 }

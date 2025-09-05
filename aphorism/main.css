@@ -25,45 +25,31 @@
 .aphorisms-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xl);
+  gap: var(--space-2xl);
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
 }
 
 .aphorism-card {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
+  background: var(--gradient-card);
+  border-left: 3px solid var(--color-accent-blue);
+  border-radius: var(--border-radius-md);
   padding: var(--space-xl);
   position: relative;
   overflow: hidden;
-  transition: all var(--transition-base);
-}
-
-.aphorism-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
-  opacity: 0;
-  transition: opacity var(--transition-base);
+  transition: all var(--transition-fast);
 }
 
 .aphorism-card:hover {
   transform: translateX(4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.aphorism-card:hover::before {
-  opacity: 1;
+  box-shadow: var(--shadow-md);
 }
 
 .aphorism-text {
   font-family: var(--font-family-sans);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   margin: 0;
   font-style: italic;
 }
@@ -74,8 +60,14 @@
     font-size: var(--font-size-2xl);
   }
   
+  .aphorisms-list {
+    gap: var(--space-lg);
+    padding: 0 var(--space-md);
+  }
+  
   .aphorism-card {
-    padding: var(--space-lg);
+    padding: var(--space-md);
+    margin-left: 0;
   }
   
   .aphorism-text {

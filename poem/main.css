@@ -1,67 +1,47 @@
 /* Poems Page Specific Styles */
 .poems-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--space-xl);
-  margin-bottom: var(--space-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  max-width: var(--max-width-narrow);
+  margin: 0 auto var(--space-2xl);
 }
 
 .poem-card {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-xl);
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background: var(--gradient-card);
+  border-left: 3px solid var(--color-accent-blue);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-xs) var(--space-xl);
   position: relative;
   overflow: hidden;
-  transition: all var(--transition-base);
-}
-
-.poem-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, 
-    var(--color-accent-blue) 0%, 
-    var(--color-accent-purple) 50%, 
-    var(--color-accent-pink) 100%);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--transition-base);
+  transition: all var(--transition-fast);
 }
 
 .poem-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.poem-card:hover::after {
-  transform: scaleX(1);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
 }
 
 .poem-content {
   font-family: var(--font-family-sans);
   font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
-  color: var(--color-text-primary);
-  white-space: pre-line;
+  color: var(--color-text-secondary);
+  white-space: pre-wrap;
+  font-style: italic;
+  display: block;
+  margin: 0;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .poems-grid {
-    grid-template-columns: 1fr;
     gap: var(--space-lg);
+    padding: 0 var(--space-md);
   }
   
   .poem-card {
-    padding: var(--space-lg);
-    min-height: 150px;
+    padding: var(--space-xs) var(--space-md);
+    margin-left: 0;
   }
 }

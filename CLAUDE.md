@@ -1,0 +1,3 @@
+- Make sure to use the browser mcp tool to validate every change against the local server at http://localhost:9000
+- Make sure to incrementally git add, commit, and push all work whenever you complete a step.
+- Make sure all styles align with @design-system.md
