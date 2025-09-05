@@ -8,7 +8,9 @@
   <body>
     <header>
       <div class="header-container">
-        <a href="/" class="nav-logo">Justin Fuller</a>
+        <a href="/" class="nav-logo">
+          Justin <span class="logo-accent">Fuller</span>
+        </a>
         <nav>
           <ul class="nav-links">
             <li><a href="/poem" class="nav-link">Poems</a></li>
@@ -17,24 +19,72 @@
             <li><a href="/make" class="nav-link">Projects</a></li>
           </ul>
         </nav>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
 
     <main>
       <div class="hero-section">
         <div class="hero-background"></div>
-        <h1>Creative Works & Thoughts</h1>
+        <div class="hero-decoration hero-decoration-1"></div>
+        <div class="hero-decoration hero-decoration-2"></div>
+        <h1><span>Creative</span> Works & Thoughts</h1>
+        <p class="hero-subtitle">Exploring ideas through poetry, stories, and code</p>
       </div>
       
       <div class="homepage-grid">
-        <a href="/aphorism" class="category-card">Aphorism</a>
-        <a href="/poem" class="category-card">Poem</a>
-        <a href="/story" class="category-card">Story</a>
-        <a href="/word" class="category-card">Word</a>
-        <a href="/make" class="category-card">Make</a>
-        <a href="/review" class="category-card">Review</a>
-        <a href="/nature" class="category-card">Nature</a>
-        <a href="/thought" class="category-card">Thought</a>
+        <a href="/aphorism" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">💭 Aphorisms</h3>
+            <span class="card-cta">Explore <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+        <a href="/poem" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">✍️ Poems</h3>
+            <span class="card-cta">Read more <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+        <a href="/story" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">📚 Stories</h3>
+            <span class="card-cta">Discover <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+        <a href="/word" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">🔤 Words</h3>
+            <span class="card-cta">Learn <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+        <a href="/make" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">🛠️ Projects</h3>
+            <span class="card-cta">View work <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+        <a href="/review" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">⭐ Reviews</h3>
+            <span class="card-cta">Browse <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+        <a href="/nature" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">🌿 Nature</h3>
+            <span class="card-cta">Explore <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
+        <a href="/thought" class="category-card">
+          <div class="card-content">
+            <h3 class="card-title">💡 Thoughts</h3>
+            <span class="card-cta">Read <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </div>
+        </a>
       </div>
     </main>
 
