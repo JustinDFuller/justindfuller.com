@@ -23,7 +23,7 @@
   color: var(--color-text-primary);
   margin-top: var(--space-2xl);
   margin-bottom: var(--space-xl);
-  text-align: left;
+  text-align: center;
   font-weight: 600;
 }
 
@@ -72,7 +72,7 @@
 
 .story-content em,
 .story-content i {
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
   font-style: italic;
 }
 
