@@ -421,6 +421,27 @@
     color: var(--color-text-primary);
   }
 
+  /* Social Icon Links */
+  .nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .nav-icon:hover {
+    color: var(--color-accent-pink);
+    transform: translateY(-2px);
+  }
+
+  .nav-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
   /* Mobile Menu Button */
   .mobile-menu-btn {
     display: none;
