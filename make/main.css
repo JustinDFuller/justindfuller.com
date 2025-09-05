@@ -34,8 +34,17 @@ main {
   flex-direction: column;
 }
 
-main > a {
-  color: #020215;
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg, 1.5rem);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.project-link {
+  color: var(--color-text-primary);
   padding: 10px 20px;
   border-radius: 2px;
   transition:
@@ -44,23 +53,25 @@ main > a {
   width: 300px;
   max-width: 100%;
   text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 
-main > a:hover,
-main > a:focus,
-main > a:active {
+.project-link:hover,
+.project-link:focus,
+.project-link:active {
   background: #020215;
   color: white;
 }
 
 @media (prefers-color-scheme: dark) {
-  main > a {
+  .project-link {
     color: white;
   }
 
-  main > a:hover,
-  main > a:focus,
-  main > a:active {
+  .project-link:hover,
+  .project-link:focus,
+  .project-link:active {
     background: white;
     color: #020215;
   }

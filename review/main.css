@@ -34,32 +34,41 @@ main {
   flex-direction: column;
 }
 
-main > a {
-  color: #020215;
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg, 1.5rem);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.review-link {
+  color: var(--color-text-primary);
   padding: 10px 20px;
   border-radius: 2px;
   transition:
     background 500ms,
     color 500ms;
-  max-width: 100%;
   text-align: center;
+  display: block;
 }
 
-main > a:hover,
-main > a:focus,
-main > a:active {
+.review-link:hover,
+.review-link:focus,
+.review-link:active {
   background: #020215;
   color: white;
 }
 
 @media screen and (prefers-color-scheme: dark) {
-  main > a {
+  .review-link {
     color: white;
   }
 
-  main > a:hover,
-  main > a:focus,
-  main > a:active {
+  .review-link:hover,
+  .review-link:focus,
+  .review-link:active {
     background: white;
     color: #020215;
   }
