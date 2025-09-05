@@ -35,27 +35,27 @@
   /* CSS Variables for Design System */
   :root {
     /* Colors - Dark Theme (Default) */
-    --color-bg-primary: hsl(222deg 47% 11%);
-    --color-bg-secondary: hsl(222deg 47% 15%);
-    --color-bg-card: hsl(222deg 47% 18%);
-    --color-text-primary: hsl(0deg 0% 100%);
-    --color-text-secondary: hsl(222deg 15% 70%);
-    --color-text-muted: hsl(222deg 15% 60%);
-    --color-accent-pink: hsl(329deg 100% 65%);
-    --color-accent-blue: hsl(245deg 100% 75%);
-    --color-accent-purple: hsl(280deg 100% 70%);
-    --color-link: hsl(245deg 100% 75%);
-    --color-link-hover: hsl(245deg 100% 85%);
-    --color-border: hsl(222deg 30% 25%);
+    --color-bg-primary: #0d0f12;
+    --color-bg-secondary: #1a1f23;
+    --color-bg-card: #1a1f23;
+    --color-text-primary: #e3e6e8;
+    --color-text-secondary: #9ca8b4;
+    --color-text-muted: #75808a;
+    --color-accent-pink: #ff1981;
+    --color-accent-blue: #809fff;
+    --color-accent-purple: #e6b3ff;
+    --color-link: #809fff;
+    --color-link-hover: #99b3ff;
+    --color-border: #272e35;
     
     /* Gradients */
     --gradient-card: linear-gradient(135deg, 
-      hsl(280deg 100% 70% / 0.1) 0%, 
-      hsl(329deg 100% 65% / 0.1) 100%);
+      rgba(128, 159, 255, 0.05) 0%, 
+      rgba(255, 25, 129, 0.05) 100%);
     --gradient-hero: linear-gradient(180deg,
       transparent 0%,
-      hsl(222deg 47% 11% / 0.4) 40%,
-      hsl(222deg 47% 11%) 100%);
+      rgba(13, 15, 18, 0.4) 40%,
+      #0d0f12 100%);
     
     /* Typography */
     --font-family-sans: 'Wotfard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
@@ -101,25 +101,25 @@
   /* Light Theme Override */
   @media (prefers-color-scheme: light) {
     :root {
-      --color-bg-primary: hsl(0deg 0% 100%);
-      --color-bg-secondary: hsl(0deg 0% 98%);
-      --color-bg-card: hsl(0deg 0% 100%);
-      --color-text-primary: hsl(222deg 47% 11%);
-      --color-text-secondary: hsl(222deg 15% 40%);
-      --color-text-muted: hsl(222deg 15% 55%);
-      --color-accent-pink: hsl(329deg 100% 50%);
-      --color-accent-blue: hsl(245deg 100% 50%);
-      --color-accent-purple: hsl(280deg 100% 50%);
-      --color-link: hsl(245deg 100% 50%);
-      --color-link-hover: hsl(245deg 100% 40%);
-      --color-border: hsl(222deg 15% 90%);
+      --color-bg-primary: #fff;
+      --color-bg-secondary: #f1f3f9;
+      --color-bg-card: #fff;
+      --color-text-primary: #0a0c10;
+      --color-text-secondary: #5a6072;
+      --color-text-muted: #9295a0;
+      --color-accent-pink: #e60067;
+      --color-accent-blue: #4242fa;
+      --color-accent-purple: #2c0b8e;
+      --color-link: #4242fa;
+      --color-link-hover: #3025a7;
+      --color-border: #e6e8f0;
       --gradient-card: linear-gradient(135deg, 
-        hsl(280deg 100% 70% / 0.05) 0%, 
-        hsl(329deg 100% 65% / 0.05) 100%);
-      --shadow-sm: 0 2px 4px hsl(222deg 47% 11% / 0.05);
-      --shadow-md: 0 4px 8px hsl(222deg 47% 11% / 0.08);
-      --shadow-lg: 0 8px 16px hsl(222deg 47% 11% / 0.12);
-      --shadow-xl: 0 16px 32px hsl(222deg 47% 11% / 0.15);
+        rgba(66, 66, 250, 0.05) 0%, 
+        rgba(230, 0, 103, 0.05) 100%);
+      --shadow-sm: 0 2px 4px rgba(10, 12, 16, 0.05);
+      --shadow-md: 0 4px 8px rgba(10, 12, 16, 0.08);
+      --shadow-lg: 0 8px 16px rgba(10, 12, 16, 0.12);
+      --shadow-xl: 0 16px 32px rgba(10, 12, 16, 0.15);
     }
   }
 
@@ -217,13 +217,13 @@
     width: 120%;
     height: 400px;
     background: radial-gradient(ellipse at center, 
-      hsl(280deg 100% 65% / 0.25) 0%,
-      hsl(245deg 100% 60% / 0.15) 40%,
-      hsl(329deg 100% 65% / 0.05) 100%);
+      rgba(128, 159, 255, 0.2) 0%,
+      rgba(255, 25, 129, 0.1) 40%,
+      rgba(230, 179, 255, 0.05) 100%);
     filter: blur(100px);
     z-index: -1;
     pointer-events: none;
-    opacity: 0.8;
+    opacity: 0.6;
   }
 
   /* Homepage Categories Grid */
