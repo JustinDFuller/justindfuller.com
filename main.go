@@ -415,6 +415,11 @@ func main() {
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
 	})
 
+	http.HandleFunc("/fonts/", func(w http.ResponseWriter, r *http.Request) {
+		log.Print(r.URL.Path)
+		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
+	})
+
 	http.HandleFunc("/reminder/set", grass.SetHandler)
 
 	http.HandleFunc("/reminder/send", grass.SendHandler(reminderConfig))
