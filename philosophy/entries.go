@@ -1,4 +1,4 @@
-package thought
+package philosophy
 
 import (
 	"bytes"
@@ -15,9 +15,9 @@ import (
 )
 
 func Entry(want string) ([]byte, error) {
-	files, err := os.ReadDir("./thought")
+	files, err := os.ReadDir("./philosophy")
 	if err != nil {
-		return nil, errors.Wrap(err, "error reading thought directory")
+		return nil, errors.Wrap(err, "error reading philosophy directory")
 	}
 
 	var name string
@@ -32,11 +32,11 @@ func Entry(want string) ([]byte, error) {
 		return nil, errors.New("not found")
 	}
 
-	path := fmt.Sprintf("./thought/%s", name)
+	path := fmt.Sprintf("./philosophy/%s", name)
 
 	file, err := os.ReadFile(path)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error reading thought: %s", path)
+		return nil, errors.Wrapf(err, "error reading philosophy entry: %s", path)
 	}
 
 	md := goldmark.New(

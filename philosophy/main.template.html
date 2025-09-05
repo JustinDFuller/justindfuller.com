@@ -5,7 +5,7 @@
     {{ template "/main.css" . }}
 
     <style>
-      {{ template "/thought/main.css" . }}
+      {{ template "/philosophy/main.css" . }}
     </style>
   </head>
 
@@ -13,12 +13,12 @@
     {{ template "/header.template.html" . }}
 
     <main class="content-page">
-      {{ template "/page-title.template.html" "Thoughts" }}
+      {{ template "/page-title.template.html" "Philosophy" }}
       
       <div class="content-container">
-        <div class="thoughts-list">
-          <a href="/thought/responses" class="thought-link">Responses</a>
-          <a href="/thought/existence" class="thought-link">Existence</a>
+        <div class="philosophy-list">
+          <a href="/philosophy/responses" class="philosophy-link">Responses</a>
+          <a href="/philosophy/existence" class="philosophy-link">Existence</a>
         </div>
       </div>
     </main>
@@ -26,7 +26,7 @@
     {{ template "/footer.template.html" . }}
 
     <script>
-      {{ template "/thought/main.js" . }}
+      {{ template "/philosophy/main.js" . }}
     </script>
   </body>
 </html>

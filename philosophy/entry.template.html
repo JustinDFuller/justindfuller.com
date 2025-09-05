@@ -4,7 +4,7 @@
     {{ template "/meta.template.html" . }}
     {{ template "/main.css" . }}
     <style>
-      {{ template "/thought/entry.css" . }}
+      {{ template "/philosophy/entry.css" . }}
     </style>
   </head>
 
@@ -12,7 +12,7 @@
     {{ template "/header.template.html" . }}
 
     <main>
-      <div class="thought-content">
+      <div class="philosophy-content">
         <article>
           <h1>{{ .Title }}</h1>
           {{ printf "%s" .Entry }}
@@ -23,7 +23,7 @@
     {{ template "/footer.template.html" . }}
 
     <script>
-      {{ template "/thought/entry.js" . }}
+      {{ template "/philosophy/entry.js" . }}
     </script>
   </body>
 </html>
