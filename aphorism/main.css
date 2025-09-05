@@ -1,58 +1,84 @@
-* {
-  box-sizing: border-box;
+/* Content Page Styles */
+.content-page {
+  min-height: calc(100vh - 200px);
+  padding-top: var(--space-2xl);
 }
 
-html,
-body {
-  padding: 0;
+.page-header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+  padding: 0 var(--space-lg);
+}
+
+.page-header h1 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-lg);
+}
+
+.content-container {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* Aphorisms Specific Styles */
+.aphorisms-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.aphorism-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.aphorism-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.aphorism-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.aphorism-card:hover::before {
+  opacity: 1;
+}
+
+.aphorism-text {
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-lg);
+  line-height: 1.8;
+  color: var(--color-text-primary);
   margin: 0;
-  width: 100%;
-  height: max-content;
-  display: block;
-  font-size: 24px;
-  font-family: Amiri, serif;
-  background: #fcf9f4;
+  font-style: italic;
 }
 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: var(--font-size-2xl);
   }
-
-  100% {
-    opacity: 1;
+  
+  .aphorism-card {
+    padding: var(--space-lg);
   }
-}
-
-main {
-  animation: fade-in 1s;
-  padding: 20px;
-  height: max-content;
-  width: 100%;
-  display: block;
-}
-
-section {
-  display: block;
-  height: max-content;
-  max-width: 300px;
-  margin: auto;
-}
-
-p {
-  margin-bottom: 40px;
-  line-height: 36px;
-}
-
-hr {
-  margin-top: 30px;
-  margin-bottom: 50px;
-}
-
-@media (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #020215;
-    color: white;
+  
+  .aphorism-text {
+    font-size: var(--font-size-base);
   }
 }
