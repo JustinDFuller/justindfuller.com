@@ -1,5 +1,3 @@
-# Word
-
 ## Eristic
 
 > In philosophy and rhetoric, eristic (from Eris, the ancient Greek goddess of chaos, strife, and discord) refers to an argument that aims to successfully dispute another's argument, rather than searching for truth.
