@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    <title>{{.Title}}</title>
+    {{ template "/main.css" . }}
+    <style>
+      {{ template "/about/main.css" . }}
+    </style>
+  </head>
+  <body>
+    {{ template "/header.template.html" . }}
+    
+    <main>
+      <article class="about-content">
+        {{ printf "%s" .Entry.Content }}
+      </article>
+    </main>
+    
+    {{ template "/footer.template.html" . }}
+  </body>
+</html>

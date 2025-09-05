@@ -10,6 +10,7 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/justindfuller/justindfuller.com/about"
 	"github.com/justindfuller/justindfuller.com/aphorism"
 	grass "github.com/justindfuller/justindfuller.com/make"
 	"github.com/justindfuller/justindfuller.com/nature"
@@ -426,6 +427,16 @@ func main() {
 
 	http.HandleFunc("/site.webmanifest", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./site.webmanifest")
+	})
+
+	http.HandleFunc("/about", func(w http.ResponseWriter, _ *http.Request) {
+		entry := about.Get()
+		if err := templates.ExecuteTemplate(w, "/about/main.template.html", data[about.Entry]{
+			Title: "About Me",
+			Entry: entry,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/about/main.template.html")
+		}
 	})
 
 	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
