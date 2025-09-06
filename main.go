@@ -256,8 +256,10 @@ func main() {
 	})
 
 	http.HandleFunc("/story", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data[[]byte]{
-			Title: "Story",
+		entries := story.GetPublishedEntries()
+		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data[story.StoryEntry]{
+			Title:   "Story",
+			Entries: entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/story/main.template.html")
 		}

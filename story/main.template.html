@@ -16,11 +16,20 @@
       {{ template "/page-title.template.html" "Stories" }}
       
       <div class="content-container">
-        <div class="stories-list">
-          <!-- DRAFT <a href="/story/the_philosophy_of_lovers" class="story-link">The Philosophy of Lovers</a> -->
-          <a href="/story/the_philosophy_of_trees" class="story-link">The Philosophy of Trees</a>
-          <a href="/story/nothing" class="story-link">Nothing</a>
-          <a href="/story/bridge" class="story-link">Bridge</a>
+        <div class="featured-posts">
+          {{ range .Entries }}
+            <article class="featured-post">
+              <a href="/story/{{ .Slug }}">
+                <h3 class="featured-post-title">
+                  {{ .Title }}
+                </h3>
+              </a>
+              <p class="featured-post-excerpt">{{ .FirstParagraph }}</p>
+              <a href="/story/{{ .Slug }}" class="read-more">
+                Read more →
+              </a>
+            </article>
+          {{ end }}
         </div>
       </div>
     </main>
