@@ -16,15 +16,17 @@
       {{ template "/page-title.template.html" "Programming" }}
       
       <div class="content-container">
-        <div class="programming-list">
+        <div class="featured-posts">
           {{ range .Entries }}
-            <article class="programming-entry">
-              <a href="/programming/{{ .Slug }}" class="programming-link">
-                <h3>{{ .Title }}</h3>
-                <p class="programming-description">{{ .Description }}</p>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="programming-date">
-                  {{ .Date.Format "January 2, 2006" }}
-                </time>
+            <article class="featured-post">
+              <a href="/programming/{{ .Slug }}">
+                <h3 class="featured-post-title">
+                  {{ .Title }}
+                </h3>
+              </a>
+              <p class="featured-post-excerpt">{{ .FirstParagraph }}</p>
+              <a href="/programming/{{ .Slug }}" class="read-more">
+                Read more →
               </a>
             </article>
           {{ end }}
