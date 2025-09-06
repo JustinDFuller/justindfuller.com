@@ -16,14 +16,17 @@
       {{ template "/page-title.template.html" "Thoughts" }}
       
       <div class="content-container">
-        <div class="thought-list">
+        <div class="featured-posts">
           {{ range .Entries }}
-            <article class="thought-entry">
-              <a href="/thought/{{ .Slug }}" class="thought-link">
-                <h3>{{ .Title }}</h3>
-                <time datetime="{{ .Date.Format "2006-01-02" }}" class="thought-date">
-                  {{ .Date.Format "January 2, 2006" }}
-                </time>
+            <article class="featured-post">
+              <a href="/thought/{{ .Slug }}">
+                <h3 class="featured-post-title">
+                  {{ .Title }}
+                </h3>
+              </a>
+              <p class="featured-post-excerpt">{{ .Description }}</p>
+              <a href="/thought/{{ .Slug }}" class="read-more">
+                Read more →
               </a>
             </article>
           {{ end }}
