@@ -36,7 +36,7 @@ main {
 
 .about-content p {
   margin-bottom: 1.5rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
 }
 
 .about-content a {
