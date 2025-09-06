@@ -309,7 +309,7 @@ func main() {
 			return
 		}
 
-		entry, err := thought.Entry(paths[last])
+		entry, err := thought.GetEntry(paths[last])
 		if err != nil {
 			http.Error(w, "Error reading thought entry.", http.StatusInternalServerError)
 			log.Printf("Error reading thought entry: %s", err)
@@ -317,8 +317,8 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/thought/entry.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/thought/entry.template.html", data[thought.Entry]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/thought/entry.template.html")

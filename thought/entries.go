@@ -3,6 +3,7 @@ package thought
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"os"
 	"strings"
 
@@ -14,10 +15,15 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-func Entry(want string) ([]byte, error) {
+type Entry struct {
+	Title   string
+	Content template.HTML
+}
+
+func GetEntry(want string) (Entry, error) {
 	files, err := os.ReadDir("./thought")
 	if err != nil {
-		return nil, errors.Wrap(err, "error reading thought directory")
+		return Entry{}, errors.Wrap(err, "error reading thought directory")
 	}
 
 	var name string
@@ -29,14 +35,14 @@ func Entry(want string) ([]byte, error) {
 	}
 
 	if name == "" {
-		return nil, errors.New("not found")
+		return Entry{}, errors.New("not found")
 	}
 
 	path := fmt.Sprintf("./thought/%s", name)
 
 	file, err := os.ReadFile(path)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error reading thought entry: %s", path)
+		return Entry{}, errors.Wrapf(err, "error reading thought entry: %s", path)
 	}
 
 	md := goldmark.New(
@@ -51,9 +57,47 @@ func Entry(want string) ([]byte, error) {
 	)
 
 	var buf bytes.Buffer
-	if err := md.Convert(file, &buf); err != nil {
-		return nil, errors.Wrap(err, "error converting markdown")
+	context := parser.NewContext()
+	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
+		return Entry{}, errors.Wrap(err, "error converting markdown")
 	}
 
-	return buf.Bytes(), nil
+	// Extract title from metadata
+	metaData := meta.Get(context)
+	title := ""
+	if t, ok := metaData["title"]; ok {
+		if titleStr, ok := t.(string); ok {
+			title = titleStr
+		}
+	}
+
+	// If no title in metadata, generate from filename
+	if title == "" {
+		// Remove date prefix and .md suffix
+		title = name
+		if strings.Contains(title, "-") {
+			parts := strings.SplitN(title, "-", 4)
+			if len(parts) >= 4 {
+				// Remove YYYY-MM-DD prefix
+				title = parts[3]
+			}
+		}
+		title = strings.TrimSuffix(title, ".md")
+		title = strings.ReplaceAll(title, "-", " ")
+		title = strings.ReplaceAll(title, "_", " ")
+	}
+
+	return Entry{
+		Title:   title,
+		Content: template.HTML(buf.Bytes()),
+	}, nil
+}
+
+// GetEntryContent keeps backward compatibility with the old Entry function
+func GetEntryContent(want string) ([]byte, error) {
+	entry, err := GetEntry(want)
+	if err != nil {
+		return nil, err
+	}
+	return []byte(entry.Content), nil
 }
