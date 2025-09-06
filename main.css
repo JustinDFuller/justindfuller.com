@@ -291,27 +291,16 @@
   }
 
   .read-more {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
+    display: inline-block;
     color: var(--color-accent-pink);
     font-weight: 500;
     font-size: var(--font-size-sm);
     text-decoration: none;
-    transition: all var(--transition-base);
+    transition: color var(--transition-base);
   }
 
   .read-more:hover {
-    gap: var(--space-sm);
     color: var(--color-accent-yellow);
-  }
-
-  .read-more svg {
-    transition: transform var(--transition-base);
-  }
-
-  .read-more:hover svg {
-    transform: translateX(4px);
   }
 
   /* Sections Sidebar */
@@ -324,13 +313,12 @@
   .section-links {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-xs);
+    align-items: flex-start;
   }
 
   .section-link {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
+    display: block;
     padding: var(--space-sm) 0;
     text-decoration: none;
     color: var(--color-text-secondary);
@@ -354,13 +342,6 @@
   .section-link:hover {
     color: var(--color-accent-pink);
     transform: translateX(4px);
-  }
-
-  .section-link svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    flex-shrink: 0;
   }
 
   @keyframes fadeInRight {
@@ -700,12 +681,8 @@
     }
 
     .section-link {
-      padding: var(--space-sm) var(--space-md);
-      font-size: var(--font-size-sm);
-    }
-
-    .section-link span {
-      font-size: var(--font-size-sm);
+      padding: var(--space-sm) 0;
+      font-size: var(--font-size-base);
     }
   }
 
@@ -729,18 +706,8 @@
     }
 
     .section-link {
-      padding: var(--space-sm) var(--space-md);
-      font-size: var(--font-size-sm);
-    }
-
-    .section-link span {
-      display: none;
-    }
-
-    .section-link svg {
-      width: 24px;
-      height: 24px;
-      margin: 0 auto;
+      padding: var(--space-xs) 0;
+      font-size: var(--font-size-base);
     }
 
     .featured-post {
