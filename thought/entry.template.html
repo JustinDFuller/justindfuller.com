@@ -14,8 +14,15 @@
     <main>
       <div class="thought-content">
         <article>
-          <h1>{{ .Title }}</h1>
-          {{ .Entry.Content }}
+          <header class="thought-header">
+            <h1>{{ .Entry.Title }}</h1>
+            <time datetime="{{ .Entry.Date.Format "2006-01-02" }}" class="thought-date">
+              {{ .Entry.Date.Format "January 2, 2006" }}
+            </time>
+          </header>
+          <div class="thought-body">
+            {{ .Entry.Content }}
+          </div>
         </article>
       </div>
     </main>

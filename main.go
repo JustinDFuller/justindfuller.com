@@ -291,8 +291,15 @@ func main() {
 	})
 
 	http.HandleFunc("/thought", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/thought/main.template.html", data[[]byte]{
-			Title: "Thought",
+		entries, err := thought.GetEntries()
+		if err != nil {
+			log.Printf("Error getting thought entries: %s", err)
+			entries = []thought.Entry{} // Use empty slice on error
+		}
+		
+		if err := templates.ExecuteTemplate(w, "/thought/main.template.html", data[thought.Entry]{
+			Title:   "Thought",
+			Entries: entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/thought/main.template.html")
 		}
