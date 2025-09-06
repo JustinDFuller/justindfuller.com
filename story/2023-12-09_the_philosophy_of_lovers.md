@@ -11,6 +11,7 @@ weight: 1
 images:
  - /the_philosophy_of_lovers.webp
 tags: [Story]
+draft: true
 ---
 
 ## I
