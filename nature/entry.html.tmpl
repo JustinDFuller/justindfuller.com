@@ -1,23 +1,35 @@
-<!DOCTYPE html>
-<html class="no-js" lang="">
+<!doctype html>
+<html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
     {{ template "/main.css" . }}
     <style>
-    {{ template "/nature/entry.css" . }} 
+      {{ template "/nature/entry.css" . }}
     </style>
   </head>
 
   <body>
+    {{ template "/header.template.html" . }}
+
     <main>
-        {{ with .Entry }}
-        <h1>{{ .Title }}</h1>
-        <h2>({{ .SubTitle }})</h2>
-        <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" />
-        <section>
-        {{ .Markdown }}
-        </section>
-        {{ end }}
+      <div class="nature-content">
+        <article>
+          {{ with .Entry }}
+          <header class="nature-header">
+            <h1>{{ .Title }}</h1>
+            <p class="nature-subtitle">{{ .SubTitle }}</p>
+          </header>
+          <div class="nature-hero">
+            <img src="/image/nature/{{ .Image }}" alt="{{ .Title }}" />
+          </div>
+          <div class="nature-body">
+            {{ .Markdown }}
+          </div>
+          {{ end }}
+        </article>
+      </div>
     </main>
+
+    {{ template "/footer.template.html" . }}
   </body>
 </html>
