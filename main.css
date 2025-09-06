@@ -263,8 +263,7 @@
 
   .featured-post {
     margin-bottom: var(--space-2xl);
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
+    animation: fadeInUp 0.6s ease both;
   }
 
   .featured-post:nth-child(2) { animation-delay: 0.1s; }
@@ -352,8 +351,7 @@
     font-weight: 500;
     font-size: var(--font-size-base);
     transition: all var(--transition-base);
-    opacity: 0;
-    animation: fadeInRight 0.6s ease forwards;
+    animation: fadeInRight 0.6s ease both;
   }
 
   .section-link:nth-child(1) { animation-delay: 0.1s; }
@@ -400,8 +398,7 @@
     text-decoration: none;
     color: var(--color-text-primary);
     min-height: 120px;
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
+    animation: fadeInUp 0.6s ease both;
   }
   
   /* Staggered animation for cards */

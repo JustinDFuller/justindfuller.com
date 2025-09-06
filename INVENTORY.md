@@ -111,28 +111,28 @@
 
 ## Summary of Major Issues
 
-1. **Critical Functionality Issues**:
-   - **Browser MCP Tool Detection Issues** (potential accessibility concern):
-     - Homepage Explore navigation links not detected (present in HTML)
-     - Poem entries on /poem page not detected (present in HTML)
-     - Aphorism entries on /aphorism page not detected (present in HTML)
-     - **UPDATE**: Removed JavaScript font loading (was using visibility:hidden) and implemented font-display:swap, but Browser MCP tool still cannot detect content. Issue appears to be deeper than font loading.
+### VERIFIED REAL ISSUES (Need Fixing)
+
+1. **Content Issues**:
+   - **CONFIRMED**: Missing story ("The Philosophy of Lovers") - markdown file exists but not in entries.go
+   - **FALSE POSITIVE**: Word headings for Quality and Flexible are actually present (not empty h2 tags)
 
 2. **Design Inconsistencies**:
-   - Nature page has completely different design/navigation
-   - Word page uses inline display instead of card layout
+   - **CONFIRMED**: Nature page has completely different design/navigation (shows Poems/Stories/Thoughts/Projects instead of GitHub/LinkedIn/Email)
+   - **CONFIRMED**: Word page uses inline display instead of card layout (no .word-card classes)
+   - **CONFIRMED**: Nature page shows "© 2024" while all others show "© 2025"
 
-3. **Content Issues**:
-   - Missing story ("The Philosophy of Lovers") on listing page
-   - Two word entries missing headings (Quality, Flexible)
+3. **Navigation Issues**:
+   - **FALSE POSITIVE**: /tags/poetry link exists and returns valid HTML (not broken)
+   - **FALSE POSITIVE**: Footer links (Aphorism, Project/Make, Nature) ARE visible from homepage in the Explore section
 
-4. **Navigation Issues**:
-   - Footer links to sections not visible from homepage (Aphorism, Project/Make, Nature)
-   - Broken link to /tags/poetry in Thought section
-   - Nature page has different header navigation
+### BROWSER MCP TOOL LIMITATIONS (Not Website Issues)
 
-5. **Date Inconsistency**:
-   - Nature page shows "© 2024" while all others show "© 2025"
+1. **Accessibility Concerns** - Content is present in HTML but Browser MCP tool cannot detect:
+   - **VERIFIED**: Homepage Explore navigation links are present in HTML (10 links found)
+   - **VERIFIED**: Poem entries on /poem page are present in HTML (48 poem cards found)
+   - **VERIFIED**: Aphorism entries on /aphorism page are present in HTML (36 aphorism cards found)
+   - **NOTE**: These may indicate accessibility issues that screen readers could also face, worth investigating further
 
 ## Fixes Applied
 
@@ -144,3 +144,13 @@
   - Removed script includes from 14 template files
 - **Result**: Content now always visible (with brief font swap flash), but Browser MCP tool still cannot detect content
 - **Conclusion**: The accessibility issue is deeper than font loading - may be a Browser MCP tool limitation or other rendering issue
+
+### CSS Animation Accessibility Fix (Completed)
+- **Problem**: Elements starting with `opacity: 0` for animations were inaccessible to Browser MCP tool
+- **Solution**: Changed animation approach from `opacity: 0` + `forwards` to using `animation-fill-mode: both`
+- **Files Modified**:
+  - main.css: Fixed `.featured-post`, `.section-link`, and `.category-card` classes
+- **Result**: 
+  - Homepage Explore navigation now detected by Browser MCP tool (partial improvement)
+  - Poem and Aphorism content still not detected (appears to be a deeper Browser MCP tool limitation)
+  - Content is always visible in HTML and accessible to users
