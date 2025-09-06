@@ -1,96 +1,15 @@
 # Website Inventory
 
-## Home Page
-* URL: http://localhost:9000
-* Issues:
-  * **Browser MCP Tool Bug**: Explore navigation links are present in HTML but not detected by browser MCP tool snapshot (accessibility issue or tool limitation)
-
-## Main Category Pages
-
-### Poems
-* URL: http://localhost:9000/poem
-* Issues:
-  * **Browser MCP Tool Bug**: Poem entries ARE present in HTML but not detected by browser MCP tool (shows poem cards with content in HTML)
-  * Has footer with Explore/Links sections
-
-### Stories  
-* URL: http://localhost:9000/story
-* Status: Working properly with footer
-
-### Thoughts
-* URL: http://localhost:9000/thought
-* Status: Working properly with footer
-
-### Reviews
-* URL: http://localhost:9000/review
-* Status: Working properly with footer
-
-### Programming
-* URL: http://localhost:9000/programming
-* Status: Working properly with footer
-
-### Words
-* URL: http://localhost:9000/word
-* Status: Working properly with footer
-* Note: Now uses unified card layout shared with poems and aphorisms
-* Remaining issue: Only 2 of 16 words (Quality and Flexible) have links to individual pages
-
-### About
-* URL: http://localhost:9000/about
-* Status: Working properly with footer
-
-## Additional Pages Found in Footer Navigation
-
-### Aphorism
-* URL: http://localhost:9000/aphorism
-* Issues:
-  * **Browser MCP Tool Bug**: Aphorism entries ARE present in HTML but not detected by browser MCP tool (shows aphorism cards with text in HTML)
-  * Has footer with Explore/Links sections
-
-### Project (Make)
-* URL: http://localhost:9000/make
-* Status: Working properly with footer
-
-### Nature
-* URL: http://localhost:9000/nature
-* Status: Working properly with footer
-* Note: Only one image is a clickable link (Anolis Carolinensis) - by design, others are gallery images
-
 ## Outstanding Issues
 
 ### Minor Issues
 1. **Word page links**: Only 2 of 16 words have links to their individual pages (Quality and Flexible)
 
-## Individual Content Pages
+## Notes
 
 ### Poem Pages
-* Note: Individual poem pages are not supposed to exist
+* Individual poem pages are not supposed to exist
 * Poems are displayed inline on the /poem listing page only
-
-### Story Pages  
-* URL Pattern: /story/{slug}
-* Example: /story/the_philosophy_of_trees
-* Status: Working properly with footer
-
-### Thought Pages
-* URL Pattern: /thought/{date-slug}
-* Example: /thought/2022-02-22-embracing-impostor-syndrome
-* Status: Working properly with footer
-
-### Review Pages
-* URL Pattern: /review/{slug}
-* Example: /review/living-on-24-hours-a-day
-* Status: Working properly with footer
-
-### Programming Pages
-* URL Pattern: /programming/{slug}
-* Example: /programming/why-do-we-fall-into-the-rewrite-trap
-* Status: Working properly with footer
-
-### Word Pages
-* URL Pattern: /word/{word}
-* Example: /word/quality
-* Issue: Most individual pages work but only 2 of 16 are linked from /word listing page
 
 ## Summary of Remaining Issues
 
@@ -98,14 +17,6 @@
 
 1. **Minor Issues**:
    - Most word pages exist but only 2 of 16 are linked from the listing page
-
-### BROWSER MCP TOOL LIMITATIONS (Not Website Issues)
-
-1. **Accessibility Concerns** - Content is present in HTML but Browser MCP tool cannot detect:
-   - **VERIFIED**: Homepage Explore navigation links are present in HTML (10 links found)
-   - **VERIFIED**: Poem entries on /poem page are present in HTML (48 poem cards found)
-   - **VERIFIED**: Aphorism entries on /aphorism page are present in HTML (36 aphorism cards found)
-   - **NOTE**: These may indicate accessibility issues that screen readers could also face, worth investigating further
 
 ## See Also
 

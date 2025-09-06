@@ -147,7 +147,33 @@ func main() {
 		}
 	}
 
-	http.HandleFunc("/aphorism", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/aphorism/", func(w http.ResponseWriter, r *http.Request) {
+		// Check if this is a request for a specific aphorism
+		path := r.URL.Path
+		if path != "/aphorism" && path != "/aphorism/" {
+			// Extract the aphorism number from the path
+			parts := strings.Split(strings.TrimSuffix(path, "/"), "/")
+			if len(parts) == 3 && parts[1] == "aphorism" && parts[2] != "" {
+				entry, err := aphorism.GetEntry(parts[2])
+				if err != nil {
+					http.Error(w, "Aphorism not found", http.StatusNotFound)
+					logWarning("Error reading aphorism", err)
+					return
+				}
+
+				if err := templates.ExecuteTemplate(w, "/aphorism/entry.template.html", data[aphorism.AphorismEntry]{
+					Title: fmt.Sprintf("Aphorism #%d", entry.Number),
+					Meta:  "aphorism",
+					Entry: entry,
+				}); err != nil {
+					log.Printf("template execution error=%s template=%s", err, "/aphorism/entry.template.html")
+					http.Error(w, "Error displaying aphorism", http.StatusInternalServerError)
+				}
+				return
+			}
+		}
+
+		// Default to showing all aphorisms
 		entries, err := aphorism.Entries()
 		if err != nil {
 			http.Error(w, "Error reading Aphorisms", http.StatusInternalServerError)

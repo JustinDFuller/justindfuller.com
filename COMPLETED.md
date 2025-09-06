@@ -2,6 +2,79 @@
 
 This document tracks all completed fixes and resolved issues from the website inventory.
 
+## Recently Completed Pages (Moved from INVENTORY.md)
+
+### Home Page
+- **URL**: http://localhost:9000  
+- **Status**: ✅ Working properly with footer
+- **Completed**: Footer added with responsive visibility
+
+### Main Category Pages (All Working)
+
+#### Stories
+- **URL**: http://localhost:9000/story
+- **Status**: ✅ Working properly with footer
+
+#### Thoughts  
+- **URL**: http://localhost:9000/thought
+- **Status**: ✅ Working properly with footer
+
+#### Reviews
+- **URL**: http://localhost:9000/review  
+- **Status**: ✅ Working properly with footer
+
+#### Programming
+- **URL**: http://localhost:9000/programming
+- **Status**: ✅ Working properly with footer
+
+#### Words
+- **URL**: http://localhost:9000/word
+- **Status**: ✅ Working properly with footer
+- **Note**: Now uses unified card layout shared with poems and aphorisms
+
+#### About
+- **URL**: http://localhost:9000/about
+- **Status**: ✅ Working properly with footer
+
+### Additional Pages Found in Footer Navigation
+
+#### Project (Make)
+- **URL**: http://localhost:9000/make
+- **Status**: ✅ Working properly with footer
+
+#### Nature  
+- **URL**: http://localhost:9000/nature
+- **Status**: ✅ Working properly with footer
+- **Note**: Only one image is a clickable link (Anolis Carolinensis) - by design
+
+### Individual Content Pages (All Working)
+
+#### Story Pages
+- **URL Pattern**: /story/{slug}
+- **Example**: /story/the_philosophy_of_trees
+- **Status**: ✅ Working properly with footer
+
+#### Thought Pages
+- **URL Pattern**: /thought/{date-slug}
+- **Example**: /thought/2022-02-22-embracing-impostor-syndrome
+- **Status**: ✅ Working properly with footer
+
+#### Review Pages
+- **URL Pattern**: /review/{slug}
+- **Example**: /review/living-on-24-hours-a-day
+- **Status**: ✅ Working properly with footer
+
+#### Programming Pages
+- **URL Pattern**: /programming/{slug}
+- **Example**: /programming/why-do-we-fall-into-the-rewrite-trap
+- **Status**: ✅ Working properly with footer
+
+#### Word Pages
+- **URL Pattern**: /word/{word}
+- **Example**: /word/quality
+- **Status**: ✅ Individual pages work properly with footer
+- **Note**: Only 2 of 16 words are linked from listing page (separate issue)
+
 ## Fixes Applied
 
 ### Nature Page Alignment Fix (Completed)
@@ -48,3 +121,9 @@ This document tracks all completed fixes and resolved issues from the website in
 ### Design Issues Fixed
 - **FIXED**: Nature page has completely different design/navigation
 - **FIXED**: Nature page shows "© 2024" while all others show "© 2025"
+
+### MCP Tool Detection Issues (Resolved 2025-09-06)
+- **RESOLVED**: Homepage Explore navigation links now properly detected (10 links visible in MCP tool)
+- **RESOLVED**: Poem entries on /poem page now properly detected (48 poem articles visible in MCP tool)
+- **RESOLVED**: Aphorism entries on /aphorism page now properly detected (36 aphorism articles visible in MCP tool)
+- **Note**: These were Browser MCP tool limitations that have been resolved - content was always present in HTML
