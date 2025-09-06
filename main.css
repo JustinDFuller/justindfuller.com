@@ -641,15 +641,15 @@
   .footer-external h3 {
     font-size: var(--font-size-sm);
     font-weight: 600;
-    color: var(--color-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: var(--space-md);
+    color: var(--color-text-muted);
   }
 
   .footer-external-links {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, max-content));
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-md) var(--space-xl);
     align-items: flex-start;
   }
