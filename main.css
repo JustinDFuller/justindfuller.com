@@ -245,6 +245,13 @@
     min-width: 0;
   }
 
+  /* Shared featured posts layout for category pages */
+  .featured-posts-centered {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
   .section-title {
     font-size: var(--font-size-sm);
     font-weight: 600;

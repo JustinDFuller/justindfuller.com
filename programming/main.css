@@ -1,12 +1,5 @@
 /* Programming Page Specific Styles */
 
-/* Featured posts container with max-width and centering */
-.content-container .featured-posts {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 var(--space-lg);
-}
-
 /* Legacy programming-list styles (kept for backward compatibility) */
 .programming-list {
   display: flex;
