@@ -14,15 +14,7 @@
     <main class="content-page">
       {{ template "/page-title.template.html" "Aphorisms" }}
       
-      <div class="content-container">
-        <div class="aphorisms-list">
-          {{ range .Entries }}
-          <article class="aphorism-card">
-            <p class="aphorism-text">{{ printf "%s" . }}</p>
-          </article>
-          {{ end }}
-        </div>
-      </div>
+      {{ template "/inline-content.template.html" dict "Entries" .Entries "ContainerClass" "aphorisms-list" "CardClass" "aphorism-card" "ContentClass" "aphorism-text" "WrapperTag" "p" }}
     </main>
 
     {{ template "/footer.template.html" . }}

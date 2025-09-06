@@ -31,9 +31,9 @@
 
 ### Words
 * URL: http://localhost:9000/word
-* Issues:
-  * Different format than other pages - shows all words inline instead of article cards
-  * Individual word pages work but are not linked from listing page
+* Status: Working properly with footer
+* Note: Now uses unified card layout shared with poems and aphorisms
+* Remaining issue: Only 2 of 16 words (Quality and Flexible) have links to individual pages
 
 ### About
 * URL: http://localhost:9000/about
@@ -58,8 +58,8 @@
 
 ## Outstanding Issues
 
-### Design Inconsistencies
-1. **Word page format**: Uses different layout than all other content pages (inline display instead of card layout)
+### Minor Issues
+1. **Word page links**: Only 2 of 16 words have links to their individual pages (Quality and Flexible)
 
 ## Individual Content Pages
 
@@ -90,15 +90,14 @@
 ### Word Pages
 * URL Pattern: /word/{word}
 * Example: /word/quality
-* Issue: Individual pages work but are not linked from /word listing page
+* Issue: Most individual pages work but only 2 of 16 are linked from /word listing page
 
 ## Summary of Remaining Issues
 
 ### Issues Still Needing Attention
 
-1. **Design Inconsistencies**:
-   - Word page uses inline display instead of card layout (no .word-card classes)
-   - Word pages exist but are not linked from the listing page
+1. **Minor Issues**:
+   - Most word pages exist but only 2 of 16 are linked from the listing page
 
 ### BROWSER MCP TOOL LIMITATIONS (Not Website Issues)
 

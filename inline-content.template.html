@@ -1,0 +1,26 @@
+{{/* 
+  Unified template for inline content pages (word, poem, aphorism)
+  
+  Expected data structure:
+  - .Entries: Array of content items (HTML or byte arrays)
+  - .ContainerClass: CSS class for the container div (e.g., "poems-grid", "aphorisms-list", "words-list")
+  - .CardClass: CSS class for each card (e.g., "poem-card", "aphorism-card", "word-card")
+  - .ContentClass: CSS class for the content within each card (e.g., "poem-content", "aphorism-text", "word-content")
+  - .WrapperTag: HTML tag to wrap content (e.g., "div", "p", "section")
+*/}}
+
+<div class="content-container">
+  <div class="{{ .ContainerClass }}">
+    {{ range .Entries }}
+    <article class="{{ $.CardClass }}">
+      {{- if eq $.WrapperTag "section" -}}
+      <section class="{{ $.ContentClass }}">{{ printf "%s" . }}</section>
+      {{- else if eq $.WrapperTag "p" -}}
+      <p class="{{ $.ContentClass }}">{{ printf "%s" . }}</p>
+      {{- else -}}
+      <div class="{{ $.ContentClass }}">{{ printf "%s" . }}</div>
+      {{- end -}}
+    </article>
+    {{ end }}
+  </div>
+</div>

@@ -1,9 +1,12 @@
+/* Aphorisms Page Specific Styles */
+/* Import shared inline content styles */
+{{ template "/inline-content.css" . }}
+
 /* Content Page Styles */
 .content-page {
   min-height: calc(100vh - 200px);
   padding-top: var(--space-2xl);
 }
-
 
 .content-container {
   max-width: var(--max-width-narrow);
@@ -11,53 +14,4 @@
   padding: 0 var(--space-lg);
 }
 
-/* Aphorisms Specific Styles */
-.aphorisms-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2xl);
-  max-width: var(--max-width-narrow);
-  margin: 0 auto;
-}
-
-.aphorism-card {
-  background: var(--gradient-card);
-  border-left: 3px solid var(--color-accent-blue);
-  border-radius: var(--border-radius-md);
-  padding: var(--space-xl);
-  position: relative;
-  overflow: hidden;
-  transition: all var(--transition-fast);
-}
-
-.aphorism-card:hover {
-  transform: translateX(4px);
-  box-shadow: var(--shadow-md);
-}
-
-.aphorism-text {
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
-  color: var(--color-text-secondary);
-  margin: 0;
-  font-style: italic;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  
-  .aphorisms-list {
-    gap: var(--space-lg);
-    padding: 0 var(--space-md);
-  }
-  
-  .aphorism-card {
-    padding: var(--space-md);
-    margin-left: 0;
-  }
-  
-  .aphorism-text {
-    font-size: var(--font-size-base);
-  }
-}
+/* Any additional aphorism-specific overrides can go here */

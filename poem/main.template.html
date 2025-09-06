@@ -14,16 +14,7 @@
     <main class="content-page">
       {{ template "/page-title.template.html" "Poems" }}
       
-      <div class="content-container">
-        <div class="poems-grid">
-          {{ $lastIndex := (sub1 (len .Entries)) }} 
-          {{ range $i, $entry := .Entries }}
-          <article class="poem-card">
-            <div class="poem-content">{{ printf "%s" $entry }}</div>
-          </article>
-          {{ end }}
-        </div>
-      </div>
+      {{ template "/inline-content.template.html" dict "Entries" .Entries "ContainerClass" "poems-grid" "CardClass" "poem-card" "ContentClass" "poem-content" "WrapperTag" "div" }}
     </main>
 
     {{ template "/footer.template.html" . }}

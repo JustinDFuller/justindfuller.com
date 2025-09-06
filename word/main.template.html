@@ -15,9 +15,7 @@
     <main class="content-page">
       {{ template "/page-title.template.html" "Words" }}
       
-      <div class="content-container">
-        <section class="word-content">{{ printf "%s" .Entry }}</section>
-      </div>
+      {{ template "/inline-content.template.html" dict "Entries" .Entries "ContainerClass" "words-list" "CardClass" "word-card" "ContentClass" "word-content" "WrapperTag" "section" }}
     </main>
 
     {{ template "/footer.template.html" . }}

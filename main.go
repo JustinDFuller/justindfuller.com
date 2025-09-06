@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -92,6 +93,20 @@ func main() {
 
 	funcs := template.FuncMap{
 		"sub1": func(x int) int { return x - 1 },
+		"dict": func(values ...interface{}) (map[string]interface{}, error) {
+			if len(values)%2 != 0 {
+				return nil, errors.New("dict requires an even number of arguments")
+			}
+			dict := make(map[string]interface{})
+			for i := 0; i < len(values); i += 2 {
+				key, ok := values[i].(string)
+				if !ok {
+					return nil, errors.New("dict keys must be strings")
+				}
+				dict[key] = values[i+1]
+			}
+			return dict, nil
+		},
 	}
 
 	templates := template.New("").Funcs(funcs).Option("missingkey=error")
@@ -151,7 +166,7 @@ func main() {
 	})
 
 	http.HandleFunc("/word", func(w http.ResponseWriter, _ *http.Request) {
-		entry, err := word.Entry("entries")
+		entries, err := word.Entries()
 		if err != nil {
 			http.Error(w, "Error reading Words", http.StatusInternalServerError)
 			logWarning("Error reading Words", err)
@@ -160,8 +175,8 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/word/main.template.html", data[[]byte]{
-			Title: "Word",
-			Entry: entry,
+			Title:   "Word",
+			Entries: entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}

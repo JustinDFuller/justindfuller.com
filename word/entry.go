@@ -115,3 +115,65 @@ func Entry(name string) ([]byte, error) {
 	}
 	return []byte(entry.Content), nil
 }
+
+// Entries returns the entries.md file split into individual word entries
+func Entries() ([][]byte, error) {
+	path := "./word/entries.md"
+	
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return nil, errors.Wrapf(err, "error reading word entries: %s", path)
+	}
+	
+	// Split by ## (H2 headers) to get individual word entries
+	content := string(file)
+	parts := strings.Split(content, "\n## ")
+	
+	entries := make([][]byte, 0)
+	for i, part := range parts {
+		if strings.TrimSpace(part) == "" {
+			continue
+		}
+		
+		// Add back the ## for all parts except the first (which might not have it)
+		if i > 0 {
+			part = "## " + part
+		}
+		
+		// Remove HR tags since we'll use card layout instead
+		part = strings.ReplaceAll(part, "\n<hr />", "")
+		part = strings.ReplaceAll(part, "\n<hr/>", "")
+		part = strings.ReplaceAll(part, "\n<hr>", "")
+		part = strings.TrimSpace(part)
+		
+		if part != "" && strings.HasPrefix(part, "##") {
+			// Convert markdown to HTML for this entry
+			md := goldmark.New(
+				goldmark.WithExtensions(extension.GFM),
+				goldmark.WithParserOptions(
+					parser.WithAutoHeadingID(),
+				),
+				goldmark.WithRendererOptions(
+					html.WithHardWraps(),
+					html.WithUnsafe(),
+				),
+			)
+			
+			var buf bytes.Buffer
+			if err := md.Convert([]byte(part), &buf); err != nil {
+				return nil, errors.Wrapf(err, "error converting word markdown: %s", part[:min(50, len(part))])
+			}
+			
+			entries = append(entries, buf.Bytes())
+		}
+	}
+	
+	return entries, nil
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
