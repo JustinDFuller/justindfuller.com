@@ -15,38 +15,29 @@
 
 ### Stories  
 * URL: http://localhost:9000/story
-* Issues:
-  * "The Philosophy of Lovers" is marked as draft (intentional - not ready for publication)
-  * Has footer with Explore/Links sections
+* Status: Working properly with footer
 
 ### Thoughts
 * URL: http://localhost:9000/thought
-* Issues:
-  * Has footer with Explore/Links sections
-  * Links to non-existent "/tags/poetry" in one article
+* Status: Working properly with footer
 
 ### Reviews
 * URL: http://localhost:9000/review
-* Issues:
-  * Has footer with Explore/Links sections
+* Status: Working properly with footer
 
 ### Programming
 * URL: http://localhost:9000/programming
-* Issues:
-  * Has footer with Explore/Links sections
+* Status: Working properly with footer
 
 ### Words
 * URL: http://localhost:9000/word
-* Inconsistencies:
+* Issues:
   * Different format than other pages - shows all words inline instead of article cards
-  * Missing individual word pages (only shows definitions inline)
-  * Two entries missing headings ("Quality" and "Flexible" have empty h2 tags)
-  * Has footer with Explore/Links sections
+  * Individual word pages work but are not linked from listing page
 
 ### About
 * URL: http://localhost:9000/about
-* Issues:
-  * Has footer with Explore/Links sections
+* Status: Working properly with footer
 
 ## Additional Pages Found in Footer Navigation
 
@@ -58,22 +49,17 @@
 
 ### Project (Make)
 * URL: http://localhost:9000/make
-* Issues:
-  * Has footer with Explore/Links sections
-  * Shows projects properly
+* Status: Working properly with footer
 
 ### Nature
 * URL: http://localhost:9000/nature
-* Issues:
-  * **FIXED**: ~~Different header navigation (shows Poems/Stories/Thoughts/Projects instead of GitHub/LinkedIn/Email)~~
-  * **FIXED**: ~~Has toggle menu button not present on other pages~~
-  * **FIXED**: ~~Different footer structure and styling~~
-  * **FIXED**: ~~Footer shows "© 2024" instead of "© 2025" like other pages~~
-  * Only one image is a clickable link (Anolis Carolinensis) - by design, others are gallery images
+* Status: Working properly with footer
+* Note: Only one image is a clickable link (Anolis Carolinensis) - by design, others are gallery images
 
-## Cross-Page Inconsistencies
-1. **Word page format**: Uses different layout than all other content pages
-2. **Navigation links**: Footer includes links to sections not visible from homepage (Aphorism, Project/Make, Nature)
+## Outstanding Issues
+
+### Design Inconsistencies
+1. **Word page format**: Uses different layout than all other content pages (inline display instead of card layout)
 
 ## Individual Content Pages
 
@@ -104,26 +90,15 @@
 ### Word Pages
 * URL Pattern: /word/{word}
 * Example: /word/quality
-* Issues:
-  * Individual word pages appear to work from homepage link
-  * But no individual pages linked from /word listing page
+* Issue: Individual pages work but are not linked from /word listing page
 
-## Summary of Major Issues
+## Summary of Remaining Issues
 
-### VERIFIED REAL ISSUES (Need Fixing)
+### Issues Still Needing Attention
 
-1. **Content Issues**:
-   - **RESOLVED**: "The Philosophy of Lovers" story is marked as draft (intentional - not ready for publication)
-   - **FALSE POSITIVE**: Word headings for Quality and Flexible are actually present (not empty h2 tags)
-
-2. **Design Inconsistencies**:
-   - **FIXED**: ~~Nature page has completely different design/navigation (shows Poems/Stories/Thoughts/Projects instead of GitHub/LinkedIn/Email)~~
-   - **CONFIRMED**: Word page uses inline display instead of card layout (no .word-card classes)
-   - **FIXED**: ~~Nature page shows "© 2024" while all others show "© 2025"~~
-
-3. **Navigation Issues**:
-   - **FALSE POSITIVE**: /tags/poetry link exists and returns valid HTML (not broken)
-   - **FALSE POSITIVE**: Footer links (Aphorism, Project/Make, Nature) ARE visible from homepage in the Explore section
+1. **Design Inconsistencies**:
+   - Word page uses inline display instead of card layout (no .word-card classes)
+   - Word pages exist but are not linked from the listing page
 
 ### BROWSER MCP TOOL LIMITATIONS (Not Website Issues)
 
@@ -133,33 +108,9 @@
    - **VERIFIED**: Aphorism entries on /aphorism page are present in HTML (36 aphorism cards found)
    - **NOTE**: These may indicate accessibility issues that screen readers could also face, worth investigating further
 
-## Fixes Applied
+## See Also
 
-### Nature Page Alignment Fix (Completed)
-- **Problem**: Nature page had different header/footer templates and outdated copyright year
-- **Solution**: Updated nature/main.html.tmpl to use shared header and footer templates
-- **Files Modified**:
-  - nature/main.html.tmpl: Replaced custom header/footer with shared templates
-- **Result**: Nature page now consistent with rest of site while preserving unique photo grid layout
-
-### Font Loading Accessibility Fix (Completed)
-- **Problem**: JavaScript was hiding content with `visibility: hidden` during font loading
-- **Solution**: Removed all font loading JavaScript and rely on CSS `font-display: swap`
-- **Files Modified**:
-  - Emptied 13 JavaScript files (main.js, poem/main.js, aphorism/main.js, etc.)
-  - Removed script includes from 14 template files
-- **Result**: Content now always visible (with brief font swap flash), but Browser MCP tool still cannot detect content
-- **Conclusion**: The accessibility issue is deeper than font loading - may be a Browser MCP tool limitation or other rendering issue
-
-### CSS Animation Accessibility Fix (Completed)
-- **Problem**: Elements starting with `opacity: 0` for animations were inaccessible to Browser MCP tool
-- **Solution**: Changed animation approach from `opacity: 0` + `forwards` to using `animation-fill-mode: both`
-- **Files Modified**:
-  - main.css: Fixed `.featured-post`, `.section-link`, and `.category-card` classes
-- **Result**: 
-  - Homepage Explore navigation now detected by Browser MCP tool (partial improvement)
-  - Poem and Aphorism content still not detected (appears to be a deeper Browser MCP tool limitation)
-  - Content is always visible in HTML and accessible to users
+- **COMPLETED.md** - For all completed fixes and resolved issues
 
 ## Frontmatter Analysis
 
