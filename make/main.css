@@ -1,5 +1,13 @@
 /* Projects Page Specific Styles */
 
+/* Featured posts container with max-width and centering */
+.content-container .featured-posts {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* Legacy projects-list styles (kept for backward compatibility) */
 .projects-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

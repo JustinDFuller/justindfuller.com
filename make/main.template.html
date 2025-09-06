@@ -16,13 +16,20 @@
       {{ template "/page-title.template.html" "Projects" }}
       
       <div class="content-container">
-        <div class="projects-list">
-          <a href="https://notes.justindfuller.com" class="project-link">Notes</a>
-          <a href="https://interviews.justindfuller.com" class="project-link">Interviews</a>
-          <a href="/grass" class="project-link">Grass</a>
-          <a href="/kit" class="project-link">A Game with Kit</a>
-          <a href="/avatar" class="project-link">Union Avatars</a>
-          <a href="/weeks-remaining" class="project-link">Remaining Life</a>
+        <div class="featured-posts">
+          {{ range .Entries }}
+            <article class="featured-post">
+              <a href="{{ .URL }}"{{ if .IsExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>
+                <h3 class="featured-post-title">
+                  {{ .Title }}
+                </h3>
+              </a>
+              <p class="featured-post-excerpt">{{ .FirstParagraph }}</p>
+              <a href="{{ .URL }}"{{ if .IsExternal }} target="_blank" rel="noopener noreferrer"{{ end }} class="read-more">
+                {{ if .IsExternal }}Visit project →{{ else }}Explore →{{ end }}
+              </a>
+            </article>
+          {{ end }}
         </div>
       </div>
     </main>

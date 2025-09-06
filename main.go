@@ -417,8 +417,9 @@ func main() {
 	})
 
 	http.HandleFunc("/make", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/make/main.template.html", data[[]byte]{
-			Title: "Make",
+		if err := templates.ExecuteTemplate(w, "/make/main.template.html", data[grass.ProjectEntry]{
+			Title:   "Make",
+			Entries: grass.Entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/make/main.template.html")
 		}
