@@ -1,5 +1,13 @@
 /* Reviews Page Specific Styles */
 
+/* Featured posts container with max-width and centering */
+.content-container .featured-posts {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* Legacy reviews-list styles (kept for backward compatibility) */
 .reviews-list {
   display: flex;
   flex-direction: column;

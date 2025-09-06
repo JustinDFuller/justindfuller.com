@@ -381,8 +381,9 @@ func main() {
 	})
 
 	http.HandleFunc("/review", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[[]byte]{
-			Title: "Review",
+		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[review.ReviewEntry]{
+			Title:   "Review",
+			Entries: review.Entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/review/main.template.html")
 		}
