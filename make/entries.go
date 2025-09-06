@@ -35,7 +35,7 @@ var Entries = []ProjectEntry{
 		Title:          "Grass",
 		Slug:           "grass",
 		URL:            "/grass",
-		FirstParagraph: "Hey there 👋 I'd like to help you figure out how much to water your grass. This is trickier than it may seem. The amount changes based on the grass type and natural rainfall. Overwatering wastes resources; hurts your grass; and may cause mold, fungus, and moss to grow in your yard.",
+		FirstParagraph: "I'd like to help you figure out how much to water your grass. This is trickier than it may seem. The amount changes based on the grass type and natural rainfall. Overwatering wastes resources; hurts your grass; and may cause mold, fungus, and moss to grow in your yard.",
 		Date:           time.Date(2022, 8, 10, 0, 0, 0, 0, time.UTC),
 		IsExternal:     false,
 	},
