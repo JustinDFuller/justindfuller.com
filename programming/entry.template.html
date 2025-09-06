@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
+    <style>
+      {{ template "/programming/entry.css" . }}
+    </style>
+  </head>
+
+  <body>
+    {{ template "/header.template.html" . }}
+
+    <main>
+      <div class="programming-content">
+        <article>
+          <header class="programming-header">
+            <h1>{{ .Entry.Title }}</h1>
+            <time datetime="{{ .Entry.Date.Format "2006-01-02" }}" class="programming-date">
+              {{ .Entry.Date.Format "January 2, 2006" }}
+            </time>
+          </header>
+          <div class="programming-body">
+            {{ printf "%s" .Entry.Content }}
+          </div>
+        </article>
+      </div>
+    </main>
+
+    {{ template "/footer.template.html" . }}
+
+    <script>
+      {{ template "/programming/entry.js" . }}
+    </script>
+  </body>
+</html>

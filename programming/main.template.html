@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
+
+    <style>
+      {{ template "/programming/main.css" . }}
+    </style>
+  </head>
+
+  <body>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Programming" }}
+      
+      <div class="content-container">
+        <div class="programming-list">
+          {{ range .Entries }}
+            <article class="programming-entry">
+              <a href="/programming/{{ .Slug }}" class="programming-link">
+                <h3>{{ .Title }}</h3>
+                <p class="programming-description">{{ .Description }}</p>
+                <time datetime="{{ .Date.Format "2006-01-02" }}" class="programming-date">
+                  {{ .Date.Format "January 2, 2006" }}
+                </time>
+              </a>
+            </article>
+          {{ end }}
+        </div>
+      </div>
+    </main>
+
+    {{ template "/footer.template.html" . }}
+
+    <script>
+      {{ template "/programming/main.js" . }}
+    </script>
+  </body>
+</html>

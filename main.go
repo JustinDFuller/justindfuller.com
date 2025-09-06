@@ -15,6 +15,7 @@ import (
 	grass "github.com/justindfuller/justindfuller.com/make"
 	"github.com/justindfuller/justindfuller.com/nature"
 	"github.com/justindfuller/justindfuller.com/poem"
+	"github.com/justindfuller/justindfuller.com/programming"
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
 	"github.com/justindfuller/justindfuller.com/word"
@@ -321,6 +322,51 @@ func main() {
 			Entry: entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/philosophy/entry.template.html")
+		}
+	})
+
+	http.HandleFunc("/programming", func(w http.ResponseWriter, _ *http.Request) {
+		if err := templates.ExecuteTemplate(w, "/programming/main.template.html", data[programming.Entry]{
+			Title:   "Programming",
+			Entries: programming.Entries,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/programming/main.template.html")
+		}
+	})
+
+	http.HandleFunc("/programming/", func(w http.ResponseWriter, r *http.Request) {
+		paths := strings.Split(r.URL.Path, "/")
+		last := len(paths) - 1
+
+		if len(paths) == 0 {
+			http.Error(w, "Programming post not found.", http.StatusNotFound)
+			log.Printf("Programming post not found: %s", r.URL.Path)
+
+			return
+		}
+
+		var entry programming.Entry
+		found := false
+		for _, e := range programming.Entries {
+			if e.Slug == paths[last] {
+				entry = e
+				found = true
+				break
+			}
+		}
+
+		if !found {
+			http.Error(w, "Programming post not found.", http.StatusNotFound)
+			log.Printf("Programming post not found: %s", r.URL.Path)
+
+			return
+		}
+
+		if err := templates.ExecuteTemplate(w, "/programming/entry.template.html", data[programming.Entry]{
+			Title: entry.Title,
+			Entry: entry,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/programming/entry.template.html")
 		}
 	})
 
