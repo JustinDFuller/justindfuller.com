@@ -591,6 +591,32 @@
   }
 
 
+  /* Shared Entry Header */
+  .entry-header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .entry-header h1 {
+    font-size: var(--font-size-3xl);
+    color: var(--color-accent-pink);
+    margin-bottom: var(--space-md);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, var(--color-accent-pink), var(--color-accent-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .entry-header .entry-date {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
   /* Footer */
   footer {
     background: transparent;
@@ -733,6 +759,11 @@
 
   /* Mobile footer - show external links as text */
   @media (max-width: 768px) {
+    /* Entry Header - Mobile */
+    .entry-header h1 {
+      font-size: var(--font-size-2xl);
+    }
+    
     /* Show footer on mobile for homepage */
     body:has(.homepage-layout) footer {
       display: block;

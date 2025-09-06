@@ -14,12 +14,7 @@
     <main>
       <div class="thought-content">
         <article>
-          <header class="thought-header">
-            <h1>{{ .Entry.Title }}</h1>
-            <time datetime="{{ .Entry.Date.Format "2006-01-02" }}" class="thought-date">
-              {{ .Entry.Date.Format "January 2, 2006" }}
-            </time>
-          </header>
+          {{ template "/entry-header.template.html" .Entry }}
           <div class="thought-body">
             {{ .Entry.Content }}
           </div>

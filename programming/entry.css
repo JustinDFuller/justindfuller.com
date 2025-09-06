@@ -5,31 +5,6 @@
   padding: 0 var(--space-lg);
 }
 
-.programming-header {
-  text-align: center;
-  margin-bottom: var(--space-3xl);
-  padding-bottom: var(--space-xl);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.programming-content h1 {
-  font-size: var(--font-size-3xl);
-  color: var(--color-accent-pink);
-  margin-bottom: var(--space-md);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  background: linear-gradient(135deg, var(--color-accent-pink), var(--color-accent-yellow));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.programming-header .programming-date {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  font-style: italic;
-}
-
 .programming-body {
   font-family: var(--font-family-sans);
   color: var(--color-text-secondary);
@@ -151,10 +126,6 @@
 @media (max-width: 768px) {
   .programming-content {
     padding: 0 var(--space-md);
-  }
-  
-  .programming-content h1 {
-    font-size: var(--font-size-2xl);
   }
   
   .programming-body h2 {

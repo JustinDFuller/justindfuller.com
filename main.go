@@ -178,7 +178,7 @@ func main() {
 			return
 		}
 
-		entry, err := word.Entry(paths[last])
+		entry, err := word.GetEntry(paths[last])
 		if err != nil {
 			http.Error(w, "Error reading Words", http.StatusInternalServerError)
 			log.Printf("Error reading Words: %s", err)
@@ -186,8 +186,8 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data[word.WordEntry]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
@@ -276,7 +276,7 @@ func main() {
 			return
 		}
 
-		entry, err := story.Entry(paths[last])
+		entry, err := story.GetEntry(paths[last])
 		if err != nil {
 			http.Error(w, "Error reading story.", http.StatusInternalServerError)
 			log.Printf("Error reading story: %s", err)
@@ -284,8 +284,8 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/story/story.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/story/story.template.html", data[story.StoryEntryWithContent]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/story/story.template.html")
@@ -400,7 +400,7 @@ func main() {
 			return
 		}
 
-		entry, err := review.Entry(paths[last])
+		entry, err := review.GetEntry(paths[last])
 		if err != nil {
 			http.Error(w, "Error reading review.", http.StatusInternalServerError)
 			log.Printf("Error reading review: %s", err)
@@ -408,8 +408,8 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/review/review.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/review/review.template.html", data[review.ReviewEntryWithContent]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")

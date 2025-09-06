@@ -3,7 +3,10 @@ package word
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/yuin/goldmark"
@@ -13,12 +16,18 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-func Entry(name string) ([]byte, error) {
+type WordEntry struct {
+	Title   string
+	Content template.HTML
+	Date    time.Time
+}
+
+func GetEntry(name string) (WordEntry, error) {
 	path := fmt.Sprintf("./word/%s.md", name)
 
 	file, err := os.ReadFile(path)
 	if err != nil {
-		return nil, errors.Wrapf(err, "error reading review: %s", path)
+		return WordEntry{}, errors.Wrapf(err, "error reading word: %s", path)
 	}
 
 	md := goldmark.New(
@@ -33,9 +42,76 @@ func Entry(name string) ([]byte, error) {
 	)
 
 	var buf bytes.Buffer
-	if err := md.Convert(file, &buf); err != nil {
-		return nil, errors.Wrap(err, "error converting markdown")
+	context := parser.NewContext()
+	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
+		return WordEntry{}, errors.Wrap(err, "error converting markdown")
 	}
 
-	return buf.Bytes(), nil
+	// Extract metadata
+	metaData := meta.Get(context)
+	
+	// Get content HTML
+	contentHTML := buf.String()
+	
+	// Get title from metadata
+	var title string
+	if t, ok := metaData["title"].(string); ok && t != "" {
+		title = t
+	} else {
+		// Extract title from first H1 if no metadata
+		if strings.Contains(contentHTML, "<h1") {
+			start := strings.Index(contentHTML, ">") + 1
+			end := strings.Index(contentHTML, "</h1>")
+			if start > 0 && end > start {
+				title = contentHTML[start:end]
+				// Remove the h1 from content to avoid duplication
+				h1Start := strings.Index(contentHTML, "<h1")
+				h1End := strings.Index(contentHTML, "</h1>") + 5
+				if h1Start >= 0 && h1End > h1Start {
+					contentHTML = contentHTML[:h1Start] + contentHTML[h1End:]
+				}
+			}
+		}
+		// If still no title, format from word name
+		if title == "" {
+			// Capitalize first letter of each word
+			parts := strings.Split(name, "-")
+			for i, part := range parts {
+				if len(part) > 0 {
+					parts[i] = strings.ToUpper(part[:1]) + part[1:]
+				}
+			}
+			title = strings.Join(parts, " ")
+		}
+	}
+
+	// Get date from metadata
+	var date time.Time
+	if d, ok := metaData["date"]; ok {
+		switch v := d.(type) {
+		case time.Time:
+			date = v
+		case string:
+			if parsed, err := time.Parse("2006-01-02", v); err == nil {
+				date = parsed
+			} else if parsed, err := time.Parse(time.RFC3339, v); err == nil {
+				date = parsed
+			}
+		}
+	}
+
+	return WordEntry{
+		Title:   title,
+		Content: template.HTML(contentHTML),
+		Date:    date,
+	}, nil
+}
+
+// Legacy function for backward compatibility
+func Entry(name string) ([]byte, error) {
+	entry, err := GetEntry(name)
+	if err != nil {
+		return nil, err
+	}
+	return []byte(entry.Content), nil
 }

@@ -1,4 +1,4 @@
-package review
+package story
 
 import (
 	"bytes"
@@ -16,35 +16,35 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-// Extend existing ReviewEntry with Content
-type ReviewEntryWithContent struct {
-	ReviewEntry
+// Extend existing StoryEntry with Content
+type StoryEntryWithContent struct {
+	StoryEntry
 	Content template.HTML
 }
 
-func GetEntry(want string) (ReviewEntryWithContent, error) {
-	files, err := os.ReadDir("./review")
+func GetEntry(want string) (StoryEntryWithContent, error) {
+	files, err := os.ReadDir("./story")
 	if err != nil {
-		return ReviewEntryWithContent{}, errors.Wrap(err, "error reading review directory")
+		return StoryEntryWithContent{}, errors.Wrap(err, "error reading story directory")
 	}
 
 	var name string
 
 	for _, dir := range files {
-		if n := dir.Name(); strings.HasSuffix(n, fmt.Sprintf("%s.md", want)) {
+		if n := dir.Name(); strings.Contains(n, want) && strings.HasSuffix(n, ".md") {
 			name = n
 		}
 	}
 
 	if name == "" {
-		return ReviewEntryWithContent{}, errors.New("not found")
+		return StoryEntryWithContent{}, errors.New("not found")
 	}
 
-	path := fmt.Sprintf("./review/%s", name)
+	path := fmt.Sprintf("./story/%s", name)
 
 	file, err := os.ReadFile(path)
 	if err != nil {
-		return ReviewEntryWithContent{}, errors.Wrapf(err, "error reading review: %s", path)
+		return StoryEntryWithContent{}, errors.Wrapf(err, "error reading story: %s", path)
 	}
 
 	md := goldmark.New(
@@ -61,7 +61,7 @@ func GetEntry(want string) (ReviewEntryWithContent, error) {
 	var buf bytes.Buffer
 	context := parser.NewContext()
 	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
-		return ReviewEntryWithContent{}, errors.Wrap(err, "error converting markdown")
+		return StoryEntryWithContent{}, errors.Wrap(err, "error converting markdown")
 	}
 
 	// Extract metadata
@@ -70,7 +70,7 @@ func GetEntry(want string) (ReviewEntryWithContent, error) {
 	// Get content HTML
 	contentHTML := buf.String()
 	
-	// Get title - try metadata first, then extract from content
+	// Get title from metadata
 	var title string
 	if t, ok := metaData["title"].(string); ok && t != "" {
 		title = t
@@ -89,9 +89,13 @@ func GetEntry(want string) (ReviewEntryWithContent, error) {
 				}
 			}
 		}
+		// If still no title, format from filename
+		if title == "" {
+			title = formatTitleFromFilename(name)
+		}
 	}
 
-	// Get date from metadata or use a default
+	// Get date from metadata or filename
 	var date time.Time
 	if d, ok := metaData["date"]; ok {
 		switch v := d.(type) {
@@ -108,19 +112,18 @@ func GetEntry(want string) (ReviewEntryWithContent, error) {
 	
 	// If no date in metadata, try to parse from filename
 	if date.IsZero() {
-		// Pattern: year-month-day or similar
-		parts := strings.Split(name, "-")
-		if len(parts) >= 3 {
-			// Try to parse date from filename
-			dateStr := fmt.Sprintf("%s-%s-%s", parts[0], parts[1], parts[2])
-			if parsed, err := time.Parse("2006-01-02", dateStr[:10]); err == nil {
+		// Pattern: 2022-09-18_the_philosophy_of_trees.md
+		parts := strings.Split(name, "_")
+		if len(parts) > 0 {
+			datePart := parts[0]
+			if parsed, err := time.Parse("2006-01-02", datePart); err == nil {
 				date = parsed
 			}
 		}
 	}
 
-	return ReviewEntryWithContent{
-		ReviewEntry: ReviewEntry{
+	return StoryEntryWithContent{
+		StoryEntry: StoryEntry{
 			Title: title,
 			Date:  date,
 		},
@@ -135,4 +138,24 @@ func Entry(want string) ([]byte, error) {
 		return nil, err
 	}
 	return []byte(entry.Content), nil
+}
+
+func formatTitleFromFilename(filename string) string {
+	// Remove .md extension
+	name := strings.TrimSuffix(filename, ".md")
+	
+	// Remove date prefix if present (e.g., "2022-09-18_")
+	if len(name) > 11 && name[10] == '_' {
+		name = name[11:]
+	}
+	
+	// Replace underscores with spaces and capitalize words
+	parts := strings.Split(name, "_")
+	for i, part := range parts {
+		if len(part) > 0 {
+			parts[i] = strings.ToUpper(part[:1]) + part[1:]
+		}
+	}
+	
+	return strings.Join(parts, " ")
 }

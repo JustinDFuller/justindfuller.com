@@ -14,12 +14,7 @@
     <main>
       <div class="programming-content">
         <article>
-          <header class="programming-header">
-            <h1>{{ .Entry.Title }}</h1>
-            <time datetime="{{ .Entry.Date.Format "2006-01-02" }}" class="programming-date">
-              {{ .Entry.Date.Format "January 2, 2006" }}
-            </time>
-          </header>
+          {{ template "/entry-header.template.html" .Entry }}
           <div class="programming-body">
             {{ printf "%s" .Entry.Content }}
           </div>

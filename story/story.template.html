@@ -14,8 +14,10 @@
     <main>
       <div class="story-content">
         <article>
-          <h1>{{ .Title }}</h1>
-          {{ printf "%s" .Entry }}
+          {{ template "/entry-header.template.html" .Entry }}
+          <div class="story-body">
+            {{ printf "%s" .Entry.Content }}
+          </div>
         </article>
       </div>
     </main>
