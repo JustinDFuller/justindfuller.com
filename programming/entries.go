@@ -19,6 +19,7 @@ type Entry struct {
 	Description string
 	Content     template.HTML
 	Date        time.Time
+	IsDraft     bool
 }
 
 //go:embed 2017-01-06_javascript-apis-video-api.md
@@ -108,7 +109,12 @@ var technicalRoadmaps string
 //go:embed 2023-02-11_my_javascript_style_guide.md
 var myJavaScriptStyleGuide string
 
-func parseMarkdown(content string) template.HTML {
+type parsedContent struct {
+	HTML    template.HTML
+	IsDraft bool
+}
+
+func parseMarkdownWithMeta(content string) parsedContent {
 	md := goldmark.New(
 		goldmark.WithExtensions(extension.GFM, meta.Meta),
 		goldmark.WithParserOptions(
@@ -121,21 +127,37 @@ func parseMarkdown(content string) template.HTML {
 	)
 
 	var buf bytes.Buffer
-	if err := md.Convert([]byte(content), &buf); err != nil {
+	context := parser.NewContext()
+	if err := md.Convert([]byte(content), &buf, parser.WithContext(context)); err != nil {
 		// If parsing fails, return the original content
-		return template.HTML(content)
+		return parsedContent{HTML: template.HTML(content), IsDraft: false}
 	}
 
-	return template.HTML(buf.String())
+	// Check if draft is set to true in metadata
+	metaData := meta.Get(context)
+	isDraft := false
+	if draft, ok := metaData["draft"]; ok {
+		if draftBool, ok := draft.(bool); ok {
+			isDraft = draftBool
+		}
+	}
+
+	return parsedContent{HTML: template.HTML(buf.String()), IsDraft: isDraft}
 }
 
-var Entries = []Entry{
+func parseMarkdown(content string) template.HTML {
+	return parseMarkdownWithMeta(content).HTML
+}
+
+// AllEntries contains all entries including drafts
+var AllEntries = []Entry{
 	{
 		Title:       "My JavaScript Style Guide",
 		Slug:        "my-javascript-style-guide",
 		Description: "A comprehensive JavaScript style guide for writing clean, maintainable code",
 		Content:     parseMarkdown(myJavaScriptStyleGuide),
 		Date:        time.Date(2023, 2, 11, 0, 0, 0, 0, time.UTC),
+		IsDraft:     parseMarkdownWithMeta(myJavaScriptStyleGuide).IsDraft,
 	},
 	{
 		Title:       "Technical Roadmaps",
@@ -143,6 +165,7 @@ var Entries = []Entry{
 		Description: "How to create and use technical roadmaps effectively",
 		Content:     parseMarkdown(technicalRoadmaps),
 		Date:        time.Date(2022, 12, 19, 0, 0, 0, 0, time.UTC),
+		IsDraft:     parseMarkdownWithMeta(technicalRoadmaps).IsDraft,
 	},
 	{
 		Title:       "Go Tip: Function Arguments",
@@ -150,6 +173,7 @@ var Entries = []Entry{
 		Description: "Tips for working with function arguments in Go",
 		Content:     parseMarkdown(goTipFunctionArguments),
 		Date:        time.Date(2022, 12, 1, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Self-Documenting Code",
@@ -157,6 +181,7 @@ var Entries = []Entry{
 		Description: "Writing code that documents itself",
 		Content:     parseMarkdown(selfDocumentingCode),
 		Date:        time.Date(2022, 11, 30, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Representing Reality",
@@ -164,6 +189,7 @@ var Entries = []Entry{
 		Description: "How to model real-world concepts in code",
 		Content:     parseMarkdown(representingReality),
 		Date:        time.Date(2022, 10, 9, 0, 0, 0, 0, time.UTC),
+		IsDraft:     parseMarkdownWithMeta(representingReality).IsDraft,
 	},
 	{
 		Title:       "Just Say No to Helper Functions",
@@ -171,6 +197,7 @@ var Entries = []Entry{
 		Description: "Why helper functions can be harmful and what to do instead",
 		Content:     parseMarkdown(justSayNoToHelperFunctions),
 		Date:        time.Date(2022, 10, 9, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Binary Search",
@@ -178,6 +205,7 @@ var Entries = []Entry{
 		Description: "Understanding and implementing binary search",
 		Content:     parseMarkdown(binarySearch),
 		Date:        time.Date(2022, 5, 9, 0, 0, 0, 0, time.UTC),
+		IsDraft:     parseMarkdownWithMeta(binarySearch).IsDraft,
 	},
 	{
 		Title:       "Why Do We Fall Into the Rewrite Trap?",
@@ -185,6 +213,7 @@ var Entries = []Entry{
 		Description: "Understanding the temptation to rewrite code from scratch",
 		Content:     parseMarkdown(whyRewriteTrap),
 		Date:        time.Date(2020, 1, 21, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Go Things I Love: Channels and Goroutines",
@@ -192,6 +221,7 @@ var Entries = []Entry{
 		Description: "Exploring Go's concurrency primitives",
 		Content:     parseMarkdown(goThingsILoveChannelsGoroutines),
 		Date:        time.Date(2020, 1, 6, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Go Things I Love: Methods on Any Type",
@@ -199,6 +229,7 @@ var Entries = []Entry{
 		Description: "The power of Go's type system and methods",
 		Content:     parseMarkdown(goThingsILoveMethodsOnAnyType),
 		Date:        time.Date(2019, 12, 14, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Person Knowledge Repo",
@@ -206,6 +237,7 @@ var Entries = []Entry{
 		Description: "Building a personal knowledge repository",
 		Content:     parseMarkdown(personKnowledgeRepo),
 		Date:        time.Date(2019, 10, 13, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Service Calls Make Your Tests Better",
@@ -213,6 +245,7 @@ var Entries = []Entry{
 		Description: "How service-oriented architecture improves testability",
 		Content:     parseMarkdown(serviceCallsMakeTestsBetter),
 		Date:        time.Date(2019, 7, 19, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Refactoring: Oops, I've Been Doing It Backwards",
@@ -220,6 +253,7 @@ var Entries = []Entry{
 		Description: "A new perspective on the refactoring process",
 		Content:     parseMarkdown(refactoringBackwards),
 		Date:        time.Date(2019, 1, 24, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "How to Write Error Messages That Don't Suck",
@@ -227,6 +261,7 @@ var Entries = []Entry{
 		Description: "Guidelines for writing helpful error messages",
 		Content:     parseMarkdown(howToWriteErrorMessages),
 		Date:        time.Date(2018, 11, 28, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Simply JavaScript: A Straightforward Intro to Mocking, Stubbing, and Interfaces",
@@ -234,6 +269,7 @@ var Entries = []Entry{
 		Description: "Understanding testing concepts in JavaScript",
 		Content:     parseMarkdown(simplyJavaScriptMocking),
 		Date:        time.Date(2018, 10, 17, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "How Writing Tests Can Make You a Faster and More Productive Developer",
@@ -241,6 +277,7 @@ var Entries = []Entry{
 		Description: "The counterintuitive benefits of test-driven development",
 		Content:     parseMarkdown(howWritingTestsMakesFaster),
 		Date:        time.Date(2018, 10, 17, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "How to Understand Any Programming Task",
@@ -248,6 +285,7 @@ var Entries = []Entry{
 		Description: "A systematic approach to tackling programming problems",
 		Content:     parseMarkdown(howToUnderstandProgrammingTask),
 		Date:        time.Date(2018, 9, 18, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Introducing Promise Funnel",
@@ -255,6 +293,7 @@ var Entries = []Entry{
 		Description: "A new pattern for handling promises in JavaScript",
 		Content:     parseMarkdown(introducingPromiseFunnel),
 		Date:        time.Date(2018, 8, 23, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Why You Should Use Functional Composition for Your Full Applications",
@@ -262,6 +301,7 @@ var Entries = []Entry{
 		Description: "The benefits of functional composition at scale",
 		Content:     parseMarkdown(whyUseFunctionalComposition),
 		Date:        time.Date(2018, 5, 21, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Here Are Three Upcoming Changes to JavaScript That You'll Love",
@@ -269,6 +309,7 @@ var Entries = []Entry{
 		Description: "Exciting new JavaScript features on the horizon",
 		Content:     parseMarkdown(threeUpcomingJSChanges),
 		Date:        time.Date(2018, 4, 6, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Let's Compose Promises",
@@ -276,6 +317,7 @@ var Entries = []Entry{
 		Description: "Using functional composition with JavaScript promises",
 		Content:     parseMarkdown(letsComposePromises),
 		Date:        time.Date(2017, 11, 13, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Function Composition with Lodash",
@@ -283,6 +325,7 @@ var Entries = []Entry{
 		Description: "Learning functional composition using Lodash",
 		Content:     parseMarkdown(functionCompositionLodash),
 		Date:        time.Date(2017, 11, 9, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Continuous Deployment for Node.js on DigitalOcean",
@@ -290,6 +333,7 @@ var Entries = []Entry{
 		Description: "Setting up automated deployment for Node.js applications",
 		Content:     parseMarkdown(continuousDeploymentNodeJS),
 		Date:        time.Date(2017, 3, 20, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Three Reasons I Avoid Anonymous JS Functions Like the Plague",
@@ -297,6 +341,7 @@ var Entries = []Entry{
 		Description: "Why named functions are better than anonymous ones",
 		Content:     parseMarkdown(threeReasonsAvoidAnonymousFunctions),
 		Date:        time.Date(2017, 2, 13, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "Easily Create an HTML Editor with DesignMode and ContentEditable",
@@ -304,6 +349,7 @@ var Entries = []Entry{
 		Description: "Building rich text editors with browser APIs",
 		Content:     parseMarkdown(easilyCreateHTMLEditor),
 		Date:        time.Date(2017, 1, 27, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "How to Copy to a User's Clipboard with Only JavaScript",
@@ -311,6 +357,7 @@ var Entries = []Entry{
 		Description: "Implementing clipboard functionality in the browser",
 		Content:     parseMarkdown(howToCopyToClipboard),
 		Date:        time.Date(2017, 1, 16, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "JavaScript APIs: Battery",
@@ -318,6 +365,7 @@ var Entries = []Entry{
 		Description: "Exploring the Battery Status API",
 		Content:     parseMarkdown(javascriptAPIsBattery),
 		Date:        time.Date(2017, 1, 11, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "JavaScript APIs: Console",
@@ -325,6 +373,7 @@ var Entries = []Entry{
 		Description: "Advanced console methods for better debugging",
 		Content:     parseMarkdown(javascriptAPIsConsole),
 		Date:        time.Date(2017, 1, 7, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
 	{
 		Title:       "JavaScript APIs: Video API",
@@ -332,5 +381,18 @@ var Entries = []Entry{
 		Description: "Working with HTML5 video elements programmatically",
 		Content:     parseMarkdown(javascriptAPIsVideoAPI),
 		Date:        time.Date(2017, 1, 6, 0, 0, 0, 0, time.UTC),
+		IsDraft:     false,
 	},
+}
+
+// Entries returns only non-draft entries for public display
+var Entries []Entry
+
+func init() {
+	// Filter out draft entries
+	for _, entry := range AllEntries {
+		if !entry.IsDraft {
+			Entries = append(Entries, entry)
+		}
+	}
 }

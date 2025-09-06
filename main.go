@@ -19,7 +19,7 @@ import (
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
 	"github.com/justindfuller/justindfuller.com/word"
-	"github.com/justindfuller/justindfuller.com/philosophy"
+	"github.com/justindfuller/justindfuller.com/thought"
 	"github.com/justindfuller/secretmanager"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -290,42 +290,43 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/philosophy", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/philosophy/main.template.html", data[[]byte]{
-			Title: "Philosophy",
+	http.HandleFunc("/thought", func(w http.ResponseWriter, _ *http.Request) {
+		if err := templates.ExecuteTemplate(w, "/thought/main.template.html", data[[]byte]{
+			Title: "Thought",
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/philosophy/main.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/thought/main.template.html")
 		}
 	})
 
-	http.HandleFunc("/philosophy/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/thought/", func(w http.ResponseWriter, r *http.Request) {
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
 		if len(paths) == 0 {
-			http.Error(w, "philosophy entry not found.", http.StatusNotFound)
-			log.Printf("philosophy entry not found: %s", r.URL.Path)
+			http.Error(w, "thought entry not found.", http.StatusNotFound)
+			log.Printf("thought entry not found: %s", r.URL.Path)
 
 			return
 		}
 
-		entry, err := philosophy.Entry(paths[last])
+		entry, err := thought.Entry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading philosophy entry.", http.StatusInternalServerError)
-			log.Printf("Error reading philosophy entry: %s", err)
+			http.Error(w, "Error reading thought entry.", http.StatusInternalServerError)
+			log.Printf("Error reading thought entry: %s", err)
 
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/philosophy/entry.template.html", data[[]byte]{
+		if err := templates.ExecuteTemplate(w, "/thought/entry.template.html", data[[]byte]{
 			Title: Title(paths[last]),
 			Entry: entry,
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/philosophy/entry.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/thought/entry.template.html")
 		}
 	})
 
 	http.HandleFunc("/programming", func(w http.ResponseWriter, _ *http.Request) {
+		log.Printf("Programming handler - number of entries: %d", len(programming.Entries))
 		if err := templates.ExecuteTemplate(w, "/programming/main.template.html", data[programming.Entry]{
 			Title:   "Programming",
 			Entries: programming.Entries,
