@@ -3,6 +3,8 @@
   max-width: var(--max-width-narrow);
   margin: 0 auto;
   padding: 0 var(--space-lg);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .story-content h2 {
@@ -68,10 +70,29 @@
 @media (max-width: 768px) {
   .story-content {
     padding: 0 var(--space-md);
+    max-width: 100%;
+    overflow-x: hidden;
   }
   
   .story-content p {
     text-align: left;
     text-indent: 1.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .story-content blockquote,
+  .story-content .centered-quote {
+    max-width: 100%;
+    margin: var(--space-xl) 0;
+    padding: var(--space-md);
+    box-sizing: border-box;
+  }
+  
+  article {
+    overflow-x: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 }
