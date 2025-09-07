@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-07-21
-linktitle: "How do we work together?"
-menu:
-  main:
-    parent: posts
-next: /posts/how-do-we-work-together
 title: "How do we work together?"
-weight: 1
-images:
- - /how_do_we_work_together.jpg
+subtitle: ""
+date: 2022-07-21
+draft: false
 tags: [Life]
 ---
 

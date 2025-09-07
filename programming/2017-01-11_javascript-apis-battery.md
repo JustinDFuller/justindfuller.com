@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-01-11
-linktitle: "JavaScript APIs: Battery"
-menu:
-  main:
-    parent: posts
-next: /posts/javascript-apis-battery
 title: "JavaScript APIs: Battery"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2017-01-11_javascript-apis-battery
+subtitle: ""
+date: 2017-01-11
+draft: false
 tags: [Code]
 ---
 

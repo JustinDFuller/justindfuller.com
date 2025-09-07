@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-11-30
-linktitle: "Self-Documenting Code"
-menu:
-  main:
-    parent: posts
-next: /posts/self-documenting-code
 title: "Self-Documenting Code"
-weight: 1
-images:
- - /self-documenting-code.png
+subtitle: ""
+date: 2022-11-30
+draft: false
 tags: [Code]
 ---
 

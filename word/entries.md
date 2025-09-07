@@ -1,8 +1,8 @@
 ---
 title: "Entries"
+subtitle: ""
 date: 2025-09-07
-author: Justin Fuller
-category: word
+draft: false
 tags: [word]
 ---
 

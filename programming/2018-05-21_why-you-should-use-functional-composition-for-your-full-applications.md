@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2018-05-21
-linktitle: "Why you should use functional composition for your full applications"
-menu:
-  main:
-    parent: posts
-next: /posts/why-you-should-use-functional-composition-for-your-full-applications
 title: "Why you should use functional composition for your full applications"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2018-05-21_why-you-should-use-functional-composition-for-your-full-applications
+subtitle: ""
+date: 2018-05-21
+draft: false
 tags: [Code]
 ---
 

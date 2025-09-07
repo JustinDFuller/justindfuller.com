@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-09-18
-linktitle: "The Philosophy of Trees"
-menu:
-  main:
-    parent: posts
-next: /posts/the-philosophy-of-trees
 title: "The Philosophy of Trees"
-weight: 1
-images:
- - /the_philosophy_of_trees.webp
+subtitle: ""
+date: 2022-09-18
+draft: false
 tags: [Story]
 ---
 

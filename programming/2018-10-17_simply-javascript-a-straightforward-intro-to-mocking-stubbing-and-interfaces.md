@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2018-10-17
-linktitle: "Simply JavaScript: a straightforward intro to Mocking, Stubbing, and Interfaces"
-menu:
-  main:
-    parent: posts
-next: /posts/simply-javascript-a-straightforward-intro-to-mocking-stubbing-and-interfaces
 title: "Simply JavaScript: a straightforward intro to Mocking, Stubbing, and Interfaces"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2018-10-17_simply-javascript-a-straightforward-intro-to-mocking-stubbing-and-interfaces
+subtitle: ""
+date: 2018-10-17
+draft: false
 tags: [Code]
 ---
 

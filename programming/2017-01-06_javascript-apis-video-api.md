@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-01-06
-linktitle: "JavaScript APIs: Video API"
-menu:
-  main:
-    parent: posts
-next: /posts/javascript-apis-video
 title: "JavaScript APIs: Video API"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2017-01-06_javascript-apis-video-api
+subtitle: ""
+date: 2017-01-06
+draft: false
 tags: [Code]
 ---
 

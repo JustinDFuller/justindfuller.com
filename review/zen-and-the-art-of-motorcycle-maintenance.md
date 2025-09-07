@@ -1,8 +1,8 @@
 ---
 title: "Zen and the Art of Motorcycle Maintenance"
+subtitle: ""
 date: 2022-04-14
-author: Justin Fuller
-category: review
+draft: false
 tags: [review]
 ---
 

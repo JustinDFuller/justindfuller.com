@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2018-08-23
-linktitle: "Introducing Promise-Funnel"
-menu:
-  main:
-    parent: posts
-next: /posts/introducing-promise-funnel
 title: "Introducing Promise-Funnel"
-weight: 1
-images:
-  - /promise-funnel.png
-aliases:
-  - /posts/2018-08-23_introducing-promise-funnel
+subtitle: ""
+date: 2018-08-23
+draft: false
 tags: [Code]
 ---
 

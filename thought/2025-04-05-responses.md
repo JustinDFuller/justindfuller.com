@@ -1,5 +1,7 @@
 ---
 title: Responses
+subtitle: ""
+draft: false
 ---
 
 Not all responses to an idea, suggestion, thought are created equal. Here is a brief ranking of the types of responses.

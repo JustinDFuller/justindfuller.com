@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-01-27
-linktitle: "Easily create an HTML editor with DesignMode and ContentEditable"
-menu:
-  main:
-    parent: posts
-next: /posts/easily-create-an-html-editor-with-designmode-and-contenteditable
 title: "Easily create an HTML editor with DesignMode and ContentEditable"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2017-01-27_easily-create-an-html-editor-with-designmode-and-contenteditable
+subtitle: ""
+date: 2017-01-27
+draft: false
 tags: [Code]
 ---
 

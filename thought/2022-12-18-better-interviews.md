@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-12-18
-linktitle: "Better Interviews"
-menu:
-  main:
-    parent: posts
-next: /posts/better-interviews
 title: "Better Interviews"
-weight: 1
-images:
- - /better_interviews_logo.png
+subtitle: ""
+date: 2022-12-18
+draft: false
 tags: [Life]
 ---
 

@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2019-01-24
-linktitle: "Refactoring — oops, I’ve been doing it wrong."
-menu:
-  main:
-    parent: posts
-next: /posts/refactoring-oops-ive-been-doing-it-wrong
 title: "Refactoring — oops, I’ve been doing it wrong."
-weight: 1
-images:
-  - /learning-to-code.png
-aliases:
-  - /posts/2019-01-24_refactoring-oops-ive-been-doing-it-backwards
+subtitle: ""
+date: 2019-01-24
+draft: false
 tags: [Code]
 ---
 

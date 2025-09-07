@@ -1,17 +1,8 @@
 ---
-ruthor: "Justin Fuller"
-date: 2019-10-13
-linktitle: "Keep a git repository of all your practice code"
-menu:
-  main:
-    parent: posts
-next: /posts/keep-a-git-repository-of-all-your-practice-code
 title: "Keep a git repository of all your practice code"
-weight: 1
-aliases:
-  - /posts/2019-10-13_Person-Knowledge-Repo
-images:
-  - /learning-to-code.png
+subtitle: ""
+date: 2019-10-13
+draft: false
 tags: [Code]
 ---
 

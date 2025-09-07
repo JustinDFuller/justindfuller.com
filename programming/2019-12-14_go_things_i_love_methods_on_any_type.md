@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2019-12-14
-linktitle: "Go Things I Love: Methods On Any Type"
-menu:
-  main:
-    parent: posts
-next: /posts/go-things-i-love-methods-on-any-type
 title: "Go Things I Love: Methods On Any Type"
-weight: 1
-images:
-  - /go-things-i-love.png
-aliases: 
-  - /posts/2019-12-14_Go-Things-I-Love-Methods-On-Any-Type
+subtitle: ""
+date: 2019-12-14
+draft: false
 tags: [Code]
 ---
 

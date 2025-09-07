@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2018-09-18
-linktitle: "How to understand any programming task"
-menu:
-  main:
-    parent: posts
-next: /posts/how-to-understand-any-programming-task
 title: "How to understand any programming task"
-weight: 1
-aliases:
-  - /posts/2018-09-18_how-to-understand-any-programming-task
-images:
-  - /learning-to-code.png
+subtitle: ""
+date: 2018-09-18
+draft: false
 tags: [Code]
 ---
 

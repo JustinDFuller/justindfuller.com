@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-01-07
-linktitle: "JavaScript APIs: Console"
-menu:
-  main:
-    parent: posts
-next: /posts/javascript-apis-console
 title: "JavaScript APIs: Console"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2017-01-07_javascript-apis-console
+subtitle: ""
+date: 2017-01-07
+draft: false
 tags: [Code]
 ---
 

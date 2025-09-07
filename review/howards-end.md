@@ -1,8 +1,8 @@
 ---
 title: "Howards End"
+subtitle: ""
 date: 2021-08-28
-author: Justin Fuller
-category: review
+draft: false
 tags: [review]
 ---
 

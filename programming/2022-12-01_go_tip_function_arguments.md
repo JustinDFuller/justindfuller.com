@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-12-01
-linktitle: "Go Tip: Prefer Function Arguments"
-menu:
-  main:
-    parent: posts
-next: /posts/technical-roadmaps
 title: "Go Tip: Prefer Function Arguments"
-weight: 1
-images:
- - /go-tip-function-arguments.png
+subtitle: ""
+date: 2022-12-01
+draft: false
 tags: [Code]
 ---
 

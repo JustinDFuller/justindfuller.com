@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-12-14
-linktitle: "Keeping One Tab Open"
-menu:
-  main:
-    parent: posts
-next: /posts/keeping-one-tab-open
 title: "Keeping One Tab Open"
-weight: 1
-images:
- - /keeping_one_tab_open.png
+subtitle: ""
+date: 2022-12-14
+draft: false
 tags: [Life]
 ---
 

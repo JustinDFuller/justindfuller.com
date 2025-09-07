@@ -1,17 +1,9 @@
 ---
-author: "Justin Fuller"
-date: 2023-02-11
-linktitle: "My JavaScipt Style Guide"
-menu:
-  main:
-    parent: posts
-next: /posts/my-javascript-style-guide
 title: "My JavaScript Style Guide"
-weight: 1
-images:
- - /my_javascript_style_guide.png
+subtitle: ""
+date: 2023-02-11
+draft: false
 tags: [Code]
-draft: true
 ---
 
 Great software engineering, like all art and science (after all—software engineering is a mixture of art and science), requires peace and clarity of mind.

@@ -1,8 +1,8 @@
 ---
 title: "Living on 24 Hours a Day"
+subtitle: ""
 date: 2022-01-07
-author: Justin Fuller
-category: review
+draft: false
 tags: [review]
 ---
 

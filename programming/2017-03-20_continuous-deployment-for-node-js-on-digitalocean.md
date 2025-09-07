@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-03-20
-linktitle: "Continuous deployment for Node.js on DigitalOcean"
-menu:
-  main:
-    parent: posts
-next: /posts/continuous-deployment-for-nodejs-on-digitalocean
 title: "Continuous deployment for Node.js on DigitalOcean"
-weight: 1
-images:
-  - /continuous-deployment.png
-aliases:
-  - /posts/2017-03-20_continuous-deployment-for-node-js-on-digitalocean
+subtitle: ""
+date: 2017-03-20
+draft: false
 tags: [Code]
 ---
 

@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2019-07-19
-linktitle: "Service calls make your tests better"
-menu:
-  main:
-    parent: posts
-next: /posts/service-calls-make-your-tests-better
 title: "Service calls make your tests better"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2019-07-19_service-calls-make-your-tests-better
+subtitle: ""
+date: 2019-07-19
+draft: false
 tags: [Code]
 ---
 

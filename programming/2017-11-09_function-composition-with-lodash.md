@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-11-09
-linktitle: "Function Composition with Lodash"
-menu:
-  main:
-    parent: posts
-next: /posts/function-composition-with-lodash
 title: "Function Composition with Lodash"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2017-11-09_function-composition-with-lodash
+subtitle: ""
+date: 2017-11-09
+draft: false
 tags: [Code]
 ---
 

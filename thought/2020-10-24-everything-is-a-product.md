@@ -1,12 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2020-10-24
-linktitle: "Everything Is a Product"
-menu:
-  main:
-    parent: posts
 title: "Everything Is a Product"
-weight: 1
+subtitle: ""
+date: 2020-10-24
+draft: false
 tags: [Life]
 ---
 

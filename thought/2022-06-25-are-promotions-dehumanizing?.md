@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-06-25
-linktitle: "Are Promotions Dehumanizing?"
-menu:
-  main:
-    parent: posts
-next: /posts/are-promotions-dehunanizing
 title: "Are Promotions Dehumanizing?"
-weight: 1
-images:
- - /are_promotions_dehumanizing.png
+subtitle: ""
+date: 2022-06-25
+draft: false
 tags: [Life]
 ---
 

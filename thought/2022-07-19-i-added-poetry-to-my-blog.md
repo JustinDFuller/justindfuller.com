@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-07-19
-linktitle: "I added poetry to my blog"
-menu:
-  main:
-    parent: posts
-next: /posts/i-added-poetry-to-my-blog
 title: "I added poetry to my blog"
-weight: 1
-images:
- - /i_added_poetry_to_my_blog.jpg
+subtitle: ""
+date: 2022-07-19
+draft: false
 tags: [Life]
 ---
 

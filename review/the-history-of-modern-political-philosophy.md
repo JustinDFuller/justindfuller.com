@@ -1,8 +1,8 @@
 ---
 title: "The History of Modern Political Philosophy"
+subtitle: ""
 date: 2024-12-15
-author: Justin Fuller
-category: review
+draft: false
 tags: [review]
 ---
 

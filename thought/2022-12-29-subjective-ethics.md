@@ -1,17 +1,9 @@
 ---
-author: "Justin Fuller"
-date: 2022-12-29
-linktitle: "Subjective Ethics"
-subtitle: "—or, why relativism ain't so bad"
-menu:
-  main:
-    parent: posts
 title: "Subjective Ethics"
-weight: 1
-images:
- - /subjective_ethics.png
+subtitle: ""
+date: 2022-12-29
+draft: false
 tags: [Life]
-draft: true
 ---
 
 <span class="story">

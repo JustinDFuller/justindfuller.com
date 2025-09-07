@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2018-11-28
-linktitle: "How To Write Error Messages That Don’t Suck"
-menu:
-  main:
-    parent: posts
-next: /posts/how-to-write-error-messages-that-dont-suck
 title: "How To Write Error Messages That Don’t Suck"
-weight: 1
-images:
-  - /learning-to-code.png
-aliases:
-  - /posts/2018-11-28_how-to-write-error-messages-that-dont-suck
+subtitle: ""
+date: 2018-11-28
+draft: false
 tags: [Code]
 ---
 

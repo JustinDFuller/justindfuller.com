@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2020-01-21
-linktitle: "Why do we fall into the rewrite trap?"
-menu:
-  main:
-    parent: posts
-next: /posts/why-do-we-fall-into-the-rewrite-trap
 title: "Why do we fall into the rewrite trap?"
-weight: 1
-images:
-  - /learning-to-code.png
+subtitle: ""
+date: 2020-01-21
+draft: false
 tags: [Code]
 ---
 

@@ -1,17 +1,9 @@
 ---
-author: "Justin Fuller"
-date: 2022-12-19
-linktitle: "Technical Roadmaps"
-menu:
-  main:
-    parent: posts
-next: /posts/technical-roadmaps
 title: "Technical Roadmaps"
-weight: 1
-images:
- - /technical-roadmaps.png
+subtitle: ""
+date: 2022-12-19
+draft: false
 tags: [Code]
-draft: true
 ---
 
 Your team may maintain a product roadmap, but do you have a technical roadmap?

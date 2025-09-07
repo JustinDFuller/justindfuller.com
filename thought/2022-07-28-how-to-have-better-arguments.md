@@ -1,17 +1,9 @@
 ---
-author: "Justin Fuller"
-date: 2022-07-28
-linktitle: "How to have better arguments"
-menu:
-  main:
-    parent: posts
-next: /posts/how-to-have-better-arguments
 title: "How to have better arguments"
-weight: 1
-images:
- - /how_to_have_better_arguments.jpg
+subtitle: ""
+date: 2022-07-28
+draft: false
 tags: [Life]
-draft: true
 ---
 
 Through the high living room windows, I notice the last light of the sun dipping under the trees behind my house. 

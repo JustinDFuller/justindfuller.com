@@ -1,17 +1,9 @@
 ---
-author: "Justin Fuller"
-date: 2022-10-10
-linktitle: "Representing Reality"
-menu:
-  main:
-    parent: posts
-next: /posts/representing-reality
 title: "Representing Reality"
-weight: 1
-images:
- # - /the_philosophy_of_trees.webp
+subtitle: ""
+date: 2022-10-10
+draft: false
 tags: [Code]
-draft: true
 ---
 
 You and I do not live in reality. We do not experience reality. Our senses perceive reality, the physical reality of the world, and represent it to us in a form we can experience. These are the forms of color, touch, taste, smell. There is no physical reality of any of these. These are interpretations—made by our senses—of the physical reality. They attempt to represent what our physical body experiences, but they are not themselves what our physical body experiences.

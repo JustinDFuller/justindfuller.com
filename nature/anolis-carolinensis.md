@@ -2,8 +2,7 @@
 title: "Anolis Carolinensis"
 subtitle: "Carolina Anole"
 date: 2025-09-07
-author: Justin Fuller
-category: nature
+draft: false
 tags: [nature]
 ---
 

@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-11-13
-linktitle: "Let’s Compose Promises!"
-menu:
-  main:
-    parent: posts
-next: /posts/lets-compose-promises
 title: "Let’s Compose Promises!"
-weight: 1
-images:
-  - /compose-promises.jpeg
-aliases:
-  - /posts/2017-11-13_lets-compose-promises
+subtitle: ""
+date: 2017-11-13
+draft: false
 tags: [Code]
 ---
 

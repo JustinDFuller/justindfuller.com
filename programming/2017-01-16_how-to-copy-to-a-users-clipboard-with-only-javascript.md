@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-01-16
-linktitle: "How to copy to a user’s clipboard with only JavaScript"
-menu:
-  main:
-    parent: posts
-next: /posts/how-to-copy-to-a-users-clipboard-with-only-javascript
 title: "How to copy to a user’s clipboard with only JavaScript"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2017-01-16_how-to-copy-to-a-users-clipboard-with-only-javascript
+subtitle: ""
+date: 2017-01-16
+draft: false
 tags: [Code]
 ---
 

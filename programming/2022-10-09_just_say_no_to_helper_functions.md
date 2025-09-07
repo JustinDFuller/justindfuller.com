@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2022-10-10
-linktitle: "Helper Functions"
-menu:
-  main:
-    parent: posts
-next: /posts/helper-functions
 title: "Helper Functions"
-weight: 1
-images:
- - /just_say_no_to_helper_functions.png
+subtitle: ""
+date: 2022-10-10
+draft: false
 tags: [Code]
 ---
 

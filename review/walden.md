@@ -1,8 +1,8 @@
 ---
 title: "Walden"
+subtitle: ""
 date: 2021-05-15
-author: Justin Fuller
-category: review
+draft: false
 tags: [review]
 ---
 

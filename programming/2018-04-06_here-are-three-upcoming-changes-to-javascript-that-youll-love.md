@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2018-04-06
-linktitle: "Here are three upcoming changes to JavaScript that you’ll love"
-menu:
-  main:
-    parent: posts
-next: /posts/here-are-three-upcoming-changes-to-javascript-that-youll-love
 title: "Here are three upcoming changes to JavaScript that you’ll love"
-weight: 1
-images:
-  - /learning-javascript.jpeg
-aliases:
-  - /posts/2018-04-06_here-are-three-upcoming-changes-to-javascript-that-youll-love
+subtitle: ""
+date: 2018-04-06
+draft: false
 tags: [Code]
 ---
 

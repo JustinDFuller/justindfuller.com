@@ -1,17 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2017-02-13
-linktitle: "Three reasons I avoid anonymous JS functions like the plague"
-menu:
-  main:
-    parent: posts
-next: /posts/three-reasons-i-avoid-anonymous-js-functions-like-the-plague
 title: "Three reasons I avoid anonymous JS functions like the plague"
-weight: 1
-images:
-  - /anonymous.jpeg
-aliases:
-  - /posts/2017-02-13_three-reasons-i-avoid-anonymous-js-functions-like-the-plague
+subtitle: ""
+date: 2017-02-13
+draft: false
 tags: [Code]
 ---
 
