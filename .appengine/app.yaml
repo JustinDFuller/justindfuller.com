@@ -172,13 +172,6 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
-  - url: /avatar
-    static_files: .build/avatar.html
-    upload: .build/avatar.html
-    secure: always
-    http_headers:
-      Content-Type: text/html; charset=utf-8
-
   - url: /weeks-remaining
     static_files: .build/weeks-remaining.html
     upload: .build/weeks-remaining.html

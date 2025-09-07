@@ -278,15 +278,6 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/avatar", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/make/avatar.template.html", data[[]byte]{
-			Title: "Guild Avatars",
-			Meta:  "Avatar",
-		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/make/avatar.template.html")
-		}
-	})
-
 	http.HandleFunc("/weeks-remaining", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/remaining.template.html", data[[]byte]{
 			Title: "Weeks Remaining",

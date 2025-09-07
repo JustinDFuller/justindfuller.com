@@ -48,14 +48,6 @@ var Entries = []ProjectEntry{
 		IsExternal:     false,
 	},
 	{
-		Title:          "Union Avatars",
-		Slug:           "avatar",
-		URL:            "/avatar",
-		FirstParagraph: "Create an avatar to show your support for a better contract! To save an image, right click it and select 'Save Image'. Note: Images are not transferred or stored remotely; processing is completed on your computer.",
-		Date:           time.Date(2021, 11, 5, 0, 0, 0, 0, time.UTC),
-		IsExternal:     false,
-	},
-	{
 		Title:          "Remaining Life",
 		Slug:           "weeks-remaining",
 		URL:            "/weeks-remaining",

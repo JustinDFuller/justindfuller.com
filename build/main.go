@@ -44,7 +44,6 @@ func main() {
 		{URL: "/grass/worker.js", File: "grass-service-worker.js", ContentType: "application/javascript"},
 		{URL: "/grass", File: "grass.html"},
 		{URL: "/kit", File: "kit.html"},
-		{URL: "/avatar", File: "avatar.html"},
 		{URL: "/weeks-remaining", File: "weeks-remaining.html"},
 		{URL: "/word/quality", File: "quality.html"},
 		{URL: "/word/equipoise", File: "equipoise.html"},
