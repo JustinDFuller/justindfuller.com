@@ -101,7 +101,7 @@ func parseEntry(name string, file []byte) (Entry, error) {
 	lines := strings.Split(contentStr, "\n")
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		if line != "" && !strings.HasPrefix(line, "<h") && !strings.HasPrefix(line, "<!--") {
+		if line != "" && !strings.HasPrefix(line, "<h") && !strings.HasPrefix(line, "<!--") && !strings.HasPrefix(line, "<span") {
 			// Strip HTML tags for description
 			line = strings.ReplaceAll(line, "<p>", "")
 			line = strings.ReplaceAll(line, "</p>", "")
@@ -109,6 +109,9 @@ func parseEntry(name string, file []byte) (Entry, error) {
 			line = strings.ReplaceAll(line, "</em>", "")
 			line = strings.ReplaceAll(line, "<strong>", "")
 			line = strings.ReplaceAll(line, "</strong>", "")
+			line = strings.ReplaceAll(line, "<span>", "")
+			line = strings.ReplaceAll(line, "</span>", "")
+			line = strings.ReplaceAll(line, `<span class="story">`, "")
 			if len(line) > 200 {
 				description = line[:197] + "..."
 			} else {

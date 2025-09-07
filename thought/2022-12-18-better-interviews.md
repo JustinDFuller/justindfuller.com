@@ -13,7 +13,7 @@ images:
 tags: [Life]
 ---
 
-Are you having trouble getting a good signal on the candidates you interview? [Better Interviews](https://www.betterinterview.club) can help.
+Are you having trouble getting a good signal on the candidates you interview? [Better Interviews](https://interviews.justindfuller.com/) can help.
 
 <!--more-->
 
@@ -33,7 +33,7 @@ These consistent questions help me compare candidates across a standard set of c
 
 There are a ton of other benefits too. I can now write up interview feedback in just a few minutes. It used to take me thirty minutes to an hour. I also have a helpful way to guide candidates through the interview. If they haven't touched on an area where I know I need a signal, I can prompt them to focus on that area. After all, my goal is to help candidates do their best in an interview, not make them fail!
 
-[Better Interviews](https://www.betterinterview.club) encapsulates this idea in a simple workflow.
+[Better Interviews](https://interviews.justindfuller.com/) encapsulates this idea in a simple workflow.
 
 The tool is **totally free** because I just want to help us make interviews better and fairer for everyone.
 
@@ -67,7 +67,7 @@ Are you not getting a good signal on your candidates, but you're not quite sure 
 
 This style of collecting feedback has drastically simplified my interview process. It saves me time as an interviewer and it gives my hiring managers consistent feedback for each candidate.
 
-If you think this method for collecting feedback will help you, [Better Interviews](https://www.betterinterview.club) provides the tools to make it happen.
+If you think this method for collecting feedback will help you, [Better Interviews](https://interviews.justindfuller.com/) provides the tools to make it happen.
 
 ## Open Source
 
