@@ -825,6 +825,10 @@
   /* Mobile footer - show external links as text */
   @media (max-width: 768px) {
     /* Entry Header - Mobile */
+    .entry-header {
+      padding-top: var(--space-xl); /* Add more space above title on mobile */
+    }
+    
     .entry-header h1 {
       font-size: var(--font-size-2xl);
     }
@@ -874,7 +878,7 @@
     }
 
     .featured-post {
-      margin-bottom: var(--space-xl);
+      margin-bottom: var(--space-2xl); /* Increased from space-xl for more spacing on mobile */
     }
 
     .featured-post-title {
@@ -901,7 +905,7 @@
     }
     
     main {
-      padding: var(--space-md) 0;
+      padding: var(--space-lg) 0; /* Increased from space-md to match content pages */
     }
 
     .content-page {

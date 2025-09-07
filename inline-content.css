@@ -102,7 +102,7 @@
   .poems-grid,
   .aphorisms-list,
   .words-list {
-    gap: var(--space-lg);
+    gap: var(--space-xl); /* Increased from space-lg for more spacing between items */
     padding: 0 var(--space-md);
   }
   
