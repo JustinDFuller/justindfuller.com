@@ -553,7 +553,33 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+	// Serve betterinterviews PNG files
+	http.HandleFunc("/betterinterviews5.png", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./betterinterviews5.png")
+	})
+	http.HandleFunc("/betterinterviews7.png", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./betterinterviews7.png")
+	})
+	http.HandleFunc("/betterinterviews9.png", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./betterinterviews9.png")
+	})
+	http.HandleFunc("/betterinterviews11.png", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./betterinterviews11.png")
+	})
+
+	// Serve binary_search directory images
+	http.HandleFunc("/binary_search/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
+	})
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// Check if this is exactly the root path
+		if r.URL.Path != "/" {
+			// For any path other than root, set 404 status but still render home page
+			w.WriteHeader(http.StatusNotFound)
+			log.Printf("404 - Path not found: %s", r.URL.Path)
+		}
+		
 		if err := templates.ExecuteTemplate(w, "/main.template.html", data[[]byte]{}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/main.template.html")
 		}
