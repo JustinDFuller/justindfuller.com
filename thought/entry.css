@@ -3,6 +3,8 @@
   max-width: var(--max-width-narrow);
   margin: 0 auto;
   padding: 0 var(--space-lg);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .thought-content h2 {
@@ -26,6 +28,9 @@
   line-height: var(--line-height-relaxed);
   color: var(--color-text-secondary);
   margin-bottom: var(--space-lg);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .thought-content ul,
@@ -68,6 +73,13 @@
   text-decoration: underline;
 }
 
+.thought-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: var(--space-xl) auto;
+}
+
 /* Back Link */
 .back-link {
   display: inline-flex;
@@ -97,5 +109,17 @@
 @media (max-width: 768px) {
   .thought-content {
     padding: 0 var(--space-md);
+    max-width: 100%;
+  }
+  
+  .thought-content p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .thought-content img {
+    max-width: 100%;
+    height: auto;
   }
 }

@@ -29,14 +29,6 @@
   text-align: justify;
 }
 
-.review-content p:first-of-type::first-letter {
-  font-size: 3rem;
-  font-weight: 700;
-  float: left;
-  line-height: 1;
-  margin-right: 0.1em;
-  color: var(--color-accent-pink);
-}
 
 .review-content blockquote {
   border-left: 3px solid var(--color-accent-blue);

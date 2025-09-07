@@ -30,14 +30,6 @@
   text-indent: 0;
 }
 
-.story-content p:first-of-type::first-letter {
-  font-size: 3.5rem;
-  font-weight: 700;
-  float: left;
-  line-height: 1;
-  margin-right: 0.1em;
-  color: var(--color-accent-pink);
-}
 
 .story-content hr {
   border: none;
