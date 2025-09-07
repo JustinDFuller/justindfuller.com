@@ -105,7 +105,6 @@ func GetEntry(number string) (AphorismEntry, error) {
 		),
 		goldmark.WithRendererOptions(
 			html.WithHardWraps(),
-			html.WithUnsafe(),
 		),
 	)
 

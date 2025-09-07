@@ -1,30 +1,16 @@
 /* Individual aphorism page styles */
+/* Import shared inline content styles for card consistency */
+{{ template "/inline-content.css" . }}
 
-.aphorism-single {
-  max-width: 48rem;
-  margin: 3rem auto;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.aphorism-single .aphorism-text {
+/* Override for single aphorism - center the text */
+.aphorism-card .aphorism-text {
+  text-align: center;
   font-size: 1.25rem;
   line-height: 1.8;
-  color: var(--color-text-primary);
-  margin: 0;
-  text-align: center;
-  font-style: italic;
 }
 
 @media (max-width: 768px) {
-  .aphorism-single {
-    margin: 2rem 1rem;
-    padding: 1.5rem;
-  }
-  
-  .aphorism-single .aphorism-text {
+  .aphorism-card .aphorism-text {
     font-size: 1.125rem;
   }
 }

@@ -13,8 +13,8 @@
     {{ template "/header.template.html" . }}
 
     <main class="content-page">
-      <div class="content-container">
-        <article class="aphorism-single">
+      <div class="aphorisms-list">
+        <article class="aphorism-card">
           <p class="aphorism-text">{{ printf "%s" .Entry.Content }}</p>
         </article>
       </div>
