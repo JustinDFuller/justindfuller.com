@@ -352,13 +352,13 @@
     font-weight: 400;
     color: var(--color-text-secondary);
     background: var(--color-bg-secondary);
-    padding: 2px 5px 1px 5px;
+    padding: 4px 6px 3px 6px;
     border-radius: var(--border-radius-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border: 1px solid var(--color-border);
     position: relative;
-    top: 3px;
+    top: 1px;
   }
 
   .featured-post a {
@@ -930,7 +930,7 @@
 
     .section-indicator {
       font-size: 0.55rem;
-      padding: 1px 4px;
+      padding: 4px 6px 3px 6px;
     }
 
     .featured-post-excerpt {
