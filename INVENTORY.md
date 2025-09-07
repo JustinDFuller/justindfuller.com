@@ -152,9 +152,18 @@
   * Processing: Uses embedded file content, converts markdown to HTML with goldmark but no meta extension
 
 ### Aphorism Files
-* Note: Aphorisms use entries.txt file and hardcoded Go structs, not markdown files
-  * No markdown files exist in aphorism directory
-  * Content is stored in entries.txt and parsed by entries.go
+* /aphorism/*.md
+  * HasFrontMatter: true
+  * Fields: title, date, draft, description, author, slug, tags, weight
+  * Issues:
+    * None - converted to markdown format with consistent frontmatter (2025-09-06)
+  * Note: Original entries.txt file preserved for reference
+
+### Aphorism Support
+* aphorism/entries.go
+  * Supports: /aphorism/*.md files (dynamically loaded)
+  * Respects: title, date, draft, description, author, slug, tags, weight (from frontmatter via goldmark-meta)
+  * Processing: Uses goldmark with meta extension to extract frontmatter and content, supports individual entry retrieval by number
 
 ## Frontmatter Inconsistencies Summary
 
@@ -169,7 +178,7 @@
    - Words: No frontmatter (use H1 headers, goldmark-meta used as fallback)
    - Nature: No frontmatter, hardcoded entries
    - About: No frontmatter, embedded content
-   - Aphorisms: No markdown files (use .txt file)
+   - Aphorisms: Consistent frontmatter (converted from .txt file)
 
 2. **Frontmatter Processing Inconsistencies**:
    - Poems: Frontmatter completely ignored, content extracted via text markers
@@ -177,7 +186,7 @@
    - Programming: Hardcoded structs with only draft field respected
    - Reviews/Words: Use goldmark-meta as fallback when no frontmatter exists
    - Nature/About: No frontmatter support at all
-   - Aphorisms: No markdown processing
+   - Aphorisms: Use goldmark-meta extension properly
 
 3. **Field Usage Inconsistencies**:
    - Date handling varies: some parse from frontmatter, others from filename, others hardcoded

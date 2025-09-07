@@ -77,6 +77,21 @@ This document tracks all completed fixes and resolved issues from the website in
 
 ## Fixes Applied
 
+### Aphorism Conversion to Markdown (Completed 2025-09-06)
+- **Problem**: Aphorisms stored in entries.txt file without frontmatter support
+- **Solution**: Converted all 36 aphorisms to individual markdown files with consistent frontmatter
+- **Files Modified**:
+  - Created aphorism/1.md through aphorism/36.md with frontmatter
+  - Updated aphorism/entries.go to read markdown files using goldmark-meta
+  - Updated main.go to support individual aphorism routes (/aphorism/1, etc.)
+  - Created aphorism/entry.template.html for individual aphorism display
+  - Created aphorism/entry.css for individual aphorism styling
+- **Result**: 
+  - Aphorisms now use consistent markdown format with frontmatter
+  - Individual aphorism pages accessible via /aphorism/{number}
+  - List page display remains unchanged (no links to individual pages)
+  - Original entries.txt preserved for reference
+
 ### Nature Page Alignment Fix (Completed)
 - **Problem**: Nature page had different header/footer templates and outdated copyright year
 - **Solution**: Updated nature/main.html.tmpl to use shared header and footer templates

@@ -149,11 +149,72 @@
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
     color: var(--color-text-primary);
-    background-color: var(--color-bg-primary);
-    background-image: radial-gradient(ellipse 800px 600px at 20% 0%, rgba(255, 76, 139, 0.2) 0%, transparent 40%), radial-gradient(ellipse 600px 500px at 80% 10%, rgba(255, 217, 61, 0.15) 0%, transparent 35%), radial-gradient(ellipse 700px 400px at 50% 20%, rgba(79, 195, 247, 0.1) 0%, transparent 40%), radial-gradient(circle 1000px at 30% 40%, rgba(255, 76, 139, 0.05) 0%, transparent 50%), linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0.9) 90%, #000000 100%);
-    background-attachment: fixed;
+    background: 
+      /* Main vertical gradient that fades from original color to black */
+      linear-gradient(
+        to bottom,
+        var(--color-bg-primary) 0px,
+        var(--color-bg-primary) 100px,
+        hsl(210deg 15% 16%) 200px,
+        hsl(210deg 15% 14%) 300px,
+        hsl(210deg 15% 12%) 400px,
+        hsl(210deg 15% 10%) 500px,
+        hsl(210deg 15% 8%) 600px,
+        hsl(210deg 15% 7%) 700px,
+        hsl(210deg 15% 6.5%) 750px,
+        hsl(210deg 15% 6%) 800px,
+        hsl(210deg 15% 6%) calc(100% - 800px),
+        hsl(210deg 15% 6.5%) calc(100% - 750px),
+        hsl(210deg 15% 7%) calc(100% - 700px),
+        hsl(210deg 15% 8%) calc(100% - 600px),
+        hsl(210deg 15% 10%) calc(100% - 500px),
+        hsl(210deg 15% 12%) calc(100% - 400px),
+        hsl(210deg 15% 14%) calc(100% - 300px),
+        hsl(210deg 15% 16%) calc(100% - 200px),
+        var(--color-bg-primary) calc(100% - 100px),
+        var(--color-bg-primary) 100%
+      );
+    background-color: hsl(210deg 15% 6%);
     transition: background-color var(--transition-base), color var(--transition-base);
     overflow-x: hidden;
+    position: relative;
+  }
+  
+  /* Colorful gradient overlay - only visible at top and bottom */
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(ellipse 800px 600px at 20% 0%, rgba(255, 76, 139, 0.2) 0%, transparent 40%),
+      radial-gradient(ellipse 600px 500px at 80% 10%, rgba(255, 217, 61, 0.15) 0%, transparent 35%),
+      radial-gradient(ellipse 700px 400px at 50% 20%, rgba(79, 195, 247, 0.1) 0%, transparent 40%),
+      radial-gradient(circle 1000px at 30% 40%, rgba(255, 76, 139, 0.05) 0%, transparent 50%);
+    background-attachment: fixed;
+    pointer-events: none;
+    z-index: -1;
+    /* Mask to hide gradients in the middle */
+    mask-image: linear-gradient(
+      to bottom,
+      black 0px,
+      black 400px,
+      transparent 800px,
+      transparent calc(100% - 800px),
+      black calc(100% - 400px),
+      black 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 0px,
+      black 400px,
+      transparent 800px,
+      transparent calc(100% - 800px),
+      black calc(100% - 400px),
+      black 100%
+    );
   }
 
   /* Typography */
