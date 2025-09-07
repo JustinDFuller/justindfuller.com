@@ -3,11 +3,13 @@ package poem
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"log"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/yuin/goldmark"
@@ -15,6 +17,14 @@ import (
 	"github.com/yuin/goldmark/parser"
 	"golang.org/x/sync/errgroup"
 )
+
+// PoemEntry represents a single poem with metadata
+type PoemEntry struct {
+	Number  int
+	Content template.HTML
+	Title   string
+	Date    time.Time
+}
 
 func Entries() ([][]byte, error) {
 	files, err := os.ReadDir("./poem")
@@ -183,4 +193,83 @@ func Entry(name string) ([][]byte, error) {
 	}
 
 	return [][]byte{content}, nil
+}
+
+// GetEntry returns a single poem by number
+func GetEntry(number string) (PoemEntry, error) {
+	num, err := strconv.Atoi(number)
+	if err != nil {
+		return PoemEntry{}, errors.Wrap(err, "invalid poem number")
+	}
+
+	// Call the existing Entry function to get the poem content
+	contents, err := Entry(number)
+	if err != nil {
+		return PoemEntry{}, errors.Wrapf(err, "error reading poem %s", number)
+	}
+
+	// Read the file again to extract metadata
+	path := fmt.Sprintf("./poem/%s.md", number)
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return PoemEntry{}, errors.Wrapf(err, "error reading file: %s", path)
+	}
+
+	// Parse with goldmark to extract frontmatter
+	md := goldmark.New(
+		goldmark.WithExtensions(meta.Meta),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+	)
+
+	var buf bytes.Buffer
+	context := parser.NewContext()
+	if err := md.Convert(file, &buf, parser.WithContext(context)); err == nil {
+		// Extract metadata if available
+		metaData := meta.Get(context)
+		
+		var title string
+		if t, ok := metaData["title"]; ok {
+			title = fmt.Sprintf("%v", t)
+		} else {
+			title = fmt.Sprintf("Poem #%d", num)
+		}
+
+		var date time.Time
+		if d, ok := metaData["date"]; ok {
+			switch v := d.(type) {
+			case time.Time:
+				date = v
+			case string:
+				date, _ = time.Parse("2006-01-02", v)
+			}
+		}
+
+		// Combine all content pieces into a single HTML block
+		var contentBuilder strings.Builder
+		for _, content := range contents {
+			contentBuilder.Write(content)
+		}
+
+		return PoemEntry{
+			Number:  num,
+			Content: template.HTML(contentBuilder.String()),
+			Title:   title,
+			Date:    date,
+		}, nil
+	}
+
+	// Fallback if metadata parsing fails
+	var contentBuilder strings.Builder
+	for _, content := range contents {
+		contentBuilder.Write(content)
+	}
+
+	return PoemEntry{
+		Number:  num,
+		Content: template.HTML(contentBuilder.String()),
+		Title:   fmt.Sprintf("Poem #%d", num),
+		Date:    time.Time{},
+	}, nil
 }

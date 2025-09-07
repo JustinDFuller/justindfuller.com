@@ -235,7 +235,31 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/poem", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/poem/", func(w http.ResponseWriter, r *http.Request) {
+		// Check if this is a request for a specific poem
+		path := r.URL.Path
+		if path != "/poem" && path != "/poem/" {
+			// Extract the poem number from the path
+			parts := strings.Split(strings.TrimSuffix(path, "/"), "/")
+			if len(parts) == 3 && parts[1] == "poem" && parts[2] != "" {
+				entry, err := poem.GetEntry(parts[2])
+				if err != nil {
+					http.Error(w, "Poem not found", http.StatusNotFound)
+					logWarning("Error reading poem", err)
+					return
+				}
+				if err := templates.ExecuteTemplate(w, "/poem/entry.template.html", data[poem.PoemEntry]{
+					Title: entry.Title,
+					Meta:  "poem",
+					Entry: entry,
+				}); err != nil {
+					log.Printf("template execution error=%s template=%s", err, "/poem/entry.template.html")
+					http.Error(w, "Error displaying poem", http.StatusInternalServerError)
+				}
+				return
+			}
+		}
+		// Default to showing all poems
 		entries, err := poem.Entries()
 		if err != nil {
 			http.Error(w, "Error reading poems.", http.StatusInternalServerError)

@@ -1,0 +1,17 @@
+/* Individual poem page styles */
+/* Import shared inline content styles for card consistency */
+{{ template "/inline-content.css" . }}
+
+/* Override for single poem - larger text and centered */
+.poem-card .poem-content {
+  font-size: 1.125rem;
+  line-height: 2;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .poem-card .poem-content {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+}

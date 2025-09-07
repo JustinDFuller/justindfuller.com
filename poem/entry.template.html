@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
+    <style>
+      {{ template "/poem/main.css" . }}
+      {{ template "/poem/entry.css" . }}
+    </style>
+  </head>
+
+  <body>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      <div class="poems-grid">
+        <article class="poem-card">
+          <div class="poem-content">{{ printf "%s" .Entry.Content }}</div>
+        </article>
+      </div>
+    </main>
+
+    {{ template "/footer.template.html" . }}
+  </body>
+</html>
