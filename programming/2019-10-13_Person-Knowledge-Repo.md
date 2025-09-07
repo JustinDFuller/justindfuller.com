@@ -47,4 +47,4 @@ What can you use it for?
 
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller). Thanks again for reading!

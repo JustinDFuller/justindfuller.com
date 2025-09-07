@@ -147,4 +147,4 @@ You can play around with these examples on the [Go Playground](https://play.gola
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
 I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
-or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!
+. Thanks again for reading!

@@ -84,11 +84,6 @@ My initial thought was to ignore this pattern, rewrite it, maybe even replace it
 
 The real problem is that I hadn't taken the time to understand how the error pattern worked. I was confused, which led me to dismiss it, rather than to improve it.
 
----
-
-👋 Want to learn more about programming? [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about.
-
----
 
 ## When to Refactor
 
@@ -136,9 +131,8 @@ You can use [code smells](https://refactoring.guru/refactoring/smells) and their
 
 I used to think refactoring was done after I finished coding. I finished my work, I made some concessions in the name of "[Make it work, make it right, make it fast](https://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast)", now I need to clean up.
 
-However, refactoring can be a better tool [before you begin making any changes](https://martinfowler.com/articles/preparatory-refactoring-example.html) as a way to make your change easier. As [Kent Beck said](https://twitter.com/kentbeck/status/250733358307500032?lang=en) "Make the change easy (warning: this may be hard), then make the easy change."
+However, refactoring can be a better tool [before you begin making any changes](https://martinfowler.com/articles/preparatory-refactoring-example.html) as a way to make your change easier. As Kent Beck said "Make the change easy (warning: this may be hard), then make the easy change."
 
-{{< tweet 250733358307500032 >}}
 
 Think about when you refactor after making your changes. What are you doing? You're _guessing_ what will be needed by the next person or the next change to the code. You're _guessing_ what will be misunderstood or unclear to the next developer. You might be right, but you also might be wasting everyone's time.
 
@@ -177,6 +171,6 @@ Here are the key takeaways:
 
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Twitter](https://twitter.com/justin_d_fuller), or [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about. Thanks again for reading!
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller). Thanks again for reading!
 
 ---

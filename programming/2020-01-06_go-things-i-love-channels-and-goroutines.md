@@ -6,9 +6,6 @@ draft: false
 tags: [Code]
 ---
 
-👋 Want to learn more about Go? [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about.
-
----
 
 ## The Main Function
 
@@ -53,8 +50,7 @@ It could seem like I'm suggesting that you should always use channels instead of
 
 ## Final Thoughts
 
-Here's the cool thing. We started out talking about how Go has first-class concurrency support with goroutines and channels. Then we saw how easy it is to implement a complex concurrent pattern, a timeout, with a single channel and a few goroutines. Over my next few posts, I hope to show that this was only scratching the surface of what one can do with concurrency in Go. I hope you'll check back in. (Better yet, [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to be updated each month about my new posts)
-
+Here's the cool thing. We started out talking about how Go has first-class concurrency support with goroutines and channels. Then we saw how easy it is to implement a complex concurrent pattern, a timeout, with a single channel and a few goroutines. Over my next few posts, I hope to show that this was only scratching the surface of what one can do with concurrency in Go. I hope you'll check back in.
 Finally, even though this is a neat concurrency pattern, it's unrealistic. As an exercise you could open the [Go Playground](https://play.golang.org/p/g3RnP9A26v5) to see if you can implement these scenarios:
 
 * The results should be returned as a JSON object. Maybe we could use a struct instead of an array of URLs?
@@ -66,4 +62,4 @@ Finally, even though this is a neat concurrency pattern, it's unrealistic. As an
 Hi, I’m Justin Fuller. Thanks for reading my post. Before you go, I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
 I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
-or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!
+. Thanks again for reading!

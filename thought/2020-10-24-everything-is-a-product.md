@@ -62,6 +62,6 @@ So I'm excited to hear why I'm wrong wherever this get's posted. Thanks for read
 
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Twitter](https://twitter.com/justin_d_fuller), or [subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about. Thanks again for reading!
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller). Thanks again for reading!
 
 ---

@@ -6,9 +6,6 @@ draft: false
 tags: [Life]
 ---
 
-👋 Want to hear more of my stupid, unoriginal, and hypocrytical thoughts? [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about.
-
----
 
 ### Why have I been writing?
 
@@ -44,4 +41,4 @@ As Dan Luu said, I want to “view the upsides of being willing to look stupid a
 
 Hi, I’m Justin Fuller. Thanks for reading my post. Before you go, I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) or [Subscribe to my newsletter](https://justindfuller.us4.list-manage.com/subscribe?u=d48d0debd8d0bce3b77572097&id=0c1e610cac) to get an update, once-per-month, about what I'm writing about. Thanks again for reading!
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller). Thanks again for reading!
