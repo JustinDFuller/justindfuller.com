@@ -65,14 +65,14 @@ var Entries = []StoryEntry{
 		Slug:           "nothing",
 		FirstParagraph: "Nothing wasn't quite what I expected it to be. I think I expected emptiness; nothing is a little different that empty. In order for there to be nothing there can't even be me. When I thought about emptiness I was really thinking of emptiness except for me. All that nothing — or is it, none of that nothing? — I expected a vast darkness, like I was floating around in space. Instead, I was alive one moment, then nothing.",
 		Date:           time.Date(2020, 1, 31, 0, 0, 0, 0, time.UTC),
-		IsDraft:        false,
+		IsDraft:        true,
 	},
 	{
 		Title:          "Bridge",
 		Slug:           "bridge",
 		FirstParagraph: "Water is still pouring out. Maybe not quite as much as before, I can't remember. Even so, it doesn't look like it's going to be a problem. The river is hundreds of feet below. Still, I remember this whole region is a flood zone if the dam breaks. People used to talk about how everything would break down once people were gone. There was a book about it. The subways of New York would flood, homes would be overtaken by nature, bridges would fall, and dams would collapse.",
 		Date:           time.Date(2019, 12, 28, 0, 0, 0, 0, time.UTC),
-		IsDraft:        false,
+		IsDraft:        true,
 	},
 	{
 		Title:          "The Philosophy of Lovers",

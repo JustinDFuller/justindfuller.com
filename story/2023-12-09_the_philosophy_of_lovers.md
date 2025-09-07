@@ -2,7 +2,7 @@
 title: "The Philosophy of Lovers"
 subtitle: ""
 date: 2023-12-09
-draft: false
+draft: true
 tags: [Story]
 ---
 

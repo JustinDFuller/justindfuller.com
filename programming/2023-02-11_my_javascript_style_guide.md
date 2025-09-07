@@ -2,7 +2,7 @@
 title: "My JavaScript Style Guide"
 subtitle: ""
 date: 2023-02-11
-draft: false
+draft: true
 tags: [Code]
 ---
 
