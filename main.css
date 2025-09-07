@@ -779,6 +779,49 @@
     margin: 0;
   }
 
+  /* Global Code Block Styles */
+  pre {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-lg);
+    margin: var(--space-xl) 0;
+    overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-wrap: normal;
+  }
+
+  code {
+    font-family: var(--font-family-mono);
+    font-size: 0.9em;
+    background: var(--color-bg-card);
+    padding: 0.2em 0.4em;
+    border-radius: var(--border-radius-sm);
+    color: var(--color-accent-blue);
+  }
+
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: var(--color-text-secondary);
+  }
+
+  /* Mobile adjustments for code blocks */
+  @media (max-width: 768px) {
+    pre {
+      padding: var(--space-md);
+      font-size: var(--font-size-xs);
+      margin: var(--space-lg) 0;
+    }
+  }
+
   /* Content Page Styles */
   .content-page {
     padding-top: var(--space-xl); /* Reduced from default */
