@@ -19,6 +19,7 @@ import (
 
 type Entry struct {
 	Title       string
+	SubTitle    string // Optional subtitle field for compatibility with shared template
 	Slug        string
 	Description string
 	Content     template.HTML

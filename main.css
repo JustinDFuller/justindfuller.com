@@ -669,6 +669,13 @@
     background-clip: text;
   }
 
+  .entry-header .entry-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+  }
+
   .entry-header .entry-date {
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);

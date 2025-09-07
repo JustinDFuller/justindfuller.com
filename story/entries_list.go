@@ -8,6 +8,7 @@ import (
 
 type StoryEntry struct {
 	Title          string
+	SubTitle       string // Optional subtitle field for compatibility with shared template
 	Slug           string
 	FirstParagraph string
 	Date           time.Time

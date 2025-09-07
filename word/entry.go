@@ -17,9 +17,10 @@ import (
 )
 
 type WordEntry struct {
-	Title   string
-	Content template.HTML
-	Date    time.Time
+	Title    string
+	SubTitle string // Optional subtitle field for compatibility with shared template
+	Content  template.HTML
+	Date     time.Time
 }
 
 func GetEntry(name string) (WordEntry, error) {
@@ -55,34 +56,46 @@ func GetEntry(name string) (WordEntry, error) {
 	
 	// Get title from metadata
 	var title string
+	var titleFromMeta bool
 	if t, ok := metaData["title"].(string); ok && t != "" {
 		title = t
-	} else {
-		// Extract title from first H1 if no metadata
-		if strings.Contains(contentHTML, "<h1") {
-			start := strings.Index(contentHTML, ">") + 1
-			end := strings.Index(contentHTML, "</h1>")
-			if start > 0 && end > start {
-				title = contentHTML[start:end]
+		titleFromMeta = true
+	}
+	
+	// Check if there's an H1 in content
+	if strings.Contains(contentHTML, "<h1") {
+		h1Start := strings.Index(contentHTML, "<h1")
+		h1StartTag := strings.Index(contentHTML[h1Start:], ">") + h1Start + 1
+		h1End := strings.Index(contentHTML, "</h1>")
+		
+		if h1StartTag > h1Start && h1End > h1StartTag {
+			h1Title := contentHTML[h1StartTag:h1End]
+			
+			// If we got title from metadata, remove H1 to avoid duplication
+			// Also remove if H1 matches the title from metadata
+			if titleFromMeta || h1Title == title {
+				h1EndTag := h1End + 5 // "</h1>" is 5 chars
+				contentHTML = contentHTML[:h1Start] + contentHTML[h1EndTag:]
+			} else if title == "" {
+				// No title from metadata, use H1 title
+				title = h1Title
 				// Remove the h1 from content to avoid duplication
-				h1Start := strings.Index(contentHTML, "<h1")
-				h1End := strings.Index(contentHTML, "</h1>") + 5
-				if h1Start >= 0 && h1End > h1Start {
-					contentHTML = contentHTML[:h1Start] + contentHTML[h1End:]
-				}
+				h1EndTag := h1End + 5
+				contentHTML = contentHTML[:h1Start] + contentHTML[h1EndTag:]
 			}
 		}
-		// If still no title, format from word name
-		if title == "" {
-			// Capitalize first letter of each word
-			parts := strings.Split(name, "-")
-			for i, part := range parts {
-				if len(part) > 0 {
-					parts[i] = strings.ToUpper(part[:1]) + part[1:]
-				}
+	}
+	
+	// If still no title, format from word name
+	if title == "" {
+		// Capitalize first letter of each word
+		parts := strings.Split(name, "-")
+		for i, part := range parts {
+			if len(part) > 0 {
+				parts[i] = strings.ToUpper(part[:1]) + part[1:]
 			}
-			title = strings.Join(parts, " ")
 		}
+		title = strings.Join(parts, " ")
 	}
 
 	// Get date from metadata

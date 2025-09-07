@@ -1,5 +1,8 @@
 <header class="entry-header">
   <h1>{{ .Title }}</h1>
+  {{ if .SubTitle }}
+  <p class="entry-subtitle">{{ .SubTitle }}</p>
+  {{ end }}
   {{ if and .Date (not .Date.IsZero) }}
   <time datetime="{{ .Date.Format "2006-01-02" }}" class="entry-date">
     {{ .Date.Format "January 2, 2006" }}

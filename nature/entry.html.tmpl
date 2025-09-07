@@ -14,14 +14,13 @@
     <main>
       <div class="nature-content">
         <article>
+          {{ template "/entry-header.template.html" .Entry }}
           {{ with .Entry }}
-          <header class="nature-header">
-            <h1>{{ .Title }}</h1>
-            <p class="nature-subtitle">{{ .SubTitle }}</p>
-          </header>
+          {{ if .Image }}
           <div class="nature-hero">
             <img src="/image/nature/{{ .Image }}" alt="{{ .Title }}" />
           </div>
+          {{ end }}
           <div class="nature-body">
             {{ .Markdown }}
           </div>

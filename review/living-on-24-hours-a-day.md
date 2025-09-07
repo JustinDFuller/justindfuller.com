@@ -1,3 +1,11 @@
+---
+title: "Living on 24 Hours a Day"
+date: 2022-01-07
+author: Justin Fuller
+category: review
+tags: [review]
+---
+
 # Living on 24 Hours a Day
 
 Halfway through last year, I found myself overwhelmed by my schedule. There were simply too many things to do and not enough time. As we bookworms tend to do, I set out to find books that would teach me to wrangle my schedule.

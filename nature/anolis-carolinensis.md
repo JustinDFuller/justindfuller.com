@@ -1,3 +1,12 @@
+---
+title: "Anolis Carolinensis"
+subtitle: "Carolina Anole"
+date: 2025-09-07
+author: Justin Fuller
+category: nature
+tags: [nature]
+---
+
 <!-- markdownlint-disable-next-line -->
 The Carolina Anole is one of over four hundred and fifty species of the genus Anolis. It is a member of the family Dactyloidae, Suborder Iguania, Class Reptilia. It primarily resides in the southeastern United States.
 

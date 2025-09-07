@@ -1,6 +1,14 @@
+---
+title: "The History of Modern Political Philosophy"
+date: 2024-12-15
+author: Justin Fuller
+category: review
+tags: [review]
+---
+
 # The History of Modern Political Philosophy
 
-_I took a class called “The History of Modern Political Philosophy” at UNC Charlotte in fall 2024 with [Dr. Amber Knight](https://politicalscience.charlotte.edu/directory/amber-r-knight). The following “review” is not critical but simply my review of what I learned during the class. I will focus on sharing the parts I found most interesting instead of being comprehensive. It is not meant to be academic; so there will be no references and almost everything is from memory._
+_I took a class called "The History of Modern Political Philosophy" at UNC Charlotte in fall 2024 with [Dr. Amber Knight](https://politicalscience.charlotte.edu/directory/amber-r-knight). The following "review" is not critical but simply my review of what I learned during the class. I will focus on sharing the parts I found most interesting instead of being comprehensive. It is not meant to be academic; so there will be no references and almost everything is from memory._
 
 The Modern era of political philosophy lasted from roughly the 17th to 20th century. The ranks of Philosophers from this time include some as early as Machiavelli (born 1469) and as late as Engels (born 1820). A wide range, for sure.
 

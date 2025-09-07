@@ -8,22 +8,44 @@ This document defines the frontmatter schema and capabilities for the justindful
 
 | Content Type | Frontmatter Present | Processing Method | Fields Used |
 |-------------|-------------------|-------------------|-------------|
-| **Poems** | Yes (all files) | Ignored - extracts text between \`\`\`text markers | None |
-| **Stories** | Mixed (2/4 have frontmatter) | goldmark-meta | title, date, draft |
-| **Reviews** | No | goldmark-meta (fallback to H1) | None |
-| **Thoughts** | Mixed | goldmark-meta | title, date |
-| **Programming** | Yes (all files) | goldmark-meta (only for draft) | draft |
-| **Words** | No | goldmark-meta (fallback to H1) | None |
-| **Nature** | No | Hardcoded entries | None |
-| **About** | No | Embedded content | None |
-| **Aphorisms** | N/A | .txt file format | N/A |
+| **Poems** | Yes (all 48 files) | Ignored - extracts text between \`\`\`text markers | title, date present but not processed |
+| **Stories** | Yes (all 4 files) | goldmark-meta | title, date, draft (IsDraft field in struct) |
+| **Reviews** | ✅ Yes (all 5 files) | goldmark-meta | title, date, author, category, tags |
+| **Thoughts** | Yes (all 15 files) | goldmark-meta | title, date, description |
+| **Programming** | Yes (all 29 files) | goldmark-meta | title, date, draft (IsDraft field in struct) |
+| **Words** | ✅ Yes (all 4 files) | goldmark-meta | title, date, author, category, tags |
+| **Nature** | ✅ Yes (1 file) | goldmark-meta | title, subtitle, date, author, category, tags |
+| **About** | ✅ Yes (1 file) | goldmark-meta | title, date, author, category, tags |
+| **Aphorisms** | Yes (all 36 files) | goldmark-meta | title, date, draft |
+
+### Go Code Implementation Status
+
+| Content Type | Has goldmark-meta | Extracts Frontmatter | Struct Fields |
+|-------------|------------------|---------------------|---------------|
+| **Poems** | No | No - custom extraction | None (only raw content) |
+| **Stories** | Yes | Yes | Title, Slug, Date, IsDraft, FirstParagraph |
+| **Reviews** | ✅ Yes | ✅ Yes (dynamic file reading) | Title, Slug, Date, FirstParagraph |
+| **Thoughts** | Yes | Yes | Title, Slug, Date, Description, Content |
+| **Programming** | Yes | Yes | Title, Slug, Date, IsDraft, Description, FirstParagraph |
+| **Words** | ✅ Yes | ✅ Yes (with H1 removal) | Title, Content, Date |
+| **Nature** | ✅ Yes | ✅ Yes (dynamic file reading) | Title, SubTitle, Slug, Markdown, Image, Date |
+| **About** | ✅ Yes | ✅ Yes | Title, Content, Date |
+| **Aphorisms** | Yes | Yes | ID, Content, Author, Date |
+
+### Template Support Status
+
+All content types use the shared `entry-header.template.html` which supports:
+- `.Title` field display
+- `.Date` field display with formatting
+
+Individual templates access `.Entry.Content` for the rendered markdown content.
 
 ### Existing Frontmatter Fields Found
 
 #### Core Fields (Used by Go Code)
-- **title**: Page title (stories, thoughts, programming)
-- **date**: Publication date (stories, thoughts, poems)
-- **draft**: Hide from public view (stories, programming)
+- **title**: Page title (stories, thoughts, programming, aphorisms)
+- **date**: Publication date (stories, thoughts, poems, programming, aphorisms)
+- **draft**: Hide from public view (stories, programming, aphorisms)
 
 #### Legacy Hugo Fields (Currently Ignored)
 - **author**: Always "Justin Fuller"

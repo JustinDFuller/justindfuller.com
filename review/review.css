@@ -5,19 +5,6 @@
   padding: 0 var(--space-lg);
 }
 
-.review-content h1 {
-  font-size: var(--font-size-3xl);
-  color: var(--color-accent-pink);
-  text-align: center;
-  margin-bottom: var(--space-2xl);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  background: linear-gradient(135deg, var(--color-accent-pink), var(--color-accent-yellow));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .review-content h2 {
   font-size: var(--font-size-2xl);
   color: var(--color-text-primary);
@@ -139,10 +126,6 @@
 @media (max-width: 768px) {
   .review-content {
     padding: 0 var(--space-md);
-  }
-  
-  .review-content h1 {
-    font-size: var(--font-size-2xl);
   }
   
   .review-content p {

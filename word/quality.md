@@ -1,3 +1,11 @@
+---
+title: "Quality"
+date: 2025-09-07
+author: Justin Fuller
+category: word
+tags: [word]
+---
+
 # Quality
 
 Quality fled across the desert, and the wordslinger followed.

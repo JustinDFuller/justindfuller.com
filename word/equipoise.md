@@ -1,3 +1,11 @@
+---
+title: "Equipoise"
+date: 2025-09-07
+author: Justin Fuller
+category: word
+tags: [word]
+---
+
 # Equipoise
 
 ## References

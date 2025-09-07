@@ -3,8 +3,10 @@ package about
 import (
 	"bytes"
 	_ "embed"
+	"time"
 	
 	"github.com/yuin/goldmark"
+	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
@@ -14,12 +16,14 @@ import (
 var AboutContent string
 
 type Entry struct {
+	Title   string
 	Content string
+	Date    time.Time
 }
 
 func Get() Entry {
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithExtensions(extension.GFM, meta.Meta),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),
@@ -30,14 +34,41 @@ func Get() Entry {
 	)
 
 	var buf bytes.Buffer
-	if err := md.Convert([]byte(AboutContent), &buf); err != nil {
+	context := parser.NewContext()
+	if err := md.Convert([]byte(AboutContent), &buf, parser.WithContext(context)); err != nil {
 		// Return raw content if conversion fails
 		return Entry{
 			Content: AboutContent,
 		}
 	}
 
+	// Extract metadata
+	metaData := meta.Get(context)
+	
+	// Get title from metadata
+	title := ""
+	if t, ok := metaData["title"].(string); ok {
+		title = t
+	}
+	
+	// Get date from metadata
+	var date time.Time
+	if d, ok := metaData["date"]; ok {
+		switch v := d.(type) {
+		case time.Time:
+			date = v
+		case string:
+			if parsed, err := time.Parse("2006-01-02", v); err == nil {
+				date = parsed
+			} else if parsed, err := time.Parse(time.RFC3339, v); err == nil {
+				date = parsed
+			}
+		}
+	}
+
 	return Entry{
+		Title:   title,
 		Content: buf.String(),
+		Date:    date,
 	}
 }

@@ -1,3 +1,11 @@
+---
+title: "Howards End"
+date: 2021-08-28
+author: Justin Fuller
+category: review
+tags: [review]
+---
+
 # Howards End
 
 Not the show. The novel, first published in 1910 by E.M. Forster.

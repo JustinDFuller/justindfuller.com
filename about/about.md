@@ -1,3 +1,11 @@
+---
+title: "About"
+date: 2025-09-07
+author: Justin Fuller
+category: about
+tags: [about]
+---
+
 ## Hi there 👋 I'm Justin Fuller.
 
 I'm a Staff Software Engineer at [The New York Times](https://open.nytimes.com).
