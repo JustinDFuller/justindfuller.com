@@ -10,6 +10,9 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"github.com/yuin/goldmark"
+	meta "github.com/yuin/goldmark-meta"
+	"github.com/yuin/goldmark/parser"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -78,6 +81,14 @@ func Entries() ([][]byte, error) {
 	contents := make([][]byte, len(names))
 	var wg errgroup.Group
 
+	// Create markdown parser with meta extension
+	md := goldmark.New(
+		goldmark.WithExtensions(meta.Meta),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+	)
+
 	for i, name := range names {
 		wg.Go(func() error {
 			path := fmt.Sprintf("./poem/%s", name)
@@ -87,10 +98,29 @@ func Entries() ([][]byte, error) {
 				return errors.Wrapf(err, "error reading file: %s", path)
 			}
 
+			// Parse the markdown to extract frontmatter
+			var buf bytes.Buffer
+			context := parser.NewContext()
+			if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
+				// If parsing fails, fall back to old method
+				content := file
+				content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
+				content = bytes.Split(content, []byte("```"))[1]
+				content = bytes.TrimSpace(content)
+				contents[i] = content
+				return nil
+			}
+
+			// Extract content between ```text markers (frontmatter is now respected but we still extract the poem text)
 			content := file
 			content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
-			content = bytes.Split(content, []byte("```"))[1]
-			content = bytes.TrimSpace(content)
+			parts := bytes.Split(content, []byte("```"))
+			if len(parts) > 1 {
+				content = bytes.TrimSpace(parts[1])
+			} else {
+				// Fallback if no ``` markers found
+				content = bytes.TrimSpace(content)
+			}
 			contents[i] = content
 
 			return nil
@@ -121,10 +151,36 @@ func Entry(name string) ([][]byte, error) {
 		return nil, errors.Wrapf(err, "error reading file: %s", path)
 	}
 
+	// Create markdown parser with meta extension
+	md := goldmark.New(
+		goldmark.WithExtensions(meta.Meta),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+	)
+
+	// Parse the markdown to extract frontmatter
+	var buf bytes.Buffer
+	context := parser.NewContext()
+	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
+		// If parsing fails, fall back to old method
+		content := file
+		content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
+		content = bytes.Split(content, []byte("```"))[1]
+		content = bytes.TrimSpace(content)
+		return [][]byte{content}, nil
+	}
+
+	// Extract content between ```text markers (frontmatter is now respected but we still extract the poem text)
 	content := file
 	content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
-	content = bytes.Split(content, []byte("```"))[1]
-	content = bytes.TrimSpace(content)
+	parts := bytes.Split(content, []byte("```"))
+	if len(parts) > 1 {
+		content = bytes.TrimSpace(parts[1])
+	} else {
+		// Fallback if no ``` markers found
+		content = bytes.TrimSpace(content)
+	}
 
 	return [][]byte{content}, nil
 }
