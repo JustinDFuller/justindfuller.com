@@ -209,6 +209,11 @@ func main() {
 	})
 
 	http.HandleFunc("/word/", func(w http.ResponseWriter, r *http.Request) {
+		// If this is exactly /word/, redirect to /word
+		if r.URL.Path == "/word/" {
+			http.Redirect(w, r, "/word", http.StatusMovedPermanently)
+			return
+		}
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
@@ -221,8 +226,8 @@ func main() {
 
 		entry, err := word.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading Words", http.StatusInternalServerError)
-			log.Printf("Error reading Words: %s", err)
+			http.Error(w, "Word not found.", http.StatusNotFound)
+			log.Printf("Word not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
@@ -334,8 +339,8 @@ func main() {
 
 		entry, err := story.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading story.", http.StatusInternalServerError)
-			log.Printf("Error reading story: %s", err)
+			http.Error(w, "Story not found.", http.StatusNotFound)
+			log.Printf("Story not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
@@ -376,8 +381,8 @@ func main() {
 
 		entry, err := thought.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading thought entry.", http.StatusInternalServerError)
-			log.Printf("Error reading thought entry: %s", err)
+			http.Error(w, "Thought entry not found.", http.StatusNotFound)
+			log.Printf("Thought entry not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
@@ -401,6 +406,11 @@ func main() {
 	})
 
 	http.HandleFunc("/programming/", func(w http.ResponseWriter, r *http.Request) {
+		// If this is exactly /programming/, redirect to /programming
+		if r.URL.Path == "/programming/" {
+			http.Redirect(w, r, "/programming", http.StatusMovedPermanently)
+			return
+		}
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
@@ -458,8 +468,8 @@ func main() {
 
 		entry, err := review.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading review.", http.StatusInternalServerError)
-			log.Printf("Error reading review: %s", err)
+			http.Error(w, "Review not found.", http.StatusNotFound)
+			log.Printf("Review not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
@@ -479,6 +489,11 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/make/main.template.html")
 		}
+	})
+
+	// Handle /make/ with redirect
+	http.HandleFunc("/make/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/make", http.StatusMovedPermanently)
 	})
 
 	http.HandleFunc("/nature", func(w http.ResponseWriter, _ *http.Request) {
@@ -551,6 +566,11 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/about/main.template.html")
 		}
+	})
+
+	// Handle /about/ with redirect
+	http.HandleFunc("/about/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
 	})
 
 	// Serve betterinterviews PNG files
