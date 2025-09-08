@@ -26,7 +26,7 @@ mostly to remember to do things after the current task.</p>
 <p>Even when I focused deeply on a task, I still had to dedicate a large portion of my processing
 power to all these other &ldquo;open tabs&rdquo; that I needed to hold on to.</p>
 <p>It&rsquo;s not just a metaphor, though. This was reflected in the literal open browser tabs on my computer.</p>
-<p><img src="/tabs.png" alt="Tabs"></p>
+<p><img src="/image/tabs.png" alt="Tabs"></p>
 <p>At any given time, I would have open:</p>
 <ul>
 <li>The current page I&rsquo;m working on, perhaps adjusting a component or adding a feature</li>
@@ -53,7 +53,7 @@ Once you write down everything that you need to remember, you can close <em>all<
 <p>For the rest of this post, I will show you how I use <a href="https://www.trello.com">Trello</a> to keep one tab open.
 However, Trello is just one of many tools that you can use. It probably will not be right for everyone.
 I hope what you&rsquo;ll see is the strategy I use, rather than the specific tool I use to accomplish it.</p>
-<p><img src="/living_on_24_hours_a_day_trello.png" alt="Trello"></p>
+<p><img src="/image/living_on_24_hours_a_day_trello.png" alt="Trello"></p>
 <h2 id="step-1-record-all-inputs">Step 1: Record All Inputs</h2>
 <p>Throughout your day you&rsquo;ll receive countless inputs.</p>
 <ul>
@@ -74,7 +74,7 @@ I hope what you&rsquo;ll see is the strategy I use, rather than the specific too
 </ol>
 <p>But there is another way: record the input, along with any relevant information such as dates or links, so that you can come back to it later.</p>
 <p style="background: #222;">
-  <img src="/todo_column.png" alt="TODO Column" style="margin: auto; display: block;" />
+  <img src="/image/todo_column.png" alt="TODO Column" style="margin: auto; display: block;" />
 </p>
 <p>For me, this looks like dropping a new card in my TODO column in Trello.
 When I notice a slack message or email that requires follow-up, I drop a card in the column.</p>
@@ -94,7 +94,7 @@ However, the real benefit materializes only when you are able to decrease your m
 <li>A due date if there&rsquo;s a deadline or even ideal time to have this task complete</li>
 </ul>
 <p style="background: #222;">
-  <img src="/details.png" alt="Card Details" style="margin: auto; display: block;" />
+  <img src="/image/details.png" alt="Card Details" style="margin: auto; display: block;" />
 </p>
 <p>Details are crucial to staying focused.
 With only the card you have a reminder of what you need to do, but not how to do it.
@@ -105,7 +105,7 @@ But it still takes conscious effort to do so.</p>
 <p>In Trello, this looks like literally one card in the &ldquo;Doing&rdquo; tab at all times.
 There should always be a card in that tab unless you are actively choosing to be &ldquo;off&rdquo; or &ldquo;wasting time&rdquo; (which is a totally valid and normal thing to do, by the way, life isn&rsquo;t only about productivity).</p>
 <p style="background: #222;">
-  <img src="/doing_tab.png" alt="One Open Task" style="margin: auto; display: block;" />
+  <img src="/image/doing_tab.png" alt="One Open Task" style="margin: auto; display: block;" />
 </p>
 <h2 id="switching-tasks">Switching Tasks</h2>
 <p>It&rsquo;s pretty common to start a task, only to be interrupted and forced to switch to another task.

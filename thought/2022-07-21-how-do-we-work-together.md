@@ -13,7 +13,7 @@ She sat her first or second greaters down around a big sheet of paper, hung on t
 
 "Class", she'd say, "it's time to go over our classroom rules for this year."
 
-<img src="/classroom.jpg" style="margin: auto; display: block; height: 200px; width: auto;" height="100" width="auto" />
+<img src="/image/classroom.jpg" style="margin: auto; display: block; height: 200px; width: auto;" height="100" width="auto" />
 <em style="text-align: center; display: block;">
   Her cute little classroom
 </em>
@@ -32,7 +32,7 @@ Last time we went to the Natural Hustory Museum, I asked them what our rules sho
 They chose "stay together", "walk, don't run", "be calm", "don't break stuff". 
 I, of course, added the most important rule of all: "have fun"!
 
-<img src="/natural_history.jpg" style="margin: auto; display: block; height: 300px; width: auto;" height="100" width="auto" />
+<img src="/image/natural_history.jpg" style="margin: auto; display: block; height: 300px; width: auto;" height="100" width="auto" />
 <em style="text-align: center; display: block;">
   Getting chased by a T-Rex at the Natural History Museum
 </em>
@@ -52,7 +52,7 @@ I suggested the first thing we do is decide how we'd like to work together.
 
 We whipped up a Miro board to facilitate the process.
 
-<img src="/miro.png" style="margin: auto; display: block; height: 200px; width: auto;" height="100" width="auto" />
+<img src="/image/miro.png" style="margin: auto; display: block; height: 200px; width: auto;" height="100" width="auto" />
 
 We wrote down:
 

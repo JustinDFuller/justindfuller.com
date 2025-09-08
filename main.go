@@ -573,20 +573,6 @@ func main() {
 		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
 	})
 
-	// Serve betterinterviews PNG files
-	http.HandleFunc("/betterinterviews5.png", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./betterinterviews5.png")
-	})
-	http.HandleFunc("/betterinterviews7.png", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./betterinterviews7.png")
-	})
-	http.HandleFunc("/betterinterviews9.png", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./betterinterviews9.png")
-	})
-	http.HandleFunc("/betterinterviews11.png", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./betterinterviews11.png")
-	})
-
 	// Serve binary_search directory images
 	http.HandleFunc("/binary_search/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))

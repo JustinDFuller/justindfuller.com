@@ -36,19 +36,19 @@ As you use these interview signals, I encourage you to share them with your cand
 
 First, a hiring manager opens a role. For each role, they create five binary (yes-or-no) questions.
 
-![Screenshot](/betterinterviews5.png)
+![Screenshot](/image/betterinterviews5.png)
 
 For each candidate, the interviewer receives a feedback request. 
 
-![Screenshot](/betterinterviews7.png)
+![Screenshot](/image/betterinterviews7.png)
 
 After the interview, they select "yes" or "no" for the questions. There is an additional question, asking if the interviewer recommends the candidate.
 
-![Screenshot](/betterinterviews9.png)
+![Screenshot](/image/betterinterviews9.png)
 
 The hiring manager receives a summary of each submitted feedback.
 
-![Screenshot](/betterinterviews11.png)
+![Screenshot](/image/betterinterviews11.png)
 
 ## Why You Should Care
 

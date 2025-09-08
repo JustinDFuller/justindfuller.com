@@ -1,0 +1,1406 @@
+[
+  {
+    "url": "https://constantrenewal.com/steel-man",
+    "status": 0
+  },
+  {
+    "url": "https://www.betterinterview.club/",
+    "status": 0
+  },
+  {
+    "url": "https://www.parkmycloud.com/blog/aws-vs-azure-vs-google-cloud-market-share/",
+    "status": 0
+  },
+  {
+    "url": "https://www.reallysimplenotes.com/",
+    "status": 0
+  },
+  {
+    "url": "http://es6-features.org/",
+    "status": 405
+  },
+  {
+    "url": "http://localhost:9000/aphorism/icon.png",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/kit.webmanifest",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/nature/icon.png",
+    "status": 500
+  },
+  {
+    "url": "http://localhost:9000/poem/icon.png",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/programming/icon.png",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/programming/www.codewars.com",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/programming/www.signupgenius.com",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/review/icon.png",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/story/icon.png",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/tags/icon.png",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/tags/poetry",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/thought/icon.png",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/Weeks%20Remaining.webmanifest",
+    "status": 404
+  },
+  {
+    "url": "http://localhost:9000/word/icon.png",
+    "status": 404
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/0*-HnhLFl8kcpFkPd9",
+    "status": 405
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/0*c7d0llT62DAg9GLi",
+    "status": 405
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/0*c8sCS-H_FJxRSUyg",
+    "status": 405
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/0*EByxzGkBFV-tC8L8",
+    "status": 405
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/0*qeITxHrazRrTKg27",
+    "status": 405
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/0*ThJLpeJePPuVBse4",
+    "status": 405
+  },
+  {
+    "url": "https://codepen.io/",
+    "status": 403
+  },
+  {
+    "url": "https://codepen.io/Iamjfu/pen/NdaemL",
+    "status": 403
+  },
+  {
+    "url": "https://codepen.io/Iamjfu/pen/oBYgWV",
+    "status": 403
+  },
+  {
+    "url": "https://codepen.io/Iamjfu/pen/WRGZOg",
+    "status": 403
+  },
+  {
+    "url": "https://codepen.io/Iamjfu/pen/XzaegE",
+    "status": 403
+  },
+  {
+    "url": "https://github.com/JustinDFuller/compose-app",
+    "status": 404
+  },
+  {
+    "url": "https://github.com/JustinDFuller/javascript-proposals-tests",
+    "status": 404
+  },
+  {
+    "url": "https://github.com/JustinDFuller/promise-funnel",
+    "status": 404
+  },
+  {
+    "url": "https://kangax.github.io/compat-table/es6/",
+    "status": 404
+  },
+  {
+    "url": "https://leetcode.com/",
+    "status": 403
+  },
+  {
+    "url": "https://timesmachine.nytimes.com/timesmachine/1911/06/11/104868101.html?pageNumber=10",
+    "status": 403
+  },
+  {
+    "url": "https://www.jstor.org/stable/2126765",
+    "status": 403
+  },
+  {
+    "url": "https://www.linkedin.com/in/justin-fuller-8726b2b1/",
+    "status": 405
+  },
+  {
+    "url": "https://www.pnas.org/doi/10.1073/pnas.1018033108",
+    "status": 403
+  },
+  {
+    "url": "https://www.purchaseplan.io/",
+    "status": 500
+  },
+  {
+    "url": "http://bluebirdjs.com/docs/api/finally.html",
+    "status": 200
+  },
+  {
+    "url": "http://caniuse.com/",
+    "status": 301
+  },
+  {
+    "url": "http://localhost:9000/",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/about",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/aphorism",
+    "status": 301
+  },
+  {
+    "url": "http://localhost:9000/aphorism/",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/betterinterviews11.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/betterinterviews5.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/betterinterviews7.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/betterinterviews9.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/classroom.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/details.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/doing_tab.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/favicon.ico",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/fonts/wotfard/wotfard-medium-webfont.woff2",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/fonts/wotfard/wotfard-regular-italic-webfont.woff2",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/fonts/wotfard/wotfard-regular-webfont.woff2",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/fonts/wotfard/wotfard-semibold-webfont.woff2",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/grass",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/grass.webmanifest",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/icon.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/icon.svg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/etymology_of_quality.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/flexible_vs_potential.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/flexible_vs_useful.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/fundamental_esthetic_question.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/grass-apple-touch-icon.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/grass.ico",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/grass.svg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/howards_end.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/kit_mario.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/kit-apple-touch-icon.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/kit.ico",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/kit.svg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/little_q_quality.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/living_on_24_hours_a_day_bennet.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/living_on_24_hours_a_day_trello.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/many_expectations.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/anole.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/bee.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/egret.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/frog.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/ibis.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/mantis.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/moon.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/moss.jpeg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/mushroom.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/spider.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/nature/tree.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/rabbit.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/rain.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/super_mario_poster.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/super_mario_review.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/temperature.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/the_quality_intersection.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/walden.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/Weeks%20Remaining-apple-touch-icon.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/Weeks%20Remaining.ico",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/Weeks%20Remaining.svg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/what_intersects.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/image/wizard.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/kit",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/living_on_24_hours_a_day_trello.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/make",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/miro.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/natural_history.jpg",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/nature",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/nature/anolis-carolinensis",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/poem",
+    "status": 301
+  },
+  {
+    "url": "http://localhost:9000/poem/",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/continuous-deployment-nodejs-digitalocean",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/copy-to-clipboard-javascript",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/easily-create-html-editor",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/function-composition-with-lodash",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/go-things-i-love-channels-and-goroutines",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/go-things-i-love-methods-on-any-type",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/go-tip-function-arguments",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/how-to-understand-any-programming-task",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/how-to-write-error-messages-that-dont-suck",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/how-writing-tests-makes-you-faster",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/introducing-promise-funnel",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/javascript-apis-battery",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/javascript-apis-console",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/javascript-apis-video-api",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/just-say-no-to-helper-functions",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/lets-compose-promises",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/person-knowledge-repo",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/refactoring-oops-ive-been-doing-it-backwards",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/representing-reality",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/self-documenting-code",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/service-calls-make-your-tests-better",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/simply-javascript-mocking-stubbing-interfaces",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/technical-roadmaps",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/three-reasons-avoid-anonymous-functions",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/three-upcoming-javascript-changes",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/why-do-we-fall-into-the-rewrite-trap",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/programming/why-use-functional-composition",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/review",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/review/howards-end",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/review/living-on-24-hours-a-day",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/review/the-history-of-modern-political-philosophy",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/review/walden",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/review/zen-and-the-art-of-motorcycle-maintenance",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/site.webmanifest",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/story",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/story/2022-09-18_the_philosophy_of_trees",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/story/the_philosophy_of_trees",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/tabs.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2020-10-24-everything-is-a-product",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2021-11-1-why-did-i-stop-writing",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2021-11-22-asking-stupid-questions",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-02-22-embracing-impostor-syndrome",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-04-21-bias-smells",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-05-09-reducing-interview-bias",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-06-25-are-promotions-dehumanizing",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-07-19-i-added-poetry-to-my-blog",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-07-21-how-do-we-work-together",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-07-28-how-to-have-better-arguments",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-12-14-keeping-one-tab-open",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-12-18-better-interviews",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2022-12-29-subjective-ethics",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2025-04-05-responses",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/thought/2025-04-06-existence",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/todo_column.png",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/weeks-remaining",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/word",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/word/flexible",
+    "status": 200
+  },
+  {
+    "url": "http://localhost:9000/word/quality",
+    "status": 200
+  },
+  {
+    "url": "http://ramdajs.com/docs/",
+    "status": 301
+  },
+  {
+    "url": "http://sinonjs.org/",
+    "status": 301
+  },
+  {
+    "url": "http://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast",
+    "status": 200
+  },
+  {
+    "url": "http://wiki.c2.com/?WhatAreAssertions",
+    "status": 200
+  },
+  {
+    "url": "http://www.ecma-international.org/memento/TC39.htm",
+    "status": 301
+  },
+  {
+    "url": "http://www.w3schools.com/tags/ref_av_dom.asp",
+    "status": 200
+  },
+  {
+    "url": "https://ai-plans.dev/",
+    "status": 200
+  },
+  {
+    "url": "https://amzn.to/2R6rFkP",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/2TFnMF5",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/36g7PaN",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3amlznX",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3BfyJTl",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3Bvi78q",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3ceRMmm",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3DX64pO",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3Frvad5",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3h2aD3o",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3L5Dql3",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3MJ9kpd",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3PbvSiT",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3PFdHSQ",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3pPorTY",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3PwjIBV",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3qXZaXc",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3uoC3YV",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/3WlXV4n",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/40uULhk",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/42ba8fZ",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/4gTQzNU",
+    "status": 301
+  },
+  {
+    "url": "https://amzn.to/4jdXKSB",
+    "status": 301
+  },
+  {
+    "url": "https://angularjs.org/",
+    "status": 200
+  },
+  {
+    "url": "https://babeljs.io/",
+    "status": 200
+  },
+  {
+    "url": "https://babeljs.io/repl/",
+    "status": 200
+  },
+  {
+    "url": "https://blog.aurynn.com/2015/12/16-contempt-culture",
+    "status": 200
+  },
+  {
+    "url": "https://blog.codinghorror.com/code-smells/",
+    "status": 200
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/0*gSyOcZNAgLwA9DNm.gif",
+    "status": 301
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/1*2xJ42hw41svXHKehiJcp6A.png",
+    "status": 301
+  },
+  {
+    "url": "https://cdn-images-1.medium.com/max/2000/1*6WRmLi3uJmjw3CXn3SXqKg.png",
+    "status": 301
+  },
+  {
+    "url": "https://centerforinquiry.org/blog/how-to-star-man-arguing-from-compassion/",
+    "status": 200
+  },
+  {
+    "url": "https://clipboardjs.com/",
+    "status": 200
+  },
+  {
+    "url": "https://codeship.com/",
+    "status": 301
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/ClipboardEvent/ClipboardEvent",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/console",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document/designMode",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures",
+    "status": 301
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/ReduceRight",
+    "status": 301
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator",
+    "status": 301
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let",
+    "status": 200
+  },
+  {
+    "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch",
+    "status": 200
+  },
+  {
+    "url": "https://developers.google.com/web/tools/chrome-devtools/console/track-exceptions",
+    "status": 301
+  },
+  {
+    "url": "https://developers.google.com/web/updates/2017/10/promise-finally",
+    "status": 301
+  },
+  {
+    "url": "https://en.m.wikipedia.org/wiki/Rule_of_three_(computer_programming)",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Affective_forecasting",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Availability_heuristic",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Boilerplate_code",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Category:JavaScript_dialect_engines",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Dependency_inversion_principle",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Domain-driven_design",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Dunning%E2%80%93Kruger_effect",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/ECMAScript",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Ephemeral_port",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/JavaScript_engine",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Loss_aversion",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Open/closed_principle",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Pure_function",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Single_responsibility_principle",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/SOLID",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Straw_man",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Test-driven_development",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow",
+    "status": 200
+  },
+  {
+    "url": "https://en.wikipedia.org/wiki/Ward_Cunningham",
+    "status": 200
+  },
+  {
+    "url": "https://facebook.github.io/react-native/",
+    "status": 301
+  },
+  {
+    "url": "https://flow.org/",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/1bdcf88233f2b7e1966775ebaa2497ec",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/2cfc58005ccc1753fa16f24b894a84af",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/36cb59736a3684e165abe011b994146d",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/5a5572b1a59ef92db75cae0cdd2e72ac",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/5cb609d74f417ccf85dd920c53b49569",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/602e16f9cb147fecc441af9827238b3a",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/70167eaf10104a2c12778bf77c446b6c",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/a14fcc037f9f6d88a9746c6ac160302f",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/a334841f01192fc33ad436c1d8db85a5",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/a35c05fd6dcebf8c8fe8f4f6335ba6c1",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/ab65954961d76f15d8a273c99577d20b",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/c7fb196332a50dcc4b8c5bafa2addb85",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/ca8d3fe08f2d00ec7b04f1cd4853f79a",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/d60bc49f9279a15023f9876ff4c4a530",
+    "status": 200
+  },
+  {
+    "url": "https://gist.github.com/JustinDFuller/ebef98aa6dbd0f10350dbf5db62cbce1",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/getify/Functional-Light-JS/blob/master/manuscript/ch4.md/",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/golang/go/wiki/MutexOrChannel",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/justindfuller",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/JustinDFuller",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/JustinDFuller/betterinterview.club",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/JustinDFuller/problems",
+    "status": 301
+  },
+  {
+    "url": "https://github.com/lodash/lodash/wiki/FP-Guide",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/tc39/proposal-nullish-coalescing",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/TC39/proposal-optional-chaining",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/tc39/proposal-partial-application",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/tc39/proposal-pipeline-operator",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/tc39/proposals/blob/master/stage-0-proposals.md",
+    "status": 302
+  },
+  {
+    "url": "https://github.com/thlorenz/proxyquire",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/Unitech/pm2",
+    "status": 200
+  },
+  {
+    "url": "https://github.com/user-attachments/assets/ffd8a6d4-a953-4d36-b306-5bcf911ed6d5",
+    "status": 302
+  },
+  {
+    "url": "https://golang.org/",
+    "status": 301
+  },
+  {
+    "url": "https://golang.org/pkg/context/",
+    "status": 301
+  },
+  {
+    "url": "https://help.github.com/articles/connecting-to-github-with-ssh/",
+    "status": 301
+  },
+  {
+    "url": "https://html.spec.whatwg.org/multipage/interaction.html",
+    "status": 200
+  },
+  {
+    "url": "https://interviews.justindfuller.com/",
+    "status": 200
+  },
+  {
+    "url": "https://justindfuller.com/posts/14",
+    "status": 200
+  },
+  {
+    "url": "https://justindfuller.com/posts/15",
+    "status": 200
+  },
+  {
+    "url": "https://justindfuller.com/posts/16",
+    "status": 200
+  },
+  {
+    "url": "https://lodash.com/docs/4.17.5",
+    "status": 302
+  },
+  {
+    "url": "https://martinfowler.com/articles/preparatory-refactoring-example.html",
+    "status": 200
+  },
+  {
+    "url": "https://medium.com/free-code-camp/simply-javascript-a-straightforward-intro-to-mocking-stubbing-and-interfaces-14e67ed6641a",
+    "status": 200
+  },
+  {
+    "url": "https://medium.com/javascript-scene/composing-software-an-introduction-27b72500d6ea",
+    "status": 200
+  },
+  {
+    "url": "https://medium.freecodecamp.org/how-writing-tests-can-make-you-a-faster-and-more-productive-developer-f3ad978e3872",
+    "status": 301
+  },
+  {
+    "url": "https://nodejs.org/en/",
+    "status": 200
+  },
+  {
+    "url": "https://notes.justindfuller.com/",
+    "status": 200
+  },
+  {
+    "url": "https://open.nytimes.com/",
+    "status": 200
+  },
+  {
+    "url": "https://open.nytimes.com/a-new-way-to-share-new-york-times-stories-3e66e8d7e620?source=collection_home---4------8-----------------------",
+    "status": 200
+  },
+  {
+    "url": "https://open.spotify.com/episode/5jD2kHfzXrG3vaOthJn3fj",
+    "status": 200
+  },
+  {
+    "url": "https://pkg.go.dev/encoding/json",
+    "status": 200
+  },
+  {
+    "url": "https://play.golang.org/p/2WlOg1byot1",
+    "status": 302
+  },
+  {
+    "url": "https://play.golang.org/p/g3RnP9A26v5",
+    "status": 302
+  },
+  {
+    "url": "https://politicalscience.charlotte.edu/directory/amber-r-knight",
+    "status": 200
+  },
+  {
+    "url": "https://reactjs.org/",
+    "status": 308
+  },
+  {
+    "url": "https://redis.io/",
+    "status": 200
+  },
+  {
+    "url": "https://refactoring.guru/refactoring/smells",
+    "status": 200
+  },
+  {
+    "url": "https://refactoring.guru/smells/shotgun-surgery",
+    "status": 200
+  },
+  {
+    "url": "https://scotch.io/tutorials/javascript-transpilers-what-they-are-why-we-need-them",
+    "status": 301
+  },
+  {
+    "url": "https://smile.amazon.com/Test-Driven-Development-Kent-Beck/dp/0321146530/ref=smi_www_rco2_go_smi_2609328962?_encoding=UTF8&amp;%2AVersion%2A=1&amp;%2Aentries%2A=0&amp;ie=UTF8",
+    "status": 301
+  },
+  {
+    "url": "https://tc39.github.io/process-document/",
+    "status": 301
+  },
+  {
+    "url": "https://teamtreehouse.com/",
+    "status": 200
+  },
+  {
+    "url": "https://techcrunch.com/2016/07/02/andy-jassys-brief-history-of-the-genesis-of-aws/",
+    "status": 200
+  },
+  {
+    "url": "https://testing.googleblog.com/2012/10/hermetic-servers.html",
+    "status": 200
+  },
+  {
+    "url": "https://testing.googleblog.com/2013/06/testing-on-toilet-fake-your-way-to.html",
+    "status": 200
+  },
+  {
+    "url": "https://testing.googleblog.com/2018/11/testing-on-toilet-exercise-service-call.html",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203818464-289c25e1-7fe5-4dbc-bb85-033aeafa6ad7.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203818857-dc1e87f0-a5cf-48a3-94f3-4d619917df4d.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203819484-2915d7f6-35e8-4cf0-ba9b-f972180734b4.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203820085-cd01c6d7-c29a-4fb2-94ed-4aa3914ba61f.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203820596-c7cb88d0-9398-484f-9c93-4a5a8e661ced.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203823941-467877e8-d4c0-4805-b544-0f04790f9047.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203824062-832d88b5-d30d-485a-85de-7fbb56324904.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203824176-634fbc48-1072-4b8a-af93-63f2857b9f22.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/203987993-54d67678-fd78-40d0-b877-54e2d140884b.png",
+    "status": 200
+  },
+  {
+    "url": "https://user-images.githubusercontent.com/11914897/204137704-65ef7478-e032-4112-8ca7-47e714ebcab6.png",
+    "status": 200
+  },
+  {
+    "url": "https://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast",
+    "status": 200
+  },
+  {
+    "url": "https://www.digitalocean.com/community/tags/node-js?type=tutorials",
+    "status": 200
+  },
+  {
+    "url": "https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-freebsd-server",
+    "status": 200
+  },
+  {
+    "url": "https://www.fisglobal.com/",
+    "status": 200
+  },
+  {
+    "url": "https://www.freecodecamp.org/news/what-is-imposter-syndrome-and-how-do-you-overcome-it/",
+    "status": 200
+  },
+  {
+    "url": "https://www.gutenberg.org/files/2274/2274-h/2274-h.htm",
+    "status": 200
+  },
+  {
+    "url": "https://www.investopedia.com/terms/r/returnoninvestment.asp",
+    "status": 200
+  },
+  {
+    "url": "https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/",
+    "status": 200
+  },
+  {
+    "url": "https://www.justindfuller.com/",
+    "status": 200
+  },
+  {
+    "url": "https://www.memcached.org/",
+    "status": 200
+  },
+  {
+    "url": "https://www.npmjs.com/",
+    "status": 200
+  },
+  {
+    "url": "https://www.npmjs.com/package/promise-funnel",
+    "status": 200
+  },
+  {
+    "url": "https://www.npmjs.com/package/proxyquire",
+    "status": 200
+  },
+  {
+    "url": "https://www.npmjs.com/package/sinon",
+    "status": 200
+  },
+  {
+    "url": "https://www.nytco.com/careers/",
+    "status": 200
+  },
+  {
+    "url": "https://www.nytimes.com/1997/09/28/books/bookend-who-s-afraid-of-arnold-bennett.html",
+    "status": 200
+  },
+  {
+    "url": "https://www.oodesign.com/dependency-inversion-principle.html",
+    "status": 301
+  },
+  {
+    "url": "https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)",
+    "status": 301
+  },
+  {
+    "url": "https://www.reddit.com/r/cscareerquestions/",
+    "status": 200
+  },
+  {
+    "url": "https://www.reddit.com/r/learnprogramming/",
+    "status": 200
+  },
+  {
+    "url": "https://www.reddit.com/r/MicrosoftEdge/comments/zgwt1f/edge_crashed_with_1600_open_tabs_clicked_inbuilt/",
+    "status": 200
+  },
+  {
+    "url": "https://www.statista.com/statistics/510333/worldwide-public-cloud-software-as-a-service/",
+    "status": 200
+  },
+  {
+    "url": "https://www.trello.com/",
+    "status": 301
+  },
+  {
+    "url": "https://www.typescriptlang.org/",
+    "status": 200
+  },
+  {
+    "url": "https://www.weather.gov/documentation/services-web-api",
+    "status": 200
+  },
+  {
+    "url": "https://yarnpkg.com/en/docs/install",
+    "status": 301
+  }
+]
