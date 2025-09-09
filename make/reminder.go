@@ -34,7 +34,11 @@ func SetHandler(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-	defer func() { _ = client.Close() }()
+	defer func() {
+		if err := client.Close(); err != nil {
+			log.Printf("Warning: failed to close cloud tasks client: %v", err)
+		}
+	}()
 
 	var reminder Reminder
 	if err := json.NewDecoder(r.Body).Decode(&reminder); err != nil {
