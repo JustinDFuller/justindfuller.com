@@ -1,3 +1,5 @@
+version: 2
+
 run:
   go: "1.23"
   tests: true
@@ -19,18 +21,6 @@ output:
 linters:
   enable-all: true
   disable:
-    # Deprecated linters
-    - nosnakecase
-    - deadcode
-    - interfacer
-    - structcheck
-    - scopelint
-    - maligned
-    - varcheck
-    - golint
-    - ifshort
-    - exhaustivestruct
-    - exportloopref  # Replaced by copyloopvar in Go 1.22+
     # Disabled by choice
     - funlen
     - cyclop
@@ -40,19 +30,19 @@ linters:
     - maintidx
     - perfsprint
     - lll
-    - execinquery  # Often too strict
-    - gomnd  # Magic numbers can be okay
+    - mnd  # Magic numbers can be okay (renamed from gomnd)
     - wrapcheck  # Too noisy
     - nlreturn  # Too opinionated
     - gochecknoglobals  # Globals can be useful
     - exhaustive  # Not always needed
     - godox  # TODOs are okay
-    - goerr113  # Dynamic errors are sometimes needed
+    - err113  # Dynamic errors are sometimes needed (renamed from goerr113)
     - nolintlint  # Sometimes we need nolint
     - paralleltest  # Not always needed
     - testpackage  # Tests in same package are fine
     - tparallel  # Not always needed
-    - wsl  # Too opinionated about whitespace
+    - wsl  # Deprecated, use wsl_v5 if needed
+    - wsl_v5  # Too opinionated about whitespace
     - gochecknoinits  # Init functions can be useful
     - gomoddirectives  # Replace directives are sometimes needed
     - ireturn  # Returning interfaces is often necessary
