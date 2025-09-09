@@ -11,13 +11,13 @@ weight: 1
 images:
  - /reducing_interview_bias.png
 tags: [Life]
---- 
+---
 
 In 2011, researchers at Ben Gurion University in Israel and Columbia University found [Judges' rulings are affected by lunch breaks](https://www.pnas.org/doi/10.1073/pnas.1018033108). The judges granted 65% of parole requests at the beginning of the day. The rate declined steadily until a lunch break, after which the rate jumped back to 65%. They granted almost no requests at the end of the day.
 
 <!--more-->
 
-One of the authors, Jonathan Levav, says the judges may have been grumpy from hunger, but they could also be experiencing mental fatigue. 
+One of the authors, Jonathan Levav, says the judges may have been grumpy from hunger, but they could also be experiencing mental fatigue.
 
 This study got me thinking about a similar situation where I judge others. As an engineer who is part of the interview rotation at The New York Times ([check out our careers](https://www.nytco.com/careers/)), I must constantly judge others' skills and experience.
 
@@ -33,7 +33,7 @@ This isn't a perfect solution because some candidates aren't available during th
 ## Consistent Questions
 Another way to avoid bias is to have a consistent set of questions I judge candidates against. These are not the questions that I *ask* in the interview. These are the questions I use to *evaluate* the interview.
 
-These questions are not absolute, where 5 out of 5 equals a hire recommendation, and 2 out of 5 results in a rejection recommendation. Instead, I judge interview scores relative to each other. If most interviews score 2 out of 5, I should recommend someone who gets 3 or 4 out of 5. 
+These questions are not absolute, where 5 out of 5 equals a hire recommendation, and 2 out of 5 results in a rejection recommendation. Instead, I judge interview scores relative to each other. If most interviews score 2 out of 5, I should recommend someone who gets 3 or 4 out of 5.
 
 One word of caution, you should avoid a race to the bottom, where you accept candidates who don't meet your standards just because it's taking a while to find the right candidate.
 

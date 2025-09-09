@@ -6,9 +6,9 @@ draft: false
 tags: [Life]
 ---
 
-Through the high living room windows, I notice the last light of the sun dipping under the trees behind my house. 
-The television plays a country band at the Grand Ole Opry, quietly to avoid waking the children. 
-My parents sit on the couch, exhausted after babysitting my three young kids. 
+Through the high living room windows, I notice the last light of the sun dipping under the trees behind my house.
+The television plays a country band at the Grand Ole Opry, quietly to avoid waking the children.
+My parents sit on the couch, exhausted after babysitting my three young kids.
 I sit cross-legged on the rug, listening as they describe the night's highs and lows.
 
 "Your mom and I saw a movie last night", my dad switches the topic, "about the election."
@@ -17,15 +17,14 @@ I sit cross-legged on the rug, listening as they describe the night's highs and 
 
 ---
 
-Over two thousand years ago, depicted in Plato's [Theaetetus](https://amzn.to/3BfyJTl), 
-Socrates lounges in a Palaestra, an ancient greek wrestling school. He's chatting with his friend 
-Theodorus, explaining that he needs help understanding a fundamental question 
+Over two thousand years ago, depicted in Plato's [Theaetetus](https://amzn.to/3BfyJTl),
+Socrates lounges in a Palaestra, an ancient greek wrestling school. He's chatting with his friend
+Theodorus, explaining that he needs help understanding a fundamental question
 of philosophy: What is knowledge?
 
 Eventually, after some discussion, Socrates addresses the idea of another philosopher.
 His old friend Protagoras claimed, "Man is the measure of all things"
 and, "What seems to a man, is to him." Meaning knowledge is relative to each person.
-
 
 Plato, the author of Theaetetus, was fundamentally at odds with this idea.
 To Plato, there must be a truth independent of any man, by which all other claims can be measured.
@@ -63,35 +62,35 @@ The question is, why would he argue against himself? Why would he build the cred
 
 In Theaetetus, he addresses this question head-on.
 
-> After the manner of disputers, we were satisfied with mere verbal consistency 
+> After the manner of disputers, we were satisfied with mere verbal consistency
 
-Here he contrasts disputers, also called Eristics, against philosophers. 
-One group is merely attempting to win an argument, to come up with some phrase that no one else can dispute. 
-They aren't interested in the truth, they are interested in winning.  
+Here he contrasts disputers, also called Eristics, against philosophers.
+One group is merely attempting to win an argument, to come up with some phrase that no one else can dispute.
+They aren't interested in the truth, they are interested in winning.
 
-Instead, a philosopher is chasing after the truth, and that's what Socrates is doing.  
+Instead, a philosopher is chasing after the truth, and that's what Socrates is doing.
 
-That's why he argues against himself.  
+That's why he argues against himself.
 
 He's not afraid of the truth, he's afraid of being wrong. So he assumes the best of whoever contradics him,
 he assumes there's a good reason that they disagree, if only he could discover it.
 
 ---
 
-"So, basically, they were using cellphone location data", he explained, 
+"So, basically, they were using cellphone location data", he explained,
 "to show when these democrats were going to ballot dropboxes."
 
 I had asked what the documentary was about. As he spoke, I reminded myself to keep an open mind
 and a civil tone. I didn't want to be too agressive, as I tend to be in political arguments.
 
 "They paired that location data with video footage to prove it was democrats putting tens
-of thousands of votes into dropboxes. It's called ballot stuffing", he said. 
+of thousands of votes into dropboxes. It's called ballot stuffing", he said.
 Meanwhile, my mom nods her head in agreement.  My wife and I glance at each other.
 
-He finally added, "the really interesting thing was how they used the same technology to solve a case 
+He finally added, "the really interesting thing was how they used the same technology to solve a case
 for the police in Atlanta. That's how you know it's trustworthy."
 
-I took the bait. Unlocking my phone, I ask, "what did you say the company is called?" 
+I took the bait. Unlocking my phone, I ask, "what did you say the company is called?"
 Searching the internet for the company and Atlanta, I immediately found an NPR article explaining
 that the company actually provided the data several months after the culprits were found and charged.
 
@@ -101,7 +100,7 @@ The just wanted to use it for PR, as a way to build false trust in their busines
 That's what I told my dad.
 
 You can guess exactly how the rest of that argument went. We attacked the credibility of the other's sources.
-We ignored their claims, prefering our own. 
+We ignored their claims, prefering our own.
 
 No one left with changed views, but everyone left a little upset,
 our relationships strained a bit more.
@@ -114,20 +113,20 @@ Actually, it's possible Socrates didn't argue like Socrates. After all, most of 
 comes from Plato's dialogues. There's no telling how closely his depiction resembles the real man.
 
 But, I digress. No, I don't argue like him. Instead, I focus solely on disputing the other argument. Often, I rely on the [Straw Man](https://en.wikipedia.org/wiki/Straw_man)
-argument to cut down the weakest forms of my opponent's argument. 
+argument to cut down the weakest forms of my opponent's argument.
 
 But, of course, this isn't the only option.
 
 Instead of strawmanning, I could [Steel Man](https://constantrenewal.com/steel-man). I could argue
 against my opponent's strongest arguments, instead of the weakest. But why stop there? I could take it even further
-with the [Star Man](https://centerforinquiry.org/blog/how-to-star-man-arguing-from-compassion/), choosing both the strongest 
-counter-argument while also building up my opponent.  
+with the [Star Man](https://centerforinquiry.org/blog/how-to-star-man-arguing-from-compassion/), choosing both the strongest
+counter-argument while also building up my opponent.
 
 Actually, I'm suggesting to take it even further. Yes, I should build up my opponent's credibility; yes,
 I should argue against their strongest arguments; also, I should argue against myself.
 
-That's dangerous, because the moment I begin arguing for the other side, my opponent could claim victory. 
-Even if they don't, I risk convincing listeners of a point I disagree with. 
+That's dangerous, because the moment I begin arguing for the other side, my opponent could claim victory.
+Even if they don't, I risk convincing listeners of a point I disagree with.
 This might be trivial at work, negotiating how to implement some software project;
 it could be consequential, discussing moral issues with friends or family.
 
@@ -145,7 +144,7 @@ When I look to Socrates, I see that it begins with changing my goal.
 
 The argument's goal must shift from winning to wonder, to discovering truth.
 
-First, as I switch goals to finding the truth, I can drop the view that I'm talking to an opponent. 
+First, as I switch goals to finding the truth, I can drop the view that I'm talking to an opponent.
 Instead, as cheesy as it may sound, I can think of them as a partner in the search for truth.
 This framing lowers my defenses even when I know my partner doesn't share my goal.
 
@@ -158,11 +157,11 @@ If you've heard of [Cunningham's Law](https://en.wikipedia.org/wiki/Ward_Cunning
 you know what I mean. Giving the wrong answer is the best way to get the right answer.
 
 As soon I misrepresent their view, they'll call me out.
-This has happened to me many times (I'm pretty bad at understanding people, it seems). 
+This has happened to me many times (I'm pretty bad at understanding people, it seems).
 I'll rephrase someone's argument or attempt to build upon it, only to hear emphatically, "no, that's not what I'm saying at all."
-If I hadn't attempted to rephrase their view, I would have inadvertendly argued against a Straw Man. 
+If I hadn't attempted to rephrase their view, I would have inadvertendly argued against a Straw Man.
 
-Once I can restate and add upon their view, I also begin to discover shared values and concerns. 
+Once I can restate and add upon their view, I also begin to discover shared values and concerns.
 These quickly become common ground that I build upon.
 
 With that common ground, I also give myyself credit in my partner's eyes.
@@ -247,14 +246,12 @@ create a system with more transparency, one that everyone could trust?
 </ol>
 </div>
 
-
 ---
 
-# Extra stuff
+## Extra stuff
 
 Of course, Plato already outlined this form of argument through Socrates.
 
 > The disputer may trip up his opponent as often as he likes, and make fun;
 > but the dialectician will be in earnest, and only correct his adversary when necessary,
-
 

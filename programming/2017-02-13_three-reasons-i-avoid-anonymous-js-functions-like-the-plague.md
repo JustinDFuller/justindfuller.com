@@ -123,7 +123,7 @@ function initiate (arguments) {
 function checkForArguments (resolve, reject) {
   try {
     if (arguments) {
-     return resolve(true);   
+     return resolve(true);
     }
     return resolve(false);
   } catch (e) {

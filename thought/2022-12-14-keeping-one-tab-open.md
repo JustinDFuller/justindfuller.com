@@ -148,4 +148,3 @@ I don&rsquo;t need to power through unimportant tasks, just because I incorrectl
 <li>Regularly prune your tasks to focus on only what is currently relevant</li>
 </ul>
 
-  

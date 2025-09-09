@@ -35,13 +35,13 @@ That’s not necessarily a *lot*, but with some extra API juice we can enhance o
 
 **Lets take a look at some examples.**
 
-https://gist.github.com/JustinDFuller/70167eaf10104a2c12778bf77c446b6c#file-on-copy-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/70167eaf10104a2c12778bf77c446b6c#file-on-copy-js)
 
 In the above example all you have to do is add an eventListener to the copy event. The event that you receive contains clipboardData and its three methods: setData, getData, and clearData.
 
 It actually has all methods and properties of the [DataTransfer](https://html.spec.whatwg.org/multipage/interaction.html#datatransfer) object. So you can inspect the properties, items and types in case you are not sure what arguments to use for setData or getData.
 
-https://gist.github.com/JustinDFuller/ebef98aa6dbd0f10350dbf5db62cbce1#file-stop-pasting-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/ebef98aa6dbd0f10350dbf5db62cbce1#file-stop-pasting-js)
 
 This example shows what it would look like to not allow a user to paste text into an input with the ID of “passwordConfirmation”. It also doesn’t allow them to paste “theUserPassword” into any field (we’re pretending that’s actually their password. Please ignore for a moment that you should never have the user’s password available in plain text in your web app.).
 
@@ -49,7 +49,7 @@ Another example could be a profanity filter if you are creating a web app that e
 
 You could go on to use the value retrieved from getData elsewhere in your app. As an example, maybe you need to log when data is pasted, like in a test-taking app. Sometime’s pasting text in that setting could be OK, but you may want to be able to go back later and ensure the pasted content wasn’t copied from elsewhere.
 
-## Creating your own copy event.
+## Creating your own copy event
 > Copying text to the clipboard shouldn’t be hard. It shouldn’t require dozens of steps to configure or hundreds of KBs to load. But most of all, it shouldn’t depend on Flash or any bloated framework. — [clipboardjs.com](https://clipboardjs.com/)
 
 Before we get into this, I’d like to introduce you to an open source project that simplifies everything I’m about to show you. It’s called “clipboard.js” and it allows you to easily copy text to your clipboard. You may find it easier than doing this on your own. It’s quite a small library, and has a very simple API.
@@ -61,7 +61,7 @@ Since the ClipboardEvent object isn’t exposed in most browsers, we must go a d
 
 Here’s an example shown with CodePen:
 
-https://codepen.io/Iamjfu/pen/WRGZOg
+[View example on CodePen](https://codepen.io/Iamjfu/pen/WRGZOg)
 
 This must be triggered by a user event, like a click. This is a safety feature implemented on important operations, such as opening the file upload window, copying to a clipboard, etc. It helps to keep users safe from websites interacting with their computer when they don’t them want to.
 

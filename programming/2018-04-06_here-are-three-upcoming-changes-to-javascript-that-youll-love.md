@@ -16,7 +16,7 @@ Let's take a look at some useful upcoming features in JavaScript. You'll see the
 
 For the rest of us who are curious about how the JavaScript programming language evolves, I'd like to give a quick overview of the process.
 
-JavaScript is an implementation of the language standard called [ECMAScript](https://en.wikipedia.org/wiki/ECMAScript) which was created to standardize all the [implementations ](https://en.wikipedia.org/wiki/Category:JavaScript_dialect_engines)of the language as it evolved in the early years of web browsers.
+JavaScript is an implementation of the language standard called [ECMAScript](https://en.wikipedia.org/wiki/ECMAScript) which was created to standardize all the [implementations](https://en.wikipedia.org/wiki/Category:JavaScript_dialect_engines)of the language as it evolved in the early years of web browsers.
 
 There have been eight [editions](https://en.wikipedia.org/wiki/ECMAScript#Versions) of the ECMAScript standard, with seven releases (the fourth edition was abandoned).
 
@@ -54,7 +54,7 @@ One of the most popular JavaScript transpilers is [Babel](https://babeljs.io/). 
 
 If you want to follow along with the code then feel free. You'll want to set up an npm project and install the required dependencies.
 
-You'll need to have [Node.js](https://nodejs.org/en/) and [NPM ](https://www.npmjs.com/)installed.
+You'll need to have [Node.js](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/)installed.
 
 To do so, you can run the following command in a new directory:
 
@@ -68,27 +68,27 @@ You will then want to add the following to your package.json file:
 "scripts": {
   "test": "ava"
 },
-"ava": {    
-  "require": [      
+"ava": {
+  "require": [
     "@babel/register",
-    "@babel/polyfill"   
-  ]  
+    "@babel/polyfill"
+  ]
 }
 ```
 
 Finally create a .babelrc file:
 
 ```json
-{  
-  "presets": [    
-    ["@babel/preset-env", {      
-      "targets": {        
-        "node": "current"      
-      }    
-    }],    
-    "@babel/preset-stage-0"  
-  ],  
-  "plugins": [    
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "node": "current"
+      }
+    }],
+    "@babel/preset-stage-0"
+  ],
+  "plugins": [
     "@babel/plugin-transform-runtime"
   ]
 }
@@ -105,7 +105,7 @@ const data = {
   user: {
     address: {
       street: 'Pennsylvania Avenue',
-    }, 
+    },
   },
 };
 ```
@@ -229,7 +229,7 @@ const data = {
 function getNeighbors(data) {
   return data?.user?.getNeighbors?.();
 }
-  
+
 test('Optional chaining also works with functions', (t) => {
   const neighbors = getNeighbors(data);
   t.is(neighbors.length, 2);
@@ -256,7 +256,7 @@ let neighborCount = 0;
 function getNextNeighbor(neighbors) {
   return neighbors?.[++neighborCount];
 }
-  
+
 test('It short circuits expressions', (t) => {
   const neighbors = getNeighbors(data);
   t.is(getNextNeighbor(neighbors), 'jane doe');
@@ -437,7 +437,7 @@ test('Async pipeline', async (t) => {
   const result = 10
     |> asyncAdd
     |> (async (num) => subtractOne(await num));
-  
+
   t.is(await result, 14);
 });
 ```
@@ -446,10 +446,16 @@ One thing you may notice is that you must await the value once an async function
 
 Alright, now that you've seen these proposals in action I hope you feel comfortable enough trying them out!
 
-### The full code for the learning tests can be found [here](https://github.com/JustinDFuller/javascript-proposals-tests).
+### The full code for the learning tests
+
+The full code can be found [on GitHub](https://github.com/JustinDFuller/javascript-proposals-tests).
 
 Here are all four proposal links (bonus!):
+
 * [**tc39/proposal-optional-chaining**](https://github.com/TC39/proposal-optional-chaining)
+
 * [**tc39/proposal-nullish-coalescing**](https://github.com/tc39/proposal-nullish-coalescing)
+
 * [**tc39/proposal-partial-application**](https://github.com/tc39/proposal-partial-application)
+
 * [**tc39/proposal-pipeline-operator**](https://github.com/tc39/proposal-pipeline-operator)

@@ -31,8 +31,8 @@ If your experience is anything like mine, you work with a lot of *really* excell
 I have pretty high confidence, on any given team I've worked on, most of the engineers understand the code
 just as well as I do, if not better.
 
-In the few cases where an engineer can't understand the code, there are still resources. 
-First, I've never worked on a team where a more experienced engineer wouldn't be willing to explain confusing code. 
+In the few cases where an engineer can't understand the code, there are still resources.
+First, I've never worked on a team where a more experienced engineer wouldn't be willing to explain confusing code.
 Second, if you are using a well-documented language like Go, there are many resources to help the engineer to learn.
 
 #### Why Not Context?
@@ -48,7 +48,7 @@ who are brand new to the team.
 
 ### Types of Information
 
-I believe there are two types of information we want to share about code. 
+I believe there are two types of information we want to share about code.
 One category can be understood by simply reading the code.
 The other cannot.
 
@@ -148,7 +148,7 @@ func (allABTests ABTests) MarshalJSON() ([]byte, error) {
 }
 ```
 
-In my opinion, we finally can understand *why* someone would write this code: 
+In my opinion, we finally can understand *why* someone would write this code:
 there are a TON of AB tests and we only care about, maybe, 3 of them at a time.
 If we don't remove them from the API response, we get a giant (for this API) response of ~20kb.
 

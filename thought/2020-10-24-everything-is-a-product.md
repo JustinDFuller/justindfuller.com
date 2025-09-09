@@ -6,7 +6,7 @@ draft: false
 tags: [Life]
 ---
 
-Your internal tools may have more value than you think they do. 
+Your internal tools may have more value than you think they do.
 
 <!--more-->
 
@@ -24,13 +24,13 @@ Even if the application is unique, we may be using fairly common strategies and 
 
 ## Dependency
 
-Next, does your company gain an advantage by making potential competitors depend on your tools and by linking your competitors' profits to yours? Let's say some other companies do value your tools; some of them may even be in the same market as you. It may make sense that those who are trying to solve the same problem may value similar tools. As their company grows, their usage (and therefore, the amount they pay) for your tool may grow. So, if your competitor grows, it will increase your profits in at least one way. 
+Next, does your company gain an advantage by making potential competitors depend on your tools and by linking your competitors' profits to yours? Let's say some other companies do value your tools; some of them may even be in the same market as you. It may make sense that those who are trying to solve the same problem may value similar tools. As their company grows, their usage (and therefore, the amount they pay) for your tool may grow. So, if your competitor grows, it will increase your profits in at least one way.
 
 Could this offset the loss of the competitive advantage your tool brings the company?
 
 ## Quality
 
-Finally, by selling your tool, you will want it to be of high quality. How many times have we all had to use a terrible internal tool? Offering your tool as a product requires you to make sure it looks good and works well for many different users. 
+Finally, by selling your tool, you will want it to be of high quality. How many times have we all had to use a terrible internal tool? Offering your tool as a product requires you to make sure it looks good and works well for many different users.
 
 The requirement of high-quality products could lead us to the reason that internal tools don't become products: the investment in a production-quality development may be too high to justify the [ROI](https://www.investopedia.com/terms/r/returnoninvestment.asp). But this leads to more questions. If the return isn't worth it for the production quality version, is the return there for the crappy internal version?
 

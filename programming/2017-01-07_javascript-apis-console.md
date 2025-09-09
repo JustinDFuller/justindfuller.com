@@ -14,11 +14,11 @@ The console API could be the most well-known JavaScript API. Pretty much every d
 
 First up we have `console.assert(*assertion*)` which allows us to run an *assertion* in the console.
 
-> An assertion is a boolean expression at a specific point in a program which will be true unless there is a bug in the program. —[ http://wiki.c2.com/?WhatAreAssertions](http://wiki.c2.com/?WhatAreAssertions)
+> An assertion is a boolean expression at a specific point in a program which will be true unless there is a bug in the program. —[http://wiki.c2.com/?WhatAreAssertions](http://wiki.c2.com/?WhatAreAssertions)
 
 If the assertion is true, the console does not output anything, if the assertion is false it will output that an assertion has failed, along with any message or data you give it.
 
-https://gist.github.com/JustinDFuller/d60bc49f9279a15023f9876ff4c4a530#file-console-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/d60bc49f9279a15023f9876ff4c4a530#file-console-js)
 
 *Note:* In Node.js falsy assertions will throw an `AssertionError` and stop the execution of code. So it is not recommended for use in production environments.
 
@@ -28,7 +28,7 @@ Sometimes it could be important to know how many times a given line was called. 
 
 This one is simple, add `console.count(*message*)` and run your code. You’ll see a message and a number pop up every time that line runs.
 
-https://gist.github.com/JustinDFuller/2cfc58005ccc1753fa16f24b894a84af#file-console-count-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/2cfc58005ccc1753fa16f24b894a84af#file-console-count-js)
 
 An important thing to note in this example is that the count is set to 1 for each output. That’s because the message changed. No user was called more than once, so count never goes up! When you call user 4 again at the end, you see count finally go to 2.
 
@@ -42,7 +42,7 @@ But I can hear you saying right now, “Just put a debugger in the code and you 
 
 Here’s a small example:
 
-https://gist.github.com/JustinDFuller/36cb59736a3684e165abe011b994146d#file-console-trace-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/36cb59736a3684e165abe011b994146d#file-console-trace-js)
 
 ## **Formatting**
 
@@ -58,7 +58,7 @@ You don’t need ES6 to format a console string. They come with built-in formatt
 
 You can use them like this:
 
-https://gist.github.com/JustinDFuller/a14fcc037f9f6d88a9746c6ac160302f#file-console-formatting-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/a14fcc037f9f6d88a9746c6ac160302f#file-console-formatting-js)
 
 A nice part of this method is the object is still expandable in browsers that support pretty-printing/expanding/collapsing of objects in the console.
 

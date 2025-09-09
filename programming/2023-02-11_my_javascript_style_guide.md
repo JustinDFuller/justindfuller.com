@@ -15,7 +15,7 @@ Over the years I've built plenty of my personal problems into software. This has
 
 Today, I'd like to talk about that second type of problem.
 Mostly because I'm still not sure I'm qualified to talk about how to solve the right problems.
-In fact, I've got some people telling me, right now, that I'm solving the wrong problem. 
+In fact, I've got some people telling me, right now, that I'm solving the wrong problem.
 I'm not convinced that they are wrong, but I also can't figure out if they are right.
 I admit that this is a far more important topic, but I'm just not ready yet to give advice on it.
 
@@ -46,7 +46,7 @@ Yet, it was at this point that I realized for the first time, that typing was no
 Up until that point, much of what I had engineered was shortcuts to save time typing things out.
 
 But it did not actually sink in until much, much later that I needed to optimize for something else entirely.
-In some ways, I would find that I needed to actually veer my strategy all the way to the opposite side of the road, 
+In some ways, I would find that I needed to actually veer my strategy all the way to the opposite side of the road,
 to instead optimize for the ability _understand_ and change things _safely_. I eventually learned that typing _more_ is often the best way to accomplish this.
 
 That's where peace and clarity of mind come back into play. If you are not at peace—say, for example, you are in a rush—you cannot have clarity of mind.
@@ -142,7 +142,7 @@ Now, how can you join me to succesfully understand and operate on my domain, if 
 Of course you will be able to because you are likely a skilled Software Engineer.
 But, depending on the project layout, it take you longer than necessary.
 
-I noticed frameworks (such as Angular) and paradigms (such as MVC, Model View Controller) influenced me to organize projects in arbitrary and unhelpful ways. 
+I noticed frameworks (such as Angular) and paradigms (such as MVC, Model View Controller) influenced me to organize projects in arbitrary and unhelpful ways.
 So, instead of organizing my project around something meaningless to the product, such as routes, I now organize it around domain concept.
 
 ### Prefer Fewer, Flatter Files
@@ -249,7 +249,7 @@ Naming things is one of the hardest problems in Software Engineering.
 In my experience, we engineers love two types of meaningless variables.
 
 The first is the "cute" name that is cool, catchy, and ultimately meaningless.
-Like naming your browser "Firefox". 
+Like naming your browser "Firefox".
 This is a great strategy for marketing, but not for clearly communicating functionality.
 
 The second is the vague name, such as "util" or "data".
@@ -326,7 +326,6 @@ When you are using a module, you no longer have all of this context.
 
 So, we should enforce the names created at the time and by the engineers with the *most* context.
 
-
 ### Prevent Returned Variable Renaming
 
 What should the returned variable be?
@@ -359,7 +358,7 @@ import { URL } from './url';
 
 const { normalized } = URL.ensureTrailingSlash("https://www.justindfuller.com")
 // or
-const url = URL.ensureTrailingSlash("https://www.justindfuller.com") 
+const url = URL.ensureTrailingSlash("https://www.justindfuller.com")
 ```
 
 **Correct:**
@@ -593,7 +592,6 @@ if (someBoolean === true)
  doAThing();
 ```
 
-
 **Correct:**
 
 ```js
@@ -775,5 +773,4 @@ function normalize(url) {
 #### Why?
 
 TODO
-
 

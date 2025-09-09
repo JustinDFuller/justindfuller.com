@@ -82,7 +82,7 @@ Not only does it verify your code, but by writing the test first you are creatin
 /* source code file "myFunction.js" */
 
 export default myFunction(callback) {
-  return callback(10) 
+  return callback(10)
 }
 
 /* test file */
@@ -96,7 +96,7 @@ test('My function calls my callback with 10', function () {
   function callback(number) {
     assert.equal(number, 10, 'Number was not called with 10.')
   }
-  
+
   myFunction(callback)
 })
 ```
@@ -177,7 +177,7 @@ I've stopped using these libraries because I believe there is a better way! Inst
  */
 export default function ({ fs }) {
   return function(fileName) {
-    return fs.readFileAsync(fileName, 'utf8') 
+    return fs.readFileAsync(fileName, 'utf8')
   }
 }
 ```

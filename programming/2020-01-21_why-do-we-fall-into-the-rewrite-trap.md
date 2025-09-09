@@ -14,7 +14,7 @@ So, my question is, if we as a community figured out — twenty years ago — th
 
 ## My History
 
-To figure out why we keep falling into the rewrite trap, I want to first step back through a few points in my history. 
+To figure out why we keep falling into the rewrite trap, I want to first step back through a few points in my history.
 
 ### Cold–what?
 
@@ -22,9 +22,9 @@ My first job was with a fun, scrappy startup called [SignUpGenius](www.signupgen
 
 Yes, this situation is not ideal and, no, I am not advocating for anyone to manually FTP files for their production deploys. However, one thing that cannot be denied is that we were very productive. Granted, the Coldfusion code was old, but we were constantly improving it. There was never talk of a rewrite; instead, the code was improved, little by little, each time we worked on adding a feature or fixing a bug.
 
-The results were clear: in my time at SignUpGenius I was able to see the company gain market share; with increased traffic, revenue, and even a buyout of a competitor. 
+The results were clear: in my time at SignUpGenius I was able to see the company gain market share; with increased traffic, revenue, and even a buyout of a competitor.
 
-The code wasn't perfect — far from it, as any codebase would be after ten years — but if we had stopped to rewrite the whole thing we would have been dead in the water and the company would have suffered. Just like in Joel's post, where Netscape took years to rewrite its already working code, rewriting code because Coldfusion was "dead" or "inferior" would have served little business purpose. 
+The code wasn't perfect — far from it, as any codebase would be after ten years — but if we had stopped to rewrite the whole thing we would have been dead in the water and the company would have suffered. Just like in Joel's post, where Netscape took years to rewrite its already working code, rewriting code because Coldfusion was "dead" or "inferior" would have served little business purpose.
 
 I understand there are plenty of counter-arguments to be made here. First and foremost, it gets harder every day to find a Coldfusion developer. Those who know the platform are most likely looking to give a facelift to their skillset, rather than prolonging the inevitable drying-up of the proverbial job pool. More, it may be harder to implement functionality in Coldfusion, particularly the kind we were dealing with, than, say, in .Net, Ruby on Rails, or even Go.
 
@@ -32,7 +32,7 @@ Even so, there are other, better ways to move toward new technology without rewr
 
 ### Taking advantage of new technologies
 
-If I think SignUpGenius was doing the right thing by not rewriting, how, then, how does one take advantage of new technologies? 
+If I think SignUpGenius was doing the right thing by not rewriting, how, then, how does one take advantage of new technologies?
 
 This brings me to the next chapter of my professional career, when I found myself at [FIS Global](https://www.fisglobal.com/) (the biggest company you've never heard of), working on user experiences with the wealth and retirement division.
 
@@ -48,13 +48,13 @@ We found that users were coming less often, while spending far more time on the 
 
 So, what did we do? Did we rewrite the whole application? No.
 
-Existing applications' UI code was refactored, reorganized, and maybe even rewrapped with a framework like Angular. New applications were kept separate and had new code written with the new paradigm. 
+Existing applications' UI code was refactored, reorganized, and maybe even rewrapped with a framework like Angular. New applications were kept separate and had new code written with the new paradigm.
 
 This allowed for a quick, gradual, and seamless transition from old technology to new, with very little loss of all those years worth of things like tests and bug fixes.
 
 ## Contempt Culture
 
-Unfortunately, some developers and institutions bank hard on convincing others that a rewrite is the best use of their money. To do this they rely on convincing others of the inferiority of older, battle-tested languages like Java and PHP to newly popular technologies like Node.js or Go. 
+Unfortunately, some developers and institutions bank hard on convincing others that a rewrite is the best use of their money. To do this they rely on convincing others of the inferiority of older, battle-tested languages like Java and PHP to newly popular technologies like Node.js or Go.
 
 They don't just stop at "Go is better than Java for this problem" — no, they say Java is always bad, always the wrong choice, and our existing Java projects are terrible messes that need to be rewritten. Maybe, even, the experienced Java developers that we have aren't as good as we once thought.
 
@@ -78,12 +78,11 @@ I think Joel is exactly right with his fundamental, cardinal rule of programming
 
 > It's harder to read code than to write it.
 
-I recently experienced this first-hand. In the codebase I'm currently working with, I encountered an error handling pattern that I didn't like; it seemed cumbersome and convoluted. 
+I recently experienced this first-hand. In the codebase I'm currently working with, I encountered an error handling pattern that I didn't like; it seemed cumbersome and convoluted.
 
 My initial thought was to ignore this pattern, rewrite it, maybe even replace it with a better solution. That was until I found that the original author put together an entire talk about this error handling pattern. It turns out that, while it may be a little confusing, it gives incredible transparency when you need to debug with application logs.
 
 The real problem is that I hadn't taken the time to understand how the error pattern worked. I was confused, which led me to dismiss it, rather than to improve it.
-
 
 ## When to Refactor
 
@@ -91,7 +90,7 @@ So, if rewrites are so bad, how can you avoid them?
 
 Here's a rule of thumb: If your reason for rewriting the code is that you don't understand it, you should not rewrite it. Instead, you should spend the time trying to understand the code. Once you understand it, refactor the code to make it easier for the next person to understand.
 
-Instead of rewriting the error handling pattern I will probably try to improve a few method names. This brings me back to Martin Fowler's [Refactoring](https://amzn.to/2R6rFkP). Most of the time, if you feel that a rewrite is needed, you can probably just refactor a few pieces of the program and you'll be in great shape. 
+Instead of rewriting the error handling pattern I will probably try to improve a few method names. This brings me back to Martin Fowler's [Refactoring](https://amzn.to/2R6rFkP). Most of the time, if you feel that a rewrite is needed, you can probably just refactor a few pieces of the program and you'll be in great shape.
 
 ---
 > If your reason for rewriting the code is that you don't understand it, you should not rewrite it.
@@ -109,7 +108,7 @@ I used to have a very abstract understanding of refactoring. My manager would as
 
 What did I mean by that? In the beginning, I had some vague notion of making the code "prettier" or "easier to understand". They're not bad reasons; if I just wrote code that I can't understand now, I certainly won't be able to when I come back a few months later.
 
-The problem with this approach is that a vague understanding of refactoring comes with a vague understanding of the costs and benefits. Will the next developer agree that the code is easier to understand? 
+The problem with this approach is that a vague understanding of refactoring comes with a vague understanding of the costs and benefits. Will the next developer agree that the code is easier to understand?
 
 Imagine that you were asked to clean up after a party. If you have never cleaned up before or if it was a big party, it could seem like a daunting task. How do you clean up? Should you remodel the bathroom or should you throw away all the cups and plates? Should you mow the yard, or make the living room usable again by putting all the chairs back at the table?
 
@@ -132,7 +131,6 @@ You can use [code smells](https://refactoring.guru/refactoring/smells) and their
 I used to think refactoring was done after I finished coding. I finished my work, I made some concessions in the name of "[Make it work, make it right, make it fast](https://wiki.c2.com/?MakeItWorkMakeItRightMakeItFast)", now I need to clean up.
 
 However, refactoring can be a better tool [before you begin making any changes](https://martinfowler.com/articles/preparatory-refactoring-example.html) as a way to make your change easier. As Kent Beck said "Make the change easy (warning: this may be hard), then make the easy change."
-
 
 Think about when you refactor after making your changes. What are you doing? You're _guessing_ what will be needed by the next person or the next change to the code. You're _guessing_ what will be misunderstood or unclear to the next developer. You might be right, but you also might be wasting everyone's time.
 

@@ -6,7 +6,7 @@ draft: false
 tags: [Life]
 ---
 
-Promotions, the act of changing someone's title and possibly increasing their pay after they reach some milestone. 
+Promotions, the act of changing someone's title and possibly increasing their pay after they reach some milestone.
 
 <!--more-->
 
@@ -14,11 +14,11 @@ Are they dehumanizing? Here I'm not referring to a specific company's promotion 
 
 What does it mean to be dehumanizing? I'll define it as something that treats people as objects, instead of people. It treats us as a means to an end, rather than another human to partner with.
 
-To what end do promotions use us for? To know that, we need to know the goal of promotions. 
+To what end do promotions use us for? To know that, we need to know the goal of promotions.
 
 There's a potential positive goal of promotions, which is to reward employees for good work. Another potential positive motive would be to share successes and profits with those who help create them.
 
-There are some other goals, though. Companies promote to increase motivation (so that employees work harder to get the promotion). They also promote for retention. They may hope to convince an employee to stay through the hope that they will be promoted. The company may also hope their employee will be (temporarily) satisfied by the promotion. 
+There are some other goals, though. Companies promote to increase motivation (so that employees work harder to get the promotion). They also promote for retention. They may hope to convince an employee to stay through the hope that they will be promoted. The company may also hope their employee will be (temporarily) satisfied by the promotion.
 
 Are these reasons good or bad, humanizing or dehumanizing? What other options are there?
 
@@ -26,7 +26,7 @@ If we define dehumanizing as treating people as a means to an end, you could con
 
 What would be an alternative? To create a workplace where we find meaning and joy from the work. To create a culture where the people genuinely enjoy to work together. To create a business that actually shares profits with those who create it.
 
-At that point, you wouldn't need to use arbitrary titles to convince people to stay. 
+At that point, you wouldn't need to use arbitrary titles to convince people to stay.
 
 Could the problem be that some companies have products that don't create joy, cultures that are toxic, and a pay model that hides profits from workers?
 
@@ -46,7 +46,7 @@ Why do we trade our humanity? We also need stability and income to survive. We c
 ## Questions
 ---------
 
-* Are there any successful companies without promotion ladders? 
+* Are there any successful companies without promotion ladders?
 
 * Are there any successful companies that share profits more directly?
 

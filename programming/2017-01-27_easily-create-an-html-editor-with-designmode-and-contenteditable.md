@@ -18,7 +18,7 @@ Would you believe me if I said you'd need nothing more than vanilla JavaScript, 
 
 Take a look:
 
-https://codepen.io/Iamjfu/pen/oBYgWV
+[View example on CodePen](https://codepen.io/Iamjfu/pen/oBYgWV)
 
 Hopefully that example demonstrated a few things for you:
 
@@ -56,7 +56,7 @@ Either way you need to:
 
 Below you will find the same example above, but this time when you change the text there will be some information logged to the console. I am using the MutationObserver API to watch for these changes.
 
-https://codepen.io/Iamjfu/pen/NdaemL
+[View example on CodePen](https://codepen.io/Iamjfu/pen/NdaemL)
 
 So what did I do?
 
@@ -64,4 +64,4 @@ So what did I do?
 
 * I inspected the mutations to find out if they contained the attributes I was looking for. If they did, I sent that element's attribute name and new content to the output (in this case, the console).
 
-I think that's pretty simple. For your purposes, you can replace the console with a backend service that saves the changes. You'll want to make sure no dangerous JavaScript has been added, so that it doesn't open you up to [XSS ](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS))attacks.
+I think that's pretty simple. For your purposes, you can replace the console with a backend service that saves the changes. You'll want to make sure no dangerous JavaScript has been added, so that it doesn't open you up to [XSS](https://www.owasp.org/index.php/Cross-site_Scripting_(XSS))attacks.

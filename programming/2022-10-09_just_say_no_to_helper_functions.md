@@ -8,7 +8,7 @@ tags: [Code]
 
 I wake up in the morning. The sun is bright, the air is warm. The day is Saturday. What do I do? Of course, I settle down with my laptop to write some code.
 
-I'm just waking up so I need to start simple to get the ol' synapses firing. 
+I'm just waking up so I need to start simple to get the ol' synapses firing.
 
 <!--more-->
 
@@ -76,7 +76,7 @@ Did I make the code better?
 
 I don't think so.
 
-Now, instead of one function to understand, I have to read and understand four functions. I hope they are all in the same file. If not? Then I have to search through multiple files just to find the same logic that previously lived in one. 
+Now, instead of one function to understand, I have to read and understand four functions. I hope they are all in the same file. If not? Then I have to search through multiple files just to find the same logic that previously lived in one.
 
 Maybe the problem is that I did not rewrite it in an _Object Oriented_ manner?
 
@@ -199,7 +199,7 @@ But if I have a change, I only have to make it in one place.
 
 In fact, I just got a message from my project manager. They want me to make a change. Now I can show off the cleverness of this implementation.
 
-Oh, the change is an exception. For a specific field, we have to handle it differently. 
+Oh, the change is an exception. For a specific field, we have to handle it differently.
 
 ```diff
 func formatKeyVal(key, val string) string {
@@ -236,9 +236,9 @@ func format(data map[string]string) string {
 }
 ```
 
-Now, you might rightly argue against such a change if someone asked you to make it. 
+Now, you might rightly argue against such a change if someone asked you to make it.
 
-Even so, it turns out I was working on an unstated assumption. I assumed that each case would change in the same way. It turns out, reality did not align with my assumption. 
+Even so, it turns out I was working on an unstated assumption. I assumed that each case would change in the same way. It turns out, reality did not align with my assumption.
 
 I am starting to think all my changes are only making things worse.
 
@@ -256,13 +256,13 @@ Still, there could be some general rules to help me out.
 
 * There is also a mindset shift I can apply to myself. When I write helper methods, I am attempting to ease the burden of _writing_ code. However, in my experience, the real toil and burden belongs to the reading and understanding of code. I should optimize for that, instead.
 
-* I can think of one more principle to apply. I believe it is the most important: I should write code for the current reality. I should not try to anticipate the future. I should not code for "what if" scenarios. 
+* I can think of one more principle to apply. I believe it is the most important: I should write code for the current reality. I should not try to anticipate the future. I should not code for "what if" scenarios.
 
 I believe this will result in relentlessly simple code.
 
 ---
 
-* Just say no to helper functions 
+* Just say no to helper functions
 * Apply the rule of three
 * Optimize for reading instead of writing code
 * Code against reality

@@ -66,7 +66,7 @@ To classify a task means to determine what kind of work you'll be doing to solve
 
 Remember that these are not all the possible options.
 
-The goal here is to determine what *kind* of work you are expected to do. This is important because it has a direct effect on *what *work you do.
+The goal here is to determine what *kind* of work you are expected to do. This is important because it has a direct effect on *what* work you do.
 
 This step is particularly important for vague requirements. An example of a vague requirement is: "We need a way to purge our clients' caches after an update to the website."
 
@@ -80,7 +80,7 @@ There can be a few possible interpretations.
 
 At this point, if you aren't absolutely sure which meaning is being used, you should ask for clarification before proceeding.
 
-### State what the task is in one or two simple sentences.
+### State what the task is in one or two simple sentences
 
 Summarize the complicated requirements as if you've been asked what you are working on today. Maybe it won't be that simple, but you should be able to boil it down to a sentence or two.
 
@@ -127,7 +127,7 @@ You might be thinking: "In a proper business this is the type of work that shoul
 
 However, we sadly don't live in a perfect world. Sometimes requirements aren't always completely fleshed out before they get to a developer. This means we must all do our best to properly evaluate the requirements before development starts.
 
-### Define the problem or problems that you are trying to solve.
+### Define the problem or problems that you are trying to solve
 
 Answer the question, "why will someone use this?", or "what actual or perceived real world problem am I trying to fix?"
 
@@ -143,7 +143,7 @@ At this point you should have an understanding of what it is that you will be do
 
 Your next step will be to understand the details of what you are doing, how you are expected to do it, and why you are doing it that way.
 
-### Clarify all the important terms related to your task.
+### Clarify all the important terms related to your task
 
 You may find that this step is more important if you are a new developer on a team or if you work in a large company. Both of those situations make it more likely that you will find unknown terms in your requirements.
 
@@ -179,7 +179,7 @@ Since you've taken the time to understand your task first, you will now have a c
 
 ### Determine if the problems were solved
 
-This is where the analysis stage and the interpretation stage come together. In the analysis stage you focused on the big picture goals and outcomes, the *what *and *why*.
+This is where the analysis stage and the interpretation stage come together. In the analysis stage you focused on the big picture goals and outcomes, the *what* and *why*.
 
 In the interpretation step you focused on the details, the *how*.
 
@@ -191,7 +191,7 @@ If you feel confident that all the problems are solved, and all the details make
 
 ## The third step: Think critically
 
-At this stage you should confidently be able to state that you understand the problem and the solution. The very last step is to make sure that you have the *right *solution.
+At this stage you should confidently be able to state that you understand the problem and the solution. The very last step is to make sure that you have the *right* solution.
 
 In order to create the best possible product we should all feel like we have the responsibility to speak up when something just doesn't make sense.
 
@@ -254,20 +254,20 @@ Remember, don't over-formalize this process. It should be quick and probably con
 
 Here's a simplified list of the steps:
 
-**Step 1 — Analyze**
+### Step 1 — Analyze
 
 * Classify
 * Summary
 * Outline
 * Define the problem
 
-**Step 2 — Interpret and Evaluate**
+### Step 2 — Interpret and Evaluate
 
 * Clarify terms
 * Identify the tasks
 * Determine if the problem will be solved
 
-**Step 3 — Think Critically**
+### Step 3 — Think Critically
 
 * Know when to disagree
 * Know how to disagree

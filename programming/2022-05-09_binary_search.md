@@ -12,22 +12,22 @@ images:
  - /binary_search.png
 draft: true
 tags: [Code]
---- 
+---
 
-When searching an array, the typical Big O asymptotic runtime is going to be O(n). That is, in the worst case scenario, the item you are looking for will be the last element in the array. 
+When searching an array, the typical Big O asymptotic runtime is going to be O(n). That is, in the worst case scenario, the item you are looking for will be the last element in the array.
 
 <!--more-->
 
 This is the worst case scenario for a typical array search when you do not know the order of the array because it is unsorted. Since you do not know the order, the search algorithm must check each element in the array.
 
-However, when the array is sorted you no longer need to check every element in the array. 
+However, when the array is sorted you no longer need to check every element in the array.
 
 ## Real-World Binary Search
 Imagine, for example, that you want to look up a word in a dictionary. I happen to have a copy of the [1913 Webster’s New International Dictionary](https://jsomers.net/blog/dictionary) next to me. I’ll pick a random word, “Owl” to look up. Imagine for a moment that I have neither an index nor hints on the side of the pages. What should I do?
 
 I won’t perform a linear search to find the word, starting at the first page and checking each page until I find “Owl”. That would take forever.
 
-Instead I’ll open the dictionary to the middle. I landed in the middle of P, “Pieton” to “Pilewort”. 
+Instead I’ll open the dictionary to the middle. I landed in the middle of P, “Pieton” to “Pilewort”.
 
 ![](/images/binary_search/1.png)
 
@@ -39,13 +39,13 @@ My dictionary is open in two halves. All the letters before P are on the left an
 
 Instead, I place a bookmark on the current page, pick up the left half of the pages, then open them to the middle.
 
-I landed in F, “Ferret” to “Fetched”. 
+I landed in F, “Ferret” to “Fetched”.
 
 ![](/images/binary_search/2.png)
 
-A bit of an overshoot. O was much closer to P than F. A distance of one letter compared to eight. But what is the state of my dictionary? I now have three sections. 
+A bit of an overshoot. O was much closer to P than F. A distance of one letter compared to eight. But what is the state of my dictionary? I now have three sections.
 
-1. The left section contains all letters before F, which I don’t care about right now. 
+1. The left section contains all letters before F, which I don’t care about right now.
 2. The middle section contains letters from F to P, where I know O and Owl reside.
 3. The right, beginning at the bookmark I placed, contains all letters after P, which I also don’t care about.
 
@@ -55,18 +55,18 @@ A bit of an overshoot. O was much closer to P than F. A distance of one letter c
 
 Let’s try again. I place another bookmark on the current page to represent the lower bound of my search. I pick up the pages between my lower and upper bookmarks, pages representing letters F to P. I again pick the middle page.
 
-I’ve now landed in the L’s, from “Lingula Flags” to “Lipogrammatist”. 
+I’ve now landed in the L’s, from “Lingula Flags” to “Lipogrammatist”.
 
 ![](/images/binary_search/3.png)
 
-This is much closer than before, only two letters away! But still not as close as P, which was one letter away. 
+This is much closer than before, only two letters away! But still not as close as P, which was one letter away.
 
-My dictionary now has four sections. 
+My dictionary now has four sections.
 
-1. A to F, before my lower bookmark, where I found Ferret. I don’t need that section. 
-2. F to L, below where I just found Lingula Flags. I know O won’t be in that section either. 
+1. A to F, before my lower bookmark, where I found Ferret. I don’t need that section.
+2. F to L, below where I just found Lingula Flags. I know O won’t be in that section either.
 3. The one I care about, from the current page to my upper bookmark: L to P. I know O and Owl reside in this section.
-4. P to Z is higher than my upper bookmark, so I won’t need that section. 
+4. P to Z is higher than my upper bookmark, so I won’t need that section.
 
 ```go
 [A,B,C,D,E,F🔖,G,H,I,J,K,L⭐,M,N,O,P🔖,Q,R,S,T,U,V,W,X,Y,Z]
@@ -82,7 +82,7 @@ I continue to have the dictionary split into four sections. The first, from A to
 [A,B,C,D,E,F,G,H,I,J,K,L🔖,M,N⭐,O,P🔖,Q,R,S,T,U,V,W,X,Y,Z]
 ```
 
-I open the dictionary again to find myself back in P, from “Pans” to “Paper”. Suddenly this whole exercise is feeling a bit unnecessary as I find myself back very close to where I started. I also see that I’ve overshot the O’s, so I can move the bookmark holding my place at “Pieton” down to “Pans”. I now need to pick the middle page between “New” and “Pans”. 
+I open the dictionary again to find myself back in P, from “Pans” to “Paper”. Suddenly this whole exercise is feeling a bit unnecessary as I find myself back very close to where I started. I also see that I’ve overshot the O’s, so I can move the bookmark holding my place at “Pieton” down to “Pans”. I now need to pick the middle page between “New” and “Pans”.
 
 ```go
 [A,B,C,D,E,F,G,H,I,J,K,L,M,N🔖,O,⭐P🔖,Q,R,S,T,U,V,W,X,Y,Z]
@@ -114,13 +114,13 @@ What I just performed is called a binary search. I split the book in half, repea
 
 ## Logarithmic
 
-The advantage of Binary Search is the logarithm. In big O asymptotic notation we write it as O(log n). 
+The advantage of Binary Search is the logarithm. In big O asymptotic notation we write it as O(log n).
 
 What is a logarithm? It answers the question:
 
 > How many of one number multiply together to make another number?
 
-In this case, because it’s a binary search and splitting in half, we’re referring to the number 2 or log<sub>2</sub>(n). 
+In this case, because it’s a binary search and splitting in half, we’re referring to the number 2 or log<sub>2</sub>(n).
 
 This property is extremely important, because it has a massive impact on the worst-case time it takes to run the operation.
 

@@ -6,8 +6,6 @@ draft: false
 tags: [word]
 ---
 
-# Quality
-
 Quality fled across the desert, and the wordslinger followed.
 
 My favorite series of all time just might be The Dark Tower by Stephen King. The opening line irresistibly sucks me in, "The man in black fled across the desert, and the gunslinger followed." It's impossible to stop reading. It's better than Harry Potter. Dare I say it? It's better than Lord of The Rings. (If they can't find me after this, you know which fan bases to investigate first.) But mega-fanbase or not, the Dark Tower series is of the highest Quality.

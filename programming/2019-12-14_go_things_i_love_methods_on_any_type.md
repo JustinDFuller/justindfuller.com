@@ -6,7 +6,7 @@ draft: false
 tags: [Code]
 ---
 
-Now that I am working with [Go](https://golang.org/) as my primary language at [The New York Times](https://open.nytimes.com/), 
+Now that I am working with [Go](https://golang.org/) as my primary language at [The New York Times](https://open.nytimes.com/),
 I want to explore some of my favorite features of the language. I don't intend this to reveal previously unknown features or best practices; I just want to share some of the reasons that I enjoy working with the language.
 
 <!--more-->
@@ -34,7 +34,7 @@ if id < LastOldSchoolID {
 ```
 
 In this silly example, there is a game that recently released a new version. Players who made an account before the release are still
-allowed to play the old game and use the old forum. To do this, the developers went around the codebase and added a check: 
+allowed to play the old game and use the old forum. To do this, the developers went around the codebase and added a check:
 Is the user's ID lower than the last old school player's ID? If so, they can access the old game.
 
 ## Encapsulation
@@ -54,7 +54,7 @@ if id >= LastOldSchoolId {
 So, unfortunately, the bug still exists.
 
 This could have all been prevented by a little encapsulation. The developers shouldn't have repeated the logic—all over the codebase—
-to determine if an ID is valid for old school. The logic should live in only one place. 
+to determine if an ID is valid for old school. The logic should live in only one place.
 Thankfully, Go provides exactly what is needed.
 
 ## Using a custom type
@@ -95,12 +95,12 @@ if id.IsNotOldSchool() {
 If only this had been done in the first place, a lot of pain and suffering would have been saved for that poor user who wasn't able to access the game for a few days. The developers could have made the fix at a single location
 in the code and the fix would have been applied everywhere.
 
-## More encapsulation, delegation.
+## More encapsulation, delegation
 
-Some might point out that the code is still revealing too many details about the user and the old school logic. 
-Why should the rest of the code need to know that old school access is determined by the ID? What if the business decides to change the rules to instead use the creation date? What if the developers decide to make an `IsOldSchool` property on the user? 
+Some might point out that the code is still revealing too many details about the user and the old school logic.
+Why should the rest of the code need to know that old school access is determined by the ID? What if the business decides to change the rules to instead use the creation date? What if the developers decide to make an `IsOldSchool` property on the user?
 
-These are all valid points. First, I ask you to remember that this is simply an example to show a great feature within `Go`. 
+These are all valid points. First, I ask you to remember that this is simply an example to show a great feature within `Go`.
 Next, I'd like to point out two things.
 
 1. Adding methods to a non-struct type (like an int or string) _might_ be a code smell that you are unnecessarily leaking implementation details or other logic that should be private.
@@ -146,5 +146,5 @@ You can play around with these examples on the [Go Playground](https://play.gola
 
 Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller)
 . Thanks again for reading!

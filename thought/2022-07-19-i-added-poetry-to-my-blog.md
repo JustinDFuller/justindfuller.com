@@ -30,7 +30,7 @@ But, nonetheless, here I am struggling, and it doesn't do anyone any good to pre
 
 But what's this got to do with anyone else?
 
-Well, there's another compounding problem, that some of you may be familiar with: 
+Well, there's another compounding problem, that some of you may be familiar with:
 
     I'm quite bad at talking about my feelings.
 

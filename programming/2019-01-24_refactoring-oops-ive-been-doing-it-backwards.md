@@ -83,7 +83,7 @@ class User {
   constructor() {
     // initialize here
   }
-  
+
   hasEntitlement(expectedEntitlement) {
     return this.entitlements.includes(expectedEntitlement)
   }

@@ -4,6 +4,11 @@
  "config": {
    "line-length": false,
    "no-inline-html": false,
-   "no-blanks-blockquote": false
+   "no-blanks-blockquote": false,
+   "MD026": {
+     "punctuation": ".,;:!"
+   },
+   "MD059": false,
+   "MD034": false
  }
 }

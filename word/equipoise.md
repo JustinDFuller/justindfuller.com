@@ -6,8 +6,6 @@ draft: false
 tags: [word]
 ---
 
-# Equipoise
-
 ## References
 
 Definition

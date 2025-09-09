@@ -38,7 +38,7 @@ First, a hiring manager opens a role. For each role, they create five binary (ye
 
 ![Screenshot](/image/betterinterviews5.png)
 
-For each candidate, the interviewer receives a feedback request. 
+For each candidate, the interviewer receives a feedback request.
 
 ![Screenshot](/image/betterinterviews7.png)
 

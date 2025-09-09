@@ -6,7 +6,6 @@ draft: false
 tags: [Code]
 ---
 
-
 ## The Main Function
 
 Now there is both a channel writer and a channel reader. Let's see how to put it all together in the `main` function.
@@ -26,7 +25,7 @@ func main() {
 
 First, a channel is created to collect the fetch results, `channel := make(chan string)`.
 
-Next, the `urls` are looped over, creating a goroutine to fetch each url. 
+Next, the `urls` are looped over, creating a goroutine to fetch each url.
 
 ```go
 for _, url := range urls {
@@ -61,5 +60,5 @@ Finally, even though this is a neat concurrency pattern, it's unrealistic. As an
 
 Hi, I’m Justin Fuller. Thanks for reading my post. Before you go, I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller)
 . Thanks again for reading!

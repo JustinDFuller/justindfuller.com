@@ -129,13 +129,13 @@ npm i -g yarn
 yarn
 ```
 
-3. Next, you need to set up your test commands. This part is complicated, but don't worry, you can just paste in the following command:
+1. Next, you need to set up your test commands. This part is complicated, but don't worry, you can just paste in the following command:
 
 ```console
 yarn test
 ```
 
-4. If you made it through that difficult step, go ahead and move on to setting up your deployment settings. Once you're on that part you'll see a bunch of options to select, like Amazon S3 and Heroku. We're going to use a custom script, which is the very last option. That script should look like this:
+1. If you made it through that difficult step, go ahead and move on to setting up your deployment settings. Once you're on that part you'll see a bunch of options to select, like Amazon S3 and Heroku. We're going to use a custom script, which is the very last option. That script should look like this:
 
 ```console
 ssh deploy@DROPLET_IP 'cd NAME_OF_YOUR_PROJECT/; git checkout master; git pull; yarn; yarn restart;'

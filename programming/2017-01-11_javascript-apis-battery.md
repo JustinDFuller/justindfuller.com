@@ -18,7 +18,7 @@ Yes, you heard me right, the Battery API! As the web expands, so does the number
 
 So let’s take a look at how you might use it.
 
-https://gist.github.com/JustinDFuller/602e16f9cb147fecc441af9827238b3a#file-battery-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/602e16f9cb147fecc441af9827238b3a#file-battery-js)
 
 A few things to note in the above example:
 
@@ -36,7 +36,7 @@ Now that we see how to *get* the data, let’s take a look at how we can *use* i
 
 In this example, we will watch for the battery to get low, and show an alert when it’s below a certain level.
 
-https://gist.github.com/JustinDFuller/a35c05fd6dcebf8c8fe8f4f6335ba6c1#file-low-battery-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/a35c05fd6dcebf8c8fe8f4f6335ba6c1#file-low-battery-js)
 
 The battery properties we are inspecting:
 
@@ -49,4 +49,3 @@ You can customize these to fit your needs. In a highly time-sensitive environmen
 A final note: Most devices will warn users when the battery is low, so you likely won’t need to add the example warning message to your application. Instead, you could limit your processes and display a message that processing is limited until the battery has been charged. Remember, this API is just another resource that allows you to solve problems for your users.
 
 Feel free to check out some of my past posts: [Console API](https://justindfuller.com/posts/15), [Video API](https://justindfuller.com/posts/16).
-

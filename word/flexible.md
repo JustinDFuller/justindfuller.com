@@ -6,8 +6,6 @@ draft: false
 tags: [word]
 ---
 
-# Flexible
-
 If I were to ask you to build a platform on which others will stand, work, and use as a jumping-off point to achieve their goals — here, I am speaking of a literal platform on which real people will stand — what kind of building materials would you use? Likely, you would choose some strong, sturdy material. If you were to pick something flexible (say, rubber) I would send you packing and hire a new contractor.
 
 Yet, as I close in on ten years of Software Engineering (not long in the grand scheme, I know) — where I have primarily engineered Software “platforms” — I have almost always been asked to build flexible platforms.

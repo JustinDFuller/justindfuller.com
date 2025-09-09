@@ -63,6 +63,7 @@ This repository is configured to automatically deploy preview environments for p
 ### Cleanup Issues
 
 - If a preview isn't cleaned up automatically, you can manually delete it:
+
   ```bash
   gcloud app services delete pr-{PR_NUMBER} --project=justindfuller
   ```

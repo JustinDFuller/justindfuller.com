@@ -21,16 +21,16 @@ test("Upload a new file to the user's drive", async function (t) {
       return Promise.resolve('/path/to/uploaded-file.json')
     }
   }
-  
+
   const fileUploader = FileUploader(driveService)
-  
+
   const file = FileBuilder()
- 	.setPath('/path/to/uploaded-file.json')
-  	.setContent(JSON.stringify({
-  		foo: 'bar',
-    	boo: 'baz'
-  	}, null, 2))
-  
+   .setPath('/path/to/uploaded-file.json')
+    .setContent(JSON.stringify({
+      foo: 'bar',
+      boo: 'baz'
+    }, null, 2))
+
   const url = await fileUploader.uploadFile(file)
   t.is(url, '/path/to/uploaded-file.json')
 })
@@ -109,20 +109,20 @@ beforeAll(function () {
     fileHandler = FileHandler(DriveService({ port }))
 })
 
-afterAll(function () { 
+afterAll(function () {
   DriveServer.stopService(port)
 })
 
 test("Upload a new file to the user's drive", async function (t) {
-  const fileContents = JSON.stringify({ 
+  const fileContents = JSON.stringify({
     foo: 'bar',
     boo: 'baz'
   }, null, 2)
-  
+
   const file = FileBuilder()
     .setPath('/path/to/uploaded-file.json')
     .setContent(fileContents)
-    
+
     const url = await fileHandler.uploadFile(file)
     t.is(url, '/path/to/uploaded-file.json')
     const contents = await fileHandler.readFile(url)
@@ -154,11 +154,11 @@ function FakeDriveService() {
 
   return {
     write(file) {
-    	files.set(file.getPath(), file.getContent())
-    	return Promise.resolve(file.getPath())
+      files.set(file.getPath(), file.getContent())
+      return Promise.resolve(file.getPath())
     },
     read(filePath) {
-    	return Promise.resolve(files.get(filePath))
+      return Promise.resolve(files.get(filePath))
     }
   }
 }
@@ -180,12 +180,12 @@ This post was directly inspired by posts that I recently found in Google's "Test
 
 Exercise service call
 
-https://testing.googleblog.com/2018/11/testing-on-toilet-exercise-service-call.html
+[Testing on Toilet: Exercise Service Call](https://testing.googleblog.com/2018/11/testing-on-toilet-exercise-service-call.html)
 
 Fakes:
 
-https://testing.googleblog.com/2013/06/testing-on-toilet-fake-your-way-to.html
+[Testing on Toilet: Fake Your Way to Better Tests](https://testing.googleblog.com/2013/06/testing-on-toilet-fake-your-way-to.html)
 
 Hermetic Servers:
 
-https://testing.googleblog.com/2012/10/hermetic-servers.html
+[Hermetic Servers](https://testing.googleblog.com/2012/10/hermetic-servers.html)

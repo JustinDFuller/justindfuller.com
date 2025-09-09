@@ -28,7 +28,6 @@ These days, I use this strategy with my kids before we start a big activity. Las
   Getting chased by a T-Rex at the Natural History Museum
 </em>
 
-
 I've found that when they choose the rules, they are more likely to remember and abide by them. Also, if they thought of a particular rule, they even remind each other of the rules. If Max, my oldest daughter, came up with "walk, don't run", then she'll probably call her little brother out if he's running all over the place. It turns out, we do better when we get to shape the environment that we're working with.
 
 About a year ago, I joined a newly formed team. Some of us had worked together before, but many had not. I suggested the first thing we do is decide how we'd like to work together. We whipped up a Miro board to facilitate the process.
@@ -52,6 +51,6 @@ Immediately after the process, I heard from the engineers on my team. They said 
 
 I think the key point is that each engineer got to decide how we'll work. This wasn't a decree from their manager or me, the tech lead. It was a collaborative process that allowed everyone to influence how our team operates.
 
-Not everything benefits from a collaborative process. That's why we disparage certain products saying things like, "It was clearly designed by committee". But when it comes to how we work, I think we all do better when we 
+Not everything benefits from a collaborative process. That's why we disparage certain products saying things like, "It was clearly designed by committee". But when it comes to how we work, I think we all do better when we
 have a hand in shaping the environment.
 

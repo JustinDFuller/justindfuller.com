@@ -13,14 +13,15 @@ Function composition is growing in popularity, so I say it's about time we consi
 ## Two problems
 
 Imports are an amazing addition to the JavaScript language. They allow you to split code into small modules and only import what you need. Problems arise because any exported functions will now come with the assumed context of those imports. We'll look more deeply into those problems in a moment.
-> # "The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana, but what you got was a gorilla holding the banana, and the entire jungle"
-> # — Joe Armstrong
+
+> "The problem with object-oriented languages is they've got all this implicit environment that they carry around with them. You wanted a banana, but what you got was a gorilla holding the banana, and the entire jungle"
+> — Joe Armstrong
 
 Next, try to remember the last time you started to work on someone else's project. Did you find yourself wondering where the database connection was? Where the websockets were initially instantiated?
 
 Finding what you need in an application can be very difficult when applications aren't composed. It can be daunting to have to follow the chain of imports, particularly if you aren't starting at the entry of the application.
 
-### Imports
+## Imports
 
 I recently calculated the average number of import statements across all files in each of the apps I'm working on. I came up with an average of about 750. The highest was over 2500, and the lowest was around 300.
 
@@ -134,7 +135,7 @@ Pretty cool, eh? You use it just like any compose function. Each function is inv
 
 The difference here is that the result is expected to be an object. That object is then merged with every object that came before it, then it's frozen. Each function receives the results of what came before it.
 
-### But my app isn't one single linear flow!
+### But my app isn't one single linear flow
 
 You're probably right! Most apps are not one single linear flow. Why? Because you and I never tried to make them that way. But with some adjustments, most apps probably can be.
 
@@ -164,8 +165,8 @@ import logger from './logger';
 
 const bunyan = {
   createLogger() {
-    return { 
-      test: 'test' 
+    return {
+      test: 'test'
     };
   },
 };

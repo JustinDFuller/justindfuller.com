@@ -55,33 +55,33 @@ import proxyquire from 'proxyquire'
 
 test('readJsonFile with proxyquire', async function (t) {
   t.plan(2)
-  
+
   /* fs.readFile is overwritten for this import of foo.js */
   const { readJsonFile } = proxyquire('./foo.js', {
     fs: {
       readFile(filePath, callback) {
         t.is(filePath, 'myTestFile')
-        
+
         return callback(null, '{ success: true }')
       }
     }
   })
-  
+
   const results = await readJsonFile('myTestFile')
   t.deepEqual(results, { success: true })
 })
 
 test('readJsonFile with sinon', async function (t) {
   t.plan(1)
-  
+
   /* fs.readFile is overwritten everywhere */
   const fsStub = stub(fs, 'readFile')
     .withArgs('myTestFile')
     .callsArg(2, null, '{ success: true }')
-  
+
   const results = await readJsonFile('myTestFile')
   t.deepEqual(results, { success: true })
-  
+
   // Won't happen if test fails :(
   fsStub.restore()
 })
@@ -118,15 +118,15 @@ import foo from './foo'
 
 test('foo with dependency inversion', function (t) {
   t.plan(2)
-  
+
   const dependencies = {
     readFileAsync(filePath) {
       t.is(filePath, 'bar')
-      
+
       return Promise.resolve('{ success: true '})
     }
   }
-  
+
   const result = await foo(dependencies).readJsonFile('bar')
   t.deepEqual(result, { success: true })
 })
@@ -144,10 +144,10 @@ The dependencies have to be imported somewhere. In an application that follows d
 export default function ({ readFileAsync, writeFileAsync }) {
   return {
     readJsonFile(fileName) {
-      return readFileAsync(`${fileName}.json`).then(JSON.parse) 
+      return readFileAsync(`${fileName}.json`).then(JSON.parse)
     },
     writeJsonFile(filePath, fileContent) {
-      return writeFileAsync(filePath, JSON.stringify(fileContent)) 
+      return writeFileAsync(filePath, JSON.stringify(fileContent))
     }
   }
 }
@@ -162,7 +162,7 @@ export default function ({ readJsonFile, writeJsonFile }) {
      },
      writeContent(contentName, contentText) {
       // business logic goes here
-      return writeJsonFile(contentName, contentText) 
+      return writeJsonFile(contentName, contentText)
      }
   }
 }
@@ -208,7 +208,7 @@ interface ComponentLifecycle {
       state: Object;
   }
 ```
-    
+
 Please don't despair if you didn't understand everything in that interface. The point is that a React Component has a predictable set of methods and properties that can be used to make many different components.
 
 We are now beginning to venture into the territory of the [Open-Closed Principle](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle). It states that our software should be open for extension but closed for modification. This may sound very familiar to you if you've been building software with frameworks like [Angular](https://angularjs.org/), or [React](https://reactjs.org/). They provide a common interface that you extend to build your software.

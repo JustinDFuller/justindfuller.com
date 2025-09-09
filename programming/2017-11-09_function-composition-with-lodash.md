@@ -14,10 +14,10 @@ In this post we'll look at how to use Lodash/fp to compose both our own function
 
 Before we start coding — lets be sure that we know what we're talking about!
 
-## Functional Programming:
+## Functional Programming
 > A method of programming that focuses on using functions as first class variables. It avoids mutating (changing) data, and attempts to treat applications as a linear flow that pieces functions together to create a whole.
 
-## Function Composition:
+## Function Composition
 > Invoke functions that have been listed, in order, passing the result of each function to the next in the list, and then return the final function result as the result of the whole.
 
 Normally when you compose functions you may do it like this (without knowing you are composing):
@@ -61,7 +61,7 @@ What does that mean?
 
 All this may seem confusing right now. So let's look at a code example!
 
-### Problem:
+### Problem
 
 You are building a web page that displays contact information to users. The business specified that contacts must be sorted by first name, filtered to remove any contacts without a phone number, it's possible that contacts may have been added twice so only unique contact numbers should be shown, and the numbers must be formatted like (xxx)xxx-xxxx.
 

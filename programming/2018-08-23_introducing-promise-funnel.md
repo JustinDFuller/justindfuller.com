@@ -34,13 +34,13 @@ When combining these simple concepts we are able to create a powerful control-fl
 
 Here's how you might use it with a database application that needs to connect before sending any queries.
 
-https://gist.github.com/JustinDFuller/a334841f01192fc33ad436c1d8db85a5#file-withdatabase-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/a334841f01192fc33ad436c1d8db85a5#file-withdatabase-js)
 
 You can see that queries were immediately corked and were only uncorked when the database connection was successful. This means that the service can immediately accept requests, but it won't execute any queries until the database connection happens!
 
 Now let's look at the authentication example that I mentioned earlier.
 
-https://gist.github.com/JustinDFuller/1bdcf88233f2b7e1966775ebaa2497ec#file-authentication-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/1bdcf88233f2b7e1966775ebaa2497ec#file-authentication-js)
 
 Every five minutes the user is re-logged in. While login is happening every user request would fail. So instead of letting that happen, we've corked the fetch requests until login is complete. Now the user won't be stopped by authentication.. although they might be delayed!
 
@@ -50,13 +50,13 @@ In case you're wondering, createFunnel will create a new funnel instance each ti
 
 Not every environment has Promises natively. If you want to use a library like Bluebird with promise-funnel, you can!
 
-https://gist.github.com/JustinDFuller/5cb609d74f417ccf85dd920c53b49569#file-bluebird-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/5cb609d74f417ccf85dd920c53b49569#file-bluebird-js)
 
 ### The Promise Part
 
 So far we haven't really seen how a Promise is used by this library. A function won't execute immediately when both the function is wrapped and the funnel is corked. A Promise is returned instead. It will resolve or reject only when the funnel is uncorked.
 
-https://gist.github.com/JustinDFuller/c7fb196332a50dcc4b8c5bafa2addb85#file-promises-js
+[View code example on GitHub Gist](https://gist.github.com/JustinDFuller/c7fb196332a50dcc4b8c5bafa2addb85#file-promises-js)
 
 The code snippet above should show that uncorking the funnel will resolve the promise that was returned by the wrapped function.
 

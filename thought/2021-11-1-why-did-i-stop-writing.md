@@ -6,14 +6,13 @@ draft: false
 tags: [Life]
 ---
 
-
 ### Why have I been writing?
 
-I think I’ve been writing to get some external benefit out of the experience. 
+I think I’ve been writing to get some external benefit out of the experience.
 
 I thought that if I wrote good enough posts, I’d be respected, offered a job, or make some money (like when I post on Medium). All external things that aren’t really in my control and are perhaps unlikely outcomes for even a really good blog post.
 
-That’s why negative feedback felt bad to me, even if on the surface I managed to receive it gracefully. 
+That’s why negative feedback felt bad to me, even if on the surface I managed to receive it gracefully.
 
 The negative feedback was “getting in the way” of the outcome I wanted: prestige, respect, a job offer, money.
 
@@ -27,7 +26,7 @@ But, even though it was sometimes painful, I did learn a lot from the responses.
 
 ### So, why will I write?
 
-I don’t want to convince others that I’m a perfect, flawless expert in some field (I couldn’t if I tried). 
+I don’t want to convince others that I’m a perfect, flawless expert in some field (I couldn’t if I tried).
 
 I don’t even want to limit myself to topics that I know a lot about. I’ll learn more when I write about (and research) topics where I don’t know much.
 

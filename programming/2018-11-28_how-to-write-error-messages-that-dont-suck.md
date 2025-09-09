@@ -36,13 +36,13 @@ When a police officer pulls you over to give you a ticket, does it say "Bad Driv
 
 So the error message from earlier should not be, "A validation error occurred", but instead:
 
-```
+```text
 Unable to save model "user" because the property "email" with value "JustinFuller@company.com" already exists.
 ```
 
 Instead of a simple error that says, "Invalid option" use:
 
-```
+```text
 The option "update" is not valid. Valid options include "upsert", "get", and "delete".
 ```
 
@@ -58,7 +58,7 @@ For anything that has a prerequisite step, such as configuration or validation, 
 
 I'll add more detail to one of the earlier examples:
 
-```
+```text
 The option "update" is not valid. Valid options include "upsert", "get", and "delete". **If you expected "update" to be an option, you must first export it from the file: "./src/controllers/index.js".**
 ```
 
@@ -66,7 +66,7 @@ Now you are anticipating how this might have happened: the developer probably ju
 
 The React library does an excellent job of anticipating how errors might have occurred. They don't address every edge case, but they do give helpful hints for the most common errors. For example, you can't use the function reactDom.renderToNodeString() in the browser because node streams don't exist there. So React gives you a suggestion of how it happened and how to fix it:
 
-```
+```text
 ReactDOMServer.renderToNodeStream(): The streaming API is not available in the browser. Use ReactDOMServer.renderToString() instead.
 ```
 
@@ -78,7 +78,7 @@ While writing error messages you must remember that applications rarely do only 
 
 In the first example, I included the phrase:
 
-```
+```text
 The property "email" with value "JustinFuller@company.com" already exists.
 ```
 
@@ -98,7 +98,7 @@ In other cases, you may not want the data to leak to a log file or an API respon
 
 I'll be the first to admit that I'm prone to making simple mistakes. I type "upswert" instead of "upsert"; I type "npm tes" instead of "npm test". So it's refreshing when I get an error message saying:
 
-```
+```text
 Received an unknown command, "npm tes". Did you mean "npm test"?
 ```
 

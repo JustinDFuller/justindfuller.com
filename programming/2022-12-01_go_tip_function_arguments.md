@@ -12,7 +12,7 @@ Here's a quick Go language tip: Prefer function arguments over struct fields. I'
 
 In the Go programming language, functions can accept many different types as arguments.
 
-Often, I find myself wondering if there's a reason to prefer using Structs vs. individual function arguments. 
+Often, I find myself wondering if there's a reason to prefer using Structs vs. individual function arguments.
 
 ### Example Function
 
@@ -68,7 +68,7 @@ So, I need to prevent emails from sending to another organization.
 
 ### Solution
 
-This should be pretty easy. 
+This should be pretty easy.
 I have an `Organization` struct that can tell me if a particular email is within it.
 I'll add it to my `EmailOptions` and refuse to send the email if the domains are different.
 

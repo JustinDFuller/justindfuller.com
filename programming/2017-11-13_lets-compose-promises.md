@@ -42,9 +42,9 @@ new Promise(resolve => setTimeout(() => resolve(10), 3000))
   .then(res => Promise.resolve(res + 10))
   .then(res => Promise.resolve(res + 10))
   .then(console.log)
-  .catch(console.error)  
+  .catch(console.error)
   .finally(() => console.log('All done!');
-// After 3 seconds logs 30 
+// After 3 seconds logs 30
 // Then it logs 'All done!'
 ```
 
@@ -71,7 +71,7 @@ We took the result of each function, passed it to the next function, and that wa
 That compose function isn't assumed to be a global function, like Promise or `Promise.resolve` are. We'll have to define it. To define compose we'd have something like this:
 
 ```js
-const compose = (...functions) => 
+const compose = (...functions) =>
   initialValue =>
     functions.reduceRight(
       (sum, fn) => fn(sum),
@@ -81,7 +81,7 @@ const compose = (...functions) =>
 
 So.. what exactly is going on here? Let me walk you through it step by step. This can be confusing, particularly if you aren't familiar with a recent update to JavaScript known as [ES6](http://es6-features.org).
 
-First, we accept any amount of functions. Then we use the [spread operator ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator)to gather all of those functions into a single array.
+First, we accept any amount of functions. Then we use the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator)to gather all of those functions into a single array.
 
 Next, we accept the initial value that our compose function will use as its first argument.
 

@@ -25,23 +25,26 @@ I recently started learning C++. To keep track of what I am learning I created a
 What do I plan to do with it?
 
 1. Code review myself.
-  * From time to time I will come back to the code and review it. I'll ask myself, "based on what I have learned, is this still the best way to implement this?" If the answer is no, I will create a new one and document what I misunderstood when I originally wrote the code.
+   * From time to time I will come back to the code and review it. I'll ask myself, "based on what I have learned, is this still the best way to implement this?" If the answer is no, I will create a new one and document what I misunderstood when I originally wrote the code.
 
 2. Use it as a knowledge repository.
-  * I may have a similar problem pop up in a real application in the future. Now I have a knowledge repo that demonstrates how I solved it the first time.
+   * I may have a similar problem pop up in a real application in the future. Now I have a knowledge repo that demonstrates how I solved it the first time.
 
 ## Your knowledge repo
 
 What can you use it for?
 
 1. Learning a new programming language.
-  * Practice each new concept you learn and save it for review later; make sure you don't just copy and paste examples, though!
+   * Practice each new concept you learn and save it for review later; make sure you don't just copy and paste examples, though!
+
 2. Tracking your improvement over time.
-  * Occasionally review your old code. What have you learned since you wrote it?
+   * Occasionally review your old code. What have you learned since you wrote it?
+
 3. A personal knowledge repository.
-  * When you get a tough problem at work, maybe you've done something similar before—now you have a way to remember.
+   * When you get a tough problem at work, maybe you've done something similar before—now you have a way to remember.
+
 4. A showcase for potential employers.
-  * New college graduate or long-time developer, there's no better way to show your skill than to have a potential employer see your code.
+   * New college graduate or long-time developer, there's no better way to show your skill than to have a potential employer see your code.
 
 ---
 

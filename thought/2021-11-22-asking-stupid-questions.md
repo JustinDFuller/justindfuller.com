@@ -11,7 +11,7 @@ weight: 1
 images:
   - /asking_stupid_questions.png
 tags: [Life]
---- 
+---
 
 While I’m riffing off of Dan Luu’s post about not being afraid to look stupid, I want to think about asking Stupid Questions.
 
@@ -27,9 +27,9 @@ In this post I want to explore:
 
 ## What is a stupid question?
 
-I’m thinking of a specific type of Stupid Question. 
+I’m thinking of a specific type of Stupid Question.
 
-Some questions are not sensible to ask because they may hurt someone’s feelings or because they may cause some sort of material harm. I’m not thinking of those questions. 
+Some questions are not sensible to ask because they may hurt someone’s feelings or because they may cause some sort of material harm. I’m not thinking of those questions.
 
 I’m thinking of questions that are legitimate for the venue, have a positive intention, won’t cause harm, yet — for some reason — I feel I shouldn’t ask.
 
@@ -54,21 +54,21 @@ But, I’m getting ahead of myself. I’m going to stop defining to see if I can
 ## Examples
 
 Asking,
-> “What is a stupid question?” 
+> “What is a stupid question?”
 
 feels like a stupid question. It’s so basic that it seems like I should already know the answer. It feels a little embarrassing to write a blog post about something so simple.
 
-Another common example that I run into is 
-> “What does this acronym (or initialism) mean?” 
+Another common example that I run into is
+> “What does this acronym (or initialism) mean?”
 
 This feels particularly stupid when it’s an acronym I hear used, but not defined, often.
 
 I remember one particular time this question was asked. I was on a team that was rewriting an app that was only ever referred to by an initialism. Finally, someone asked what the initials stood for. No one knew, *not even the current system maintainers*.
 
-Another example for engineers is something like, 
-> “What do you use for logging?” 
+Another example for engineers is something like,
+> “What do you use for logging?”
 
-It’s a pretty basic question that can reveal things like: 
+It’s a pretty basic question that can reveal things like:
 
 * we use fifteen different logging libraries
 
@@ -76,8 +76,8 @@ It’s a pretty basic question that can reveal things like:
 
 * we don’t even agree on the *type* of logging
 
-Here’s an awkward, but simple, one: 
-> “Why are we doing this?” 
+Here’s an awkward, but simple, one:
+> “Why are we doing this?”
 
 Every time I’ve asked this, even before a project is started, I’ve been met with resistance to change. Even when the answers aren’t particularly great. I’ve resisted  this type of question myself. Once I start working on a plan, it’s hard to change my mind, even when my original reasons are revealed to be faulty.
 
@@ -99,7 +99,7 @@ So, before I ask a stupid question, I have to decide that my goal is not to look
 
 Instead, my goal must be to *actually* be smart, informed, and prepared. Regardless of the perceptions of others, I want to maximize the amount of knowledge I have, even at the cost of my reputation.
 
-I think stupid questions can lead to this result because they are essentially engaging in First Principles: the act of reducing a problem to its basic components. 
+I think stupid questions can lead to this result because they are essentially engaging in First Principles: the act of reducing a problem to its basic components.
 
 Here’s an idea. Each time I want to ask a Stupid Question, I can prompt myself with the question: will I benefit from understanding the underlying principles and assumptions? If yes, it may be worth it to ask the Stupid Question. I think this is tricky though, because I may not know the benefit of understanding these first principles until I know them.
 
@@ -111,7 +111,7 @@ I wonder if the reason they’re considered stupid is that, in order to be produ
 
 There’s a guy I worked with who is *great* at asking stupid questions. I mean that as a compliment, but I won’t name him because who wants to be labeled as the guy who asks stupid questions?
 
-Anyway, he’s fantastic at it. He’ll drop into a slack channel or a conversation and ask the simplest questions about how things work. Yet, somehow, they’ll turn into great conversations. 
+Anyway, he’s fantastic at it. He’ll drop into a slack channel or a conversation and ask the simplest questions about how things work. Yet, somehow, they’ll turn into great conversations.
 
 I think this happens for a few reasons:
 
@@ -121,8 +121,7 @@ I think this happens for a few reasons:
 
 * You can keep following them up with other simple questions, even a simple “why do you think that?” to keep the conversation going
 
-I can imagine this person understands a lot more about the way things work than I do because he’s willing to ask the questions no one else is. It was also reflected in his title and position in the company, which was far higher than mine. 
+I can imagine this person understands a lot more about the way things work than I do because he’s willing to ask the questions no one else is. It was also reflected in his title and position in the company, which was far higher than mine.
 
 If you judged him by the questions he asks, as I’m sure some do, you might think he doesn’t understand anything. Yet, this person has far more impact than myself (and many others!), and I can’t help but wonder if it’s because he’s OK asking Stupid Questions.
-
 

@@ -11,7 +11,7 @@ weight: 1
 images:
   - /embracing-impostor-syndrome.jpeg
 tags: [Life]
---- 
+---
 
 As I’ve progressed through my career, I’ve experienced increasing imposter syndrome. It’s never gone away.
 
@@ -87,7 +87,7 @@ I’ve always felt pride in how logical I am. People tell me that I’m not fun 
 
 So, what happens when I begin suspecting the validity of my logical arguments? Do I lose a core part of who I am?
 
-In some senses — mostly my feelings — I do. But in another, I wonder if it was there to begin with. 
+In some senses — mostly my feelings — I do. But in another, I wonder if it was there to begin with.
 
 Daniel Kahneman’s (now almost ten years old!) book, [Thinking, Fast and Slow](https://amzn.to/3uoC3YV), explains how our brains are constantly manipulated in ways we don’t expect. For example, he cites a study showing that we may be less generous when we unconsciously notice a money symbol floating on a nearby computer screen. He cites another study showing that judges give harsher punishments based on how close or far they are from their lunch break. He also spends a significant chunk of the book showing how we misunderstand risk and probability in grand ways.
 
@@ -95,7 +95,7 @@ It may be questionable how precise his examples were, but if the conclusions hol
 
 When I think back to the most challenging moments of my career, it involved realizing the architecture I advocated for wasn’t scaling. I think of when my team revisited a feature, only to find out that no one was using it — the features I suggested were of no use to our customers. These moments challenged how I thought of my abilities.
 
-Of course, I wouldn’t have made these decisions if I thought they were wrong. Knowing that I might be wrong, that my logic isn’t as sound as I thought it was, won’t necessarily change my decisions. Instead, it prepares me for the inevitable failures. 
+Of course, I wouldn’t have made these decisions if I thought they were wrong. Knowing that I might be wrong, that my logic isn’t as sound as I thought it was, won’t necessarily change my decisions. Instead, it prepares me for the inevitable failures.
 
 They’re no longer surprises. They’re expected and embraced.
 
@@ -147,9 +147,9 @@ I wouldn’t say I’m a great parent yet, but acknowledging my lack of knowledg
 
 One question I’m left with is, how much negativity can a person handle? Can I truly walk around convinced that I know next-to-nothing (but perhaps still enough to get stuff done)? Will this cripple me in other — different — ways than imposter syndrome?
 
-I think one potential issue is confidence. Acknowledging your faults can be helpful for humility but not for getting promotions. A counterbalance is to recognize the limited knowledge of others. 
+I think one potential issue is confidence. Acknowledging your faults can be helpful for humility but not for getting promotions. A counterbalance is to recognize the limited knowledge of others.
 
-Recognizing the relative knowledge of others reminds me of how I’ve come to think about interviews. 
+Recognizing the relative knowledge of others reminds me of how I’ve come to think about interviews.
 
 I used to look for the “perfect” or “ideal” candidate. Now, I try to calibrate based on the quality of candidates currently in the hiring pipeline, then recommend hiring the best person I can find once I understand the range of skills available.
 
