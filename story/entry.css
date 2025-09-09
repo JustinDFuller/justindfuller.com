@@ -1,0 +1,39 @@
+/* Story Entry Specific Styles - Only overrides */
+
+/* Story-specific styles are handled by .entry-body--story in main.css */
+/* This includes text-align: justify, text-indent, and centered h2 */
+
+.entry-body--story hr {
+  margin: var(--space-3xl) auto;
+  width: 50%;
+}
+
+.entry-body--story blockquote,
+.entry-body--story .centered-quote {
+  margin: var(--space-2xl) auto;
+  padding: var(--space-xl);
+  background: var(--gradient-card);
+  border-radius: var(--border-radius-md);
+  max-width: 80%;
+}
+
+.entry-body--story em,
+.entry-body--story i {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .entry-body--story p {
+    text-align: left;
+    text-indent: 1.5rem;
+  }
+  
+  .entry-body--story blockquote,
+  .entry-body--story .centered-quote {
+    max-width: 100%;
+    margin: var(--space-xl) 0;
+    padding: var(--space-md);
+  }
+}

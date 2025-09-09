@@ -15,23 +15,7 @@
     <main class="content-page">
       {{ template "/page-title.template.html" "Programming" }}
       
-      <div class="content-container">
-        <div class="featured-posts featured-posts-centered">
-          {{ range .Entries }}
-            <article class="featured-post">
-              <a href="/programming/{{ .Slug }}">
-                <h3 class="featured-post-title">
-                  {{ .Title }}
-                </h3>
-              </a>
-              <p class="featured-post-excerpt">{{ .FirstParagraph }}</p>
-              <a href="/programming/{{ .Slug }}" class="read-more">
-                Read more →
-              </a>
-            </article>
-          {{ end }}
-        </div>
-      </div>
+      {{ template "/featured-list.template.html" dict "Entries" .Entries "BasePath" "programming" "ExcerptField" "FirstParagraph" }}
     </main>
 
     {{ template "/footer.template.html" . }}

@@ -1,0 +1,18 @@
+{{/* 
+  Shared template for entry pages (programming, thought, story, review)
+  
+  Expected data structure:
+  - .Entry: The content entry with Title, Content, etc.
+  - .ContentType: Type modifier for CSS classes (e.g., "programming", "thought")
+*/}}
+
+<main>
+  <div class="entry-content entry-content--{{ .ContentType }}">
+    <article>
+      {{ template "/entry-header.template.html" .Entry }}
+      <div class="entry-body entry-body--{{ .ContentType }}">
+        {{ printf "%s" .Entry.Content }}
+      </div>
+    </article>
+  </div>
+</main>

@@ -345,11 +345,11 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/story/story.template.html", data[story.StoryEntryWithContent]{
+		if err := templates.ExecuteTemplate(w, "/story/entry.template.html", data[story.StoryEntryWithContent]{
 			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/story/story.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/story/entry.template.html")
 		}
 	})
 
@@ -474,11 +474,11 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/review/review.template.html", data[review.ReviewEntryWithContent]{
+		if err := templates.ExecuteTemplate(w, "/review/entry.template.html", data[review.ReviewEntryWithContent]{
 			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/review/entry.template.html")
 		}
 	})
 

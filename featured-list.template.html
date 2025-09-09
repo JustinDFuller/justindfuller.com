@@ -1,0 +1,32 @@
+{{/* 
+  Shared template for featured post lists (programming, thought, story, review)
+  
+  Expected data structure:
+  - .Entries: Array of content items with Title and excerpt field
+  - .BasePath: Base URL path (e.g., "programming", "thought")
+  - .ExcerptField: Name of the field to use for excerpt (e.g., "FirstParagraph", "Description")
+*/}}
+
+<div class="content-container">
+  <div class="featured-posts featured-posts-centered">
+    {{ range .Entries }}
+      <article class="featured-post">
+        <a href="/{{ $.BasePath }}/{{ .Slug }}">
+          <h3 class="featured-post-title">
+            {{ .Title }}
+          </h3>
+        </a>
+        <p class="featured-post-excerpt">
+          {{- if eq $.ExcerptField "Description" -}}
+            {{ .Description }}
+          {{- else if eq $.ExcerptField "FirstParagraph" -}}
+            {{ .FirstParagraph }}
+          {{- end -}}
+        </p>
+        <a href="/{{ $.BasePath }}/{{ .Slug }}" class="read-more">
+          Read more →
+        </a>
+      </article>
+    {{ end }}
+  </div>
+</div>

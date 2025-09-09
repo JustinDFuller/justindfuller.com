@@ -11,16 +11,7 @@
   <body>
     {{ template "/header.template.html" . }}
 
-    <main>
-      <div class="programming-content">
-        <article>
-          {{ template "/entry-header.template.html" .Entry }}
-          <div class="programming-body">
-            {{ printf "%s" .Entry.Content }}
-          </div>
-        </article>
-      </div>
-    </main>
+    {{ template "/entry-page.template.html" dict "Entry" .Entry "ContentType" "programming" }}
 
     {{ template "/footer.template.html" . }}
 
