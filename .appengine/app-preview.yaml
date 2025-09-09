@@ -1,0 +1,223 @@
+---
+
+runtime: go123
+service: preview-template
+
+automatic_scaling:
+  max_instances: 1
+  min_instances: 0
+  max_idle_instances: 0
+  min_idle_instances: 0
+
+handlers:
+  # Static assets
+  - url: /image
+    static_dir: .build/image
+    secure: always
+
+  - url: /(.*\.(gif|png|jpg|jpeg|ico|svg))$
+    static_files: ./build/image/\1
+    upload: ./build/image/.*\.(gif|png|jpg|jpeg|ico|svg)$
+
+  # RSS/XML feeds
+  - url: /index.xml
+    static_files: .routes/index.xml
+    upload: .routes/index.xml
+    secure: always
+    http_headers:
+      Content-Type: application/xml; charset=utf-8
+
+  # Robots and manifest files
+  - url: /robots.txt
+    static_files: .routes/robots.txt
+    upload: .routes/robots.txt
+    secure: always
+    http_headers:
+      Content-Type: text/plain; charset=utf-8
+
+  - url: /site.webmanifest
+    static_files: .build/site.webmanifest
+    upload: .build/site.webmanifest
+    secure: always
+    http_headers:
+      Content-Type: application/manifest+json
+
+  - url: /grass.webmanifest
+    static_files: .build/grass.webmanifest
+    upload: .build/grass.webmanifest
+    secure: always
+    http_headers:
+      Content-Type: application/manifest+json
+
+  # Grass service worker
+  - url: /grass/worker.js
+    static_files: .build/grass-service-worker.js
+    upload: .build/grass-service-worker.js
+    secure: always
+    http_headers:
+      Content-Type: application/javascript
+
+  # Main pages - keep only essential ones for preview
+  - url: /
+    static_files: .build/index.html
+    upload: .build/index.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /about
+    static_files: .build/about.html
+    upload: .build/about.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /programming
+    static_files: .build/programming.html
+    upload: .build/programming.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /thought
+    static_files: .build/thought.html
+    upload: .build/thought.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /poem
+    static_files: .build/poem.html
+    upload: .build/poem.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /aphorism
+    static_files: .build/aphorism.html
+    upload: .build/aphorism.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /story
+    static_files: .build/story.html
+    upload: .build/story.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /review
+    static_files: .build/review.html
+    upload: .build/review.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /word
+    static_files: .build/word.html
+    upload: .build/word.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /nature
+    static_files: .build/nature.html
+    upload: .build/nature.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /make
+    static_files: .build/make.html
+    upload: .build/make.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /grass
+    static_files: .build/grass.html
+    upload: .build/grass.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /kit
+    static_files: .build/kit.html
+    upload: .build/kit.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /weeks-remaining
+    static_files: .build/weeks-remaining.html
+    upload: .build/weeks-remaining.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  # Wildcard patterns for dynamic content
+  # These will match all the individual poem/aphorism/etc pages
+  - url: /aphorism/.*
+    static_files: .build/aphorism-\1.html
+    upload: .build/aphorism-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /poem/.*
+    static_files: .build/poem-\1.html
+    upload: .build/poem-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /story/.*
+    static_files: .build/story-.*\.html
+    upload: .build/story-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /review/.*
+    static_files: .build/review-.*\.html
+    upload: .build/review-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /thought/.*
+    static_files: .build/thought-.*\.html
+    upload: .build/thought-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /programming/.*
+    static_files: .build/programming-.*\.html
+    upload: .build/programming-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /word/.*
+    static_files: .build/word-.*\.html
+    upload: .build/word-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  - url: /nature/.*
+    static_files: .build/nature-.*\.html
+    upload: .build/nature-.*\.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
+  # Catch-all fallback to index
+  - url: /.*
+    static_files: .build/index.html
+    upload: .build/index.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8

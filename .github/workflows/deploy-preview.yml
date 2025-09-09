@@ -48,16 +48,15 @@ jobs:
           PR_NUMBER=${{ github.event.pull_request.number }}
           SERVICE_NAME="pr-${PR_NUMBER}"
           
-          # Copy the main app.yaml and modify it for preview
-          cp .appengine/app.yaml .appengine/app-preview.yaml
+          # Use the dynamic preview template
+          cp .appengine/app-preview-dynamic.yaml ./app.yaml
           
           # Update service name in the preview config
-          sed -i "s/service: default/service: ${SERVICE_NAME}/" .appengine/app-preview.yaml
+          sed -i "s/service: preview-template/service: ${SERVICE_NAME}/" ./app.yaml
           
-          # Move files to root as expected by deploy action
+          # Use the preview-specific main.go for dynamic serving
           rm -f main.go
-          mv .appengine/main.go ./
-          mv .appengine/app-preview.yaml ./app.yaml
+          cp .appengine/main-preview.go ./main.go
 
       - name: Auth
         uses: "google-github-actions/auth@v2"
