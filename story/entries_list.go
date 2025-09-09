@@ -1,8 +1,6 @@
 package story
 
 import (
-	"regexp"
-	"strings"
 	"time"
 )
 
@@ -13,42 +11,6 @@ type StoryEntry struct {
 	FirstParagraph string
 	Date           time.Time
 	IsDraft        bool
-}
-
-func extractFirstParagraph(content string) string {
-	// Remove frontmatter if present
-	lines := strings.Split(content, "\n")
-	start := 0
-	if len(lines) > 0 && strings.TrimSpace(lines[0]) == "---" {
-		for i := 1; i < len(lines); i++ {
-			if strings.TrimSpace(lines[i]) == "---" {
-				start = i + 1
-				break
-			}
-		}
-	}
-	
-	// Join remaining lines
-	text := strings.Join(lines[start:], "\n")
-	
-	// Remove headers and find first non-empty paragraph
-	paragraphs := strings.Split(text, "\n\n")
-	for _, p := range paragraphs {
-		p = strings.TrimSpace(p)
-		// Skip empty lines, headers, and code blocks
-		if p == "" || strings.HasPrefix(p, "#") || strings.HasPrefix(p, "```") {
-			continue
-		}
-		// Remove any markdown formatting but keep the text
-		p = regexp.MustCompile(`\[([^\]]+)\]\([^\)]+\)`).ReplaceAllString(p, "$1") // Links
-		p = regexp.MustCompile(`[*_]{1,2}([^*_]+)[*_]{1,2}`).ReplaceAllString(p, "$1") // Bold/italic
-		p = regexp.MustCompile(`^[-*+] `).ReplaceAllString(p, "") // List markers
-		p = strings.TrimSpace(p)
-		if p != "" {
-			return p
-		}
-	}
-	return ""
 }
 
 // Entries contains all story entries for display

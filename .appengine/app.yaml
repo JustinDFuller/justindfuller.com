@@ -1166,6 +1166,13 @@ handlers:
     http_headers:
       Content-Type: text/html; charset=utf-8
 
+  - url: /nature/
+    static_files: .build/nature-.html
+    upload: .build/nature-.html
+    secure: always
+    http_headers:
+      Content-Type: text/html; charset=utf-8
+
   - url: /2022/01/living-on-24-hours-a-day
     static_files: .build/2022-01-living-on-24-hours-a-day.html
     upload: .build/2022-01-living-on-24-hours-a-day.html

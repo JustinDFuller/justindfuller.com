@@ -253,7 +253,7 @@ func main() {
 				if err != nil {
 					return fmt.Errorf("fetching %s: %w", url, err)
 				}
-				defer resp.Body.Close()
+				defer func() { _ = resp.Body.Close() }()
 
 				if resp.StatusCode != http.StatusOK {
 					return fmt.Errorf("fetching %s returned status %d", url, resp.StatusCode)
@@ -263,7 +263,7 @@ func main() {
 				if err != nil {
 					return fmt.Errorf("creating %s: %w", dest, err)
 				}
-				defer out.Close()
+				defer func() { _ = out.Close() }()
 
 				if _, err := io.Copy(out, resp.Body); err != nil {
 					return fmt.Errorf("writing to %s: %w", dest, err)

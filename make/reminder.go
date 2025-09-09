@@ -34,7 +34,7 @@ func SetHandler(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }()
 
 	var reminder Reminder
 	if err := json.NewDecoder(r.Body).Decode(&reminder); err != nil {
