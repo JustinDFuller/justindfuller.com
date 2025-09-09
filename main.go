@@ -19,8 +19,8 @@ import (
 	"github.com/justindfuller/justindfuller.com/programming"
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
-	"github.com/justindfuller/justindfuller.com/word"
 	"github.com/justindfuller/justindfuller.com/thought"
+	"github.com/justindfuller/justindfuller.com/word"
 	"github.com/justindfuller/secretmanager"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -359,7 +359,7 @@ func main() {
 			log.Printf("Error getting thought entries: %s", err)
 			entries = []thought.Entry{} // Use empty slice on error
 		}
-		
+
 		if err := templates.ExecuteTemplate(w, "/thought/main.template.html", data[thought.Entry]{
 			Title:   "Thought",
 			Entries: entries,
@@ -573,11 +573,6 @@ func main() {
 		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
 	})
 
-	// Serve binary_search directory images
-	http.HandleFunc("/binary_search/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
-	})
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Check if this is exactly the root path
 		if r.URL.Path != "/" {
@@ -585,7 +580,7 @@ func main() {
 			w.WriteHeader(http.StatusNotFound)
 			log.Printf("404 - Path not found: %s", r.URL.Path)
 		}
-		
+
 		if err := templates.ExecuteTemplate(w, "/main.template.html", data[[]byte]{}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/main.template.html")
 		}

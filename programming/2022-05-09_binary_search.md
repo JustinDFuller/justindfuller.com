@@ -29,7 +29,7 @@ I won’t perform a linear search to find the word, starting at the first page a
 
 Instead I’ll open the dictionary to the middle. I landed in the middle of P, “Pieton” to “Pilewort”. 
 
-![](/binary_search/1.png)
+![](/images/binary_search/1.png)
 
 My dictionary is open in two halves. All the letters before P are on the left and all the letters that come after P are on the right. I know that the O in Owl comes before P. I could start flipping one or even a few pages at a time to the left until I find Owl, but that would turn my search into a dreaded linear search.
 
@@ -41,7 +41,7 @@ Instead, I place a bookmark on the current page, pick up the left half of the pa
 
 I landed in F, “Ferret” to “Fetched”. 
 
-![](/binary_search/2.png)
+![](/images/binary_search/2.png)
 
 A bit of an overshoot. O was much closer to P than F. A distance of one letter compared to eight. But what is the state of my dictionary? I now have three sections. 
 
@@ -57,7 +57,7 @@ Let’s try again. I place another bookmark on the current page to represent the
 
 I’ve now landed in the L’s, from “Lingula Flags” to “Lipogrammatist”. 
 
-![](/binary_search/3.png)
+![](/images/binary_search/3.png)
 
 This is much closer than before, only two letters away! But still not as close as P, which was one letter away. 
 
@@ -74,7 +74,7 @@ My dictionary now has four sections.
 
 It’s time to move my lower bookmark to the current page. Next, I open to the middle of the section between my bookmarks and land on N, “New” to “Nice”. I’m back to being only one letter away.
 
-![](/binary_search/4.png)
+![](/images/binary_search/4.png)
 
 I continue to have the dictionary split into four sections. The first, from A to L where my bookmark, from L to N where I am now, from N to P where I first landed, and the last from P to Z which I don’t need. I know O and Owl reside between N and P, which is now a very small section to search in.
 
@@ -106,7 +106,7 @@ I open to the P’s, from “Pack” to “Paddle”. I’ve overshot again. I m
 
 I did it! I landed on O, from “Ovicapsular” to “Oxide”, which includes “Owl”.
 
-![](/binary_search/5.png)
+![](/images/binary_search/5.png)
 
 This odd way to search for Owl required me to search 10 different pages. What if I had flipped through the pages starting at the first one I landed on? “Owl” is on page 1540 while “Pieton” is on page 1634, a whopping 94 pages away! I would have searched through 84 more pages if I had began flipping through starting at my first “close” guess.
 
@@ -132,7 +132,7 @@ A billion? Linear search is worst case a billion, binary search is worst case 30
 
 You can see this illustrated in the following graph. The linear runtime continues up with the size of the input. However, the logarithmic runtime quickly flattens.
 
-![](/binary_search/graph.png)
+![](/images/binary_search/graph.png)
 
 Hopefully you see the benefit of using this kind of search. Now, let’s see how to implement it in the Go programming language.
 

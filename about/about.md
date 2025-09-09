@@ -6,23 +6,25 @@ draft: false
 tags: [about]
 ---
 
-## Hi there 👋 I'm Justin Fuller.
+## Hi there 👋 I'm Justin Fuller
 
 I'm a Staff Software Engineer at [The New York Times](https://open.nytimes.com).
 
 ### At The Times
 
-I architected and built (along with many others!) features like [Subscriber Gift Articles](https://open.nytimes.com/a-new-way-to-share-new-york-times-stories-3e66e8d7e620?source=collection_home---4------8-----------------------).
+I am the tech lead for a group of teams called Access and Messaging Systems. This comprises the teams Onsite Messaging, Offers, Access, and Auth.
+
+Most recently, I architected, built, shipped, and led a successful migration to the next generation of systems that decide which messages we show on our paywall and other spaces across web and mobile.
+
+![paywall-screen](https://user-images.githubusercontent.com/11914897/203819484-2915d7f6-35e8-4cf0-ba9b-f972180734b4.png)
+
+Before that, I architected and led multiple teams to build features like [Subscriber Gift Articles](https://open.nytimes.com/a-new-way-to-share-new-york-times-stories-3e66e8d7e620?source=collection_home---4------8-----------------------).
 
 ![subscriber-gift-articles-screen](https://user-images.githubusercontent.com/11914897/203818464-289c25e1-7fe5-4dbc-bb85-033aeafa6ad7.png)
 
-Many of our Gift Subscription features.
+And many of our Gift Subscription features.
 
 ![gift-subscription-screen](https://user-images.githubusercontent.com/11914897/203818857-dc1e87f0-a5cf-48a3-94f3-4d619917df4d.png)
-
-Most recently, I architected, and am now building the next generation of systems that decide which messages we show on our paywall and other spaces across web and mobile.
-
-![paywall-screen](https://user-images.githubusercontent.com/11914897/203819484-2915d7f6-35e8-4cf0-ba9b-f972180734b4.png)
 
 ### My Projects
 
