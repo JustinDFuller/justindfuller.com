@@ -278,6 +278,7 @@ I would suggest using this with some sort of Object validation when you receive 
 Here's a [link](https://github.com/TC39/proposal-optional-chaining) to the proposal. I'll also copy it at the bottom of this post so that you can see all the proposal links in one place!
 
 ## 2. Nullish coalescing
+
 > Coalesce: to blend or come together
 
 Here are a few common operations that we see in JavaScript:

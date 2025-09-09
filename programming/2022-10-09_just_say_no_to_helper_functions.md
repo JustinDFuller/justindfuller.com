@@ -125,7 +125,7 @@ Still, I wonder if I actually made anything better.
 
 Does the code have a capability it did not have before? Does the code satisfy a new use-case? Is it more performant?
 
-One reason I can think of is *readability*. Unfortunately, this reason is completely subjective. Some readers will find it easier; some will find it harder.
+One reason I can think of is _readability_. Unfortunately, this reason is completely subjective. Some readers will find it easier; some will find it harder.
 
 How about this reason: ease of change. Again, unfortunately, I have no idea how this function will change in the future. I have no idea if this will make it easier or harder to change.
 
@@ -252,7 +252,7 @@ Still, there could be some general rules to help me out.
 
 * I'm reminded of [Domain-Driven Design](https://en.wikipedia.org/wiki/Domain-driven_design). Perhaps an abstraction is safer if it reflects the business domain.
 
-* I can also identify cases where logic *must* change in sync. This is different than when we think or suspect things will change together. Instead, these are cases where logic absolutely must change together.
+* I can also identify cases where logic _must_ change in sync. This is different than when we think or suspect things will change together. Instead, these are cases where logic absolutely must change together.
 
 * There is also a mindset shift I can apply to myself. When I write helper methods, I am attempting to ease the burden of _writing_ code. However, in my experience, the real toil and burden belongs to the reading and understanding of code. I should optimize for that, instead.
 

@@ -62,13 +62,13 @@ Still, the problem exists, how could one run all the servers needed for the appl
 
 Take a look at this simple system diagram. It represents a very stripped-down version of the system in the example test from earlier.
 
-![](https://cdn-images-1.medium.com/max/2000/0*EByxzGkBFV-tC8L8)
+![System diagram showing File Service and external Drive Service integration](https://cdn-images-1.medium.com/max/2000/0*EByxzGkBFV-tC8L8)
 
 You can see that all we're interested in here is testing the integration of our "File Service" with the external "Drive Service" that belongs to another team. In this case, we're not trying to run a full end to end test.
 
 But what are we testing?
 
-![](https://cdn-images-1.medium.com/max/2000/0*c8sCS-H_FJxRSUyg)
+![System diagram highlighting only the File Service being tested in green](https://cdn-images-1.medium.com/max/2000/0*c8sCS-H_FJxRSUyg)
 
 Oops! Here, as shown in green, only the file service was tested. We wanted to test if our File Service and its connection to the Drive service are working. So instead of writing a mocked version on our end, we will look for a way to obtain a testable version of the drive service.
 
@@ -134,7 +134,7 @@ Now is our test more useful? Since we made the call to the real Drive Server API
 
 Even better, not only were we able to test what URL it returns, we were able to test if the content was saved as expected. Our test will tell us if file saving works!
 
-![](https://cdn-images-1.medium.com/max/2000/0*qeITxHrazRrTKg27)
+![System diagram showing both File Service and Drive Service being tested in green](https://cdn-images-1.medium.com/max/2000/0*qeITxHrazRrTKg27)
 
 Look at our system diagram again. You can see in green the services that are being tested. This time we are testing the file service, the drive service, and, most importantly, the connection between them.
 
@@ -168,7 +168,7 @@ This `FakeDriveService` is an implementation that the Drive Team could provide t
 
 This implementation is even lighter than the isolated server, so what's the drawback? Let's refer, once again, to our system diagram.
 
-![](https://cdn-images-1.medium.com/max/2000/0*-HnhLFl8kcpFkPd9)
+![System diagram showing File Service tested with fake Drive Service connection](https://cdn-images-1.medium.com/max/2000/0*-HnhLFl8kcpFkPd9)
 
 While we are technically testing the connection *mechanism* we aren't touching the `DriveService`. Our test is built on trust, not actual verification. The trust is that the fake service does work the same as the full service. In many scenarios, this could be sufficient, but if you have a production critical system you may need a better guarantee.
 

@@ -12,7 +12,7 @@ When she was a teacher, on the first day of each class, Lauren, my wife, would s
 
 "Class", she'd say, "it's time to go over our classroom rules for this year."
 
-<img src="/image/classroom.jpg" style="margin: auto; display: block; height: 200px; width: auto;" height="100" width="auto" />
+![Elementary school classroom](/image/classroom.jpg)
 <em style="text-align: center; display: block;">
   Her cute little classroom
 </em>
@@ -23,7 +23,7 @@ What do you think those first and second graders came up with? "Unlimited Recess
 
 These days, I use this strategy with my kids before we start a big activity. Last time we went to the Natural Hustory Museum, I asked them what our rules should be. They chose "stay together", "walk, don't run", "be calm", "don't break stuff". I, of course, added the most important rule of all: "have fun"!
 
-<img src="/image/natural_history.jpg" style="margin: auto; display: block; height: 300px; width: auto;" height="100" width="auto" />
+![Children at Natural History Museum with T-Rex exhibit](/image/natural_history.jpg)
 <em style="text-align: center; display: block;">
   Getting chased by a T-Rex at the Natural History Museum
 </em>
@@ -32,7 +32,7 @@ I've found that when they choose the rules, they are more likely to remember and
 
 About a year ago, I joined a newly formed team. Some of us had worked together before, but many had not. I suggested the first thing we do is decide how we'd like to work together. We whipped up a Miro board to facilitate the process.
 
-<img src="/image/miro.png" style="margin: auto; display: block; height: 200px; width: auto;" height="100" width="auto" />
+![Miro board showing team collaboration planning](/image/miro.png)
 
 We wrote down:
 
@@ -53,4 +53,3 @@ I think the key point is that each engineer got to decide how we'll work. This w
 
 Not everything benefits from a collaborative process. That's why we disparage certain products saying things like, "It was clearly designed by committee". But when it comes to how we work, I think we all do better when we
 have a hand in shaping the environment.
-

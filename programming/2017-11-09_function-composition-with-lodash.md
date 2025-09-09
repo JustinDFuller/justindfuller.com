@@ -15,9 +15,11 @@ In this post we'll look at how to use Lodash/fp to compose both our own function
 Before we start coding — lets be sure that we know what we're talking about!
 
 ## Functional Programming
+
 > A method of programming that focuses on using functions as first class variables. It avoids mutating (changing) data, and attempts to treat applications as a linear flow that pieces functions together to create a whole.
 
 ## Function Composition
+
 > Invoke functions that have been listed, in order, passing the result of each function to the next in the list, and then return the final function result as the result of the whole.
 
 Normally when you compose functions you may do it like this (without knowing you are composing):

@@ -22,30 +22,30 @@ It sends an email and is used widely in the code.
 
 ```go
 type EmailOptions struct {
-	To      string
-	Subject string
-	HTML    string
+    To      string
+    Subject string
+    HTML    string
 }
 
 func Email(opts EmailOptions) error {
-	from := os.Getenv("EMAIL")
-	auth := smtp.PlainAuth("", from, os.Getenv("PASSWORD"), "smtp.gmail.com")
+    from := os.Getenv("EMAIL")
+    auth := smtp.PlainAuth("", from, os.Getenv("PASSWORD"), "smtp.gmail.com")
 
-	t, err := template.New("email.template.txt").ParseFiles("./email.template.txt")
-	if err != nil {
-		return errors.Wrap(err, "error parsing emplate.template")
-	}
+    t, err := template.New("email.template.txt").ParseFiles("./email.template.txt")
+    if err != nil {
+        return errors.Wrap(err, "error parsing emplate.template")
+    }
 
-	var b bytes.Buffer
-	if err := t.Execute(&b, opts); err != nil {
-		return errors.Wrap(err, "error executing email.template")
-	}
+    var b bytes.Buffer
+    if err := t.Execute(&b, opts); err != nil {
+        return errors.Wrap(err, "error executing email.template")
+    }
 
-	if err := smtp.SendMail("smtp.gmail.com:587", auth, from, []string{opts.To}, b.Bytes()); err != nil {
-		return errors.Wrap(err, "error sending email")
-	}
+    if err := smtp.SendMail("smtp.gmail.com:587", auth, from, []string{opts.To}, b.Bytes()); err != nil {
+        return errors.Wrap(err, "error sending email")
+    }
 
-	return nil
+    return nil
 }
 ```
 
@@ -76,9 +76,9 @@ Let's see the code:
 
 ```diff
 type EmailOptions struct {
-	To      string
-	Subject string
-	HTML    string
+    To      string
+    Subject string
+    HTML    string
 +   Organization Organization
 }
 
@@ -87,24 +87,24 @@ func Email(opts EmailOptions) error {
 +     return errors.New("emails cannot be sent across domains")
 +   }
 
-	from := os.Getenv("EMAIL")
-	auth := smtp.PlainAuth("", from, os.Getenv("PASSWORD"), "smtp.gmail.com")
+    from := os.Getenv("EMAIL")
+    auth := smtp.PlainAuth("", from, os.Getenv("PASSWORD"), "smtp.gmail.com")
 
-	t, err := template.New("email.template.txt").ParseFiles("./email.template.txt")
-	if err != nil {
-		return errors.Wrap(err, "error parsing emplate.template")
-	}
+    t, err := template.New("email.template.txt").ParseFiles("./email.template.txt")
+    if err != nil {
+        return errors.Wrap(err, "error parsing emplate.template")
+    }
 
-	var b bytes.Buffer
-	if err := t.Execute(&b, opts); err != nil {
-		return errors.Wrap(err, "error executing email.template")
-	}
+    var b bytes.Buffer
+    if err := t.Execute(&b, opts); err != nil {
+        return errors.Wrap(err, "error executing email.template")
+    }
 
-	if err := smtp.SendMail("smtp.gmail.com:587", auth, from, []string{opts.To}, b.Bytes()); err != nil {
-		return errors.Wrap(err, "error sending email")
-	}
+    if err := smtp.SendMail("smtp.gmail.com:587", auth, from, []string{opts.To}, b.Bytes()); err != nil {
+        return errors.Wrap(err, "error sending email")
+    }
 
-	return nil
+    return nil
 }
 ```
 
@@ -119,9 +119,9 @@ And that's where my suggestion comes from. By adding the Organization to the fun
 
 ```diff
 type EmailOptions struct {
-	To      string
-	Subject string
-	HTML    string
+    To      string
+    Subject string
+    HTML    string
 }
 
 - func Email(opts EmailOptions) error {
@@ -130,24 +130,24 @@ type EmailOptions struct {
 +     return errors.New("emails cannot be sent across domains")
 +   }
 
-	from := os.Getenv("EMAIL")
-	auth := smtp.PlainAuth("", from, os.Getenv("PASSWORD"), "smtp.gmail.com")
+    from := os.Getenv("EMAIL")
+    auth := smtp.PlainAuth("", from, os.Getenv("PASSWORD"), "smtp.gmail.com")
 
-	t, err := template.New("email.template.txt").ParseFiles("./email.template.txt")
-	if err != nil {
-		return errors.Wrap(err, "error parsing emplate.template")
-	}
+    t, err := template.New("email.template.txt").ParseFiles("./email.template.txt")
+    if err != nil {
+        return errors.Wrap(err, "error parsing emplate.template")
+    }
 
-	var b bytes.Buffer
-	if err := t.Execute(&b, opts); err != nil {
-		return errors.Wrap(err, "error executing email.template")
-	}
+    var b bytes.Buffer
+    if err := t.Execute(&b, opts); err != nil {
+        return errors.Wrap(err, "error executing email.template")
+    }
 
-	if err := smtp.SendMail("smtp.gmail.com:587", auth, from, []string{opts.To}, b.Bytes()); err != nil {
-		return errors.Wrap(err, "error sending email")
-	}
+    if err := smtp.SendMail("smtp.gmail.com:587", auth, from, []string{opts.To}, b.Bytes()); err != nil {
+        return errors.Wrap(err, "error sending email")
+    }
 
-	return nil
+    return nil
 }
 ```
 

@@ -23,4 +23,3 @@ Only rarely do purely technical needs make their way into the roadmap.
 
 This last case, purely technical needs, seem to only make their way into the roadmap
 when the problems they cause become so bad that they negatively affect the product roadmap.
-

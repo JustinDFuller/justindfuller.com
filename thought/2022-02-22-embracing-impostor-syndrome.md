@@ -29,7 +29,7 @@ However, even though I only had basic skills, and even though my company had to 
 
 Looking back, I realize I was at the peak of “Mount Stupid” in the [Dunning-Kruger Effect](https://en.wikipedia.org/wiki/Dunning%E2%80%93Kruger_effect). I was getting stuff done, so I thought I knew a lot. I had no idea how much I didn’t know yet.
 
-![](https://cdn-images-1.medium.com/max/2000/0*ThJLpeJePPuVBse4)
+![Dunning-Kruger Effect graph showing Mount Stupid peak and Valley of Despair](https://cdn-images-1.medium.com/max/2000/0*ThJLpeJePPuVBse4)
 
 After the “Mount Stupid” peak comes the “Valley of Despair.” This is where one goes after realizing ignorance. Accepting this was particularly painful for me, having spent quite a long time thinking I knew a lot. You see, my arrival to the valley was delayed for several years because I kept job-hopping before I could witness the consequences of my decisions.
 

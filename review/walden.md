@@ -6,8 +6,6 @@ draft: false
 tags: [review]
 ---
 
-# Walden
-
 <p align="center">
 Not about leaving society but finding humanity.
 </p>

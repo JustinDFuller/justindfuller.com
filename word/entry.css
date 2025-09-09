@@ -72,6 +72,7 @@
   display: block;
   margin: var(--space-xl) auto;
   border-radius: var(--border-radius-md);
+  background-color: white;
 }
 
 .word-content img.no-max-height {

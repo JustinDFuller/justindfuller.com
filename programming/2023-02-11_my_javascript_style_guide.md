@@ -80,8 +80,6 @@ To create this style guide, I'll ask two questions about the way I've learned to
 1. What arbitrary paradigms or abstractions can I **remove** to reveal the real purpose of my code?
 2. What verbosity can I **add** to improve the clarity of my programs?
 
-# Style Guide
-
 {{< table_of_contents >}}
 
 ## Project Structure
@@ -261,7 +259,7 @@ The best names utilize descriptive terms that are meaningful to the relevant dom
 
 ### Prevent Export Renaming
 
-*Never* use default exports. In fact, don't even use regular exported constant or functions.
+_Never_ use default exports. In fact, don't even use regular exported constant or functions.
 Instead, wrap the exports in an exported variable that matches the module name.
 
 **Incorrect:**
@@ -324,7 +322,7 @@ This allows you to think clearly and carefully about function and variable names
 
 When you are using a module, you no longer have all of this context.
 
-So, we should enforce the names created at the time and by the engineers with the *most* context.
+So, we should enforce the names created at the time and by the engineers with the _most_ context.
 
 ### Prevent Returned Variable Renaming
 
@@ -666,7 +664,7 @@ However, our other goal was to remove arbitrary practices that hide the true int
 
 This is a hard line to walk.
 
-Sometimes, verbose names can get in the way, making it *more* difficult to interpret the code.
+Sometimes, verbose names can get in the way, making it _more_ difficult to interpret the code.
 
 Thankfully, there is a particular case where this is true.
 
@@ -773,4 +771,3 @@ function normalize(url) {
 #### Why?
 
 TODO
-

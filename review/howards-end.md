@@ -6,8 +6,6 @@ draft: false
 tags: [review]
 ---
 
-# Howards End
-
 Not the show. The novel, first published in 1910 by E.M. Forster.
 
 <img src="/image/howards_end.jpg" alt="Book Cover" style="height: 250px; width: auto; margin: auto; margin-bottom: 40px;" />

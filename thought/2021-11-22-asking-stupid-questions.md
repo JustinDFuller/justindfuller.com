@@ -124,4 +124,3 @@ I think this happens for a few reasons:
 I can imagine this person understands a lot more about the way things work than I do because he’s willing to ask the questions no one else is. It was also reflected in his title and position in the company, which was far higher than mine.
 
 If you judged him by the questions he asks, as I’m sure some do, you might think he doesn’t understand anything. Yet, this person has far more impact than myself (and many others!), and I can’t help but wonder if it’s because he’s OK asking Stupid Questions.
-

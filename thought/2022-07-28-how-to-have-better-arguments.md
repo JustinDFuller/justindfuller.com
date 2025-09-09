@@ -186,7 +186,7 @@ Unless, of course, you're talking with a disputer.
 
 Let's assume for a moment that you decided not to be one.
 You are truly arguing, discussing, in good-faith; in search of the truth.
-But your partner? Not so much. They want to *win*.
+But your partner? Not so much. They want to _win_.
 
 There's no need to fear, because all is not lost.
 
@@ -254,4 +254,3 @@ Of course, Plato already outlined this form of argument through Socrates.
 
 > The disputer may trip up his opponent as often as he likes, and make fun;
 > but the dialectician will be in earnest, and only correct his adversary when necessary,
-

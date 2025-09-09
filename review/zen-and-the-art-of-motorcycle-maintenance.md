@@ -6,8 +6,6 @@ draft: false
 tags: [review]
 ---
 
-# Zen and the Art of <br />  Motorcycle Maintenance
-
 [Zen and the Art of Motorcycle Maintenance](https://amzn.to/3MJ9kpd) is the story of a man (or is it a ghost, a wolf, a lunatic?) searching for Quality.
 
 Yes indeed, "Quality". Capital Q.

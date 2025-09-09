@@ -168,4 +168,3 @@ There are likely many others! But, as a general rule, I believe the following pr
 1. Assume a competent engineer who lacks context.
 2. Explain they *why* not the *what*.
 3. Give examples and information that cannot be derived from variable names or types.
-

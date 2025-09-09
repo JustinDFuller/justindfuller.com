@@ -36,7 +36,7 @@ Either way — you've been given a task, and you need to be sure you fully under
 
 ### About the steps
 
-![](https://cdn-images-1.medium.com/max/2000/0*c7d0llT62DAg9GLi)
+![Illustration of understanding programming tasks](https://cdn-images-1.medium.com/max/2000/0*c7d0llT62DAg9GLi)
 
 Not all of the steps given below are needed for every problem. Only the hardest problems to understand may require you to carefully proceed through all the steps that will be discussed in this article.
 

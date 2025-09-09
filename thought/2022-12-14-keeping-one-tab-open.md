@@ -147,4 +147,3 @@ I don&rsquo;t need to power through unimportant tasks, just because I incorrectl
 <li>Do a weekly retro on your completed tasks</li>
 <li>Regularly prune your tasks to focus on only what is currently relevant</li>
 </ul>
-

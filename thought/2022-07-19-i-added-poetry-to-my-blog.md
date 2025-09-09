@@ -45,6 +45,7 @@ I typically start by physically writing, only later copying the content to my bl
 I went ahead and invested in a decent notebook and pen (nothing too expensive) to bring a bit more joy to the process.
 
 Some other outlets that I've found enjoyable lately:
+
 * Nature photography, which I also plan to add here soon.
 * Reading, I particularly enjoyed [Nasty, Brutish, and Short](https://amzn.to/3ceRMmm) on Philosophy with kids.
 * Coding projects like [Really Simple Notes](https://www.reallysimplenotes.com)

@@ -12,7 +12,7 @@ Put your learning hats on, we’re diving into another API that you might not ha
 
 *It will test your head… and your mind… and your brain, too.*
 
-## I need to be honest, this isn’t really one API.
+## I need to be honest, this isn't really one API
 
 The clipboard API is made up of multiple API’s. But more than that, we’re going to need to pull in some more Web API’s that don’t directly relate to the clipboard and its utilities in order to completely take full advantage of the browser’s clipboard abilities. By the end you should have several new tools that make it easier to work with text on your websites and apps!
 
@@ -50,6 +50,7 @@ Another example could be a profanity filter if you are creating a web app that e
 You could go on to use the value retrieved from getData elsewhere in your app. As an example, maybe you need to log when data is pasted, like in a test-taking app. Sometime’s pasting text in that setting could be OK, but you may want to be able to go back later and ensure the pasted content wasn’t copied from elsewhere.
 
 ## Creating your own copy event
+
 > Copying text to the clipboard shouldn’t be hard. It shouldn’t require dozens of steps to configure or hundreds of KBs to load. But most of all, it shouldn’t depend on Flash or any bloated framework. — [clipboardjs.com](https://clipboardjs.com/)
 
 Before we get into this, I’d like to introduce you to an open source project that simplifies everything I’m about to show you. It’s called “clipboard.js” and it allows you to easily copy text to your clipboard. You may find it easier than doing this on your own. It’s quite a small library, and has a very simple API.
@@ -80,4 +81,3 @@ And that’s it! You’re now successfully copying text to your clipboard!
 Please feel free to check out some of my other writings on APIs: [Battery](https://justindfuller.com/posts/14), [Console](https://justindfuller.com/posts/15), and [Video](https://justindfuller.com/posts/16).
 
 Also, please stay on the lookout for my upcoming post on the [DesignMode](https://developer.mozilla.org/en-US/docs/Web/API/Document/designMode) API and how it can be used with execCommand to do some really awesome stuff!
-

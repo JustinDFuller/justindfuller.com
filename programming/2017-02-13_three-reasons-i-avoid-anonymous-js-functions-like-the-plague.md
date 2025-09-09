@@ -48,7 +48,7 @@ But it looks like we've done something incredibly silly, like misspelled `consol
 
 Now, we have to track it down. With our nicely named functions we get a stack trace like this:
 
-![](https://cdn-images-1.medium.com/max/2000/1*2xJ42hw41svXHKehiJcp6A.png)
+![Stack trace showing named functions making debugging easier](https://cdn-images-1.medium.com/max/2000/1*2xJ42hw41svXHKehiJcp6A.png)
 
 Thanks for naming your functions, Junior Developer! Now we can easily track down that bug.
 
@@ -70,7 +70,7 @@ Amazingly, this developer has also forgotten how to spell `console.log`! What ar
 
 What does the console show us?
 
-![](https://cdn-images-1.medium.com/max/2000/1*6WRmLi3uJmjw3CXn3SXqKg.png)
+![Stack trace showing anonymous functions making debugging difficult](https://cdn-images-1.medium.com/max/2000/1*6WRmLi3uJmjw3CXn3SXqKg.png)
 
 Well… At least we have line numbers? In this example, It looks like we have about 7 lines of code. What if we were dealing with a massive codebase? 10k lines of code? And what if the line numbers were far apart? What if the code was minified, without a map file, rendering line numbers almost completely useless?
 

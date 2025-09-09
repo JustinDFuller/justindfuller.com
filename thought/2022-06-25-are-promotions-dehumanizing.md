@@ -33,6 +33,7 @@ Could the problem be that some companies have products that don't create joy, cu
 Why do we trade our humanity? We also need stability and income to survive. We can find humanity outside work. But this is unfortunate because some of us spend the bulk of our waking hours at work.
 
 ## Problems
+
 --------
 
 * Some companies have products that add no value to the world or even actively make the world a worse place. They need something else to motivate people.
@@ -44,7 +45,8 @@ Why do we trade our humanity? We also need stability and income to survive. We c
 * Sometimes things just need to get done and maybe they'll never create joy, but someone needs to do it. I wonder if these types of tasks are even rewarded with promotions, though?
 
 ## Questions
----------
+
+--------
 
 * Are there any successful companies without promotion ladders?
 
@@ -55,7 +57,7 @@ Why do we trade our humanity? We also need stability and income to survive. We c
 * If both parties agree to the lack of humanity, does it become ok? Do workers really have a choice here if there are no alternatives?
 
 ## Philosophy
-----------
+
+--------
 
 > So act that you treat humanity, whether in your own person or in the person of any other, always at the same time as an end, never merely as a means. (Kant 1785:429)
-
