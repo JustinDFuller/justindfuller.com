@@ -1,0 +1,99 @@
+run:
+  go: "1.23"
+  tests: true
+  modules-download-mode: readonly
+  timeout: 5m
+  skip-dirs:
+    - .build
+    - .git
+    - .devcontainer
+    - .github
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+  uniq-by-line: true
+  sort-results: true
+
+linters:
+  enable-all: true
+  disable:
+    # Deprecated linters
+    - nosnakecase
+    - deadcode
+    - interfacer
+    - structcheck
+    - scopelint
+    - maligned
+    - varcheck
+    - golint
+    - ifshort
+    - exhaustivestruct
+    - exportloopref  # Replaced by copyloopvar in Go 1.22+
+    # Disabled by choice
+    - funlen
+    - cyclop
+    - gocognit
+    - forbidigo
+    - gocyclo
+    - maintidx
+    - perfsprint
+    - lll
+    - execinquery  # Often too strict
+    - gomnd  # Magic numbers can be okay
+    - wrapcheck  # Too noisy
+    - nlreturn  # Too opinionated
+    - gochecknoglobals  # Globals can be useful
+    - exhaustive  # Not always needed
+    - godox  # TODOs are okay
+    - goerr113  # Dynamic errors are sometimes needed
+    - nolintlint  # Sometimes we need nolint
+    - paralleltest  # Not always needed
+    - testpackage  # Tests in same package are fine
+    - tparallel  # Not always needed
+    - wsl  # Too opinionated about whitespace
+    - gochecknoinits  # Init functions can be useful
+    - gomoddirectives  # Replace directives are sometimes needed
+    - ireturn  # Returning interfaces is often necessary
+    - tagliatelle  # JSON field naming is project-specific
+    - varnamelen  # Short names can be clear in context
+    - depguard  # Will configure if needed
+
+linters-settings:
+  exhaustruct:
+    include:
+      - ".+\\.Test"
+  
+  revive:
+    enable-all-rules: false
+    rules:
+      - name: blank-imports
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: dot-imports
+      - name: empty-block
+      - name: error-naming
+      - name: error-return
+      - name: error-strings
+      - name: errorf
+      - name: exported
+      - name: increment-decrement
+      - name: indent-error-flow
+      - name: package-comments
+      - name: range
+      - name: receiver-naming
+      - name: redefines-builtin-id
+      - name: superfluous-else
+      - name: time-naming
+      - name: unexported-return
+      - name: unreachable-code
+      - name: unused-parameter
+      - name: var-declaration
+      - name: var-naming
+
+issues:
+  exclude-use-default: true
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  fix: true

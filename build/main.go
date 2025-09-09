@@ -253,7 +253,11 @@ func main() {
 				if err != nil {
 					return fmt.Errorf("fetching %s: %w", url, err)
 				}
-				defer resp.Body.Close()
+				defer func() {
+					if err := resp.Body.Close(); err != nil {
+						log.Printf("Warning: failed to close response body for %s: %v", url, err)
+					}
+				}()
 
 				if resp.StatusCode != http.StatusOK {
 					return fmt.Errorf("fetching %s returned status %d", url, resp.StatusCode)
@@ -263,10 +267,15 @@ func main() {
 				if err != nil {
 					return fmt.Errorf("creating %s: %w", dest, err)
 				}
-				defer out.Close()
 
 				if _, err := io.Copy(out, resp.Body); err != nil {
+					_ = out.Close() // Best effort close on error
 					return fmt.Errorf("writing to %s: %w", dest, err)
+				}
+
+				// Close the file and check for errors (important for file writes)
+				if err := out.Close(); err != nil {
+					return fmt.Errorf("closing %s: %w", dest, err)
 				}
 
 				log.Printf("Generated: %s -> %s", urlPath, page.File)
