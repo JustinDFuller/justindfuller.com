@@ -149,8 +149,7 @@
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
     color: var(--color-text-primary);
-    background: 
-      /* Main vertical gradient that fades from original color to black */
+    /* background: 
       linear-gradient(
         to bottom,
         var(--color-bg-primary) 0px,
@@ -173,7 +172,7 @@
         hsl(210deg 15% 16%) calc(100% - 200px),
         var(--color-bg-primary) calc(100% - 100px),
         var(--color-bg-primary) 100%
-      );
+      ); */
     background-color: hsl(210deg 15% 6%);
     transition: background-color var(--transition-base), color var(--transition-base);
     overflow-x: hidden;
@@ -763,6 +762,30 @@
     height: auto;
     border-radius: var(--border-radius-md);
     margin: var(--space-xl) 0;
+  }
+
+  /* Caption styling for em elements after images */
+  .entry-body img + em,
+  .entry-body--thought img + em,
+  .entry-body--programming img + em,
+  .entry-body--word img + em,
+  .entry-body--story img + em {
+    display: block;
+    font-size: 0.875rem;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  /* Ensure adequate spacing between images and following paragraphs */
+  .entry-body img + p,
+  .entry-body--thought img + p,
+  .entry-body--programming img + p,
+  .entry-body--word img + p,
+  .entry-body--story img + p {
+    margin-top: var(--space-lg);
   }
 
   .entry-body table {
