@@ -35,11 +35,13 @@ This repository is configured to automatically deploy preview environments for p
 - `.appengine/dispatch-preview.yaml` - Template for preview dispatch rules
 
 ### Security
+
 - Preview deployments only work for PRs from the same repository (not forks)
 - Uses the same Google Cloud credentials as production deployments
 - Each preview has its own version history
 
 ### Limitations
+
 - Preview environments share the same Google Cloud project as production
 - Database and other backend services are shared (be careful with data modifications)
 - Custom domains are not available for preview environments
@@ -47,16 +49,19 @@ This repository is configured to automatically deploy preview environments for p
 ## Troubleshooting
 
 ### Preview Not Deploying
+
 - Check that the PR is from a branch in this repository (not a fork)
 - Verify GitHub Actions are passing
 - Check the Deploy PR Preview workflow logs
 
 ### Preview Not Accessible
+
 - Wait a few minutes after deployment for DNS propagation
 - Check the PR comments for the correct URL
 - Verify the service exists in Google Cloud Console
 
 ### Cleanup Issues
+
 - If a preview isn't cleaned up automatically, you can manually delete it:
   ```bash
   gcloud app services delete pr-{PR_NUMBER} --project=justindfuller
