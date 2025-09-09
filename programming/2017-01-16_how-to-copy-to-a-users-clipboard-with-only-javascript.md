@@ -81,8 +81,3 @@ Please feel free to check out some of my other writings on APIs: [Battery](https
 
 Also, please stay on the lookout for my upcoming post on the [DesignMode](https://developer.mozilla.org/en-US/docs/Web/API/Document/designMode) API and how it can be used with execCommand to do some really awesome stuff!
 
----
-
-Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer in *any* way. All code samples are my own and are completely unrelated to my employer's code.
-
-I’d also love to hear from you, please feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/justin-fuller-8726b2b1/), [Github](https://github.com/justindfuller). Thanks again for reading!

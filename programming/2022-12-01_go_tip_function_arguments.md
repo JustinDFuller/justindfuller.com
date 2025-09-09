@@ -202,7 +202,3 @@ We no longer have any named properties. Here it is fairly clear what each argume
 
 In the examples in this post, the function has one to four arguments at the most. It's a fairly small function.
 Sometimes you have a function that needs far more data. Having twenty function arguments is not feasible and possibly represents a deeper issue.
-
----
-
-I hope you find this post helpful and I'd love to hear when you do and do not prefer function arguments over struct properties.

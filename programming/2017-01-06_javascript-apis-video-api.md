@@ -43,9 +43,3 @@ https://gist.github.com/JustinDFuller/ab65954961d76f15d8a273c99577d20b#file-vide
 Finally, a good resource for the Video API is [http://www.w3schools.com/tags/ref_av_dom.asp](http://www.w3schools.com/tags/ref_av_dom.asp).
 
 Stay tuned for more posts about JavaScript APIs!
-
----
-
-Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer in *any* way. All code samples are my own and are completely unrelated to my employer's code.
-
-I’d also love to hear from you, please feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/justin-fuller-8726b2b1/), [Github](https://github.com/justindfuller). Thanks again for reading!

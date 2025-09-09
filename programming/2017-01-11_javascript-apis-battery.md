@@ -50,8 +50,3 @@ A final note: Most devices will warn users when the battery is low, so you likel
 
 Feel free to check out some of my past posts: [Console API](https://justindfuller.com/posts/15), [Video API](https://justindfuller.com/posts/16).
 
----
-
-Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer in *any* way. All code samples are my own and are completely unrelated to my employer's code.
-
-I’d also love to hear from you, please feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/justin-fuller-8726b2b1/), [Github](https://github.com/justindfuller). Thanks again for reading!

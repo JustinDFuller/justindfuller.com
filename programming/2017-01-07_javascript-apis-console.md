@@ -71,9 +71,3 @@ However, in some browser environments, some console statements are asynchronous,
 For that reason and others, I’d also caution against using console statements too often in a web browser environment. Typically you can use a debugger statement or breakpoints in the browser for anything you want to do with a console statement. With a debugger or breakpoint, you are able to investigate your variables without having to worry about async problems.
 
 If you missed the first installment you can find it [here](https://justindfuller.com/posts/15). Please stay tuned as we dive deeper into some less known JavaScript APIs. We’re starting off easy but we’ll be diving deep soon!
-
----
-
-Hi, I’m Justin Fuller. I’m so glad you read my post! I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer in *any* way. All code samples are my own and are completely unrelated to my employer's code.
-
-I’d also love to hear from you, please feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/justin-fuller-8726b2b1/), [Github](https://github.com/justindfuller). Thanks again for reading!
