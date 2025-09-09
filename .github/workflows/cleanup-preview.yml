@@ -1,0 +1,76 @@
+---
+
+name: Cleanup PR Preview
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup-preview:
+    name: Cleanup Preview Environment
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+
+    steps:
+      - name: Auth
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
+
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Delete Preview Service
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          SERVICE_NAME="pr-${PR_NUMBER}"
+          
+          # Check if the service exists
+          if gcloud app services describe ${SERVICE_NAME} --project=justindfuller &>/dev/null; then
+            echo "Deleting preview service: ${SERVICE_NAME}"
+            
+            # Delete all versions of the preview service
+            VERSIONS=$(gcloud app versions list --service=${SERVICE_NAME} --project=justindfuller --format="value(id)")
+            
+            if [ ! -z "$VERSIONS" ]; then
+              echo "Deleting versions: ${VERSIONS}"
+              echo $VERSIONS | xargs -n1 -I {} gcloud app versions delete {} \
+                --service=${SERVICE_NAME} \
+                --project=justindfuller \
+                --quiet
+            fi
+            
+            # Note: App Engine requires at least one version per service
+            # The service will be automatically removed when all versions are deleted
+            # and it's not the default service
+            
+            echo "Preview environment cleanup completed"
+          else
+            echo "Preview service ${SERVICE_NAME} not found, skipping cleanup"
+          fi
+
+      - name: Comment Cleanup Status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr_number = context.payload.pull_request.number;
+            const service_name = `pr-${pr_number}`;
+            
+            const comment_body = `## 🧹 Preview Environment Cleaned Up
+            
+            The preview environment for PR #${pr_number} has been removed.
+            
+            Service \`${service_name}\` and all its versions have been deleted from Google App Engine.`;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr_number,
+              body: comment_body
+            });

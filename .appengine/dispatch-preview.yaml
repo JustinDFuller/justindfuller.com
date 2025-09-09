@@ -1,0 +1,45 @@
+---
+# This file is used to generate dispatch rules for PR preview environments
+# It will be dynamically updated when preview environments are deployed
+
+dispatch:
+  # Existing production routes
+  - url: "interviews-dot-justindfuller.uc.r.appspot.com/"
+    service: interviews
+
+  - url: "interviews.justindfuller.com/*"
+    service: interviews
+
+  - url: "reallysimplenotes-dot-justindfuller.uc.r.appspot.com/"
+    service: reallysimplenotes
+
+  - url: "notes.justindfuller.com/*"
+    service: reallysimplenotes
+
+  - url: "justindfuller.uc.r.appspot.com/"
+    service: default
+
+  - url: "www.justindfuller.com/*"
+    service: default
+
+  - url: "justindfuller.com/*"
+    service: default
+
+  - url: "laurensfuller-dot-justindfuller.uc.r.appspot.com/*"
+    service: laurensfuller
+
+  - url: "www.laurensfuller.com/*"
+    service: laurensfuller
+
+  - url: "laurensfuller.com/*"
+    service: laurensfuller
+
+  - url: "www.laurenfullerpaints.com/*"
+    service: laurensfuller
+
+  - url: "laurenfullerpaints.com/*"
+    service: laurensfuller
+
+  # PR Preview routes will be automatically added here
+  # Format: pr-{number}-dot-justindfuller.uc.r.appspot.com/*
+  # These routes will be managed by the GitHub Actions workflows
