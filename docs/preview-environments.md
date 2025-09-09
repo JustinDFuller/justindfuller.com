@@ -10,7 +10,8 @@ This repository is configured to automatically deploy preview environments for p
    - Comments on the PR with the preview URL
 
 2. **Preview URL**: Your preview will be available at:
-   ```
+
+   ```text
    https://pr-{PR_NUMBER}-dot-justindfuller.uc.r.appspot.com
    ```
 
@@ -21,11 +22,13 @@ This repository is configured to automatically deploy preview environments for p
 ## Technical Details
 
 ### Service Isolation
+
 - Each PR gets its own App Engine service (`pr-{PR_NUMBER}`)
 - Preview environments are completely isolated from production
 - Production deployment remains on the `default` service
 
 ### Files Involved
+
 - `.github/workflows/deploy-preview.yml` - Handles PR preview deployments
 - `.github/workflows/cleanup-preview.yml` - Cleans up closed PR environments
 - `.github/workflows/deploy.yml` - Production deployment (unchanged)
