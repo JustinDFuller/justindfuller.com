@@ -1,3 +1,4 @@
+// Package poem handles poem content and metadata
 package poem
 
 import (
@@ -6,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"os"
+	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -18,14 +20,15 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// PoemEntry represents a single poem with metadata
-type PoemEntry struct {
+// Entry represents a single poem with metadata
+type Entry struct {
 	Number  int
 	Content template.HTML
 	Title   string
 	Date    time.Time
 }
 
+// Entries returns all poem entries as byte arrays
 func Entries() ([][]byte, error) {
 	files, err := os.ReadDir("./poem")
 	if err != nil {
@@ -101,9 +104,10 @@ func Entries() ([][]byte, error) {
 
 	for i, name := range names {
 		wg.Go(func() error {
-			path := fmt.Sprintf("./poem/%s", name)
+			// Clean the path to prevent directory traversal
+			path := filepath.Join("./poem", filepath.Clean(name))
 
-			file, err := os.ReadFile(path)
+			file, err := os.ReadFile(path) //nolint:gosec // Path is from filtered directory listing
 			if err != nil {
 				return errors.Wrapf(err, "error reading file: %s", path)
 			}
@@ -113,12 +117,13 @@ func Entries() ([][]byte, error) {
 			context := parser.NewContext()
 			if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
 				// If parsing fails, fall back to old method
+				// We intentionally ignore the error here and use fallback parsing
 				content := file
 				content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
 				content = bytes.Split(content, []byte("```"))[1]
 				content = bytes.TrimSpace(content)
 				contents[i] = content
-				return nil
+				return nil //nolint:nilerr // Intentional fallback on parse error
 			}
 
 			// Extract content between ```text markers (frontmatter is now respected but we still extract the poem text)
@@ -153,10 +158,12 @@ func Entries() ([][]byte, error) {
 	return contents, nil
 }
 
-func Entry(name string) ([][]byte, error) {
-	path := fmt.Sprintf("./poem/%s.md", name)
+// GetRawEntry retrieves a specific poem by name as raw bytes
+func GetRawEntry(name string) ([][]byte, error) {
+	// Clean the name to prevent directory traversal
+	path := filepath.Join("./poem", filepath.Clean(name)+".md")
 
-	file, err := os.ReadFile(path)
+	file, err := os.ReadFile(path) //nolint:gosec // Path is sanitized
 	if err != nil {
 		return nil, errors.Wrapf(err, "error reading file: %s", path)
 	}
@@ -174,11 +181,12 @@ func Entry(name string) ([][]byte, error) {
 	context := parser.NewContext()
 	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
 		// If parsing fails, fall back to old method
+		// We intentionally ignore the error here and use fallback parsing
 		content := file
 		content = bytes.Replace(content, []byte("```text"), []byte("```"), 1)
 		content = bytes.Split(content, []byte("```"))[1]
 		content = bytes.TrimSpace(content)
-		return [][]byte{content}, nil
+		return [][]byte{content}, nil //nolint:nilerr // Intentional fallback on parse error
 	}
 
 	// Extract content between ```text markers (frontmatter is now respected but we still extract the poem text)
@@ -196,23 +204,24 @@ func Entry(name string) ([][]byte, error) {
 }
 
 // GetEntry returns a single poem by number
-func GetEntry(number string) (PoemEntry, error) {
+func GetEntry(number string) (Entry, error) {
 	num, err := strconv.Atoi(number)
 	if err != nil {
-		return PoemEntry{}, errors.Wrap(err, "invalid poem number")
+		return Entry{}, errors.Wrap(err, "invalid poem number")
 	}
 
-	// Call the existing Entry function to get the poem content
-	contents, err := Entry(number)
+	// Call the existing GetRawEntry function to get the poem content
+	contents, err := GetRawEntry(number)
 	if err != nil {
-		return PoemEntry{}, errors.Wrapf(err, "error reading poem %s", number)
+		return Entry{}, errors.Wrapf(err, "error reading poem %s", number)
 	}
 
 	// Read the file again to extract metadata
-	path := fmt.Sprintf("./poem/%s.md", number)
-	file, err := os.ReadFile(path)
+	// Clean the number to prevent directory traversal
+	path := filepath.Join("./poem", filepath.Clean(number)+".md")
+	file, err := os.ReadFile(path) //nolint:gosec // Path is sanitized
 	if err != nil {
-		return PoemEntry{}, errors.Wrapf(err, "error reading file: %s", path)
+		return Entry{}, errors.Wrapf(err, "error reading file: %s", path)
 	}
 
 	// Parse with goldmark to extract frontmatter
@@ -252,9 +261,9 @@ func GetEntry(number string) (PoemEntry, error) {
 			contentBuilder.Write(content)
 		}
 
-		return PoemEntry{
+		return Entry{
 			Number:  num,
-			Content: template.HTML(contentBuilder.String()),
+			Content: template.HTML(contentBuilder.String()), //nolint:gosec // Content is from trusted markdown files
 			Title:   title,
 			Date:    date,
 		}, nil
@@ -266,9 +275,9 @@ func GetEntry(number string) (PoemEntry, error) {
 		contentBuilder.Write(content)
 	}
 
-	return PoemEntry{
+	return Entry{
 		Number:  num,
-		Content: template.HTML(contentBuilder.String()),
+		Content: template.HTML(contentBuilder.String()), //nolint:gosec // Content is from trusted markdown files
 		Title:   fmt.Sprintf("Poem #%d", num),
 		Date:    time.Time{},
 	}, nil

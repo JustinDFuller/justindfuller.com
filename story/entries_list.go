@@ -1,10 +1,12 @@
+// Package story handles story entries
 package story
 
 import (
 	"time"
 )
 
-type StoryEntry struct {
+// Entry represents a story with its metadata
+type Entry struct {
 	Title          string
 	SubTitle       string // Optional subtitle field for compatibility with shared template
 	Slug           string
@@ -14,7 +16,7 @@ type StoryEntry struct {
 }
 
 // Entries contains all story entries for display
-var Entries = []StoryEntry{
+var Entries = []Entry{
 	{
 		Title:          "The Philosophy of Trees",
 		Slug:           "the_philosophy_of_trees",
@@ -46,8 +48,8 @@ var Entries = []StoryEntry{
 }
 
 // GetPublishedEntries returns only non-draft entries
-func GetPublishedEntries() []StoryEntry {
-	var published []StoryEntry
+func GetPublishedEntries() []Entry {
+	var published []Entry
 	for _, entry := range Entries {
 		if !entry.IsDraft {
 			published = append(published, entry)

@@ -1,3 +1,4 @@
+// Package review handles book review entries
 package review
 
 import (
@@ -17,7 +18,8 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-type ReviewEntry struct {
+// Entry represents a book review with its metadata
+type Entry struct {
 	Title          string
 	SubTitle       string // Optional subtitle field for compatibility with shared template
 	Slug           string
@@ -64,13 +66,13 @@ func extractFirstParagraph(content string) string {
 }
 
 // GetEntries dynamically reads review markdown files
-func GetEntries() ([]ReviewEntry, error) {
+func GetEntries() ([]Entry, error) {
 	files, err := os.ReadDir("./review")
 	if err != nil {
 		return nil, errors.Wrap(err, "error reading review directory")
 	}
 
-	var entries []ReviewEntry
+	entries := make([]Entry, 0, len(files))
 
 	for _, file := range files {
 		name := file.Name()
@@ -81,7 +83,7 @@ func GetEntries() ([]ReviewEntry, error) {
 		}
 
 		path := fmt.Sprintf("./review/%s", name)
-		content, err := os.ReadFile(path)
+		content, err := os.ReadFile(path) //nolint:gosec // Path is from filtered directory listing
 		if err != nil {
 			continue // Skip files we can't read
 		}
@@ -144,7 +146,7 @@ func GetEntries() ([]ReviewEntry, error) {
 		// Extract first paragraph
 		firstParagraph := extractFirstParagraph(string(content))
 
-		entries = append(entries, ReviewEntry{
+		entries = append(entries, Entry{
 			Title:          title,
 			Slug:           slug,
 			FirstParagraph: firstParagraph,
@@ -161,11 +163,11 @@ func GetEntries() ([]ReviewEntry, error) {
 }
 
 // Entries is a compatibility variable that returns the dynamic entries
-var Entries = func() []ReviewEntry {
+var Entries = func() []Entry {
 	entries, err := GetEntries()
 	if err != nil {
 		// Return empty slice on error
-		return []ReviewEntry{}
+		return []Entry{}
 	}
 	return entries
 }()

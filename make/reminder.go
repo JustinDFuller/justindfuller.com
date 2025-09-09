@@ -14,18 +14,21 @@ import (
 
 const twelveHours = 1000 * 60 * 60 * 12
 
+// Reminder represents a reminder entry with title and content
 type Reminder struct {
 	Time         time.Time             `json:"time"`
 	Minutes      int                   `json:"minutes"`
 	Subscription *webpush.Subscription `json:"subscription"`
 }
 
+// ReminderConfig contains configuration for sending reminders
 type ReminderConfig struct {
 	PublicKey  string `secretmanager:"reminder_public_key"`
 	PrivateKey string `secretmanager:"reminder_private_key"`
 	Subscriber string `secretmanager:"reminder_subscriber"`
 }
 
+// SetHandler handles requests to set reminder preferences
 func SetHandler(w http.ResponseWriter, r *http.Request) {
 	client, err := cloudtasks.NewClient(r.Context())
 	if err != nil {
@@ -90,6 +93,7 @@ func SetHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Created task: %v", createdTask)
 }
 
+// SendHandler returns an HTTP handler for sending reminders
 func SendHandler(reminderConfig ReminderConfig) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var reminder Reminder

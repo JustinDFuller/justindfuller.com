@@ -1,3 +1,4 @@
+// Package main generates static files for the website
 package main
 
 import (
@@ -26,6 +27,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+// Page represents a static page to be generated
 type Page struct {
 	URL          string
 	File         string
@@ -35,7 +37,8 @@ type Page struct {
 
 // GenerateAllRoutes discovers all routes dynamically from the content packages
 func GenerateAllRoutes() []Page {
-	var pages []Page
+	// Pre-allocate with estimated capacity for better performance
+	pages := make([]Page, 0, 100)
 
 	// Static pages (always present)
 	pages = append(pages, Page{URL: "/", File: "index.html"})
@@ -192,7 +195,8 @@ func WriteRoutesJSON(pages []Page, buildDir string) error {
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(filepath.Join(buildDir, "routes.json"), data, 0644)
+	// routes.json needs to be world-readable for web server access
+	return os.WriteFile(filepath.Join(buildDir, "routes.json"), data, 0644) //nolint:gosec // Public route file
 }
 
 func main() {
@@ -263,7 +267,7 @@ func main() {
 					return fmt.Errorf("fetching %s returned status %d", url, resp.StatusCode)
 				}
 
-				out, err := os.Create(dest)
+				out, err := os.Create(dest) //nolint:gosec // Dest is from hardcoded page routes
 				if err != nil {
 					return fmt.Errorf("creating %s: %w", dest, err)
 				}

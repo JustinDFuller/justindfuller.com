@@ -1,3 +1,4 @@
+// Package about handles the about page content and metadata
 package about
 
 import (
@@ -13,14 +14,17 @@ import (
 )
 
 //go:embed about.md
+// AboutContent holds the markdown content for the about page
 var AboutContent string
 
+// Entry represents the about page with its content
 type Entry struct {
 	Title   string
 	Content string
 	Date    time.Time
 }
 
+// Get returns the about page entry with processed content
 func Get() Entry {
 	md := goldmark.New(
 		goldmark.WithExtensions(extension.GFM, meta.Meta),

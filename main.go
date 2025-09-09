@@ -1,3 +1,4 @@
+// Package main runs the web server for the website
 package main
 
 import (
@@ -161,7 +162,7 @@ func main() {
 					return
 				}
 
-				if err := templates.ExecuteTemplate(w, "/aphorism/entry.template.html", data[aphorism.AphorismEntry]{
+				if err := templates.ExecuteTemplate(w, "/aphorism/entry.template.html", data[aphorism.Entry]{
 					Title: fmt.Sprintf("Aphorism #%d", entry.Number),
 					Meta:  "aphorism",
 					Entry: entry,
@@ -232,7 +233,7 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data[word.WordEntry]{
+		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data[word.Entry]{
 			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
@@ -253,7 +254,7 @@ func main() {
 					logWarning("Error reading poem", err)
 					return
 				}
-				if err := templates.ExecuteTemplate(w, "/poem/entry.template.html", data[poem.PoemEntry]{
+				if err := templates.ExecuteTemplate(w, "/poem/entry.template.html", data[poem.Entry]{
 					Title: entry.Title,
 					Meta:  "poem",
 					Entry: entry,
@@ -318,7 +319,7 @@ func main() {
 
 	http.HandleFunc("/story", func(w http.ResponseWriter, _ *http.Request) {
 		entries := story.GetPublishedEntries()
-		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data[story.StoryEntry]{
+		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data[story.Entry]{
 			Title:   "Story",
 			Entries: entries,
 		}); err != nil {
@@ -345,7 +346,7 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/story/entry.template.html", data[story.StoryEntryWithContent]{
+		if err := templates.ExecuteTemplate(w, "/story/entry.template.html", data[story.EntryWithContent]{
 			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
@@ -447,7 +448,7 @@ func main() {
 	})
 
 	http.HandleFunc("/review", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[review.ReviewEntry]{
+		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[review.Entry]{
 			Title:   "Review",
 			Entries: review.Entries,
 		}); err != nil {
@@ -474,7 +475,7 @@ func main() {
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/review/entry.template.html", data[review.ReviewEntryWithContent]{
+		if err := templates.ExecuteTemplate(w, "/review/entry.template.html", data[review.EntryWithContent]{
 			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
@@ -611,6 +612,7 @@ func main() {
 	}
 }
 
+// Title converts a slug to a title-cased string
 func Title(s string) string {
 	s = strings.ReplaceAll(s, "_", " ")
 	s = strings.ReplaceAll(s, "-", " ")

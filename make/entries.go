@@ -1,9 +1,11 @@
+// Package grass handles make/project entries
 package grass
 
 import (
 	"time"
 )
 
+// ProjectEntry represents a project with its metadata and content
 type ProjectEntry struct {
 	Title          string
 	Slug           string

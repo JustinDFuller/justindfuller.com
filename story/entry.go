@@ -16,16 +16,17 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-// Extend existing StoryEntry with Content
-type StoryEntryWithContent struct {
-	StoryEntry
+// EntryWithContent extends Entry with HTML content
+type EntryWithContent struct {
+	Entry
 	Content template.HTML
 }
 
-func GetEntry(want string) (StoryEntryWithContent, error) {
+// GetEntry retrieves a story entry by slug with full content
+func GetEntry(want string) (EntryWithContent, error) {
 	files, err := os.ReadDir("./story")
 	if err != nil {
-		return StoryEntryWithContent{}, errors.Wrap(err, "error reading story directory")
+		return EntryWithContent{}, errors.Wrap(err, "error reading story directory")
 	}
 
 	var name string
@@ -37,14 +38,14 @@ func GetEntry(want string) (StoryEntryWithContent, error) {
 	}
 
 	if name == "" {
-		return StoryEntryWithContent{}, errors.New("not found")
+		return EntryWithContent{}, errors.New("not found")
 	}
 
 	path := fmt.Sprintf("./story/%s", name)
 
-	file, err := os.ReadFile(path)
+	file, err := os.ReadFile(path) //nolint:gosec // Path is sanitized from entries list
 	if err != nil {
-		return StoryEntryWithContent{}, errors.Wrapf(err, "error reading story: %s", path)
+		return EntryWithContent{}, errors.Wrapf(err, "error reading story: %s", path)
 	}
 
 	md := goldmark.New(
@@ -61,7 +62,7 @@ func GetEntry(want string) (StoryEntryWithContent, error) {
 	var buf bytes.Buffer
 	context := parser.NewContext()
 	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
-		return StoryEntryWithContent{}, errors.Wrap(err, "error converting markdown")
+		return EntryWithContent{}, errors.Wrap(err, "error converting markdown")
 	}
 
 	// Extract metadata
@@ -122,17 +123,17 @@ func GetEntry(want string) (StoryEntryWithContent, error) {
 		}
 	}
 
-	return StoryEntryWithContent{
-		StoryEntry: StoryEntry{
+	return EntryWithContent{
+		Entry: Entry{
 			Title: title,
 			Date:  date,
 		},
-		Content: template.HTML(contentHTML),
+		Content: template.HTML(contentHTML), //nolint:gosec // Content is from trusted markdown files
 	}, nil
 }
 
-// Legacy function for backward compatibility
-func Entry(want string) ([]byte, error) {
+// GetRawEntry returns a story entry as a byte array for backward compatibility
+func GetRawEntry(want string) ([]byte, error) {
 	entry, err := GetEntry(want)
 	if err != nil {
 		return nil, err

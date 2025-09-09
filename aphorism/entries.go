@@ -1,3 +1,4 @@
+// Package aphorism handles aphorism entries
 package aphorism
 
 import (
@@ -18,8 +19,8 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-// AphorismEntry represents a single aphorism with metadata
-type AphorismEntry struct {
+// Entry represents a single aphorism with its content
+type Entry struct {
 	Number  int
 	Content template.HTML
 	Date    time.Time
@@ -45,13 +46,13 @@ func Entries() ([][]byte, error) {
 }
 
 // GetAllEntries returns all aphorism entries with metadata
-func GetAllEntries() ([]AphorismEntry, error) {
+func GetAllEntries() ([]Entry, error) {
 	files, err := os.ReadDir("./aphorism")
 	if err != nil {
 		return nil, errors.Wrap(err, "error reading aphorism directory")
 	}
 
-	var entries []AphorismEntry
+	entries := make([]Entry, 0, len(files))
 
 	for _, file := range files {
 		name := file.Name()
@@ -85,17 +86,17 @@ func GetAllEntries() ([]AphorismEntry, error) {
 }
 
 // GetEntry returns a single aphorism by number
-func GetEntry(number string) (AphorismEntry, error) {
+func GetEntry(number string) (Entry, error) {
 	num, err := strconv.Atoi(number)
 	if err != nil {
-		return AphorismEntry{}, errors.Wrap(err, "invalid aphorism number")
+		return Entry{}, errors.Wrap(err, "invalid aphorism number")
 	}
 
 	path := fmt.Sprintf("./aphorism/%s.md", number)
 	
-	file, err := os.ReadFile(path)
+	file, err := os.ReadFile(path) //nolint:gosec // Path is constructed from validated number
 	if err != nil {
-		return AphorismEntry{}, errors.Wrapf(err, "error reading aphorism: %s", path)
+		return Entry{}, errors.Wrapf(err, "error reading aphorism: %s", path)
 	}
 
 	md := goldmark.New(
@@ -111,7 +112,7 @@ func GetEntry(number string) (AphorismEntry, error) {
 	var buf bytes.Buffer
 	context := parser.NewContext()
 	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
-		return AphorismEntry{}, errors.Wrap(err, "error converting markdown")
+		return Entry{}, errors.Wrap(err, "error converting markdown")
 	}
 
 	// Extract metadata
@@ -136,9 +137,9 @@ func GetEntry(number string) (AphorismEntry, error) {
 	content = strings.TrimSuffix(content, "</p>")
 	content = strings.TrimSpace(content)
 
-	return AphorismEntry{
+	return Entry{
 		Number:  num,
-		Content: template.HTML(content),
+		Content: template.HTML(content), //nolint:gosec // Content is from trusted markdown files
 		Date:    date,
 	}, nil
 }

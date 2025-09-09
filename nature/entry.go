@@ -1,3 +1,4 @@
+// Package nature handles nature-related content entries
 package nature
 
 import (
@@ -15,6 +16,7 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
+// Entry represents a nature content entry with its metadata
 type Entry struct {
 	Title    string
 	SubTitle string
@@ -64,7 +66,7 @@ func init() { //nolint:gochecknoinits
 		}
 
 		path := fmt.Sprintf("./nature/%s", name)
-		content, err := os.ReadFile(path)
+		content, err := os.ReadFile(path) //nolint:gosec // Path is from filtered directory listing
 		if err != nil {
 			continue
 		}
@@ -168,10 +170,12 @@ func init() { //nolint:gochecknoinits
 	errEntry = nil
 }
 
+// Entries returns all nature entries from the filesystem
 func Entries() ([]Entry, error) {
 	return entries, errEntry
 }
 
+// EntryBySlug retrieves a specific nature entry by its slug
 func EntryBySlug(slug string) (Entry, error) {
 	for _, entry := range entries {
 		if entry.Slug == slug {

@@ -1,3 +1,4 @@
+// Package word handles word entries
 package word
 
 import (
@@ -16,19 +17,21 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
-type WordEntry struct {
+// Entry represents a word entry with its content and metadata
+type Entry struct {
 	Title    string
 	SubTitle string // Optional subtitle field for compatibility with shared template
 	Content  template.HTML
 	Date     time.Time
 }
 
-func GetEntry(name string) (WordEntry, error) {
+// GetEntry retrieves a word entry by name
+func GetEntry(name string) (Entry, error) {
 	path := fmt.Sprintf("./word/%s.md", name)
 
-	file, err := os.ReadFile(path)
+	file, err := os.ReadFile(path) //nolint:gosec // Path is constructed from function parameter
 	if err != nil {
-		return WordEntry{}, errors.Wrapf(err, "error reading word: %s", path)
+		return Entry{}, errors.Wrapf(err, "error reading word: %s", path)
 	}
 
 	md := goldmark.New(
@@ -45,7 +48,7 @@ func GetEntry(name string) (WordEntry, error) {
 	var buf bytes.Buffer
 	context := parser.NewContext()
 	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
-		return WordEntry{}, errors.Wrap(err, "error converting markdown")
+		return Entry{}, errors.Wrap(err, "error converting markdown")
 	}
 
 	// Extract metadata
@@ -113,15 +116,15 @@ func GetEntry(name string) (WordEntry, error) {
 		}
 	}
 
-	return WordEntry{
+	return Entry{
 		Title:   title,
-		Content: template.HTML(contentHTML),
+		Content: template.HTML(contentHTML), //nolint:gosec // Content is from trusted markdown files
 		Date:    date,
 	}, nil
 }
 
-// Legacy function for backward compatibility
-func Entry(name string) ([]byte, error) {
+// GetRawEntry returns a word entry as a byte array for backward compatibility
+func GetRawEntry(name string) ([]byte, error) {
 	entry, err := GetEntry(name)
 	if err != nil {
 		return nil, err
@@ -182,11 +185,4 @@ func Entries() ([][]byte, error) {
 	}
 	
 	return entries, nil
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

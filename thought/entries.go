@@ -1,3 +1,4 @@
+// Package thought handles thought/blog entries
 package thought
 
 import (
@@ -17,6 +18,7 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
+// Entry represents a thought entry with its metadata and content
 type Entry struct {
 	Title       string
 	SubTitle    string // Optional subtitle field for compatibility with shared template
@@ -92,7 +94,6 @@ func parseEntry(name string, file []byte) (Entry, error) {
 		title = strings.TrimSuffix(title, ".md")
 		title = strings.ReplaceAll(title, "-", " ")
 		title = strings.ReplaceAll(title, "_", " ")
-		title = strings.ReplaceAll(title, "?", "?")
 	}
 
 	// Extract first paragraph as description
@@ -126,11 +127,12 @@ func parseEntry(name string, file []byte) (Entry, error) {
 		Title:       title,
 		Slug:        slug,
 		Description: description,
-		Content:     template.HTML(buf.Bytes()),
+		Content:     template.HTML(buf.Bytes()), //nolint:gosec // Content is from trusted markdown files
 		Date:        date,
 	}, nil
 }
 
+// GetEntry retrieves a thought entry by slug
 func GetEntry(want string) (Entry, error) {
 	files, err := os.ReadDir("./thought")
 	if err != nil {
@@ -151,7 +153,7 @@ func GetEntry(want string) (Entry, error) {
 
 	path := fmt.Sprintf("./thought/%s", name)
 
-	file, err := os.ReadFile(path)
+	file, err := os.ReadFile(path) //nolint:gosec // Path is from entries list
 	if err != nil {
 		return Entry{}, errors.Wrapf(err, "error reading thought entry: %s", path)
 	}
@@ -159,13 +161,14 @@ func GetEntry(want string) (Entry, error) {
 	return parseEntry(name, file)
 }
 
+// GetEntries returns all thought entries sorted by date
 func GetEntries() ([]Entry, error) {
 	files, err := os.ReadDir("./thought")
 	if err != nil {
 		return nil, errors.Wrap(err, "error reading thought directory")
 	}
 
-	var entries []Entry
+	entries := make([]Entry, 0, len(files))
 
 	for _, dir := range files {
 		name := dir.Name()
@@ -181,7 +184,7 @@ func GetEntries() ([]Entry, error) {
 		}
 
 		path := fmt.Sprintf("./thought/%s", name)
-		file, err := os.ReadFile(path)
+		file, err := os.ReadFile(path) //nolint:gosec // Path is from filtered directory listing
 		if err != nil {
 			continue // Skip files we can't read
 		}

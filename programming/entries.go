@@ -1,3 +1,4 @@
+// Package programming handles programming article entries
 package programming
 
 import (
@@ -15,6 +16,7 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
+// Entry represents a programming article with its metadata
 type Entry struct {
 	Title          string
 	SubTitle       string // Optional subtitle field for compatibility with shared template
@@ -134,7 +136,7 @@ func parseMarkdownWithMeta(content string) parsedContent {
 	context := parser.NewContext()
 	if err := md.Convert([]byte(content), &buf, parser.WithContext(context)); err != nil {
 		// If parsing fails, return the original content
-		return parsedContent{HTML: template.HTML(content), IsDraft: false}
+		return parsedContent{HTML: template.HTML(content), IsDraft: false} //nolint:gosec // Content is from trusted markdown files
 	}
 
 	// Check if draft is set to true in metadata
@@ -146,7 +148,7 @@ func parseMarkdownWithMeta(content string) parsedContent {
 		}
 	}
 
-	return parsedContent{HTML: template.HTML(buf.String()), IsDraft: isDraft}
+	return parsedContent{HTML: template.HTML(buf.String()), IsDraft: isDraft} //nolint:gosec // Content is from trusted markdown files
 }
 
 func parseMarkdown(content string) template.HTML {
