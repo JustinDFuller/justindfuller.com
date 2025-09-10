@@ -48,15 +48,13 @@ jobs:
           PR_NUMBER=${{ github.event.pull_request.number }}
           SERVICE_NAME="pr-${PR_NUMBER}"
           
-          # Use the minimal preview template (everything through Go handler)
-          cp .appengine/app-preview-minimal.yaml ./app.yaml
+          # Use the same app.yaml and main.go as production
+          cp .appengine/app.yaml ./app.yaml
+          echo "service: ${SERVICE_NAME}" >> ./app.yaml
           
-          # Update service name in the preview config
-          sed -i "s/service: preview-template/service: ${SERVICE_NAME}/" ./app.yaml
-          
-          # Use the cached preview main.go for dynamic serving with proper caching
+          # Use the same main.go for serving
           rm -f main.go
-          cp .appengine/main-preview-cached.go ./main.go
+          cp .appengine/main.go ./main.go
 
       - name: Auth
         uses: "google-github-actions/auth@v2"

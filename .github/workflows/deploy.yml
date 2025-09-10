@@ -44,8 +44,11 @@ jobs:
 
       - name: "prep"
         run: |
-          rm main.go
-          mv .appengine/main.go .appengine/app.yaml .appengine/dispatch.yaml ./
+          rm -f main.go
+          cp .appengine/main.go ./main.go
+          cp .appengine/app.yaml ./app.yaml
+          echo "service: default" >> ./app.yaml
+          cp .appengine/dispatch.yaml ./
 
       - name: "auth"
         uses: "google-github-actions/auth@v2"
