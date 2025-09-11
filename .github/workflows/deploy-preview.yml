@@ -45,7 +45,8 @@ jobs:
           PR_NUMBER=${{ github.event.pull_request.number }}
           SERVICE_NAME="pr-${PR_NUMBER}"
           
-          # Append service name to app.yaml
+          # Append service name to app.yaml with proper newline
+          echo "" >> ./app.yaml
           echo "service: ${SERVICE_NAME}" >> ./app.yaml
 
       - name: Auth

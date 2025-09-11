@@ -41,6 +41,7 @@ jobs:
 
       - name: "prep"
         run: |
+          echo "" >> ./app.yaml
           echo "service: default" >> ./app.yaml
 
       - name: "auth"
