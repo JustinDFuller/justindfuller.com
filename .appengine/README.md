@@ -6,17 +6,15 @@ This directory contains the unified deployment configuration for both production
 
 ### Core Files (Unified)
 - `app.yaml` - App Engine configuration used by both production and preview
-- `main.go` - Single Go application that serves static files with proper caching
+- `main.go` - Single Go application that serves all content dynamically
 - `dispatch.yaml` - URL routing rules for production services
-- `build.sh` - Build script that generates static files
 
 ### How It Works
 
-1. **Build Process**: The `build.sh` script runs the main application to generate static HTML files into `.build/` directory
-2. **Deployment**: 
+1. **Deployment**: 
    - Production: Uses `app.yaml` with `service: default` appended
    - Preview: Uses `app.yaml` with `service: pr-{number}` appended
-3. **Serving**: `main.go` serves static files from `.build/` with proper caching headers
+2. **Serving**: `main.go` serves all content dynamically with proper caching headers
 
 ### Key Improvements
 

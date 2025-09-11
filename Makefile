@@ -67,29 +67,18 @@ server-fast:
 
 .PHONY: server-watch
 server-watch:
-	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server";
+	@reflex -s --decoration=none --inverse-regex=".md" -- sh -c "clear && $(MAKE) -s server";
 
 .PHONY: server-watch-fast
 server-watch-fast:
-	@reflex -s --decoration=none --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server-fast";
+	@reflex -s --decoration=none -- sh -c "clear && $(MAKE) -s server-fast";
 
 .PHONY: format-watch
 format-watch:
-	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build"-- sh -c "clear && $(MAKE) -s format";
+	@reflex -s --decoration=none --inverse-regex=".md" -- sh -c "clear && $(MAKE) -s format";
 
 .PHONY: deploy
-deploy: build
+deploy:
 	@echo ${COLOR_GRAY}Begin gcloud app deploy.${COLOR_NC};
 	@gcloud app deploy --appyaml=./app.yaml;
 
-.PHONY: build
-build:
-	@echo ${COLOR_GRAY}Begin build process.${COLOR_NC};
-	@rm -rf ./.build;
-	@mkdir ./.build;
-	@go run ./build/main.go;
-	@cp -r ./image ./.build
-
-.PHONY: build-watch
-build-watch:
-	@reflex -s -- sh -c "$(MAKE) build";

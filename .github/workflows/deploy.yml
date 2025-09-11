@@ -39,9 +39,6 @@ jobs:
         with:
           go-version-file: "./go.mod"
 
-      - name: "build"
-        run: "timeout 120 .appengine/build.sh"
-
       - name: "prep"
         run: |
           echo "service: default" >> ./app.yaml

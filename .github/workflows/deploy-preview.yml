@@ -40,9 +40,6 @@ jobs:
         with:
           go-version-file: "./go.mod"
 
-      - name: Build
-        run: "timeout 120 .appengine/build.sh"
-
       - name: Generate preview app.yaml
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
