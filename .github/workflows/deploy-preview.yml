@@ -63,7 +63,7 @@ jobs:
         with:
           project_id: "justindfuller"
           deliverables: "app.yaml"
-          promote: false
+          promote: true
           version: "pr-${{ github.event.pull_request.number }}-${{ github.run_id }}"
 
       - name: Update Dispatch Rules
