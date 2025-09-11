@@ -26,8 +26,6 @@ For example, one code smell is comments. If you see comments, you may be dealing
 
 Looking at the biases outlined in Thinking, Fast and Slow, we can develop some bias smells to help us quickly detect potential opportunities for bias. The smell can also help us quickly identify a solution. They'll be heuristics, so they won't be terribly accurate, but that doesn't mean they can't be helpful.
 
-{.table .table-striped .table-responsive}
-
 | Question | Bias | Solution |
 |------|-------------|------------------------------------|
 | What *usually* happens when...? How *often* does...?       | [Availability Bias](https://en.wikipedia.org/wiki/Availability_heuristic)                                              | Stop, admit that you don't know what usually happens, that you remember a few examples but haven't actually measured the frequency. Instead, collect and analyze data.                                             |
