@@ -828,6 +828,15 @@
     border-radius: var(--border-radius-md);
   }
 
+  /* Reduce margin for paragraphs inside blockquotes */
+  .entry-body--thought blockquote p {
+    margin-bottom: var(--space-sm);
+  }
+
+  .entry-body--thought blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
   /* Footer */
   footer {
     background: transparent;
