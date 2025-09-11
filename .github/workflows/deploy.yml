@@ -55,4 +55,4 @@ jobs:
         uses: "google-github-actions/deploy-appengine@v2"
         with:
           project_id: "justindfuller"
-          deliverables: "app.yaml"
+          deliverables: "app.yaml dispatch.yaml"
