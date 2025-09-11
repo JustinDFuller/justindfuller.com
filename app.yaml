@@ -1,7 +1,4 @@
----
-
 runtime: go123
-service: preview-template
 
 automatic_scaling:
   max_instances: 1
@@ -11,7 +8,7 @@ automatic_scaling:
 
 handlers:
   # Route everything through the Go application
-  # The Go app will handle caching headers for optimal GAE edge caching
+  # The Go app will handle static serving with proper caching
   - url: /.*
     script: auto
     secure: always
