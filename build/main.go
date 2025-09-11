@@ -2,11 +2,9 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io"
 	"log"
 	"net/http"
@@ -294,27 +292,6 @@ func main() {
 		return nil
 	})
 
-	// Generate app.yaml from template
-	wgMain.Go(func() error {
-		tmplPath := filepath.FromSlash(".appengine/app.tmpl.yaml")
-
-		tmpl, err := template.ParseFiles(tmplPath)
-		if err != nil {
-			return fmt.Errorf("parsing template: %w", err)
-		}
-
-		var buf bytes.Buffer
-		if err := tmpl.Execute(&buf, pages); err != nil {
-			return fmt.Errorf("executing template: %w", err)
-		}
-
-		if err := os.WriteFile("./.appengine/app.yaml", buf.Bytes(), 0600); err != nil {
-			return fmt.Errorf("writing app.yaml: %w", err)
-		}
-
-		log.Println("Generated app.yaml with all routes")
-		return nil
-	})
 
 	if err := wgMain.Wait(); err != nil {
 		log.Fatalf("Error building: %s", err)

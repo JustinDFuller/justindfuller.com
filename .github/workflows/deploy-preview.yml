@@ -48,13 +48,8 @@ jobs:
           PR_NUMBER=${{ github.event.pull_request.number }}
           SERVICE_NAME="pr-${PR_NUMBER}"
           
-          # Use the same app.yaml and main.go as production
-          cp .appengine/app.yaml ./app.yaml
+          # Append service name to app.yaml
           echo "service: ${SERVICE_NAME}" >> ./app.yaml
-          
-          # Use the same main.go for serving
-          rm -f main.go
-          cp .appengine/main.go ./main.go
 
       - name: Auth
         uses: "google-github-actions/auth@v2"
