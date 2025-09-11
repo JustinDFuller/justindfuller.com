@@ -423,6 +423,7 @@
   .section-link:nth-child(7) { animation-delay: 0.4s; }
   .section-link:nth-child(8) { animation-delay: 0.45s; }
   .section-link:nth-child(9) { animation-delay: 0.5s; }
+  .section-link:nth-child(10) { animation-delay: 0.55s; }
 
   .section-link:hover {
     color: var(--color-accent-pink);
