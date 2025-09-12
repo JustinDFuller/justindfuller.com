@@ -80,5 +80,5 @@ format-watch:
 .PHONY: deploy
 deploy:
 	@echo ${COLOR_GRAY}Begin gcloud app deploy.${COLOR_NC};
-	@gcloud app deploy --appyaml=./app.yaml;
+	@gcloud app deploy --appyaml=./.appengine/app.yaml;
 
