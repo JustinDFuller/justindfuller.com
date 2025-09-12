@@ -90,11 +90,12 @@ jobs:
             const service_name = `pr-${pr_number}`;
             const preview_url = `https://${service_name}-dot-justindfuller.uc.r.appspot.com`;
             
-            // Find existing comment
-            const { data: comments } = await github.rest.issues.listComments({
+            // Find existing comment - use paginate to get ALL comments
+            const comments = await github.paginate(github.rest.issues.listComments, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: pr_number
+              issue_number: pr_number,
+              per_page: 100
             });
             
             const botComment = comments.find(comment => 
