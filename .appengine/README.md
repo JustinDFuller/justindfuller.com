@@ -12,7 +12,6 @@ This directory contains the unified deployment configuration for both production
 
 ### How It Works
 
-
 1. **Deployment**:
    - Production: Uses `app.yaml` with `service: default` appended
    - Preview: Uses `app.yaml` with `service: pr-{number}` appended
