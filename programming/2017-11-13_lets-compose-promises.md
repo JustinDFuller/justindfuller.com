@@ -90,7 +90,7 @@ const compose = (...functions) =>
 
 So.. what exactly is going on here? Let me walk you through it step by step. This can be confusing, particularly if you aren’t familiar with a recent update to JavaScript known as [ES6](http://es6-features.org).
 
-First, we accept any amount of functions. Then we use the [spread operator ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator)to gather all of those functions into a single array.
+First, we accept any amount of functions. Then we use the [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator)to gather all of those functions into a single array.
 
 Next, we accept the initial value that our compose function will use as its first argument.
 
@@ -157,7 +157,7 @@ add100ToNumberString(new Promise(resolve => {
 
 You can continue to chain because the result of `add100ToNumberString` is a `Promise`. You can use `.catch()` and `.finally()` If needed as well!
 
-### Try it yourself!
+### Try it yourself
 
 Below I’ve embedded a [CodePen](https://codepen.io/) playground with all this code in it so that you can try it out for yourself! Open up the console to see the results.
 

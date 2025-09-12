@@ -39,11 +39,11 @@ type (
 )
 ```
 
-Notice the `chan` keyword in the function argument definitions. A `chan` is a channel. 
+Notice the `chan` keyword in the function argument definitions. A `chan` is a channel.
 
-Next comes the arrow `<-` that shows which way the data flow to or from the channel. The `WriteOnly` function receives a channel that can only be written to. The `ReadOnly` function receives a channel that can only be read from. 
+Next comes the arrow `<-` that shows which way the data flow to or from the channel. The `WriteOnly` function receives a channel that can only be written to. The `ReadOnly` function receives a channel that can only be read from.
 
-Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language. Channel flow is important because it's how goroutines communicate. 
+Being able to declare the flow of the data to a channel is an important way in which channels are first-class members of the Go programming language. Channel flow is important because it's how goroutines communicate.
 
 It's directly related to this phrase you might have seen before:
 
@@ -73,7 +73,7 @@ func IntAppender() {
 }
 ```
 
-`IntAppender` creates a goroutine for each integer that is appended to the array. Even though it's a little too trivial to be realistic, it still serves an important demonstrative purpose. 
+`IntAppender` creates a goroutine for each integer that is appended to the array. Even though it's a little too trivial to be realistic, it still serves an important demonstrative purpose.
 
 In `IntAppender` each goroutine shares the same memory—the `ints` array—which it appends integers to.
 
@@ -138,7 +138,7 @@ var urls = [...]string{
 }
 ```
 
-The URLs have been declared as an array of strings, which will allow them to be iterated. 
+The URLs have been declared as an array of strings, which will allow them to be iterated.
 
 Another neat feature of Go is how you can declare `const` blocks. Like this:
 
@@ -160,7 +160,7 @@ var urls = [...]string{
 }
 ```
 
-The URLs are for top stories, most popular stories, and the current hardcover fiction reviews. 
+The URLs are for top stories, most popular stories, and the current hardcover fiction reviews.
 
 Instead of a real `http.Get` I will substitute a fake `fetch` function. This will provide a clearer demonstration of the timeout.
 
@@ -182,7 +182,7 @@ In Go, the random number generator is, by default, deterministic.
 
 > In mathematics, computer science and physics, a deterministic system is a system in which no randomness is involved in the development of future states of the system. - [The Encyclopedia of Science](https://www.daviddarling.info/encyclopedia/D/deterministic_system.html)
 
-This means that we have to seed the randomizer with something that changes; if not, the randomizer will always produce the same value. So we create a source, typically based on the current time. 
+This means that we have to seed the randomizer with something that changes; if not, the randomizer will always produce the same value. So we create a source, typically based on the current time.
 
 ```go
 source := rand.NewSource(time.Now().UnixNano())
@@ -249,11 +249,11 @@ First, look at the function argument declaration.
 func stringSliceFromChannel(maxLength int, input <-chan string) []string {
 ```
 
-The `stringSliceFromChannel` function declares that it will accept a read-only channel, `channel <-chan string`. This indicates that the function will convert the channel's inputs into a different type of output—a slice of strings, or `[]string`. 
+The `stringSliceFromChannel` function declares that it will accept a read-only channel, `channel <-chan string`. This indicates that the function will convert the channel's inputs into a different type of output—a slice of strings, or `[]string`.
 
 Even though it's valid to declare a function argument with, `channel chan string`, opting for the arrow `<-` operator makes the function's intent clearer. This can be particularly helpful in a long function.
 
-Next, the timeout is created. 
+Next, the timeout is created.
 
 ```go
 timeout := time.After(time.Duration(80) * time.Millisecond)
@@ -261,11 +261,11 @@ timeout := time.After(time.Duration(80) * time.Millisecond)
 
 The function `time.After` returns a channel. After the given `time.Duration` it will write to the channel (_what_ it writes doesn't matter).
 
-Moving on, the `timeout` and `input` channels are used together in a `for select` loop. 
+Moving on, the `timeout` and `input` channels are used together in a `for select` loop.
 
-The `for` loop with no other arguments will loop forever until stopped by a `break` or `return`. 
+The `for` loop with no other arguments will loop forever until stopped by a `break` or `return`.
 
-The `select` acts as a `switch` statement for channels. The first `case` block to have a channel ready will execute. 
+The `select` acts as a `switch` statement for channels. The first `case` block to have a channel ready will execute.
 
 By combining the `for` and `select`, this block of code will run until the desired number of results is retrieved or until the timeout happens.
 
@@ -318,7 +318,7 @@ func main() {
 
 First, a channel is created to collect the fetch results, `channel := make(chan string)`.
 
-Next, the `urls` are looped over, creating a goroutine to fetch each url. 
+Next, the `urls` are looped over, creating a goroutine to fetch each url.
 
 ```go
 for _, url := range urls {
@@ -354,5 +354,5 @@ Finally, even though this is a neat concurrency pattern, it's unrealistic. As an
 
 Hi, I’m Justin Fuller. Thanks for reading my post. Before you go, I need to let you know that everything I’ve written here is my own opinion and is not intended to represent my employer. All code samples are my own.
 
-I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller) 
+I’d also love to hear from you, please feel free to follow me on [Github](https://github.com/justindfuller)
 or [Twitter](https://twitter.com/justin_d_fuller). Thanks again for reading!

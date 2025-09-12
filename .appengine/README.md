@@ -5,13 +5,15 @@ This directory contains the unified deployment configuration for both production
 ## Structure
 
 ### Core Files (Unified)
+
 - `app.yaml` - App Engine configuration used by both production and preview
 - `main.go` - Single Go application that serves all content dynamically
 - `dispatch.yaml` - URL routing rules for production services
 
 ### How It Works
 
-1. **Deployment**: 
+
+1. **Deployment**:
    - Production: Uses `app.yaml` with `service: default` appended
    - Preview: Uses `app.yaml` with `service: pr-{number}` appended
 2. **Serving**: `main.go` serves all content dynamically with proper caching headers
@@ -26,12 +28,14 @@ This directory contains the unified deployment configuration for both production
 ### Deployment Workflows
 
 #### Production (main branch)
+
 1. Builds static files with `make build`
 2. Copies `.appengine/main.go` to root
 3. Copies `.appengine/app.yaml` to root with `service: default` appended
 4. Deploys to App Engine
 
 #### Preview (pull requests)
+
 1. Builds static files with `make build`
 2. Copies `.appengine/main.go` to root
 3. Copies `.appengine/app.yaml` to root with `service: pr-{number}` appended
