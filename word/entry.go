@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/justindfuller/justindfuller.com/renderer"
 	"github.com/pkg/errors"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
@@ -35,7 +36,7 @@ func GetEntry(name string) (Entry, error) {
 	}
 
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, meta.Meta),
+		goldmark.WithExtensions(extension.GFM, meta.Meta, renderer.NewExtension()),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),
@@ -165,7 +166,7 @@ func Entries() ([][]byte, error) {
 		if part != "" && strings.HasPrefix(part, "##") {
 			// Convert markdown to HTML for this entry
 			md := goldmark.New(
-				goldmark.WithExtensions(extension.GFM),
+				goldmark.WithExtensions(extension.GFM, renderer.NewExtension()),
 				goldmark.WithParserOptions(
 					parser.WithAutoHeadingID(),
 				),

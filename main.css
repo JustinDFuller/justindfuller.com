@@ -765,7 +765,57 @@
     margin: var(--space-xl) 0;
   }
 
-  /* Caption styling for em elements after images */
+  /* Figure and figcaption styling for images with alt text */
+  .entry-body figure.image-with-caption,
+  .entry-body--thought figure.image-with-caption,
+  .entry-body--programming figure.image-with-caption,
+  .entry-body--word figure.image-with-caption,
+  .entry-body--story figure.image-with-caption,
+  .entry-body--review figure.image-with-caption,
+  .entry-body--poem figure.image-with-caption,
+  .entry-body--nature figure.image-with-caption,
+  .entry-body--about figure.image-with-caption,
+  .entry-body--aphorism figure.image-with-caption {
+    margin: var(--space-xl) 0;
+    text-align: center;
+  }
+
+  .entry-body figure.image-with-caption img,
+  .entry-body--thought figure.image-with-caption img,
+  .entry-body--programming figure.image-with-caption img,
+  .entry-body--word figure.image-with-caption img,
+  .entry-body--story figure.image-with-caption img,
+  .entry-body--review figure.image-with-caption img,
+  .entry-body--poem figure.image-with-caption img,
+  .entry-body--nature figure.image-with-caption img,
+  .entry-body--about figure.image-with-caption img,
+  .entry-body--aphorism figure.image-with-caption img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    margin: 0;
+  }
+
+  .entry-body figcaption.image-caption,
+  .entry-body--thought figcaption.image-caption,
+  .entry-body--programming figcaption.image-caption,
+  .entry-body--word figcaption.image-caption,
+  .entry-body--story figcaption.image-caption,
+  .entry-body--review figcaption.image-caption,
+  .entry-body--poem figcaption.image-caption,
+  .entry-body--nature figcaption.image-caption,
+  .entry-body--about figcaption.image-caption,
+  .entry-body--aphorism figcaption.image-caption {
+    display: block;
+    font-size: 0.875rem;
+    margin-top: var(--space-sm);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  /* Caption styling for em elements after images (backward compatibility) */
   .entry-body img + em,
   .entry-body--thought img + em,
   .entry-body--programming img + em,
@@ -780,12 +830,17 @@
     font-style: italic;
   }
 
-  /* Ensure adequate spacing between images and following paragraphs */
+  /* Ensure adequate spacing between images/figures and following paragraphs */
   .entry-body img + p,
   .entry-body--thought img + p,
   .entry-body--programming img + p,
   .entry-body--word img + p,
-  .entry-body--story img + p {
+  .entry-body--story img + p,
+  .entry-body figure.image-with-caption + p,
+  .entry-body--thought figure.image-with-caption + p,
+  .entry-body--programming figure.image-with-caption + p,
+  .entry-body--word figure.image-with-caption + p,
+  .entry-body--story figure.image-with-caption + p {
     margin-top: var(--space-lg);
   }
 

@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/justindfuller/justindfuller.com/renderer"
 	"github.com/pkg/errors"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
@@ -100,7 +101,7 @@ func GetEntry(number string) (Entry, error) {
 	}
 
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, meta.Meta),
+		goldmark.WithExtensions(extension.GFM, meta.Meta, renderer.NewExtension()),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),

@@ -5,7 +5,8 @@ import (
 	"bytes"
 	_ "embed"
 	"time"
-	
+
+	"github.com/justindfuller/justindfuller.com/renderer"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
@@ -27,7 +28,7 @@ type Entry struct {
 // Get returns the about page entry with processed content
 func Get() Entry {
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, meta.Meta),
+		goldmark.WithExtensions(extension.GFM, meta.Meta, renderer.NewExtension()),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),

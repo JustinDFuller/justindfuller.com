@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/justindfuller/justindfuller.com/renderer"
 	"github.com/pkg/errors"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
@@ -96,7 +97,7 @@ func Entries() ([][]byte, error) {
 
 	// Create markdown parser with meta extension
 	md := goldmark.New(
-		goldmark.WithExtensions(meta.Meta),
+		goldmark.WithExtensions(meta.Meta, renderer.NewExtension()),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),
@@ -170,7 +171,7 @@ func GetRawEntry(name string) ([][]byte, error) {
 
 	// Create markdown parser with meta extension
 	md := goldmark.New(
-		goldmark.WithExtensions(meta.Meta),
+		goldmark.WithExtensions(meta.Meta, renderer.NewExtension()),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),
