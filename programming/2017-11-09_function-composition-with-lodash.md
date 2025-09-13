@@ -100,7 +100,7 @@ const unique = _.uniqBy(filtered, 'phone');
 
 const formatPhone = c => ({
   ...c,
-  phone: `(${c.phone.slice(0, 2)})${c.phone.slice(3, 5)-${c.phone.slice(6)}}`
+  phone: `(${c.phone.slice(0, 2)})${c.phone.slice(3, 5)}-${c.phone.slice(6)}}`
 });
 
 const formatted = _.map(unique, formatPhone);
@@ -116,7 +116,7 @@ const data = [ /* data here */ ];
 
 const formatPhone = c => ({
   ...c,
-  phone: `(${c.phone.slice(0, 2)})${c.phone.slice(3, 5)-${c.phone.slice(6)}}`
+  phone: `(${c.phone.slice(0, 2)})${c.phone.slice(3, 5)}-${c.phone.slice(6)}}`
 });
 
 const formatted = _.map(
@@ -141,7 +141,7 @@ const data = [ /* data here **/ ];
 
 const formatPhone = c => ({
   ...c,
-  phone: `(${c.phone.slice(0, 2)})${c.phone.slice(3, 5)-${c.phone.slice(6)}}`
+  phone: `(${c.phone.slice(0, 2)})${c.phone.slice(3, 5)}-${c.phone.slice(6)}}`
 });
 
 const formatData = fp.compose(

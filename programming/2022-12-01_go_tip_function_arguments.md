@@ -33,7 +33,7 @@ func Email(opts EmailOptions) error {
 
     t, err := template.New("email.template.txt").ParseFiles("./email.template.txt")
     if err != nil {
-        return errors.Wrap(err, "error parsing emplate.template")
+        return errors.Wrap(err, "error parsing template.template")
     }
 
     var b bytes.Buffer

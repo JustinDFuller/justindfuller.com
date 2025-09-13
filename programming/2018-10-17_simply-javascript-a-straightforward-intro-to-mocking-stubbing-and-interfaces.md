@@ -123,7 +123,7 @@ test('foo with dependency inversion', function (t) {
     readFileAsync(filePath) {
       t.is(filePath, 'bar')
 
-      return Promise.resolve('{ success: true '})
+      return Promise.resolve('{ "success": true }')
     }
   }
 

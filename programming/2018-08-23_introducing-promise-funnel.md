@@ -70,7 +70,7 @@ To install it you can use the command:
 npm install promise-funnel --save
 ```
 
-You can also view the source code here: [https://github.com/JustinDFuller/promise-funne](https://github.com/JustinDFuller/promise-funnel)l
+You can also view the source code here: [https://github.com/JustinDFuller/promise-funnel](https://github.com/JustinDFuller/promise-funnel)l
 
 ### Feedback
 
