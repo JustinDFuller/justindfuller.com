@@ -33,6 +33,6 @@
     "markdownlint-cli2": "^0.17.2",
     "prettier": "^3.4.2",
     "stylelint": "^16.24.0",
-    "stylelint-config-standard": "^37.0.0"
+    "stylelint-config-standard": "^39.0.0"
   }
 }
