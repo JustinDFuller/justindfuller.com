@@ -19,6 +19,8 @@ import (
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 // Entry represents a programming article with its metadata
@@ -35,7 +37,7 @@ type Entry struct {
 
 
 // parseEntryMetadata parses only the metadata from a markdown file without rendering content
-func parseEntryMetadata(name string, file []byte) (Entry, error) {
+func parseEntryMetadata(name string, file []byte) Entry {
 	// Parse frontmatter
 	lines := strings.Split(string(file), "\n")
 	metaData := make(map[string]interface{})
@@ -144,7 +146,7 @@ func parseEntryMetadata(name string, file []byte) (Entry, error) {
 	// If no title in metadata, generate from slug
 	if title == "" {
 		title = strings.ReplaceAll(slug, "-", " ")
-		title = strings.Title(title)
+		title = cases.Title(language.English).String(title)
 	}
 
 	// Extract first paragraph if no description provided
@@ -164,7 +166,7 @@ func parseEntryMetadata(name string, file []byte) (Entry, error) {
 		Content:        "", // Don't render content for metadata-only parsing
 		Date:           date,
 		IsDraft:        isDraft,
-	}, nil
+	}
 }
 
 func parseEntry(name string, file []byte) (Entry, error) {
@@ -265,7 +267,7 @@ func parseEntry(name string, file []byte) (Entry, error) {
 	// If no title in metadata, generate from slug
 	if title == "" {
 		title = strings.ReplaceAll(slug, "-", " ")
-		title = strings.Title(title)
+		title = cases.Title(language.English).String(title)
 	}
 
 	// Extract first paragraph if no description provided
@@ -398,10 +400,7 @@ func GetEntries() ([]Entry, error) {
 		}
 
 		// Use lightweight metadata parsing for list views
-		entry, err := parseEntryMetadata(name, content)
-		if err != nil {
-			continue // Skip files we can't parse
-		}
+		entry := parseEntryMetadata(name, content)
 
 		// Only include non-draft entries
 		if !entry.IsDraft {

@@ -22,12 +22,28 @@ func (r *ImageRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer) {
 	reg.Register(ast.KindImage, r.renderImage)
 }
 
+// extractAltText extracts the alt text from an Image node's children
+func extractAltText(img *ast.Image, source []byte) []byte {
+	var buf []byte
+	for c := img.FirstChild(); c != nil; c = c.NextSibling() {
+		if text, ok := c.(*ast.Text); ok {
+			buf = append(buf, text.Value(source)...)
+		} else if str, ok := c.(*ast.String); ok {
+			buf = append(buf, str.Value...)
+		}
+	}
+	return buf
+}
+
 func (r *ImageRenderer) renderImage(w util.BufWriter, source []byte, n ast.Node, entering bool) (ast.WalkStatus, error) {
 	if !entering {
 		return ast.WalkContinue, nil
 	}
 
-	img := n.(*ast.Image)
+	img, ok := n.(*ast.Image)
+	if !ok {
+		return ast.WalkContinue, nil
+	}
 
 	// Start figure element
 	_, _ = w.WriteString("<figure class=\"image-with-caption\">\n")
@@ -40,12 +56,13 @@ func (r *ImageRenderer) renderImage(w util.BufWriter, source []byte, n ast.Node,
 	_, _ = w.WriteString("\"")
 
 	// Add alt text attribute
-	if img.Title != nil || img.Text(source) != nil {
+	altText := extractAltText(img, source)
+	if img.Title != nil || len(altText) > 0 {
 		_, _ = w.WriteString(" alt=\"")
 		if img.Title != nil {
 			_, _ = w.Write(util.EscapeHTML(img.Title))
 		} else {
-			_, _ = w.Write(util.EscapeHTML(img.Text(source)))
+			_, _ = w.Write(util.EscapeHTML(altText))
 		}
 		_, _ = w.WriteString("\"")
 	}
@@ -60,7 +77,6 @@ func (r *ImageRenderer) renderImage(w util.BufWriter, source []byte, n ast.Node,
 	_, _ = w.WriteString(" />\n")
 
 	// Add figcaption with alt text if it exists
-	altText := img.Text(source)
 	if len(altText) > 0 && string(altText) != "" {
 		_, _ = w.WriteString("<figcaption class=\"image-caption\">")
 		_, _ = w.Write(util.EscapeHTML(altText))

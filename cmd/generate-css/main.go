@@ -18,14 +18,14 @@ func main() {
 
 	// Create static directory if it doesn't exist
 	staticDir := "static"
-	if err := os.MkdirAll(staticDir, 0755); err != nil {
+	if err := os.MkdirAll(staticDir, 0750); err != nil {
 		fmt.Fprintf(os.Stderr, "Error creating static directory: %v\n", err)
 		os.Exit(1)
 	}
 
 	// Write CSS file
 	cssPath := filepath.Join(staticDir, "chroma.css")
-	if err := os.WriteFile(cssPath, []byte(css), 0644); err != nil {
+	if err := os.WriteFile(cssPath, []byte(css), 0600); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing CSS file: %v\n", err)
 		os.Exit(1)
 	}
