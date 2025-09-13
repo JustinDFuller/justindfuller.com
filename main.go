@@ -397,10 +397,15 @@ func main() {
 	})
 
 	http.HandleFunc("/programming", func(w http.ResponseWriter, _ *http.Request) {
-		log.Printf("Programming handler - number of entries: %d", len(programming.Entries))
+		entries, err := programming.GetEntries()
+		if err != nil {
+			log.Printf("Error getting programming entries: %s", err)
+			entries = []programming.Entry{} // Use empty slice on error
+		}
+		log.Printf("Programming handler - number of entries: %d", len(entries))
 		if err := templates.ExecuteTemplate(w, "/programming/main.template.html", data[programming.Entry]{
 			Title:   "Programming",
-			Entries: programming.Entries,
+			Entries: entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/programming/main.template.html")
 		}
@@ -422,19 +427,10 @@ func main() {
 			return
 		}
 
-		var entry programming.Entry
-		found := false
-		for _, e := range programming.Entries {
-			if e.Slug == paths[last] {
-				entry = e
-				found = true
-				break
-			}
-		}
-
-		if !found {
+		entry, err := programming.GetEntry(paths[last])
+		if err != nil {
 			http.Error(w, "Programming post not found.", http.StatusNotFound)
-			log.Printf("Programming post not found: %s", r.URL.Path)
+			log.Printf("Programming post not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
@@ -610,10 +606,10 @@ func main() {
 	s := http.Server{
 		Addr:              port,
 		Handler:           nil,
-		ReadTimeout:       time.Second,
-		ReadHeaderTimeout: time.Second,
-		WriteTimeout:      time.Second,
-		IdleTimeout:       time.Second,
+		ReadTimeout:       10 * time.Second,
+		ReadHeaderTimeout: 5 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       30 * time.Second,
 	}
 
 	if err := s.ListenAndServe(); err != nil {

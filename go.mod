@@ -9,9 +9,11 @@ require golang.org/x/sync v0.16.0
 require (
 	cloud.google.com/go/cloudtasks v1.13.6
 	github.com/SherClockHolmes/webpush-go v1.4.0
+	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.7.13
+	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 	github.com/yuin/goldmark-meta v1.1.0
 	golang.org/x/text v0.28.0
 	golang.org/x/tools v0.36.0
@@ -37,8 +39,6 @@ require (
 	github.com/GaijinEntertainment/go-exhaustruct/v3 v3.3.1 // indirect
 	github.com/Masterminds/semver/v3 v3.3.0 // indirect
 	github.com/OpenPeeDeeP/depguard/v2 v2.2.1 // indirect
-	github.com/alecthomas/assert/v2 v2.7.0 // indirect
-	github.com/alecthomas/chroma/v2 v2.14.0 // indirect
 	github.com/alecthomas/go-check-sumtype v0.3.1 // indirect
 	github.com/alexkohler/nakedret/v2 v2.0.5 // indirect
 	github.com/alexkohler/prealloc v1.0.0 // indirect
@@ -198,7 +198,6 @@ require (
 	github.com/yagipy/maintidx v1.0.0 // indirect
 	github.com/yeya24/promlinter v0.3.0 // indirect
 	github.com/ykadowak/zerologlint v0.1.5 // indirect
-	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc // indirect
 	gitlab.com/bosi/decorder v0.4.2 // indirect
 	go-simpler.org/musttag v0.13.0 // indirect
 	go-simpler.org/sloglint v0.9.0 // indirect
