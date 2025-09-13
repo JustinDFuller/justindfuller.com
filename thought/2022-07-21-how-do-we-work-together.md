@@ -12,10 +12,7 @@ When she was a teacher, on the first day of each class, Lauren, my wife, would s
 
 "Class", she'd say, "it's time to go over our classroom rules for this year."
 
-![Elementary school classroom](/image/classroom.jpg)
-<em style="text-align: center; display: block;">
-  Her cute little classroom
-</em>
+![Her cute little classroom](/image/classroom.jpg)
 
 But, instead of writing her rules on the paper, she'd continue, "What would you like our rules to be?"
 
@@ -23,16 +20,13 @@ What do you think those first and second graders came up with? "Unlimited Recess
 
 These days, I use this strategy with my kids before we start a big activity. Last time we went to the Natural History Museum, I asked them what our rules should be. They chose "stay together", "walk, don't run", "be calm", "don't break stuff". I, of course, added the most important rule of all: "have fun"!
 
-![Children at Natural History Museum with T-Rex exhibit](/image/natural_history.jpg)
-<em style="text-align: center; display: block;">
-  Getting chased by a T-Rex at the Natural History Museum
-</em>
+![Getting chased by a T-Rex at the Natural History Museum](/image/natural_history.jpg)
 
 I've found that when they choose the rules, they are more likely to remember and abide by them. Also, if they thought of a particular rule, they even remind each other of the rules. If Max, my oldest daughter, came up with "walk, don't run", then she'll probably call her little brother out if he's running all over the place. It turns out, we do better when we get to shape the environment that we're working with.
 
 About a year ago, I joined a newly formed team. Some of us had worked together before, but many had not. I suggested the first thing we do is decide how we'd like to work together. We whipped up a Miro board to facilitate the process.
 
-![Miro board showing team collaboration planning](/image/miro.png)
+![Working through our Pull Request norms](/image/miro.png)
 
 We wrote down:
 

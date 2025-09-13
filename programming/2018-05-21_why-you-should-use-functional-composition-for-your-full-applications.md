@@ -48,7 +48,6 @@ Each file imports its dependencies, so you may find yourself following links fro
 * Finally you find that the database imported is actually a singleton that instantiated the connection the first time it was imported. It did this by importing a third party library.
 
 ![Me after following that many levels of imports](https://cdn-images-1.medium.com/max/2000/0*gSyOcZNAgLwA9DNm.gif)
-*Me after following that many levels of imports*
 
 ## Another Way
 
