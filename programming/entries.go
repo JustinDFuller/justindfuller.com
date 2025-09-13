@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/justindfuller/justindfuller.com/syntax"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
@@ -122,7 +123,11 @@ type parsedContent struct {
 
 func parseMarkdownWithMeta(content string) parsedContent {
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, meta.Meta),
+		goldmark.WithExtensions(
+			extension.GFM, 
+			meta.Meta,
+			syntax.GetHighlighting(),
+		),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),

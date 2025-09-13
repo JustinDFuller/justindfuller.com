@@ -551,6 +551,15 @@ func main() {
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
 	})
 
+	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
+		// Set cache headers for CSS files
+		if strings.HasSuffix(r.URL.Path, ".css") {
+			w.Header().Set("Cache-Control", "public, max-age=31536000") // 1 year
+		}
+		log.Print(r.URL.Path)
+		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
+	})
+
 	http.HandleFunc("/reminder/set", grass.SetHandler)
 
 	http.HandleFunc("/reminder/send", grass.SendHandler(reminderConfig))
