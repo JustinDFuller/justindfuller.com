@@ -125,7 +125,7 @@ However, your cards can help you context switch easily.</p>
 <ul>
 <li>Did I spend my time wisely this week?</li>
 <li>Did I get stuck on a certain task for too long?</li>
-<li>What were the affects or results of the tasks I completed?</li>
+<li>What were the effects or results of the tasks I completed?</li>
 </ul>
 <p>If I&rsquo;m not satisfied, I try to understand why, and prepare to spend my time differently in the next week.</p>
 <h2 id="cleaning-up">Cleaning Up</h2>

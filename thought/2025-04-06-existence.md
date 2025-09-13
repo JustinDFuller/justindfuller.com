@@ -13,7 +13,7 @@ Here are two possibilities:
 
 However, these two possibilities are, as far as we know, impossible. We know of no way for something to come from nothing*. We also know of no way for something to have no beginning**.
 
-*A common rebutal for this point is quantum physics where it is observed that particles can pop into and out of existence. At least, that is how it is commonly talked about. However, we do not know enough to say for sure that these particles truly pop into and out of existence. They may simply move in a way we cannot yet observe. Further, we do not know that they come from nothing. In fact, it is possible they may use some aspect of existing particles in their process of generation.
+*A common rebuttal for this point is quantum physics where it is observed that particles can pop into and out of existence. At least, that is how it is commonly talked about. However, we do not know enough to say for sure that these particles truly pop into and out of existence. They may simply move in a way we cannot yet observe. Further, we do not know that they come from nothing. In fact, it is possible they may use some aspect of existing particles in their process of generation.
 
 **A common rebutal to this point is a circle. However, I contend it is different. The beginning of the circle's existence and the beginning of the circle's path are two different things. We can easily imagine a walking trail with no beginning and no end. However, no one would contend the fact that the path is a circle proves it was never created. There is also no reason to believe eternity or eternal timelines take the form of a circle. The circle represents recursion, which is different than eternity or being without beginning.
 
@@ -25,7 +25,7 @@ These alternates have issues as well.
 
 1) The fact that there is an exclusion to the rules begs the question: where do the rules come from and why do they not apply to this particular thing? So, this is not a real answer but an evasion.
 
-2) This assumes that X exists (logic, randomness) and therefor there was not nothing. So it is actually alternate #1 masquarading as alternate #2, since it has thrown out the fundamental assumption that there was nothing.
+2) This assumes that X exists (logic, randomness) and therefore there was not nothing. So it is actually alternate #1 masquerading as alternate #2, since it has thrown out the fundamental assumption that there was nothing.
 
 What are we left with?
 

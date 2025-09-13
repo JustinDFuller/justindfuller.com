@@ -52,11 +52,11 @@ Finally, if you don't want to offer it as a product, you could (and I think, sho
 
 As I've mentioned, I don't think the most significant downside here is losing a competitive advantage. I suspect that the disadvantage is tarnishing the company's reputation with sub-par products. If the product isn't high-quality, it could very well embarrass the company; this increases the investment needed for these products compared to their cost as internal tools.
 
-So, will it ever happen? Maybe. Will this become a broad practice in many companies? I predict not. But [SAAS is very popular](https://www.statista.com/statistics/510333/worldwide-public-cloud-software-as-a-service/#:~:text=The%20global%20public%20cloud%20software,main%20categories%20of%20cloud%20computing), and there is only more money to be made there. Many large companies already have a swoath of products, so maybe they should start selling them.
+So, will it ever happen? Maybe. Will this become a broad practice in many companies? I predict not. But [SAAS is very popular](https://www.statista.com/statistics/510333/worldwide-public-cloud-software-as-a-service/#:~:text=The%20global%20public%20cloud%20software,main%20categories%20of%20cloud%20computing), and there is only more money to be made there. Many large companies already have a swath of products, so maybe they should start selling them.
 
 ## I'm not an MBA
 
-So I'm excited to hear why I'm wrong wherever this get's posted. Thanks for reading!
+So I'm excited to hear why I'm wrong wherever this gets posted. Thanks for reading!
 
 ---
 

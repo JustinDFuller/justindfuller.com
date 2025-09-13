@@ -2,7 +2,7 @@
 title: "Subjective Ethics"
 subtitle: ""
 date: 2022-12-29
-draft: false
+draft: true
 tags: [Life]
 ---
 
@@ -38,7 +38,7 @@ But I wonder if we have to? What I just proposed: that no one follows an ethic w
 
 Now, let's talk about relativism. The idea of relativism is that all ethical and moral codes are relative. Many, philosophers or not, buck this idea. The thought that no one way of living is objectively correct is unnerving. It opens up the possibility of being wrong, or at least not totally right. But if we think back to the previous thought experiment, we discovered that it is not the source of an ethic that is important but the results of an ethic. Perfect source or not, many will shun parts of religious code that they deem harmful.
 
-Here's an example. The difference between Christians that believe Homosexuality is immoral and those that do not, is not their belief in the perfection of their source, but their evaluation of the results. Those that believe Homosexuality immoral think it has negative consequences. Those that believe it is moral think it does not. Both sides believe in the perfection of their God. They just disagree on the interpretation of certain tenants. This disagreement stems from the perceived presence of harm or benefit in that specific tenant.
+Here's an example. The difference between Christians that believe Homosexuality is immoral and those that do not, is not their belief in the perfection of their source, but their evaluation of the results. Those that believe Homosexuality immoral think it has negative consequences. Those that believe it is moral think it does not. Both sides believe in the perfection of their God. They just disagree on the interpretation of certain tenets. This disagreement stems from the perceived presence of harm or benefit in that specific tenant.
 
 So, in the end, it does not matter if the ethic is subjective or objective. We will still evaluate the results.
 

@@ -6,17 +6,15 @@ draft: false
 tags: [Life]
 ---
 
-**TL;DR:** You can see it [here](/tags/poetry).
+**TL;DR:** You can see it [here](/poem).
 
-I'm not using this as an opportunity to claim poetic greateness, but
-to share a fulfilling outlet that I found in a difficult time.
+I'm not using this as an opportunity to claim poetic greatness, but to share a fulfilling outlet that I found in a difficult time.
 
 <!--more-->
 
 I write this in the midst of a difficult time mentally.
 
-From the outside, as it usually goes, things appear well. I have a good job, a wonderful family,
-great friends, hobbies, a nice house, two cars, plenty of money, and little debt.
+From the outside, as it usually goes, things appear well. I have a good job, a wonderful family, great friends, hobbies, a nice house, two cars, plenty of money, and little debt.
 
 Yet, to be honest, like many others, I'm struggling mentally.
 
@@ -25,8 +23,7 @@ Yet, to be honest, like many others, I'm struggling mentally.
 * Living in the suburbs is monotonous
 * Working 9-5 (even though I love my job) leaves me wishing for more out of life
 
-This all feels so stupid to complain about, because so many others have worse problems.
-But, nonetheless, here I am struggling, and it doesn't do anyone any good to pretend I'm not.
+This all feels so stupid to complain about, because so many others have worse problems. But, nonetheless, here I am struggling, and it doesn't do anyone any good to pretend I'm not.
 
 But what's this got to do with anyone else?
 
@@ -38,20 +35,18 @@ Of course, this leads to being bottled up. I needed an outlet.
 
 Hence, the poetry.
 
-I find it allows me to say certain things, often without directly saying them.
-It gives me a chance to share my feelings in my own way, on my own terms.
+I find it allows me to say certain things, often without directly saying them. It gives me a chance to share my feelings in my own way, on my own terms.
 
-I typically start by physically writing, only later copying the content to my blog.
-I went ahead and invested in a decent notebook and pen (nothing too expensive) to bring a bit more joy to the process.
+I typically start by physically writing, only later copying the content to my blog. I went ahead and invested in a decent notebook and pen (nothing too expensive) to bring a bit more joy to the process.
 
 Some other outlets that I've found enjoyable lately:
 
 * Nature photography, which I also plan to add here soon.
 * Reading, I particularly enjoyed [Nasty, Brutish, and Short](https://amzn.to/3ceRMmm) on Philosophy with kids.
-* Coding projects like [Really Simple Notes](https://www.reallysimplenotes.com)
+* Coding projects like [Really Simple Notes](https://notes.justindfuller.com/)
 
 I hope you enjoy it and I hope everyone else out there struggling can find a helpful outlet.
 
 PS. I'll take this opportunity to call out some other important things that I'm trying to work on too: getting better sleep, eating healthier, drinking less coffee, exercising more, finding proper medication, and going to therapy.
 
-[Anyway, here's a link to some poems.](/tags/poetry) Enjoy!
+[Anyway, here's a link to some poems.](/poem) Enjoy!

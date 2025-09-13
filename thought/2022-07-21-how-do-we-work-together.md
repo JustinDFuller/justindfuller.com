@@ -6,7 +6,7 @@ draft: false
 tags: [Life]
 ---
 
-When she was a teacher, on the first day of each class, Lauren, my wife, would start the year with a simple activity. She sat her first or second greaters down around a big sheet of paper, hung on the wall.
+When she was a teacher, on the first day of each class, Lauren, my wife, would start the year with a simple activity. She sat her first or second graders down around a big sheet of paper, hung on the wall.
 
 <!--more-->
 
@@ -21,7 +21,7 @@ But, instead of writing her rules on the paper, she'd continue, "What would you 
 
 What do you think those first and second graders came up with? "Unlimited Recess", "No rules!", or "Free ice cream every day"? Contrary to what you might expect, those kids chose some very mature rules.
 
-These days, I use this strategy with my kids before we start a big activity. Last time we went to the Natural Hustory Museum, I asked them what our rules should be. They chose "stay together", "walk, don't run", "be calm", "don't break stuff". I, of course, added the most important rule of all: "have fun"!
+These days, I use this strategy with my kids before we start a big activity. Last time we went to the Natural History Museum, I asked them what our rules should be. They chose "stay together", "walk, don't run", "be calm", "don't break stuff". I, of course, added the most important rule of all: "have fun"!
 
 ![Children at Natural History Museum with T-Rex exhibit](/image/natural_history.jpg)
 <em style="text-align: center; display: block;">
