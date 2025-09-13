@@ -28,7 +28,7 @@
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
     "chalk": "^5.4.1",
-    "chalk-cli": "^5.0.1",
+    "chalk-cli": "^6.0.0",
     "eslint": "^9.35.0",
     "markdownlint-cli2": "^0.17.2",
     "prettier": "^3.4.2",
