@@ -8,7 +8,7 @@ require golang.org/x/sync v0.16.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.6
-	github.com/SherClockHolmes/webpush-go v1.3.0
+	github.com/SherClockHolmes/webpush-go v1.4.0
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.7.13
@@ -84,7 +84,7 @@ require (
 	github.com/go-xmlfmt/xmlfmt v1.1.3 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gofrs/flock v0.12.1 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golangci/dupl v0.0.0-20250308024227-f665c8d69b32 // indirect
 	github.com/golangci/go-printf-func-name v0.1.0 // indirect
