@@ -6,17 +6,110 @@
   </head>
 
   <body>
+    {{ template "/header.template.html" . }}
+
     <main>
-      <a href="/aphorism">Aphorism</a>
-      <a href="/poem">Poem</a>
-      <a href="/story">Story</a>
-      <a href="/word">Word</a>
-      <a href="/make">Make</a>
-      <a href="/review">Review</a>
-      <a href="/nature">Nature</a>
-      <a href="/thought">Thought</a>
+      <div class="homepage-layout">
+        <div class="featured-posts">
+          <h2 class="section-title">Featured Writing</h2>
+          
+          <article class="featured-post">
+            <a href="/review/living-on-24-hours-a-day">
+              <h3 class="featured-post-title">
+                Living on 24 Hours a Day
+                <span class="section-indicator">Review</span>
+              </h3>
+            </a>
+            <p class="featured-post-excerpt">Halfway through last year, I found myself overwhelmed by my schedule. There were simply too many things to do and not enough time. As we bookworms tend to do, I set out to find books that would teach me to wrangle my schedule.</p>
+            <a href="/review/living-on-24-hours-a-day" class="read-more">
+              Read more →
+            </a>
+          </article>
+
+          <article class="featured-post">
+            <a href="/programming/why-do-we-fall-into-the-rewrite-trap">
+              <h3 class="featured-post-title">
+                Why Do We Fall Into the Rewrite Trap
+                <span class="section-indicator">Programming</span>
+              </h3>
+            </a>
+            <p class="featured-post-excerpt">My question is, if we as a community figured out — twenty years ago — that we should stop rewriting programs, why is it still commonly done today?</p>
+            <a href="/programming/why-do-we-fall-into-the-rewrite-trap" class="read-more">
+              Read more →
+            </a>
+          </article>
+
+          <article class="featured-post">
+            <a href="/word/quality">
+              <h3 class="featured-post-title">
+                Quality
+                <span class="section-indicator">Word</span>
+              </h3>
+            </a>
+            <p class="featured-post-excerpt">Quality fled across the desert, and the wordslinger followed.</p>
+            <a href="/word/quality" class="read-more">
+              Read more →
+            </a>
+          </article>
+
+          <article class="featured-post">
+            <a href="/story/2022-09-18_the_philosophy_of_trees">
+              <h3 class="featured-post-title">
+                The Philosophy of Trees
+                <span class="section-indicator">Story</span>
+              </h3>
+            </a>
+            <p class="featured-post-excerpt">The story I have to tell you today is not the story I wished to tell. In fact, I am loath to repeat much of it. I pray antiquity and modernity alike judge me not as an author, nor even as editor, but as a trembling witness. Reluctant to confess what he has seen, yet compelled by his conscience to reveal the devilry that took place at the autumn equinox on the outskirts of a great Carolina wilderness.</p>
+            <a href="/story/2022-09-18_the_philosophy_of_trees" class="read-more">
+              Read more →
+            </a>
+          </article>
+
+          <article class="featured-post">
+            <a href="/thought/2022-02-22-embracing-impostor-syndrome">
+              <h3 class="featured-post-title">
+                Embracing Impostor Syndrome
+                <span class="section-indicator">Thought</span>
+              </h3>
+            </a>
+            <p class="featured-post-excerpt">As I've progressed through my career, I've experienced increasing imposter syndrome. It's never gone away.</p>
+            <a href="/thought/2022-02-22-embracing-impostor-syndrome" class="read-more">
+              Read more →
+            </a>
+          </article>
+
+          <article class="featured-post">
+            <a href="https://notes.justindfuller.com">
+              <h3 class="featured-post-title">
+                Notes
+                <span class="section-indicator">Project</span>
+              </h3>
+            </a>
+            <p class="featured-post-excerpt">This notes app is a little different than some you might have used before. First, you may notice there are no styling options. That's because styling tends to get in the way. You won't find bold, italics, or any other styles. This helps you focus on what matters: writing notes.</p>
+            <a href="https://notes.justindfuller.com" class="read-more">
+              Read more →
+            </a>
+          </article>
+        </div>
+
+        <aside class="sections-sidebar">
+          <h2 class="section-title">Explore</h2>
+          <nav class="section-links">
+            <a href="/about" class="section-link">About Me</a>
+            <a href="/programming" class="section-link">Programming</a>
+            <a href="/poem" class="section-link">Poem</a>
+            <a href="/aphorism" class="section-link">Aphorism</a>
+            <a href="/word" class="section-link">Word</a>
+            <a href="/story" class="section-link">Story</a>
+            <a href="/review" class="section-link">Review</a>
+            <a href="/make" class="section-link">Project</a>
+            <a href="/nature" class="section-link">Nature</a>
+            <a href="/thought" class="section-link">Thought</a>
+          </nav>
+        </aside>
+      </div>
     </main>
 
-    {{ template "/main.js" . }} 
+    {{ template "/footer.template.html" . }}
   </body>
 </html>

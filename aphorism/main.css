@@ -1,58 +1,17 @@
-* {
-  box-sizing: border-box;
+/* Aphorisms Page Specific Styles */
+/* Import shared inline content styles */
+{{ template "/inline-content.css" . }}
+
+/* Content Page Styles */
+.content-page {
+  min-height: calc(100vh - 200px);
+  padding-top: var(--space-2xl);
 }
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: max-content;
-  display: block;
-  font-size: 24px;
-  font-family: Amiri, serif;
-  background: #fcf9f4;
+.content-container {
+  max-width: var(--max-width-narrow);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
 }
 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-main {
-  animation: fade-in 1s;
-  padding: 20px;
-  height: max-content;
-  width: 100%;
-  display: block;
-}
-
-section {
-  display: block;
-  height: max-content;
-  max-width: 300px;
-  margin: auto;
-}
-
-p {
-  margin-bottom: 40px;
-  line-height: 36px;
-}
-
-hr {
-  margin-top: 30px;
-  margin-bottom: 50px;
-}
-
-@media (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #020215;
-    color: white;
-  }
-}
+/* Any additional aphorism-specific overrides can go here */

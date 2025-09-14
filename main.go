@@ -1,6 +1,8 @@
+// Package main runs the web server for the website
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,14 +12,16 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/justindfuller/justindfuller.com/about"
 	"github.com/justindfuller/justindfuller.com/aphorism"
 	grass "github.com/justindfuller/justindfuller.com/make"
 	"github.com/justindfuller/justindfuller.com/nature"
 	"github.com/justindfuller/justindfuller.com/poem"
+	"github.com/justindfuller/justindfuller.com/programming"
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
-	"github.com/justindfuller/justindfuller.com/word"
 	"github.com/justindfuller/justindfuller.com/thought"
+	"github.com/justindfuller/justindfuller.com/word"
 	"github.com/justindfuller/secretmanager"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -90,6 +94,20 @@ func main() {
 
 	funcs := template.FuncMap{
 		"sub1": func(x int) int { return x - 1 },
+		"dict": func(values ...interface{}) (map[string]interface{}, error) {
+			if len(values)%2 != 0 {
+				return nil, errors.New("dict requires an even number of arguments")
+			}
+			dict := make(map[string]interface{})
+			for i := 0; i < len(values); i += 2 {
+				key, ok := values[i].(string)
+				if !ok {
+					return nil, errors.New("dict keys must be strings")
+				}
+				dict[key] = values[i+1]
+			}
+			return dict, nil
+		},
 	}
 
 	templates := template.New("").Funcs(funcs).Option("missingkey=error")
@@ -130,7 +148,33 @@ func main() {
 		}
 	}
 
-	http.HandleFunc("/aphorism", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/aphorism/", func(w http.ResponseWriter, r *http.Request) {
+		// Check if this is a request for a specific aphorism
+		path := r.URL.Path
+		if path != "/aphorism" && path != "/aphorism/" {
+			// Extract the aphorism number from the path
+			parts := strings.Split(strings.TrimSuffix(path, "/"), "/")
+			if len(parts) == 3 && parts[1] == "aphorism" && parts[2] != "" {
+				entry, err := aphorism.GetEntry(parts[2])
+				if err != nil {
+					http.Error(w, "Aphorism not found", http.StatusNotFound)
+					logWarning("Error reading aphorism", err)
+					return
+				}
+
+				if err := templates.ExecuteTemplate(w, "/aphorism/entry.template.html", data[aphorism.Entry]{
+					Title: fmt.Sprintf("Aphorism #%d", entry.Number),
+					Meta:  "aphorism",
+					Entry: entry,
+				}); err != nil {
+					log.Printf("template execution error=%s template=%s", err, "/aphorism/entry.template.html")
+					http.Error(w, "Error displaying aphorism", http.StatusInternalServerError)
+				}
+				return
+			}
+		}
+
+		// Default to showing all aphorisms
 		entries, err := aphorism.Entries()
 		if err != nil {
 			http.Error(w, "Error reading Aphorisms", http.StatusInternalServerError)
@@ -149,7 +193,7 @@ func main() {
 	})
 
 	http.HandleFunc("/word", func(w http.ResponseWriter, _ *http.Request) {
-		entry, err := word.Entry("entries")
+		entries, err := word.Entries()
 		if err != nil {
 			http.Error(w, "Error reading Words", http.StatusInternalServerError)
 			logWarning("Error reading Words", err)
@@ -158,14 +202,19 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/word/main.template.html", data[[]byte]{
-			Title: "Word",
-			Entry: entry,
+			Title:   "Word",
+			Entries: entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}
 	})
 
 	http.HandleFunc("/word/", func(w http.ResponseWriter, r *http.Request) {
+		// If this is exactly /word/, redirect to /word
+		if r.URL.Path == "/word/" {
+			http.Redirect(w, r, "/word", http.StatusMovedPermanently)
+			return
+		}
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
@@ -176,23 +225,47 @@ func main() {
 			return
 		}
 
-		entry, err := word.Entry(paths[last])
+		entry, err := word.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading Words", http.StatusInternalServerError)
-			log.Printf("Error reading Words: %s", err)
+			http.Error(w, "Word not found.", http.StatusNotFound)
+			log.Printf("Word not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data[word.Entry]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}
 	})
 
-	http.HandleFunc("/poem", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/poem/", func(w http.ResponseWriter, r *http.Request) {
+		// Check if this is a request for a specific poem
+		path := r.URL.Path
+		if path != "/poem" && path != "/poem/" {
+			// Extract the poem number from the path
+			parts := strings.Split(strings.TrimSuffix(path, "/"), "/")
+			if len(parts) == 3 && parts[1] == "poem" && parts[2] != "" {
+				entry, err := poem.GetEntry(parts[2])
+				if err != nil {
+					http.Error(w, "Poem not found", http.StatusNotFound)
+					logWarning("Error reading poem", err)
+					return
+				}
+				if err := templates.ExecuteTemplate(w, "/poem/entry.template.html", data[poem.Entry]{
+					Title: entry.Title,
+					Meta:  "poem",
+					Entry: entry,
+				}); err != nil {
+					log.Printf("template execution error=%s template=%s", err, "/poem/entry.template.html")
+					http.Error(w, "Error displaying poem", http.StatusInternalServerError)
+				}
+				return
+			}
+		}
+		// Default to showing all poems
 		entries, err := poem.Entries()
 		if err != nil {
 			http.Error(w, "Error reading poems.", http.StatusInternalServerError)
@@ -235,15 +308,6 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/avatar", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/make/avatar.template.html", data[[]byte]{
-			Title: "Guild Avatars",
-			Meta:  "Avatar",
-		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/make/avatar.template.html")
-		}
-	})
-
 	http.HandleFunc("/weeks-remaining", func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/remaining.template.html", data[[]byte]{
 			Title: "Weeks Remaining",
@@ -254,8 +318,10 @@ func main() {
 	})
 
 	http.HandleFunc("/story", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data[[]byte]{
-			Title: "Story",
+		entries := story.GetPublishedEntries()
+		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data[story.Entry]{
+			Title:   "Story",
+			Entries: entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/story/main.template.html")
 		}
@@ -272,25 +338,32 @@ func main() {
 			return
 		}
 
-		entry, err := story.Entry(paths[last])
+		entry, err := story.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading story.", http.StatusInternalServerError)
-			log.Printf("Error reading story: %s", err)
+			http.Error(w, "Story not found.", http.StatusNotFound)
+			log.Printf("Story not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/story/story.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/story/entry.template.html", data[story.EntryWithContent]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/story/story.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/story/entry.template.html")
 		}
 	})
 
 	http.HandleFunc("/thought", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/thought/main.template.html", data[[]byte]{
-			Title: "Thought",
+		entries, err := thought.GetEntries()
+		if err != nil {
+			log.Printf("Error getting thought entries: %s", err)
+			entries = []thought.Entry{} // Use empty slice on error
+		}
+
+		if err := templates.ExecuteTemplate(w, "/thought/main.template.html", data[thought.Entry]{
+			Title:   "Thought",
+			Entries: entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/thought/main.template.html")
 		}
@@ -301,31 +374,79 @@ func main() {
 		last := len(paths) - 1
 
 		if len(paths) == 0 {
-			http.Error(w, "thought not found.", http.StatusNotFound)
-			log.Printf("thought not found: %s", r.URL.Path)
+			http.Error(w, "thought entry not found.", http.StatusNotFound)
+			log.Printf("thought entry not found: %s", r.URL.Path)
 
 			return
 		}
 
-		entry, err := thought.Entry(paths[last])
+		entry, err := thought.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading thought.", http.StatusInternalServerError)
-			log.Printf("Error reading thought: %s", err)
+			http.Error(w, "Thought entry not found.", http.StatusNotFound)
+			log.Printf("Thought entry not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/thought/entry.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/thought/entry.template.html", data[thought.Entry]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/thought/entry.template.html")
 		}
 	})
 
+	http.HandleFunc("/programming", func(w http.ResponseWriter, _ *http.Request) {
+		entries, err := programming.GetEntries()
+		if err != nil {
+			log.Printf("Error getting programming entries: %s", err)
+			entries = []programming.Entry{} // Use empty slice on error
+		}
+		log.Printf("Programming handler - number of entries: %d", len(entries))
+		if err := templates.ExecuteTemplate(w, "/programming/main.template.html", data[programming.Entry]{
+			Title:   "Programming",
+			Entries: entries,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/programming/main.template.html")
+		}
+	})
+
+	http.HandleFunc("/programming/", func(w http.ResponseWriter, r *http.Request) {
+		// If this is exactly /programming/, redirect to /programming
+		if r.URL.Path == "/programming/" {
+			http.Redirect(w, r, "/programming", http.StatusMovedPermanently)
+			return
+		}
+		paths := strings.Split(r.URL.Path, "/")
+		last := len(paths) - 1
+
+		if len(paths) == 0 {
+			http.Error(w, "Programming post not found.", http.StatusNotFound)
+			log.Printf("Programming post not found: %s", r.URL.Path)
+
+			return
+		}
+
+		entry, err := programming.GetEntry(paths[last])
+		if err != nil {
+			http.Error(w, "Programming post not found.", http.StatusNotFound)
+			log.Printf("Programming post not found: %s - %s", r.URL.Path, err)
+
+			return
+		}
+
+		if err := templates.ExecuteTemplate(w, "/programming/entry.template.html", data[programming.Entry]{
+			Title: entry.Title,
+			Entry: entry,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/programming/entry.template.html")
+		}
+	})
+
 	http.HandleFunc("/review", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[[]byte]{
-			Title: "Review",
+		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[review.Entry]{
+			Title:   "Review",
+			Entries: review.Entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/review/main.template.html")
 		}
@@ -342,28 +463,34 @@ func main() {
 			return
 		}
 
-		entry, err := review.Entry(paths[last])
+		entry, err := review.GetEntry(paths[last])
 		if err != nil {
-			http.Error(w, "Error reading review.", http.StatusInternalServerError)
-			log.Printf("Error reading review: %s", err)
+			http.Error(w, "Review not found.", http.StatusNotFound)
+			log.Printf("Review not found: %s - %s", r.URL.Path, err)
 
 			return
 		}
 
-		if err := templates.ExecuteTemplate(w, "/review/review.template.html", data[[]byte]{
-			Title: Title(paths[last]),
+		if err := templates.ExecuteTemplate(w, "/review/entry.template.html", data[review.EntryWithContent]{
+			Title: entry.Title,
 			Entry: entry,
 		}); err != nil {
-			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
+			log.Printf("template execution error=%s template=%s", err, "/review/entry.template.html")
 		}
 	})
 
 	http.HandleFunc("/make", func(w http.ResponseWriter, _ *http.Request) {
-		if err := templates.ExecuteTemplate(w, "/make/main.template.html", data[[]byte]{
-			Title: "Make",
+		if err := templates.ExecuteTemplate(w, "/make/main.template.html", data[grass.ProjectEntry]{
+			Title:   "Make",
+			Entries: grass.Entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/make/main.template.html")
 		}
+	})
+
+	// Handle /make/ with redirect
+	http.HandleFunc("/make/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/make", http.StatusMovedPermanently)
 	})
 
 	http.HandleFunc("/nature", func(w http.ResponseWriter, _ *http.Request) {
@@ -415,6 +542,20 @@ func main() {
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
 	})
 
+	http.HandleFunc("/fonts/", func(w http.ResponseWriter, r *http.Request) {
+		log.Print(r.URL.Path)
+		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
+	})
+
+	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
+		// Set cache headers for CSS files
+		if strings.HasSuffix(r.URL.Path, ".css") {
+			w.Header().Set("Cache-Control", "public, max-age=31536000") // 1 year
+		}
+		log.Print(r.URL.Path)
+		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
+	})
+
 	http.HandleFunc("/reminder/set", grass.SetHandler)
 
 	http.HandleFunc("/reminder/send", grass.SendHandler(reminderConfig))
@@ -423,7 +564,29 @@ func main() {
 		http.ServeFile(w, r, "./site.webmanifest")
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/about", func(w http.ResponseWriter, _ *http.Request) {
+		entry := about.Get()
+		if err := templates.ExecuteTemplate(w, "/about/main.template.html", data[about.Entry]{
+			Title: "About Me",
+			Entry: entry,
+		}); err != nil {
+			log.Printf("template execution error=%s template=%s", err, "/about/main.template.html")
+		}
+	})
+
+	// Handle /about/ with redirect
+	http.HandleFunc("/about/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
+	})
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// Check if this is exactly the root path
+		if r.URL.Path != "/" {
+			// For any path other than root, set 404 status but still render home page
+			w.WriteHeader(http.StatusNotFound)
+			log.Printf("404 - Path not found: %s", r.URL.Path)
+		}
+
 		if err := templates.ExecuteTemplate(w, "/main.template.html", data[[]byte]{}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/main.template.html")
 		}
@@ -443,10 +606,10 @@ func main() {
 	s := http.Server{
 		Addr:              port,
 		Handler:           nil,
-		ReadTimeout:       time.Second,
-		ReadHeaderTimeout: time.Second,
-		WriteTimeout:      time.Second,
-		IdleTimeout:       time.Second,
+		ReadTimeout:       10 * time.Second,
+		ReadHeaderTimeout: 5 * time.Second,
+		WriteTimeout:      10 * time.Second,
+		IdleTimeout:       30 * time.Second,
 	}
 
 	if err := s.ListenAndServe(); err != nil {
@@ -454,6 +617,7 @@ func main() {
 	}
 }
 
+// Title converts a slug to a title-cased string
 func Title(s string) string {
 	s = strings.ReplaceAll(s, "_", " ")
 	s = strings.ReplaceAll(s, "-", " ")

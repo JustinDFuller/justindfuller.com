@@ -1,4 +1,10 @@
-# Walden
+---
+title: "Walden"
+subtitle: ""
+date: 2021-05-15
+draft: false
+tags: [review]
+---
 
 <p align="center">
 Not about leaving society but finding humanity.

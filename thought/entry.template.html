@@ -2,22 +2,18 @@
 <html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
-
+    {{ template "/main.css" . }}
     <style>
       {{ template "/thought/entry.css" . }}
     </style>
   </head>
 
   <body>
-    <main>
-      <section>
-        <h1>{{ .Title }}</h1>
-        {{ printf "%s" .Entry }}
-      </section>
-    </main>
+    {{ template "/header.template.html" . }}
 
-    <script>
-      {{ template "/thought/entry.js" . }}
-    </script>
+    {{ template "/entry-page.template.html" dict "Entry" .Entry "ContentType" "thought" }}
+
+    {{ template "/footer.template.html" . }}
+
   </body>
 </html>

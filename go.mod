@@ -9,9 +9,11 @@ require golang.org/x/sync v0.16.0
 require (
 	cloud.google.com/go/cloudtasks v1.13.6
 	github.com/SherClockHolmes/webpush-go v1.4.0
+	github.com/alecthomas/chroma/v2 v2.14.0
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.7.13
+	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 	github.com/yuin/goldmark-meta v1.1.0
 	golang.org/x/text v0.28.0
 	golang.org/x/tools v0.36.0
@@ -62,6 +64,7 @@ require (
 	github.com/daixiang0/gci v0.13.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/denis-tingaikin/go-header v0.5.0 // indirect
+	github.com/dlclark/regexp2 v1.11.0 // indirect
 	github.com/ettle/strcase v0.2.0 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/fatih/structtag v1.2.0 // indirect

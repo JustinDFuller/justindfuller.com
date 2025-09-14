@@ -1,4 +1,10 @@
-# Zen and the Art of <br />  Motorcycle Maintenance
+---
+title: "Zen and the Art of Motorcycle Maintenance"
+subtitle: ""
+date: 2022-04-14
+draft: false
+tags: [review]
+---
 
 [Zen and the Art of Motorcycle Maintenance](https://amzn.to/3MJ9kpd) is the story of a man (or is it a ghost, a wolf, a lunatic?) searching for Quality.
 

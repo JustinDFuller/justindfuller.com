@@ -2,20 +2,23 @@
 <html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
 
     <style>
-      {{ template "/story/main.css" . }}
+      {{ template "/thought/main.css" . }}
     </style>
   </head>
 
   <body>
-    <main>
-      <a href="/thought/responses">Responses</a>
-      <a href="/thought/existence">Existence</a>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Thoughts" }}
+      
+      {{ template "/featured-list.template.html" dict "Entries" .Entries "BasePath" "thought" "ExcerptField" "Description" }}
     </main>
 
-    <script>
-      {{ template "/story/main.js" . }}
-    </script>
+    {{ template "/footer.template.html" . }}
+
   </body>
 </html>

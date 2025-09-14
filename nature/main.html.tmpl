@@ -1,24 +1,36 @@
-<!DOCTYPE html>
-<html class="no-js" lang="">
+<!doctype html>
+<html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
     <style>
-    {{ template "/nature/main.css" . }} 
+      {{ template "/nature/main.css" . }}
     </style>
   </head>
 
   <body>
-    <main>
-      {{ range .Entries }}
-        {{ if .Title }}
-        <a href="/nature/{{ .Slug }}" />
-          <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" />
-          <span>{{ .Title }}</span>
-        </a>
-        {{ else }}
-          <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" />
-        {{ end }}
-      {{ end }}
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Nature" }}
+      
+      <div class="content-container">
+        <div class="nature-grid">
+          {{ range .Entries }}
+            {{ if .Title }}
+            <a href="/nature/{{ .Slug }}" class="nature-item">
+              <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" />
+              <span>{{ .Title }}</span>
+            </a>
+            {{ else }}
+              <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" class="nature-image" />
+            {{ end }}
+          {{ end }}
+        </div>
+      </div>
     </main>
+
+    {{ template "/footer.template.html" . }}
+
   </body>
 </html>

@@ -1,4 +1,10 @@
-# Word
+---
+title: "Entries"
+subtitle: ""
+date: 2025-09-07
+draft: false
+tags: [word]
+---
 
 ## Eristic
 

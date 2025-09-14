@@ -39,13 +39,12 @@ jobs:
         with:
           go-version-file: "./go.mod"
 
-      - name: "build"
-        run: "timeout 120 .appengine/build.sh"
-
       - name: "prep"
         run: |
-          rm main.go
-          mv .appengine/main.go .appengine/app.yaml .appengine/dispatch.yaml ./
+          cp ./.appengine/app.yaml ./app.yaml
+          echo "" >> ./app.yaml
+          echo "service: default" >> ./app.yaml
+          cp ./.appengine/dispatch.yaml ./dispatch.yaml
 
       - name: "auth"
         uses: "google-github-actions/auth@v3"

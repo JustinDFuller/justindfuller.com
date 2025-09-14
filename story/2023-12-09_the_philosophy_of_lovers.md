@@ -1,15 +1,8 @@
 ---
-author: "Justin Fuller"
-date: 2023-12-09
-linktitle: "The Philosophy of Lovers"
-menu:
-  main:
-    parent: posts
-next: /posts/the-philosophy-of-lovers
 title: "The Philosophy of Lovers"
-weight: 1
-images:
- - /the_philosophy_of_lovers.webp
+subtitle: ""
+date: 2023-12-09
+draft: true
 tags: [Story]
 ---
 

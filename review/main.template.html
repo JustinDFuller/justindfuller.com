@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
 
     <style>
       {{ template "/review/main.css" . }}
@@ -9,20 +10,15 @@
   </head>
 
   <body>
-    <main>
-      <a href="/review/zen-and-the-art-of-motorcycle-maintenance"
-        >Zen and The Art of Motorcycle Maintenance</a
-      >
-      <a href="/review/living-on-24-hours-a-day">Living on 24 Hours a Day</a>
-      <a href="/review/howards-end">Howards End</a>
-      <a href="/review/walden">Walden</a>
-      <a href="/review/the-history-of-modern-political-philosophy"
-        >The History of Modern Political Philosophy</a
-      >
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Reviews" }}
+      
+      {{ template "/featured-list.template.html" dict "Entries" .Entries "BasePath" "review" "ExcerptField" "FirstParagraph" }}
     </main>
 
-    <script>
-      {{ template "/review/main.js" . }}
-    </script>
+    {{ template "/footer.template.html" . }}
+
   </body>
 </html>

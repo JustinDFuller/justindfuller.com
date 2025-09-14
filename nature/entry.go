@@ -1,11 +1,14 @@
+// Package nature handles nature-related content entries
 package nature
 
 import (
 	"bytes"
 	"fmt"
 	"os"
-	"slices"
+	"strings"
+	"time"
 
+	"github.com/justindfuller/justindfuller.com/renderer"
 	"github.com/pkg/errors"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
@@ -14,12 +17,14 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
+// Entry represents a nature content entry with its metadata
 type Entry struct {
 	Title    string
 	SubTitle string
 	Slug     string
 	Image    string
 	Markdown string
+	Date     time.Time
 }
 
 var (
@@ -28,61 +33,132 @@ var (
 )
 
 func init() { //nolint:gochecknoinits
-	files, err := os.ReadDir("./image/nature")
+	// Read markdown files from nature directory
+	markdownFiles, err := os.ReadDir("./nature")
 	if err != nil {
 		entries = nil
-		errEntry = errors.Wrap(err, "error reading nature image directory")
-
+		errEntry = errors.Wrap(err, "error reading nature directory")
 		return
 	}
 
-	images := make([]string, 0, len(files))
-
-	for _, file := range files {
-		images = append(images, file.Name())
+	// Read images from image/nature directory
+	imageFiles, err := os.ReadDir("./image/nature")
+	if err != nil {
+		// Continue without images
+		imageFiles = []os.DirEntry{}
 	}
 
-	hardCodedEntries := []Entry{
-		{
-			Title:    "Anolis Carolinensis",
-			SubTitle: "Carolina Anole",
-			Slug:     "anolis-carolinensis",
-			Image:    "anole.jpg",
-		},
+	images := make(map[string]bool)
+	for _, file := range imageFiles {
+		if !file.IsDir() {
+			images[file.Name()] = true
+		}
 	}
 
-	for i, entry := range hardCodedEntries {
-		path := fmt.Sprintf("./nature/%s.md", entry.Slug)
+	dynamicEntries := []Entry{}
 
-		file, err := os.ReadFile(path)
+	// Process each markdown file
+	for _, file := range markdownFiles {
+		name := file.Name()
+		
+		// Skip non-markdown files
+		if !strings.HasSuffix(name, ".md") || file.IsDir() {
+			continue
+		}
+
+		path := fmt.Sprintf("./nature/%s", name)
+		content, err := os.ReadFile(path) //nolint:gosec // Path is from filtered directory listing
 		if err != nil {
 			continue
 		}
 
+		// Parse markdown with frontmatter
 		md := goldmark.New(
-			goldmark.WithExtensions(extension.GFM, meta.Meta),
+			goldmark.WithExtensions(extension.GFM, meta.Meta, renderer.NewExtension()),
 			goldmark.WithParserOptions(
 				parser.WithAutoHeadingID(),
 			),
 			goldmark.WithRendererOptions(
-				html.WithHardWraps(),
 				html.WithUnsafe(),
 			),
 		)
 
 		var buf bytes.Buffer
-		if err := md.Convert(file, &buf); err != nil {
+		context := parser.NewContext()
+		if err := md.Convert(content, &buf, parser.WithContext(context)); err != nil {
 			continue
 		}
 
-		hardCodedEntries[i].Markdown = buf.String()
+		// Extract metadata
+		metaData := meta.Get(context)
+		
+		// Get title from metadata
+		title := ""
+		if t, ok := metaData["title"].(string); ok {
+			title = t
+		}
+
+		// Get subtitle from metadata
+		subtitle := ""
+		if s, ok := metaData["subtitle"].(string); ok {
+			subtitle = s
+		}
+
+		// Get date from metadata
+		var date time.Time
+		if d, ok := metaData["date"]; ok {
+			switch v := d.(type) {
+			case time.Time:
+				date = v
+			case string:
+				if parsed, err := time.Parse("2006-01-02", v); err == nil {
+					date = parsed
+				} else if parsed, err := time.Parse(time.RFC3339, v); err == nil {
+					date = parsed
+				}
+			}
+		}
+
+		// Generate slug from filename (remove .md extension)
+		slug := strings.TrimSuffix(name, ".md")
+
+		// Try to find matching image
+		imageName := ""
+		// Check for common image names based on slug
+		possibleImages := []string{
+			slug + ".jpg",
+			slug + ".png",
+			slug + ".jpeg",
+			"anole.jpg", // Legacy hardcoded image for anolis-carolinensis
+		}
+		for _, img := range possibleImages {
+			if images[img] {
+				imageName = img
+				break
+			}
+		}
+
+		dynamicEntries = append(dynamicEntries, Entry{
+			Title:    title,
+			SubTitle: subtitle,
+			Slug:     slug,
+			Image:    imageName,
+			Markdown: buf.String(),
+			Date:     date,
+		})
 	}
 
-	for _, image := range images {
-		if !slices.ContainsFunc(hardCodedEntries, func(e Entry) bool {
-			return e.Image == image
-		}) {
-			hardCodedEntries = append(hardCodedEntries, Entry{
+	// Add entries for images without markdown files
+	for image := range images {
+		hasMarkdown := false
+		for _, entry := range dynamicEntries {
+			if entry.Image == image {
+				hasMarkdown = true
+				break
+			}
+		}
+		if !hasMarkdown {
+			dynamicEntries = append(dynamicEntries, Entry{
 				Title: "",
 				Slug:  "",
 				Image: image,
@@ -90,14 +166,16 @@ func init() { //nolint:gochecknoinits
 		}
 	}
 
-	entries = hardCodedEntries
+	entries = dynamicEntries
 	errEntry = nil
 }
 
+// Entries returns all nature entries from the filesystem
 func Entries() ([]Entry, error) {
 	return entries, errEntry
 }
 
+// EntryBySlug retrieves a specific nature entry by its slug
 func EntryBySlug(slug string) (Entry, error) {
 	for _, entry := range entries {
 		if entry.Slug == slug {

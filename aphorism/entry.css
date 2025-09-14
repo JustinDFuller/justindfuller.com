@@ -1,0 +1,16 @@
+/* Individual aphorism page styles */
+/* Import shared inline content styles for card consistency */
+{{ template "/inline-content.css" . }}
+
+/* Override for single aphorism - center the text */
+.aphorism-card .aphorism-text {
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .aphorism-card .aphorism-text {
+    font-size: 1.125rem;
+  }
+}

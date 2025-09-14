@@ -1,4 +1,10 @@
-# Quality
+---
+title: "Quality"
+subtitle: ""
+date: 2025-09-07
+draft: false
+tags: [word]
+---
 
 Quality fled across the desert, and the wordslinger followed.
 

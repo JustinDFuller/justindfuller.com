@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
+
+    <style>
+      {{ template "/programming/main.css" . }}
+    </style>
+  </head>
+
+  <body>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Programming" }}
+      
+      {{ template "/featured-list.template.html" dict "Entries" .Entries "BasePath" "programming" "ExcerptField" "FirstParagraph" }}
+    </main>
+
+    {{ template "/footer.template.html" . }}
+
+  </body>
+</html>

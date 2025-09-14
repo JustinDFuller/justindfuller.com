@@ -1,0 +1,131 @@
+/* Shared styles for inline content pages (word, poem, aphorism) */
+
+/* Container styles */
+.poems-grid,
+.aphorisms-list,
+.words-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  max-width: var(--max-width-narrow);
+  margin: 0 auto var(--space-2xl);
+}
+
+/* Card styles */
+.poem-card,
+.aphorism-card,
+.word-card {
+  background: var(--gradient-card);
+  border-left: 3px solid var(--color-accent-blue);
+  border-radius: var(--border-radius-md);
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.poem-card {
+  padding: var(--space-xl) var(--space-xl);
+}
+
+/* Hover effects removed for cleaner appearance */
+
+/* Content styles */
+.poem-content,
+.aphorism-text,
+.word-content {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Poem-specific: preserve whitespace */
+.poem-content {
+  white-space: pre-wrap;
+  display: block;
+}
+
+/* Word-specific styles */
+.word-content {
+  font-style: normal;
+  color: var(--color-text-primary);
+}
+
+.word-content h2 {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-lg);
+  margin-top: 0;
+}
+
+.word-content p {
+  margin-bottom: var(--space-xl);
+  line-height: var(--line-height-relaxed);
+}
+
+.word-content blockquote {
+  border: none !important;
+  border-left: none !important;
+  margin: 0;
+  padding: 0 !important;
+  padding-left: 0 !important;
+  font-style: italic;
+  background: none !important;
+}
+
+.word-content blockquote p {
+  margin-bottom: 0;
+  color: var(--color-text-secondary);
+}
+
+.word-content a {
+  color: var(--color-link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-link);
+  transition: all var(--transition-fast);
+  padding: 2px 0;
+}
+
+.word-content a:hover {
+  color: var(--color-link-hover);
+  border-bottom-color: var(--color-link-hover);
+  background: var(--gradient-card);
+  padding: 2px var(--space-xs);
+  border-radius: var(--border-radius-sm);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .poems-grid,
+  .aphorisms-list,
+  .words-list {
+    gap: var(--space-xl); /* Increased from space-lg for more spacing between items */
+    padding: 0 var(--space-md);
+  }
+  
+  .poem-card {
+    padding: var(--space-lg) var(--space-md);
+    margin-left: 0;
+  }
+  
+  .aphorism-card,
+  .word-card {
+    padding: var(--space-md);
+    margin-left: 0;
+  }
+  
+  .word-content h2 {
+    font-size: var(--font-size-lg);
+  }
+  
+  .word-content blockquote {
+    padding-left: var(--space-md);
+  }
+  
+  .aphorism-text {
+    font-size: var(--font-size-base);
+  }
+}

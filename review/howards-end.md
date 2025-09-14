@@ -1,4 +1,10 @@
-# Howards End
+---
+title: "Howards End"
+subtitle: ""
+date: 2021-08-28
+draft: false
+tags: [review]
+---
 
 Not the show. The novel, first published in 1910 by E.M. Forster.
 

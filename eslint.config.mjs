@@ -5,7 +5,6 @@ export default [
         ignores: [
             'node_modules',
             '.appengine',
-            '.build',
             '.devcontainer',
             '.github',
             '.routes',

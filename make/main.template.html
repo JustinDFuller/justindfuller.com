@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
 
     <style>
       {{ template "/make/main.css" . }}
@@ -9,17 +10,31 @@
   </head>
 
   <body>
-    <main>
-      <a href="https://notes.justindfuller.com">Notes</a>
-      <a href="https://interviews.justindfuller.com">Interviews</a>
-      <a href="/grass">Grass</a>
-      <a href="/kit">A Game with Kit</a>
-      <a href="/avatar">Union Avatars</a>
-      <a href="/weeks-remaining">Remaining Life</a>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Projects" }}
+      
+      <div class="content-container">
+        <div class="featured-posts">
+          {{ range .Entries }}
+            <article class="featured-post">
+              <a href="{{ .URL }}"{{ if .IsExternal }} target="_blank" rel="noopener noreferrer"{{ end }}>
+                <h3 class="featured-post-title">
+                  {{ .Title }}
+                </h3>
+              </a>
+              <p class="featured-post-excerpt">{{ .FirstParagraph }}</p>
+              <a href="{{ .URL }}"{{ if .IsExternal }} target="_blank" rel="noopener noreferrer"{{ end }} class="read-more">
+                {{ if .IsExternal }}Visit project →{{ else }}Explore →{{ end }}
+              </a>
+            </article>
+          {{ end }}
+        </div>
+      </div>
     </main>
 
-    <script>
-      {{ template "/make/main.js" . }}
-    </script>
+    {{ template "/footer.template.html" . }}
+
   </body>
 </html>

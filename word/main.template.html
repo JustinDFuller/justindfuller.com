@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
 
     <style>
       {{ template "/word/main.css" . }}
@@ -9,12 +10,15 @@
   </head>
 
   <body>
-    <main>
-      <section>{{ printf "%s" .Entry }}</section>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Words" }}
+      
+      {{ template "/inline-content.template.html" dict "Entries" .Entries "ContainerClass" "words-list" "CardClass" "word-card" "ContentClass" "word-content" "WrapperTag" "section" }}
     </main>
 
-    <script>
-      {{ template "/word/main.js" . }}
-    </script>
+    {{ template "/footer.template.html" . }}
+
   </body>
 </html>

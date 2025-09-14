@@ -2,31 +2,21 @@
 <html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
-
+    {{ template "/main.css" . }}
     <style>
       {{ template "/poem/main.css" . }}
     </style>
   </head>
 
   <body>
-    <main>
-      <section>
-        {{ $lastIndex := (sub1 (len .Entries)) }} {{ range $i, $entry :=
-        .Entries }}
-        <div style="text-align: center">
-          <p style="text-align: left; display: inline-block">
-            {{ printf "%s" $entry }}
-          </p>
-          {{ if ne $i $lastIndex }}
-          <hr />
-          {{ end }}
-        </div>
-        {{ end }}
-      </section>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Poems" }}
+      
+      {{ template "/inline-content.template.html" dict "Entries" .Entries "ContainerClass" "poems-grid" "CardClass" "poem-card" "ContentClass" "poem-content" "WrapperTag" "div" }}
     </main>
 
-    <script>
-      {{ template "/poem/main.js" . }}
-    </script>
+    {{ template "/footer.template.html" . }}
   </body>
 </html>

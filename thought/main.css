@@ -1,73 +1,76 @@
-* {
-  box-sizing: border-box;
-}
+/* Thought Page Specific Styles */
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  font-size: 24px;
-  font-family: Amiri, serif;
-  background: #fcf9f4;
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-main {
-  animation: fade-in 1s;
-  height: 100%;
-  max-width: 700px;
-  margin: auto;
+.thought-list {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
 }
 
-main > a {
-  color: #020215;
-  padding: 10px 20px;
-  border-radius: 2px;
-  transition:
-    background 500ms,
-    color 500ms;
-  max-width: 100%;
-  text-align: center;
+.thought-entry {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
 }
 
-main > a:hover,
-main > a:focus,
-main > a:active {
-  background: #020215;
-  color: white;
+.thought-entry::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-card);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
 }
 
-@media screen and (prefers-color-scheme: dark) {
-  html,
-  body {
-    background-color: #020215;
-    color: white;
+.thought-entry:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-accent-blue);
+}
+
+.thought-entry:hover::before {
+  opacity: 1;
+}
+
+.thought-link {
+  display: block;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.thought-link h3 {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.thought-date {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.thought-entry:focus-within {
+  outline: 2px solid var(--color-accent-pink);
+  outline-offset: 2px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .thought-entry {
+    padding: var(--space-lg);
   }
 
-  main > a {
-    color: white;
-  }
-
-  main > a:hover,
-  main > a:focus,
-  main > a:active {
-    background: white;
-    color: #020215;
+  .thought-link h3 {
+    font-size: var(--font-size-base);
   }
 }

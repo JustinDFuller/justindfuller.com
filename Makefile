@@ -65,31 +65,36 @@ server-fast:
 	@echo ${COLOR_GRAY}Begin go run.${COLOR_NC};
 	@go run -race .;
 
-.PHONY: server-watch
-server-watch:
-	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server";
 
-.PHONY: server-watch-fast
-server-watch-fast:
-	@reflex -s --decoration=none --inverse-regex=".build" -- sh -c "clear && $(MAKE) -s server-fast";
+.PHONY: build
+build: validate tidy generate vet format lint
+	@echo "$${COLOR_GRAY}Building binary.$${COLOR_NC}";
+	@go build -race -o justindfuller.com .;
+
+.PHONY: build-fast
+build-fast:
+	@echo "$${COLOR_GRAY}Building binary (fast).$${COLOR_NC}";
+	@go build -race -o justindfuller.com .;
+
+.PHONY: server-watch-smart
+server-watch-smart:
+	@./scripts/smart-watch.sh;
 
 .PHONY: format-watch
 format-watch:
-	@reflex -s --decoration=none --inverse-regex=".md" --inverse-regex=".build"-- sh -c "clear && $(MAKE) -s format";
+	@reflex -s --decoration=none --inverse-regex=".md" -- sh -c "clear && $(MAKE) -s format";
+
+.PHONY: lint-md
+lint-md:
+	@echo ${COLOR_GRAY}Begin markdownlint.${COLOR_NC};
+	@NODE_OPTIONS='--no-deprecation' npx markdownlint-cli2 **/*.md "#node_modules" --config .markdownlint-cli2.jsonc --fix | sed --expression='s/markdownlint-cli2 v0.17.2 (markdownlint v0.37.4)//g';
+
+.PHONY: lint-md-watch
+lint-md-watch:
+	@reflex -s --decoration=none --regex="\.md$$" -- sh -c "clear && $(MAKE) -s lint-md";
 
 .PHONY: deploy
-deploy: build
+deploy:
 	@echo ${COLOR_GRAY}Begin gcloud app deploy.${COLOR_NC};
 	@gcloud app deploy --appyaml=./.appengine/app.yaml;
 
-.PHONY: build
-build:
-	@echo ${COLOR_GRAY}Begin build process.${COLOR_NC};
-	@rm -rf ./.build;
-	@mkdir ./.build;
-	@go run ./build/main.go;
-	@cp -r ./image ./.build
-
-.PHONY: build-watch
-build-watch:
-	@reflex -s -- sh -c "$(MAKE) build";

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
+    <link rel="stylesheet" href="/static/chroma.css">
+    <style>
+      {{ template "/programming/entry.css" . }}
+    </style>
+  </head>
+
+  <body>
+    {{ template "/header.template.html" . }}
+
+    {{ template "/entry-page.template.html" dict "Entry" .Entry "ContentType" "programming" }}
+
+    {{ template "/footer.template.html" . }}
+
+  </body>
+</html>

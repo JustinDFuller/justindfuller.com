@@ -1,4 +1,10 @@
-# Living on 24 Hours a Day
+---
+title: "Living on 24 Hours a Day"
+subtitle: ""
+date: 2022-01-07
+draft: false
+tags: [review]
+---
 
 Halfway through last year, I found myself overwhelmed by my schedule. There were simply too many things to do and not enough time. As we bookworms tend to do, I set out to find books that would teach me to wrangle my schedule.
 

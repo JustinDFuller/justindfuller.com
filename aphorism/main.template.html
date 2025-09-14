@@ -2,24 +2,21 @@
 <html lang="en">
   <head>
     {{ template "/meta.template.html" . }}
-
+    {{ template "/main.css" . }}
     <style>
       {{ template "/aphorism/main.css" . }}
     </style>
   </head>
 
   <body>
-    <main>
-      <section>
-        {{ range .Entries }}
-        <p>{{ printf "%s" . }}</p>
-        <hr />
-        {{ end }}
-      </section>
+    {{ template "/header.template.html" . }}
+
+    <main class="content-page">
+      {{ template "/page-title.template.html" "Aphorisms" }}
+      
+      {{ template "/inline-content.template.html" dict "Entries" .Entries "ContainerClass" "aphorisms-list" "CardClass" "aphorism-card" "ContentClass" "aphorism-text" "WrapperTag" "p" }}
     </main>
 
-    <script>
-      {{ template "/aphorism/main.js" . }}
-    </script>
+    {{ template "/footer.template.html" . }}
   </body>
 </html>

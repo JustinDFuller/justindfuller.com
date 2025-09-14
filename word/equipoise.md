@@ -1,4 +1,10 @@
-# Equipoise
+---
+title: "Equipoise"
+subtitle: ""
+date: 2025-09-07
+draft: false
+tags: [word]
+---
 
 ## References
 

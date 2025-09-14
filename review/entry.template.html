@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "/meta.template.html" . }}
+    {{ template "/main.css" . }}
+    <style>
+      {{ template "/review/entry.css" . }}
+    </style>
+  </head>
+
+  <body>
+    {{ template "/header.template.html" . }}
+
+    {{ template "/entry-page.template.html" dict "Entry" .Entry "ContentType" "review" }}
+
+    {{ template "/footer.template.html" . }}
+
+  </body>
+</html>
