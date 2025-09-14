@@ -89,6 +89,10 @@ lint-md:
 	@echo ${COLOR_GRAY}Begin markdownlint.${COLOR_NC};
 	@NODE_OPTIONS='--no-deprecation' npx markdownlint-cli2 **/*.md "#node_modules" --config .markdownlint-cli2.jsonc --fix | sed --expression='s/markdownlint-cli2 v0.17.2 (markdownlint v0.37.4)//g';
 
+.PHONY: lint-md-watch
+lint-md-watch:
+	@reflex -s --decoration=none --regex="\.md$$" -- sh -c "clear && $(MAKE) -s lint-md";
+
 .PHONY: deploy
 deploy:
 	@echo ${COLOR_GRAY}Begin gcloud app deploy.${COLOR_NC};
