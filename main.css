@@ -808,7 +808,7 @@
   .entry-body--aphorism figcaption.image-caption {
     display: block;
     font-size: 0.875rem;
-    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
     text-align: center;
     color: var(--color-text-muted);
     font-style: italic;
