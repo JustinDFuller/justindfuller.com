@@ -36,7 +36,6 @@ func parseEntry(name string, file []byte) (Entry, error) {
 			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
 			html.WithUnsafe(),
 		),
 	)

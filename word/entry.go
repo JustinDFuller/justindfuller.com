@@ -41,7 +41,6 @@ func GetEntry(name string) (Entry, error) {
 			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
 			html.WithUnsafe(),
 		),
 	)
@@ -171,7 +170,6 @@ func Entries() ([][]byte, error) {
 					parser.WithAutoHeadingID(),
 				),
 				goldmark.WithRendererOptions(
-					html.WithHardWraps(),
 					html.WithUnsafe(),
 				),
 			)

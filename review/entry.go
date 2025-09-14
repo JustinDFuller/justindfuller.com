@@ -55,7 +55,6 @@ func GetEntry(want string) (EntryWithContent, error) {
 			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
 			html.WithUnsafe(),
 		),
 	)

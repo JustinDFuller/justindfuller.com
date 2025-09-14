@@ -33,7 +33,6 @@ func Get() Entry {
 			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
 			html.WithUnsafe(),
 		),
 	)

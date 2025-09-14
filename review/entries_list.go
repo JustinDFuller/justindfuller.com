@@ -96,7 +96,6 @@ func GetEntries() ([]Entry, error) {
 				parser.WithAutoHeadingID(),
 			),
 			goldmark.WithRendererOptions(
-				html.WithHardWraps(),
 				html.WithUnsafe(),
 			),
 		)

@@ -79,7 +79,6 @@ func init() { //nolint:gochecknoinits
 				parser.WithAutoHeadingID(),
 			),
 			goldmark.WithRendererOptions(
-				html.WithHardWraps(),
 				html.WithUnsafe(),
 			),
 		)

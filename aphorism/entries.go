@@ -17,7 +17,6 @@ import (
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer/html"
 )
 
 // Entry represents a single aphorism with its content
@@ -105,9 +104,7 @@ func GetEntry(number string) (Entry, error) {
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),
-		goldmark.WithRendererOptions(
-			html.WithHardWraps(),
-		),
+		goldmark.WithRendererOptions(),
 	)
 
 	var buf bytes.Buffer
