@@ -60,12 +60,12 @@ Each task requires about a minute of setup to ensure I can use Claude code optim
       * Creates a git branch.  
       * Ensures [`CLAUDE.md`](http://CLAUDE.md) and the `.claude/` directory is set up in the worktree.
 
-![Using /worktree to create the worktree.](/image/programming/my-claude-code-workflow-worktree-1.png)
-![Claude creates the branch and worktree folder.](/image/programming/my-claude-code-workflow-worktree-2.png)
+    ![Using /worktree to create the worktree.](/image/programming/my-claude-code-workflow-worktree-1.png)
+    ![Claude creates the branch and worktree folder.](/image/programming/my-claude-code-workflow-worktree-2.png)
 
 2. I exit Claude and manually `cd` into the worktree.  
    * Claude keeps history based on the directory it opens in.  
-   * By `cd`’ing into the work tree, this keeps Claude’s history separate, making `/resume` and `--continue` more effective. 
+   * By `cd`’ing into the work tree, this keeps Claude’s history separate, making `/resume` and `--continue` more effective.
 
 ### Plan
 
@@ -77,20 +77,21 @@ I ensure Claude creates a plan and I carefully review it before I let it write a
    * If the task is complex, I often prompt code to `think deeply` about the task to enable [extended thinking](https://docs.anthropic.com/en/docs/claude-code/common-workflows#use-extended-thinking).  
    * I prompt Claude to suggest optimal [subagents](https://docs.anthropic.com/en/docs/claude-code/sub-agents) for each task and to also use optimal subagents during planning.
 
-![Writing a prompt.](/image/programming/my-claude-code-workflow-prompt-1.png)
+    ![Writing a prompt.](/image/programming/my-claude-code-workflow-prompt-1.png)
 
-4.  **Review Plan:** Claude produces a plan, which I carefully review.  
-   * While it might be exciting that Claude can generate an implementation plan, it is crucial that you carefully review the plan.  
-   * Often, you’ll find the plan does not align with your expectations. This could be because of unclear directions, missing details, or Claude’s inability to recognize what options are available.
+4. **Review Plan:** Claude produces a plan, which I carefully review.  
 
-![Claude was right here. My next prompt will lead it down a path that is not optimal (attempts to use span attributes instead of metrics). This shows how Claude will not put up a fight if you ask it to do the wrong thing.](/image/programming/my-claude-code-workflow-review-plan-1.png)
+* While it might be exciting that Claude can generate an implementation plan, it is crucial that you carefully review the plan.  
+* Often, you’ll find the plan does not align with your expectations. This could be because of unclear directions, missing details, or Claude’s inability to recognize what options are available.
+
+    ![Claude was right here. My next prompt will lead it down a path that is not optimal (attempts to use span attributes instead of metrics). This shows how Claude will not put up a fight if you ask it to do the wrong thing.](/image/programming/my-claude-code-workflow-review-plan-1.png)
 
 5. **Iterate on Plan**: You can give Claude follow-up instructions that it will use to adjust the plan.  
    * Unless the task is extremely straightforward, I often have 1-2 rounds of feedback for Claude.  
    * If I find myself going 3+ rounds of feedback on the plan, I often start over with a new prompt or a smaller scope.
 
-![Prompting Claude to redo its plan.](/image/programming/my-claude-code-workflow-iterate-1.png)
-![Claude's updated plan.](/image/programming/my-claude-code-workflow-iterate-2.png)
+    ![Prompting Claude to redo its plan.](/image/programming/my-claude-code-workflow-iterate-1.png)
+    ![Claude's updated plan.](/image/programming/my-claude-code-workflow-iterate-2.png)
 
 ### Execute
 
@@ -103,7 +104,7 @@ I allow Claude to work “agentically,” meaning that it executes the plan inde
       * Access certain documentation websites.  
    * This allows Claude to work independently and with freedom but without the risk of enabling [\--dangerously-skip-permissions](https://docs.anthropic.com/en/docs/claude-code/cli-reference#cli-flags).
 
-![I accept the plan with auto-accept edits.](/image/programming/my-claude-code-workflow-execute-1.png)
+    ![I accept the plan with auto-accept edits.](/image/programming/my-claude-code-workflow-execute-1.png)
 
 ### Review
 
@@ -114,15 +115,15 @@ Since I am still 100% responsible for this code, and since LLMs can be unpredict
    * I carefully review the summary.  
    * Sometimes, I immediately find something unexpected or wrong. In this case, I immediately prompt Claude to fix it (or ask why it did that) without any further review.
 
-![Claude's summary of its work.](/image/programming/my-claude-code-workflow-summary-1.png)
+    ![Claude's summary of its work.](/image/programming/my-claude-code-workflow-summary-1.png)
 
 8. **Ship**: If the summary looks good, I use my `/ship` slash command to have Claude create a draft PR.  
    * Ship will use git to push the changes to a remote branch, create a draft PR, and update the JIRA ticket.
 
-![Running my custom /ship slash command.](/image/programming/my-claude-code-workflow-ship-1.png)
-![It creates the Pull Request and updates JIRA.](/image/programming/my-claude-code-workflow-ship-2.png)
-![Auto-Generated Pull Request](/image/programming/my-claude-code-workflow-ship-3.png)
-![Jira Ticket Comment](/image/programming/my-claude-code-workflow-ship-4.png)
+    ![Running my custom /ship slash command.](/image/programming/my-claude-code-workflow-ship-1.png)
+    ![It creates the Pull Request and updates JIRA.](/image/programming/my-claude-code-workflow-ship-2.png)
+    ![Auto-Generated Pull Request](/image/programming/my-claude-code-workflow-ship-3.png)
+    ![Jira Ticket Comment](/image/programming/my-claude-code-workflow-ship-4.png)
 
 9. **AI PR Review**: I have Claude do the first round of PR reviews.  
    * I clear the context so Claude is starting fresh.  
@@ -133,12 +134,12 @@ Since I am still 100% responsible for this code, and since LLMs can be unpredict
       * Inconsistencies between the PR or Ticket description and the actual code.  
       * Bugs in the code.
 
-![Use the SRE engineer to review the code.](/image/programming/my-claude-code-workflow-ai-review-1.png)
-![It correctly determines metrics were not used when they should have been.](/image/programming/my-claude-code-workflow-ai-review-2.png)
-![Running another code review with the golang-pro.](/image/programming/my-claude-code-workflow-ai-review-3.png)
+    ![Use the SRE engineer to review the code.](/image/programming/my-claude-code-workflow-ai-review-1.png)
+    ![It correctly determines metrics were not used when they should have been.](/image/programming/my-claude-code-workflow-ai-review-2.png)
+    ![Running another code review with the golang-pro.](/image/programming/my-claude-code-workflow-ai-review-3.png)
 
 10. **Human PR Review**: After Claude has reviewed and iterated on the PR, I do a manual PR review.  
-    * It is critical that a human read, understand, and agree with all code that is written by an AI.   
+    * It is critical that a human read, understand, and agree with all code that is written by an AI.
     * I consider myself 100% responsible for any code Claude writes, the same as if I wrote it myself.  
     * This step may yield multiple iterations through the above process.
 
@@ -146,7 +147,7 @@ Since I am still 100% responsible for this code, and since LLMs can be unpredict
 
 ## Commands
 
-[Slash commands](https://docs.anthropic.com/en/docs/claude-code/slash-commands) are one of my favorite features in Claude. They are incredibly helpful for optimizing workflows. 
+[Slash commands](https://docs.anthropic.com/en/docs/claude-code/slash-commands) are one of my favorite features in Claude. They are incredibly helpful for optimizing workflows.
 
 Here are the custom commands I use to automate my workflow:
 
@@ -189,7 +190,7 @@ Here are the custom commands I use to automate my workflow:
   * If resolved, explain why.  
 * `/worktree-cleanup`  
   * Cleans up the worktree when I am done with development  
-* `/drone-analyze`   
+* `/drone-analyze`
   * Uses the [Drone CLI](https://docs.drone.io/cli/install/) to access and analyze build logs.  
   * This ensures I do not have to copy \+ paste failed builds into Claude.
 
