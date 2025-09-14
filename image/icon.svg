@@ -1,4 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-  <rect width="100" height="100" fill="#1a1a1a"/>
-  <text x="50" y="50" font-family="monospace" font-size="48" fill="#ff69b4" text-anchor="middle" dominant-baseline="middle">JF</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1a1a1a"/><text x="50" y="50" fill="#ff69b4" dominant-baseline="middle" font-family="monospace" font-size="48" text-anchor="middle">JF</text></svg>
