@@ -1,10 +1,10 @@
 module github.com/justindfuller/justindfuller.com
 
-go 1.23.8
+go 1.24.0
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.16.0
+require golang.org/x/sync v0.17.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.6
