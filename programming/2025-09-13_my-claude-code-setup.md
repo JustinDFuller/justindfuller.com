@@ -16,13 +16,25 @@ This post explains how I use Claude Code to write 100% of my code without sacrif
 
 ---
 
+## Context
+
+It is important to understand the context I use this setup in. The code I write with Claude ships to production. It is user-facing code. This comes with all the expectations you might expect: it must be correct, deal with edge cases, security, accessibility, performance, etc. 
+
+You can learn more about the context I work in on my [About Me](/about) page.
+
+## Results
+
+Quality: I am able to consistently get results that *I* am happy with. I believe the code Claude ouputs is similar to or better than what I would have written by hand.
+
+Speed: By one measure, I am closing as many or more JIRA tickets compared to before Claude Code. By another measure, I am able to tackle additional "tech debt" tasks that I would not have been able to before.
+
 ## High-level Workflow
 
 * I do my work in the terminal, not an IDE.  
 * Two primary ways of interacting with the code:  
   * Claude  
   * Github PRs  
-* I have my model [configured](https://docs.anthropic.com/en/docs/claude-code/model-config) to only use Opus.  
+* I have my model [configured](https://docs.anthropic.com/en/docs/claude-code/model-config) to only use Sonnet 4.5.  
 * I typically have between 1-4 instances of Claude running at a given time.  
   * I’ve found that more than 4 instances I cannot keep track of effectively.  
 * Steps  
@@ -46,6 +58,8 @@ This post explains how I use Claude Code to write 100% of my code without sacrif
 ---
 
 ## Detailed Workflow
+
+For all steps, I keep "Thinking" enabled ([enabled with tab](https://claudelog.com/faqs/how-to-toggle-thinking-in-claude-code/)).
 
 ### Setup
 
@@ -74,7 +88,7 @@ I ensure Claude creates a plan and I carefully review it before I let it write a
 3. **Prompt**: Once in the worktree, I enter [`plan` mode](https://docs.anthropic.com/en/docs/claude-code/common-workflows#use-plan-mode-for-safe-code-analysis), so Claude cannot make any changes.  
    * I give a detailed prompt about the task to be completed.  
    * I [provide relevant files](https://docs.anthropic.com/en/docs/claude-code/common-workflows#reference-files-and-directories) using the `@file/path.ext` syntax to reduce the amount of searching Claude needs to do.  
-   * If the task is complex, I often prompt code to `think deeply` about the task to enable [extended thinking](https://docs.anthropic.com/en/docs/claude-code/common-workflows#use-extended-thinking).  
+   * If the task is complex, I sometimes prompt Claude to `ultrathink` about the task to enable [extended thinking](https://www.anthropic.com/engineering/claude-code-best-practices).  
    * I prompt Claude to suggest optimal [subagents](https://docs.anthropic.com/en/docs/claude-code/sub-agents) for each task and to also use optimal subagents during planning.
 
     ![Writing a prompt.](/image/programming/my-claude-code-workflow-prompt-1.png)
@@ -155,7 +169,6 @@ Here are the custom commands I use to automate my workflow:
   * Create or move to a git worktree for the specified branch  
   * Ensure that .claude/ and CLAUDE.md are copied over from the main branch (they aren’t checked in).  
 * `/plan`  
-  * Instructs Claude to “Think Deeply” to ensure it enters extended thinking mode.  
   * Ensures the plan is broken down into steps that can be committed with passing builds.  
   * Ensures each step has a pre-defined commit message so that progress is saved incrementally.  
   * Ensures each step of the plan identifies the optimal subagent to use.  
