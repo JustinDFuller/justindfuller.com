@@ -15,8 +15,8 @@ validate:
 	@python3 -mjson.tool "package.json" > /dev/null;
 	@echo ${COLOR_GRAY}Validating .markdownlint-cli2.jsonc${COLOR_NC};
 	@python3 -mjson.tool ".markdownlint-cli2.jsonc" > /dev/null;
-	@echo ${COLOR_GRAY}Validating .golangci.json${COLOR_NC};
-	@python3 -mjson.tool ".golangci.json" > /dev/null;
+	@echo ${COLOR_GRAY}Validating .golangci.yml${COLOR_NC};
+	@yamllint .golangci.yml;
 	@echo ${COLOR_GRAY}Validating .devcontainer/devcontainer.json${COLOR_NC};
 	@python3 -mjson.tool ".devcontainer/devcontainer.json" > /dev/null;
 	@echo ${COLOR_GRAY}Validating .stylelintrc.json${COLOR_NC};
@@ -97,4 +97,3 @@ lint-md-watch:
 deploy:
 	@echo ${COLOR_GRAY}Begin gcloud app deploy.${COLOR_NC};
 	@gcloud app deploy --appyaml=./.appengine/app.yaml;
-

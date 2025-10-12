@@ -18,7 +18,7 @@ This post explains how I use Claude Code to write 100% of my code without sacrif
 
 ## Context
 
-It is important to understand the context I use this setup in. The code I write with Claude ships to production. It is user-facing code. This comes with all the expectations you might expect: it must be correct, deal with edge cases, security, accessibility, performance, etc. 
+It is important to understand the context I use this setup in. The code I write with Claude ships to production. It is user-facing code. This comes with all the expectations you might expect: it must be correct, deal with edge cases, security, accessibility, performance, etc.
 
 You can learn more about the context I work in on my [About Me](/about) page.
 

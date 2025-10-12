@@ -26,25 +26,54 @@ jobs:
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
       - name: Delete Preview Service
         run: |
+          set -euo pipefail
           PR_NUMBER=${{ github.event.pull_request.number }}
           SERVICE_NAME="pr-${PR_NUMBER}"
+          PROJECT_ID="justindfuller"
           
           # Check if the service exists
-          if gcloud app services describe ${SERVICE_NAME} --project=justindfuller &>/dev/null; then
-            echo "Deleting preview service: ${SERVICE_NAME}"
+          if gcloud app services describe "${SERVICE_NAME}" --project="${PROJECT_ID}" &>/dev/null; then
+            echo "Cleaning up preview service: ${SERVICE_NAME}"
             
-            # Delete all versions of the preview service
-            VERSIONS=$(gcloud app versions list --service=${SERVICE_NAME} --project=justindfuller --format="value(id)")
-            
-            if [ ! -z "$VERSIONS" ]; then
-              echo "Deleting versions: ${VERSIONS}"
-              echo $VERSIONS | xargs -n1 -I {} gcloud app versions delete {} \
-                --service=${SERVICE_NAME} \
-                --project=justindfuller \
+            if gcloud app services delete "${SERVICE_NAME}" --project="${PROJECT_ID}" --quiet; then
+              echo "Preview service ${SERVICE_NAME} deleted"
+            else
+              echo "Direct service deletion failed, attempting to delete versions individually"
+              
+              VERSIONS=$(gcloud app versions list --service="${SERVICE_NAME}" --project="${PROJECT_ID}" --format="value(id)")
+              
+              if [ -n "${VERSIONS}" ]; then
+                echo "Deleting versions: ${VERSIONS}"
+                while read -r VERSION_ID; do
+                  if [ -n "${VERSION_ID}" ]; then
+                    echo "Deleting version ${VERSION_ID}"
+                    gcloud app versions delete "${VERSION_ID}" \
+                      --service="${SERVICE_NAME}" \
+                      --project="${PROJECT_ID}" \
+                      --quiet || true
+                  fi
+                done <<< "${VERSIONS}"
+              else
+                echo "No versions found for ${SERVICE_NAME}"
+              fi
+              
+              echo "Retrying preview service deletion"
+              gcloud app services delete "${SERVICE_NAME}" \
+                --project="${PROJECT_ID}" \
                 --quiet
             fi
+
+            echo "Restoring base dispatch rules"
+            gcloud app deploy .appengine/dispatch.yaml \
+              --project="${PROJECT_ID}" \
+              --quiet
             
             # Note: App Engine requires at least one version per service
             # The service will be automatically removed when all versions are deleted
@@ -63,10 +92,10 @@ jobs:
             const service_name = `pr-${pr_number}`;
             
             const comment_body = `## 🧹 Preview Environment Cleaned Up
-            
+
             The preview environment for PR #${pr_number} has been removed.
-            
-            Service \`${service_name}\` and all its versions have been deleted from Google App Engine.`;
+
+            Service \`${service_name}\`, its versions, and preview routing have been removed from Google App Engine.`;
             
             await github.rest.issues.createComment({
               owner: context.repo.owner,
