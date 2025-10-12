@@ -42,23 +42,33 @@ jobs:
           if gcloud app services describe "${SERVICE_NAME}" --project="${PROJECT_ID}" &>/dev/null; then
             echo "Cleaning up preview service: ${SERVICE_NAME}"
             
-            # Delete all versions of the preview service
-            VERSIONS=$(gcloud app versions list --service="${SERVICE_NAME}" --project="${PROJECT_ID}" --format="value(id)")
-            
-            if [ -n "${VERSIONS}" ]; then
-              echo "Deleting versions: ${VERSIONS}"
-              echo "${VERSIONS}" | xargs -n1 -I {} gcloud app versions delete "{}" \
-                --service="${SERVICE_NAME}" \
+            if gcloud app services delete "${SERVICE_NAME}" --project="${PROJECT_ID}" --quiet; then
+              echo "Preview service ${SERVICE_NAME} deleted"
+            else
+              echo "Direct service deletion failed, attempting to delete versions individually"
+              
+              VERSIONS=$(gcloud app versions list --service="${SERVICE_NAME}" --project="${PROJECT_ID}" --format="value(id)")
+              
+              if [ -n "${VERSIONS}" ]; then
+                echo "Deleting versions: ${VERSIONS}"
+                while read -r VERSION_ID; do
+                  if [ -n "${VERSION_ID}" ]; then
+                    echo "Deleting version ${VERSION_ID}"
+                    gcloud app versions delete "${VERSION_ID}" \
+                      --service="${SERVICE_NAME}" \
+                      --project="${PROJECT_ID}" \
+                      --quiet || true
+                  fi
+                done <<< "${VERSIONS}"
+              else
+                echo "No versions found for ${SERVICE_NAME}"
+              fi
+              
+              echo "Retrying preview service deletion"
+              gcloud app services delete "${SERVICE_NAME}" \
                 --project="${PROJECT_ID}" \
                 --quiet
-            else
-              echo "No versions found for ${SERVICE_NAME}"
             fi
-
-            echo "Deleting preview service: ${SERVICE_NAME}"
-            gcloud app services delete "${SERVICE_NAME}" \
-              --project="${PROJECT_ID}" \
-              --quiet
 
             echo "Restoring base dispatch rules"
             gcloud app deploy .appengine/dispatch.yaml \
