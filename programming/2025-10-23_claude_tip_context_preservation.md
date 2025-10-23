@@ -12,7 +12,7 @@ Here's a quick tip for anyone using [Claude Code](https://docs.claude.com/en/doc
 
 For several months now, I've been [using Claude Code to write 100% of my code](/programming/my-claude-code-setup). Recently I've been working on a project with huge files and long command output. I found that working in this project brought Claude to a halt because of constant auto-compaction.
 
-After complaining about this to a colleague, they reminded me that [sub-agents have their own context window](https://docs.claude.com/en/docs/claude-code/sub-agents). 
+After complaining about this to a colleague, they reminded me that [sub-agents have their own context window](https://docs.claude.com/en/docs/claude-code/sub-agents).
 
 > **Context preservation**
 >
