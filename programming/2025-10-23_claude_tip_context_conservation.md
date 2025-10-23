@@ -1,12 +1,12 @@
 ---
-title: "Claude Code Tip: Preserving Context"
-subtitle: "Using Sub-Agents to preserve context and prevent auto-compaction"
+title: "Claude Code Tip: Conserving Context"
+subtitle: "Using Sub-Agents to prevent auto-compaction"
 date: 2025-10-23
 draft: false
 tags: [Programming]
 ---
 
-Here's a quick tip for anyone using [Claude Code](https://docs.claude.com/en/docs/claude-code): if you want to preserve your context window and avoid auto-compact, ensure _everything_ runs in a sub-agent.
+Here's a quick tip for anyone using [Claude Code](https://docs.claude.com/en/docs/claude-code): if you want to conserve your context window and avoid auto-compact, ensure _everything_ runs in a sub-agent.
 
 ## Why?
 
@@ -46,3 +46,5 @@ I updated instructions in various places to ensure Claude Code knows to use thes
 ![Using 150k tokens without auto-compacting](/image/programming/claude-commands.png)
 
 As seen in the screenshot above, I am now able to execute much longer workflows without dealing with auto-compacting. Overall, this seems to be leading to shorter task completion times and more consistent output from Claude.
+
+Previously, the above workflow would have required a clean context or would have caused an auto-compact.
