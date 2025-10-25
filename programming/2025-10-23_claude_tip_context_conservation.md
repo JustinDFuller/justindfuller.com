@@ -48,3 +48,19 @@ I updated instructions in various places to ensure Claude Code knows to use thes
 As seen in the screenshot above, I am now able to execute much longer workflows without dealing with auto-compacting. Overall, this seems to be leading to shorter task completion times and more consistent output from Claude.
 
 Previously, the above workflow would have required a clean context or would have caused an auto-compact.
+
+## Experiment
+
+*(Warning: this experiment could cost you money. Proceed carefully.)*
+
+To test this approach, identify a routine that fills your context window and causes an auto-compact. For example, use an MCP server that uses many tokens, like the Atlassian JIRA server. You could repeatedly ask it to give you the details of your current tickets.
+
+First, run that routine with Claude instructed not to use sub-agents for the tasks. See how far you get.
+
+Then, run that routine with Claude instructed to use your newly-created `@agent-command-runner`. You should be able to run signficantly more commands before filling your main agent's context window.
+
+## Overall Token Usage
+
+An important caveat: your overall token usage will increase. 
+
+For example, a routine that uses 150k tokens without sub-agents may use 250k tokens with sub-agents. This is because Claude Code uses tokens to communicate between models. So, if you are operating in a cost-sensetive environment, such as on a low-price Anthropic plan, you may want to be careful with this approach. While you will experience fewer auto-compacts, you could hit your plan's usage limit faster. If you use Amazon Bedrock or similar, it could lead to higher bills.
