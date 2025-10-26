@@ -67,3 +67,11 @@ This approach doesn’t come for free. Planning a Steel Threads strategy can be 
 It’s rarely obvious how to carve a big project into small, meaningful tasks. The key is to see that each piece doesn’t need to be useful on its own. Suppose you’re building a new web-based product. Your first steel thread might be a simple authentication flow that ends on a blank page. It’s not useful, but it’s complete: an end-to-end path for a logged-in user that future features can build on. You could go smaller still. If you plan to support several sign-in methods, start with the simplest—maybe a username and password or Google OAuth. The aim is to slice as finely as you can while keeping each slice “complete.”
 
 If you’re replacing a system, how do you move from the old to the new? The answer is simple when the new system is complete. But what if you’re replacing only a single thread? Then the shift demands some finesse. You might begin by checking the new system, falling back to the old when necessary. Or, if you already know which cases the new system can handle, route only those features to it. This approach isn’t always easy, but it lets you replace the old piece by piece—ideal when the legacy system still needs maintenance or even the occasional new feature.
+
+## Real-World Example
+
+Let's take a look at this strategy through a case study: modernizing The New York Times paywall (and other marketing assets, like landing pages).
+
+![An article on The New York Times website](/image/programming/steel-threads-nytimes-article.png)
+
+Several years ago, I set out to migrate the system powering The Times marketing from a third-party to an in-house tool. This would require updating how we build our paywall, landing pages, and more across all of our web and mobile products. This would not be an easy undertaking.
