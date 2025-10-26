@@ -60,7 +60,7 @@ jobs:
 
       - name: Deploy to Preview
         id: deploy
-        uses: "google-github-actions/deploy-appengine@v2"
+        uses: "google-github-actions/deploy-appengine@v3"
         with:
           project_id: "justindfuller"
           deliverables: "app.yaml"
