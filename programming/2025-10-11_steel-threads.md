@@ -72,6 +72,8 @@ If you’re replacing a system, how do you move from the old to the new? The ans
 
 Let's take a look at this strategy through a case study: modernizing The New York Times paywall (and other marketing assets, like landing pages).
 
-![An article on The New York Times website](/image/programming/steel-threads-nytimes-article.png)
+![Examples of what we needed to re-architect.](/image/programming/steel-threads-nytimes-article.png)
 
 Several years ago, I set out to migrate the system powering The Times marketing from a third-party to an in-house tool. This would require updating how we build our paywall, landing pages, and more across all of our web and mobile products. This would not be an easy undertaking.
+
+
