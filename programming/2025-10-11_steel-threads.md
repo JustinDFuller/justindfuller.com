@@ -67,3 +67,54 @@ This approach doesn’t come for free. Planning a Steel Threads strategy can be 
 It’s rarely obvious how to carve a big project into small, meaningful tasks. The key is to see that each piece doesn’t need to be useful on its own. Suppose you’re building a new web-based product. Your first steel thread might be a simple authentication flow that ends on a blank page. It’s not useful, but it’s complete: an end-to-end path for a logged-in user that future features can build on. You could go smaller still. If you plan to support several sign-in methods, start with the simplest—maybe a username and password or Google OAuth. The aim is to slice as finely as you can while keeping each slice “complete.”
 
 If you’re replacing a system, how do you move from the old to the new? The answer is simple when the new system is complete. But what if you’re replacing only a single thread? Then the shift demands some finesse. You might begin by checking the new system, falling back to the old when necessary. Or, if you already know which cases the new system can handle, route only those features to it. This approach isn’t always easy, but it lets you replace the old piece by piece—ideal when the legacy system still needs maintenance or even the occasional new feature.
+
+## Real-World Example
+
+Let’s look at this strategy in practice through a case study: modernizing The New York Times paywall and related marketing assets, such as landing pages.
+
+![Examples of what we needed to re-architect.](/image/programming/steel-threads-nytimes-article.png)
+
+Several years ago, I set out to migrate the system powering The Times’s on-site marketing from a third-party tool. This meant rebuilding how we managed the paywall, landing pages, and other experiences across web and mobile. It wasn’t a small job.
+
+In [*Things You Should Never Do*](https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/), Joel Spolsky recounts Netscape’s fatal decision to rewrite its codebase from scratch. In [*Why Do We Fall into the Rewrite Trap?*](/programming/why-do-we-fall-into-the-rewrite-trap), I explored why teams choose rewrites—often because they don’t understand the existing code. This wasn’t that. We understood the old system well; we just couldn’t control it. The third-party tool blocked essential changes. But Joel’s warning still applied: if we spent months rebuilding without shipping value, we’d fall behind. Either the rewrite would fail to catch up and die off, or we’d waste time delivering nothing to the business. The antidote? Steel Threads.
+
+From the outset, we needed an approach that met three conditions:
+
+1. The system had to be rewritten incrementally.  
+2. Teams had to keep extending the old system while we did it.  
+3. Teams needed to switch to the new system as their areas became ready.  
+
+Steel Threads fit this incremental rewrite and rollout perfectly. 
+
+### Thread One
+
+We decided to migrate component by component. The first thread targeted the simplest one: a small blue button in the top right corner of the page, known internally as “Bar One.”
+
+![Moving one message over at a time.](/image/programming/steel-threads-migration-one-button.png)
+
+This first Steel Thread required us to set up:
+
+1. The basic infrastructure for the new system.  
+2. The core data model and message-selection logic.  
+3. Basic subscription targeting.  
+4. The “Bar One” component and its targeted messages.  
+5. A safe mechanism to switch between the old and new implementations.
+
+![Thread One](/image/programming/steel-threads-thread-one.png)
+
+It was a hefty start. We could have sliced it thinner, but we followed one guiding principle: **every Steel Thread should end with a change affecting our readers.** You might not adopt that principle, but for us it kept momentum pointed toward production. Once this first thread shipped, we had the foundation—the systems, structures, and targeting logic—that began **the reverse snowball effect**, making each subsequent thread smaller and faster.
+
+Within this thread, we broke the work into smaller pieces. After the infrastructure and algorithm were in place, we migrated each message one at a time. Each message brought its own integrations. For instance, the first subscriber-facing message required connecting to our subscription system. We didn’t integrate every dependency up front—only what was necessary for the current message. That discipline kept us shipping quickly and stopped us from guessing about future needs or writing speculative code.
+
+### Alternate Options
+
+We considered other approaches to break down the work into Steel Threads. 
+
+1. Message-by-Message
+2. Page-by-Page
+
+In the end, we chose a **component-by-component** approach: migrating all messages within a given component. It struck the right balance between manageable scope and visible impact for readers.
+
+
+
+
