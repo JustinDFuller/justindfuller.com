@@ -100,6 +100,8 @@ This first Steel Thread required us to set up:
 4. The “Bar One” component and its targeted messages.  
 5. A safe mechanism to switch between the old and new implementations.
 
+![Thread One](/image/programming/steel-threads-thread-one.png)
+
 It was a hefty start. We could have sliced it thinner, but we followed one guiding principle: **every Steel Thread should end with a change affecting our readers.** You might not adopt that principle, but for us it kept momentum pointed toward production. Once this first thread shipped, we had the foundation—the systems, structures, and targeting logic—that began **the reverse snowball effect**, making each subsequent thread smaller and faster.
 
 Within this thread, we broke the work into smaller pieces. After the infrastructure and algorithm were in place, we migrated each message one at a time. Each message brought its own integrations. For instance, the first subscriber-facing message required connecting to our subscription system. We didn’t integrate every dependency up front—only what was necessary for the current message. That discipline kept us shipping quickly and stopped us from guessing about future needs or writing speculative code.
