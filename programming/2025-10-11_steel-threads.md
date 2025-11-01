@@ -74,7 +74,7 @@ Let's take a look at this strategy through a case study: modernizing The New Yor
 
 ![Examples of what we needed to re-architect.](/image/programming/steel-threads-nytimes-article.png)
 
-Several years ago, I set out to migrate the system powering The Times marketing from a third-party to an in-house tool. This would require updating how we build our paywall, landing pages, and more across all of our web and mobile products. This would not be an easy undertaking.
+Several years ago, I set out to migrate the system powering The Times on-site marketing from a third-party tool. This would require updating how we build our paywall, landing pages, and more across all of our web and mobile products. This would not be an easy undertaking.
 
 In [Things You Should Never Do](https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/) Joel Spolsky describes the downfall of netscape: they rewrote their code from scratch. In [Why do we fall into the rewrite trap?](/programming/why-do-we-fall-into-the-rewrite-trap) I outlined several reasons we choose to rewrite code, the worst of which is when we don't understand the code, so we rewrite it. But, this situation was different. We weren't rewriting because we didn't understand the code. We were rewriting because we didn't have full control of the code. That third-party tool prevented us from making the changes we needed, so had to replace it. But as Joel points out, we were running a big risk: making no progress while doing a huge rewrite would put us signficantly behind. Either the new project would fail to catch up, and eventually die off. Or we would waste a ton of time rewriting while producing no business value. The solution to both of these problems? Steel Threads.
 
@@ -86,4 +86,29 @@ Early on, it became clear that we needed a solution that would allow for a few t
 
 Steel Threads were perfect for this incremental rewrite and rollout strategy. 
 
+### Thread One
+
+We chose to break down the migration by component. For the first thread, we chose the simplest component: a little blue button that lives on the top right corner of the page. We call it, "Bar One." 
+
 ![Moving one message over at a time.](/image/programming/steel-threads-migration-one-button.png)
+
+This first Steel Thread would require us to set up:
+
+1. The basic infrastructure of the new system
+2. The core data structure and message selection algorithm.
+3. Basic subscription targeting.
+4. The "Bar One" component and targeted messages.
+5. An mechanism to safely switch between the old and new implementation of Bar One.
+
+As you can tell, there was a lot of work in the first Steel Thread. We could have chosen to break it down even further. However, we wanted to follow a **core principle:** every steel thread should result in a new experience for readers. As you use Steel Threads, you may not choose to follow this principal. However, choosing to revolve our work around shipping to end-users kept us focused on moving toward production. After this thread we would have the systems, structures, processes, and targeting in-place, causing **The Reverse Snowball Effect** which would make subsequent threads smaller.
+
+Internally to the Steel Thread, we broke the work down further. Once the infrastructure and algorithm were ready, we began migrating each message. For each message, we integrated any data sources required to target the message. For example, the first message targeted at subscribers required an integration with our subscription system. We did not attempt to integrate with all the necessary systems up-front. Instead, we only integrated what was needed for each message. This kept us moving quickly, shipping only what was required to fulfill the Steel Thread. It also prevented us from speculating about what would be needed later, which could potentially lead to writing unnecessary code.
+
+### Alternate Options
+
+We considered other approaches to breaking down this work into Steel Threads. 
+
+1. Message-by-Message
+2. Page-by-Page
+
+Ultimately, we landing on what a Component-by-Component approach, which led to migrating all messages within a particular component. This was the best tradeoff between size of work and meaningful difference shipped to end-users.
