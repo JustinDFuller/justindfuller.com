@@ -28,17 +28,11 @@ Once complete, a hydraulic jack compressed them into a single beam. When John A.
 
 ## Software Engineering
 
-In software engineering, the concept of “steel threads” breaks work into incremental slices.
-
-### The Traditional Approach
-
-A traditional implementation plan builds entire systems or components in sequence—for example: first the frontend, then the backend, then the database.
+In software engineering, the concept of “steel threads” breaks work into incremental slices. A traditional implementation plan builds entire systems or components in sequence—for example: first the frontend, then the backend, then the database.
 
 ![The Traditional Approach](/image/programming/steel-threads-traditional-approach.png)
 
-Building each layer can take time. In this example, assume each system takes a month: one week for infrastructure, three for features. Only at the end are the systems connected and tested.
-
-That long runway is risky. You won’t know whether it works as a whole until the finish. You may discover you built the wrong thing—or used the wrong approach—but only at the end.
+Building each layer can take time. In this example, assume each system takes a month: one week for infrastructure, three for features. Only at the end are the systems connected and tested. That long runway is risky. You won’t know whether it works as a whole until the finish. You may discover you built the wrong thing—or used the wrong approach—but only at the end.
 
 ### Steel Threads
 
@@ -60,7 +54,7 @@ This iterative approach lets you shape the architecture step by step. The first 
 
 In a traditional approach, you might define and build the full architecture upfront. In the example above, setting up the cache would have slowed the first feature, which didn’t need it. Likewise, configuring the CDN would have delayed the second feature, which wouldn’t benefit from it. Instead, you add each layer to the architecture only when it becomes useful.
 
-### Thinking Creatively
+### Tradeoffs
 
 This approach doesn’t come for free. Planning a Steel Threads strategy can be harder in two ways. First, breaking a large task into small, working pieces is tricky—especially if you haven’t done it before. Second, when you use steel threads to replace an existing system, you must plan a gradual shift from old to new.
 
@@ -100,7 +94,7 @@ We decided to migrate component-by-component. This would give us an optimal bala
 
 ### Thread One
 
-The first thread targeted the simplest one: a small blue button in the top right corner of the page, known internally as “Bar One.”
+The first thread targeted the simplest component: a small blue button in the top right corner of the page, known internally as “Bar One.”
 
 This first Steel Thread required us to set up:
 
@@ -123,3 +117,5 @@ So, did it work? Today, the new system—known internally as “Onsite Messaging
 We began with the component-by-component strategy. As the migration progressed, we eventually shifted to a page-by-page model, thanks to the reverse snowball effect. Early Steel Threads added the core targeting features we needed, making later threads smaller and easier. Over time, each migration could cover more ground without slowing down.
 
 Today, my teams use Steel Threads to modernize other systems too. We're using them to revamp our offer targeting systems to streamline our ability to target offers at potential subscribers. We're also using them to improve the system that decides if and what type of paywall you see. By applying Steel Threads, these teams have turned multi-year projects into a steady flow of small releases that ship to production.
+
+[Quality](/word/quality) systems aren’t built all at once. They're spun from many small threads; each one built, tested, strengthened, and bound together over time.
