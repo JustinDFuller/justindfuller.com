@@ -84,7 +84,7 @@ What we needed was a way to gradually close the gap. The key was to migrate all 
 
 ### Breaking It Down
 
-These goals limited how we could divide the work. Clearly, we couldn’t rewrite the entire system and switch all at once. So how would we break it down?
+These concerns limited how we could divide the work. Clearly, we couldn’t rewrite the entire system and switch all at once. So how would we break it down?
 
 We had a lot to consider. The old system...
 
@@ -112,14 +112,14 @@ This first Steel Thread required us to set up:
 
 ![Thread One](/image/programming/steel-threads-thread-one.png)
 
-It was a hefty start. We could have sliced it thinner, but we followed one guiding principle: **every Steel Thread should end with a change affecting our readers.** You might not adopt that principle, but for us it kept momentum pointed toward production. Once this first thread shipped, we had the foundation—the systems, structures, and targeting logic—that began **the reverse snowball effect**, making each subsequent thread smaller and faster.
+It was a hefty start. We could have sliced it thinner, but we followed one guiding principle: **every Steel Thread should end with a change affecting our readers.** You might not adopt that principle, but for us it kept momentum pointed toward production. Once this first thread shipped, we had the foundation—the systems, structures, and targeting logic—that began the reverse snowball effect, making each subsequent thread smaller and faster.
 
-Within this thread, we broke the work into smaller pieces. After the infrastructure and algorithm were in place, we migrated each message one at a time. Each message brought its own integrations. For instance, the first subscriber-facing message required connecting to our subscription system. We didn’t integrate every dependency up front—only what was necessary for the current message. That discipline kept us shipping quickly and stopped us from guessing about future needs or writing speculative code.
+Internally to each thread, we broke the work into even smaller pieces. After the infrastructure and algorithm were in place, we migrated each message one at a time. Each message brought its own integrations. For instance, the first subscriber-facing message required connecting to our subscription system. We didn’t integrate every dependency up front—only what was necessary for the current message. That discipline kept us shipping quickly and stopped us from guessing about future needs or writing speculative code.
 
 ### Results
 
 So, did it work? Today, the new system—known internally as “Onsite Messaging”—has completely replaced the old one. It has also expanded to power experiences the original system never touched, unlocking new capabilities like machine-learning decision making.
 
-We began with the component-by-component strategy. As the migration progressed, we eventually shifted to a page-by-page model, thanks to the **reverse snowball effect**. Early Steel Threads added the core targeting features we needed, making later threads smaller and easier. Over time, each migration could cover more ground without slowing down.
+We began with the component-by-component strategy. As the migration progressed, we eventually shifted to a page-by-page model, thanks to the reverse snowball effect. Early Steel Threads added the core targeting features we needed, making later threads smaller and easier. Over time, each migration could cover more ground without slowing down.
 
-Today, my teams use Steel Threads to modernize other systems too. We're using them to revamp our offer targeting systems to streamline our ability to target offers at potential subscribers. We're also using them to improve the system that decides if, when, and what type of paywall you see. By applying Steel Threads, these teams have turned multi-month projects into a steady flow of small releases that ship to production.
+Today, my teams use Steel Threads to modernize other systems too. We're using them to revamp our offer targeting systems to streamline our ability to target offers at potential subscribers. We're also using them to improve the system that decides if and what type of paywall you see. By applying Steel Threads, these teams have turned multi-year projects into a steady flow of small releases that ship to production.
