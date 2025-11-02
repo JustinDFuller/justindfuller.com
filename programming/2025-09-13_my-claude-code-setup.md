@@ -24,7 +24,7 @@ You can learn more about the context I work in on my [About Me](/about) page.
 
 ## Results
 
-Quality: I am able to consistently get results that *I* am happy with. I believe the code Claude ouputs is similar to or better than what I would have written by hand.
+Quality: I am able to consistently get results that *I* am happy with. I believe the code Claude outputs is similar to or better than what I would have written by hand.
 
 Speed: By one measure, I am closing as many or more JIRA tickets compared to before Claude Code. By another measure, I am able to tackle additional "tech debt" tasks that I would not have been able to before.
 
