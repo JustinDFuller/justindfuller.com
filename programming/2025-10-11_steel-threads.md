@@ -18,11 +18,11 @@ The first method for getting those threads across was slow, but there was no alt
 
 ![Steel Thread Spinner (credit: goldengate.org)](/image/programming/steel-threads-golden-gate-spinner.jpg)
 
-With this sufficiently strong set of initial cables, workers could use a spinning wheel to ferry the remaining wires across the bay. This turned an impossibility—hoisting a 12,000-ton steel beam over the San Francisco Bay—into something feasible, though still tedious and exacting. Running a mile from one “strand shoe” to the other, the main cables were built one strand at a time.
+With this sufficiently strong set of initial cables, workers could use a spinning wheel to ferry the remaining wires across the bay. This turned an impossibility—hoisting a 12,000-ton steel beam over the San Francisco Bay—into something feasible, though still tedious and exacting. Running a mile from one “strand shoe” to the other, the main cables were built one strand at a time. Once complete, a hydraulic jack compressed them into a single beam.
 
 ![Hydraulic Press (credit: goldengate.org)](/image/programming/steel-threads-golden-gate-press.jpg)
 
-Once complete, a hydraulic jack compressed them into a single beam. When John A. Roebling invented the process, he called it “Cable Spinning.” I can’t say whether the Golden Gate Bridge’s steel threads inspired the software engineering term. Still, it feels right that such a pivotal technique, born in San Francisco, would inspire software engineers.
+When John A. Roebling invented this process, he called it “Cable Spinning.” While there is no definitive proof that cable spinning inspired the software engineering term, it seems fitting that such a pivotal software engineering technique would be born in San Francisco.
 
 ![Completed Cables (credit: goldengate.org)](/image/programming/steel-threads-golden-gate-beams.jpg)
 
