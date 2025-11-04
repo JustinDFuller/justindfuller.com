@@ -35,10 +35,12 @@ type data[T any] struct {
 }
 
 const (
-	yellow  = "\033[33m"
-	red     = "\033[31m"
-	blue    = "\033[34m"
-	noColor = "\033[0m"
+	yellow              = "\033[33m"
+	red                 = "\033[31m"
+	blue                = "\033[34m"
+	noColor             = "\033[0m"
+	cacheControlOneDay  = "public, max-age=86400"
+	cacheControlOneYear = "public, max-age=31536000"
 )
 
 func logWarning(message string, err error) {
@@ -52,6 +54,28 @@ func logError(message string, err any) {
 
 func logInfo(message string, info string) {
 	fmt.Println(blue+"🛈  "+message+":"+noColor, info)
+}
+
+func setOneDayCache(w http.ResponseWriter) {
+	w.Header().Set("Cache-Control", cacheControlOneDay)
+}
+
+func setOneYearCache(w http.ResponseWriter) {
+	w.Header().Set("Cache-Control", cacheControlOneYear)
+}
+
+func withOneDayCache(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		setOneDayCache(w)
+		handler(w, r)
+	}
+}
+
+func withOneYearCache(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		setOneYearCache(w)
+		handler(w, r)
+	}
 }
 
 func main() {
@@ -148,7 +172,7 @@ func main() {
 		}
 	}
 
-	http.HandleFunc("/aphorism/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/aphorism/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		// Check if this is a request for a specific aphorism
 		path := r.URL.Path
 		if path != "/aphorism" && path != "/aphorism/" {
@@ -190,9 +214,9 @@ func main() {
 			log.Printf("template execution error=%s template=%s", err, "/aphorism/main.template.html")
 			http.Error(w, "Error reading Aphorisms", http.StatusInternalServerError)
 		}
-	})
+	}))
 
-	http.HandleFunc("/word", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/word", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		entries, err := word.Entries()
 		if err != nil {
 			http.Error(w, "Error reading Words", http.StatusInternalServerError)
@@ -207,9 +231,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/word/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/word/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		// If this is exactly /word/, redirect to /word
 		if r.URL.Path == "/word/" {
 			http.Redirect(w, r, "/word", http.StatusMovedPermanently)
@@ -239,9 +263,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/poem/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/poem/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		// Check if this is a request for a specific poem
 		path := r.URL.Path
 		if path != "/poem" && path != "/poem/" {
@@ -280,44 +304,44 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/poem/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/grass.webmanifest", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/grass.webmanifest", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./make/grass.webmanifest")
-	})
+	}))
 
-	http.HandleFunc("/grass/worker.js", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/grass/worker.js", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./make/grass.worker.js")
-	})
+	}))
 
-	http.HandleFunc("/grass", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/grass", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/grass.template.html", data[[]byte]{
 			Title: "Grass",
 			Meta:  "grass",
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/make/grass.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/kit", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/kit", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/kit.template.html", data[[]byte]{
 			Title: "A Game with Kit",
 			Meta:  "kit",
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/make/kit.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/weeks-remaining", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/weeks-remaining", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/remaining.template.html", data[[]byte]{
 			Title: "Weeks Remaining",
 			Meta:  "Weeks Remaining",
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/make/remaining.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/story", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/story", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		entries := story.GetPublishedEntries()
 		if err := templates.ExecuteTemplate(w, "/story/main.template.html", data[story.Entry]{
 			Title:   "Story",
@@ -325,9 +349,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/story/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/story/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/story/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
@@ -352,9 +376,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/story/entry.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/thought", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/thought", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		entries, err := thought.GetEntries()
 		if err != nil {
 			log.Printf("Error getting thought entries: %s", err)
@@ -367,9 +391,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/thought/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/thought/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/thought/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
@@ -394,9 +418,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/thought/entry.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/programming", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/programming", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		entries, err := programming.GetEntries()
 		if err != nil {
 			log.Printf("Error getting programming entries: %s", err)
@@ -409,9 +433,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/programming/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/programming/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/programming/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		// If this is exactly /programming/, redirect to /programming
 		if r.URL.Path == "/programming/" {
 			http.Redirect(w, r, "/programming", http.StatusMovedPermanently)
@@ -441,18 +465,18 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/programming/entry.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/review", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/review", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/review/main.template.html", data[review.Entry]{
 			Title:   "Review",
 			Entries: review.Entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/review/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/review/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/review/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
@@ -477,23 +501,23 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/review/entry.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/make", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/make", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		if err := templates.ExecuteTemplate(w, "/make/main.template.html", data[grass.ProjectEntry]{
 			Title:   "Make",
 			Entries: grass.Entries,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/make/main.template.html")
 		}
-	})
+	}))
 
 	// Handle /make/ with redirect
 	http.HandleFunc("/make/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/make", http.StatusMovedPermanently)
 	})
 
-	http.HandleFunc("/nature", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/nature", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		entries, err := nature.Entries()
 		if err != nil {
 			log.Printf("Error reading ./image/nature: %s", err)
@@ -508,9 +532,9 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/nature/main.html.tmpl")
 		}
-	})
+	}))
 
-	http.HandleFunc("/nature/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/nature/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		paths := strings.Split(r.URL.Path, "/")
 		last := len(paths) - 1
 
@@ -535,36 +559,32 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}
-	})
+	}))
 
-	http.HandleFunc("/image/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/image/", withOneYearCache(func(w http.ResponseWriter, r *http.Request) {
 		log.Print(r.URL.Path)
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
-	})
+	}))
 
-	http.HandleFunc("/fonts/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/fonts/", withOneYearCache(func(w http.ResponseWriter, r *http.Request) {
 		log.Print(r.URL.Path)
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
-	})
+	}))
 
-	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
-		// Set cache headers for CSS files
-		if strings.HasSuffix(r.URL.Path, ".css") {
-			w.Header().Set("Cache-Control", "public, max-age=31536000") // 1 year
-		}
+	http.HandleFunc("/static/", withOneYearCache(func(w http.ResponseWriter, r *http.Request) {
 		log.Print(r.URL.Path)
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
-	})
+	}))
 
 	http.HandleFunc("/reminder/set", grass.SetHandler)
 
 	http.HandleFunc("/reminder/send", grass.SendHandler(reminderConfig))
 
-	http.HandleFunc("/site.webmanifest", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/site.webmanifest", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./site.webmanifest")
-	})
+	}))
 
-	http.HandleFunc("/about", func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/about", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
 		entry := about.Get()
 		if err := templates.ExecuteTemplate(w, "/about/main.template.html", data[about.Entry]{
 			Title: "About Me",
@@ -572,14 +592,14 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/about/main.template.html")
 		}
-	})
+	}))
 
 	// Handle /about/ with redirect
 	http.HandleFunc("/about/", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		// Check if this is exactly the root path
 		if r.URL.Path != "/" {
 			// For any path other than root, set 404 status but still render home page
@@ -590,7 +610,7 @@ func main() {
 		if err := templates.ExecuteTemplate(w, "/main.template.html", data[[]byte]{}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/main.template.html")
 		}
-	})
+	}))
 
 	port := os.Getenv("PORT")
 	if port == "" {
