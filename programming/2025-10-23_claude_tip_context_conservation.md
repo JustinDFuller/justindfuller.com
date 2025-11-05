@@ -45,7 +45,7 @@ I updated instructions in various places to ensure Claude Code knows to use thes
 
 ![Total Token Usage](/image/programming/claude-tokens.png)
 
-As seen in the screenshot above, I am now able to execute much longer workflows without dealing with auto-compacting. Overall, this seems to be leading to shorter task completion times and more consistent output from Claude. 
+As seen in the screenshot above, I am now able to execute much longer workflows without dealing with auto-compacting. Overall, this seems to be leading to shorter task completion times and more consistent output from Claude.
 
 In this screenshot, I was able to to implement a feature which requires a total of 15.6 million tokens. Some of that token usage was from Claude communicating between sub-agents. Without sub-agents, this workflow would have caused over 80 auto-compacts.
 
