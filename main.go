@@ -562,17 +562,14 @@ func main() {
 	}))
 
 	http.HandleFunc("/image/", withOneYearCache(func(w http.ResponseWriter, r *http.Request) {
-		log.Print(r.URL.Path)
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
 	}))
 
 	http.HandleFunc("/fonts/", withOneYearCache(func(w http.ResponseWriter, r *http.Request) {
-		log.Print(r.URL.Path)
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
 	}))
 
 	http.HandleFunc("/static/", withOneYearCache(func(w http.ResponseWriter, r *http.Request) {
-		log.Print(r.URL.Path)
 		http.ServeFile(w, r, fmt.Sprintf(".%s", r.URL.Path))
 	}))
 
