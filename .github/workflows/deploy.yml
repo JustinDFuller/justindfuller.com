@@ -2,6 +2,10 @@
 
 name: Build and Deploy to GAE
 
+concurrency:
+  group: gae-deploy
+  cancel-in-progress: true
+
 on:
   push:
     branches: ["main"]
