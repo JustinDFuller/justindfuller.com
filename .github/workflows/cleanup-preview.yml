@@ -25,6 +25,8 @@ jobs:
 
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
+        with:
+          install_components: app-engine-python
 
       - name: Checkout
         uses: actions/checkout@v5
@@ -32,23 +34,26 @@ jobs:
           lfs: true
 
       - name: Delete Preview Service
+        id: cleanup
         run: |
           set -euo pipefail
           PR_NUMBER=${{ github.event.pull_request.number }}
           SERVICE_NAME="pr-${PR_NUMBER}"
           PROJECT_ID="justindfuller"
-          
-          # Check if the service exists
-          if gcloud app services describe "${SERVICE_NAME}" --project="${PROJECT_ID}" &>/dev/null; then
+
+          if DESCRIBE_OUTPUT=$(gcloud app services describe "${SERVICE_NAME}" \
+            --project="${PROJECT_ID}" \
+            --format="value(id)" 2>&1); then
             echo "Cleaning up preview service: ${SERVICE_NAME}"
-            
+            echo "service_found=true" >> "${GITHUB_OUTPUT}"
+
             if gcloud app services delete "${SERVICE_NAME}" --project="${PROJECT_ID}" --quiet; then
               echo "Preview service ${SERVICE_NAME} deleted"
             else
               echo "Direct service deletion failed, attempting to delete versions individually"
-              
+
               VERSIONS=$(gcloud app versions list --service="${SERVICE_NAME}" --project="${PROJECT_ID}" --format="value(id)")
-              
+
               if [ -n "${VERSIONS}" ]; then
                 echo "Deleting versions: ${VERSIONS}"
                 while read -r VERSION_ID; do
@@ -63,7 +68,7 @@ jobs:
               else
                 echo "No versions found for ${SERVICE_NAME}"
               fi
-              
+
               echo "Retrying preview service deletion"
               gcloud app services delete "${SERVICE_NAME}" \
                 --project="${PROJECT_ID}" \
@@ -74,17 +79,25 @@ jobs:
             gcloud app deploy .appengine/dispatch.yaml \
               --project="${PROJECT_ID}" \
               --quiet
-            
+
             # Note: App Engine requires at least one version per service
             # The service will be automatically removed when all versions are deleted
             # and it's not the default service
-            
+
             echo "Preview environment cleanup completed"
           else
-            echo "Preview service ${SERVICE_NAME} not found, skipping cleanup"
+            if echo "${DESCRIBE_OUTPUT}" | grep -qiE "(does not contain service|NOT_FOUND)"; then
+              echo "Preview service ${SERVICE_NAME} not found, skipping cleanup"
+              echo "service_found=false" >> "${GITHUB_OUTPUT}"
+            else
+              echo "Failed to describe preview service ${SERVICE_NAME}:"
+              echo "${DESCRIBE_OUTPUT}"
+              exit 1
+            fi
           fi
 
       - name: Comment Cleanup Status
+        if: steps.cleanup.outputs.service_found == 'true'
         uses: actions/github-script@v8
         with:
           script: |
