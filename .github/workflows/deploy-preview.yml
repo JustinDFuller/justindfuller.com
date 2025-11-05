@@ -58,6 +58,9 @@ jobs:
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
 
+      - name: Install App Engine Go component
+        run: gcloud components install app-engine-go --quiet
+
       - name: Deploy to Preview
         id: deploy
         uses: "google-github-actions/deploy-appengine@v3"
