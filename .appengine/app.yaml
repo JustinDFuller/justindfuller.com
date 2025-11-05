@@ -7,8 +7,40 @@ automatic_scaling:
   min_idle_instances: 0
 
 handlers:
-  # Route everything through the Go application
-  # The Go app will handle static serving with proper caching
+  - url: /static
+    static_dir: static
+    secure: always
+    expiration: "365d"
+
+  - url: /fonts
+    static_dir: fonts
+    secure: always
+    expiration: "365d"
+
+  - url: /image
+    static_dir: image
+    secure: always
+    expiration: "365d"
+
+  - url: /grass/worker.js
+    static_files: make/grass.worker.js
+    upload: make/grass.worker.js
+    secure: always
+    expiration: "1d"
+
+  - url: /grass.webmanifest
+    static_files: make/grass.webmanifest
+    upload: make/grass.webmanifest
+    secure: always
+    expiration: "1d"
+
+  - url: /site.webmanifest
+    static_files: site.webmanifest
+    upload: site.webmanifest
+    secure: always
+    expiration: "1d"
+
+  # Route everything else through the Go application
   - url: /.*
     script: auto
     secure: always
