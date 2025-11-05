@@ -55,6 +55,12 @@ jobs:
         with:
           credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
 
+      - name: Setup Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Install App Engine Go component
+        run: gcloud components install app-engine-go --quiet
+
       - name: "deploy"
         uses: "google-github-actions/deploy-appengine@v3"
         with:
