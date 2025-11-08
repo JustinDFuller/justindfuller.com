@@ -70,6 +70,7 @@ jobs:
 
       - name: Re-authenticate for cleanup
         if: ${{ success() }}
+        id: auth-cleanup
         uses: "google-github-actions/auth@v3"
         with:
           credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
@@ -77,6 +78,9 @@ jobs:
 
       - name: Delete previous App Engine versions
         if: ${{ success() }}
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth-cleanup.outputs.credentials_file_path }}
+          CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ steps.auth-cleanup.outputs.credentials_file_path }}
         run: |
           NEW_VERSION="${{ steps.deploy.outputs.version_id }}"
           SERVICE="default"
