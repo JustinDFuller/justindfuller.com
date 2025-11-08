@@ -18,23 +18,28 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          lfs: true
+
       - name: Auth
+        id: auth
         uses: "google-github-actions/auth@v3"
         with:
           credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
+          create_credentials_file: true
 
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v3
         with:
           install_components: app-engine-python
 
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          lfs: true
-
       - name: Delete Preview Service
         id: cleanup
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
+          CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ steps.auth.outputs.credentials_file_path }}
         run: |
           set -euo pipefail
           PR_NUMBER=${{ github.event.pull_request.number }}
