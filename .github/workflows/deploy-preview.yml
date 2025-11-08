@@ -71,6 +71,44 @@ jobs:
           stop_previous_version: true
           version: "pr-${{ github.event.pull_request.number }}-${{ github.run_id }}"
 
+      - name: Re-authenticate for cleanup
+        if: ${{ success() }}
+        uses: "google-github-actions/auth@v3"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
+          create_credentials_file: true
+
+      - name: Delete previous App Engine preview versions
+        if: ${{ success() }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          SERVICE="pr-${PR_NUMBER}"
+          NEW_VERSION="${{ steps.deploy.outputs.version_id }}"
+
+          if [ -z "$NEW_VERSION" ]; then
+            echo "No new version detected; skipping cleanup."
+            exit 0
+          fi
+
+          echo "Cleaning up versions for service '${SERVICE}', keeping '${NEW_VERSION}'."
+
+          DELETE_LIST="$(gcloud app versions list \
+            --project=justindfuller \
+            --service="${SERVICE}" \
+            --format="value(version.id)" | grep -Fxv "${NEW_VERSION}" || true)"
+
+          if [ -z "$DELETE_LIST" ]; then
+            echo "No previous versions to delete."
+            exit 0
+          fi
+
+          echo "Deleting versions:"
+          echo "${DELETE_LIST}"
+          echo "${DELETE_LIST}" | xargs -r gcloud app versions delete \
+            --project=justindfuller \
+            --service="${SERVICE}" \
+            --quiet
+
       - name: Update Dispatch Rules
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
