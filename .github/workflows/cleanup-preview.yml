@@ -52,6 +52,11 @@ jobs:
             echo "Cleaning up preview service: ${SERVICE_NAME}"
             echo "service_found=true" >> "${GITHUB_OUTPUT}"
 
+            echo "Removing dispatch rules referencing ${SERVICE_NAME}"
+            gcloud app deploy .appengine/dispatch.yaml \
+              --project="${PROJECT_ID}" \
+              --quiet
+
             if gcloud app services delete "${SERVICE_NAME}" --project="${PROJECT_ID}" --quiet; then
               echo "Preview service ${SERVICE_NAME} deleted"
             else
@@ -79,11 +84,6 @@ jobs:
                 --project="${PROJECT_ID}" \
                 --quiet
             fi
-
-            echo "Restoring base dispatch rules"
-            gcloud app deploy .appengine/dispatch.yaml \
-              --project="${PROJECT_ID}" \
-              --quiet
 
             # Note: App Engine requires at least one version per service
             # The service will be automatically removed when all versions are deleted
