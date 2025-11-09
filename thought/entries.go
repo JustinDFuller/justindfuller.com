@@ -48,12 +48,20 @@ func parseEntry(name string, file []byte) (Entry, error) {
 
 	// Extract metadata
 	metaData := meta.Get(context)
-	
+
 	// Extract title from metadata
 	title := ""
 	if t, ok := metaData["title"]; ok {
 		if titleStr, ok := t.(string); ok {
 			title = titleStr
+		}
+	}
+
+	// Extract subtitle from metadata
+	subTitle := ""
+	if s, ok := metaData["subtitle"]; ok {
+		if subStr, ok := s.(string); ok {
+			subTitle = subStr
 		}
 	}
 
@@ -67,7 +75,7 @@ func parseEntry(name string, file []byte) (Entry, error) {
 			date = v
 		}
 	}
-	
+
 	// If no date in metadata, try to extract from filename
 	if date.IsZero() && len(name) >= 10 {
 		// Try to parse YYYY-MM-DD from beginning of filename
@@ -125,6 +133,7 @@ func parseEntry(name string, file []byte) (Entry, error) {
 
 	return Entry{
 		Title:       title,
+		SubTitle:    subTitle,
 		Slug:        slug,
 		Description: description,
 		Content:     template.HTML(buf.Bytes()), //nolint:gosec // Content is from trusted markdown files
@@ -172,7 +181,7 @@ func GetEntries() ([]Entry, error) {
 
 	for _, dir := range files {
 		name := dir.Name()
-		
+
 		// Skip non-markdown files and directories
 		if dir.IsDir() || !strings.HasSuffix(name, ".md") {
 			continue
