@@ -67,10 +67,16 @@ func GetEntry(want string) (EntryWithContent, error) {
 
 	// Extract metadata
 	metaData := meta.Get(context)
-	
+
+	// Get subtitle from metadata if present
+	subTitle := ""
+	if s, ok := metaData["subtitle"].(string); ok {
+		subTitle = s
+	}
+
 	// Get content HTML
 	contentHTML := buf.String()
-	
+
 	// Get title from metadata
 	var title string
 	if t, ok := metaData["title"].(string); ok && t != "" {
@@ -110,7 +116,7 @@ func GetEntry(want string) (EntryWithContent, error) {
 			}
 		}
 	}
-	
+
 	// If no date in metadata, try to parse from filename
 	if date.IsZero() {
 		// Pattern: 2022-09-18_the_philosophy_of_trees.md
@@ -125,8 +131,9 @@ func GetEntry(want string) (EntryWithContent, error) {
 
 	return EntryWithContent{
 		Entry: Entry{
-			Title: title,
-			Date:  date,
+			Title:    title,
+			SubTitle: subTitle,
+			Date:     date,
 		},
 		Content: template.HTML(contentHTML), //nolint:gosec // Content is from trusted markdown files
 	}, nil
@@ -144,12 +151,12 @@ func GetRawEntry(want string) ([]byte, error) {
 func formatTitleFromFilename(filename string) string {
 	// Remove .md extension
 	name := strings.TrimSuffix(filename, ".md")
-	
+
 	// Remove date prefix if present (e.g., "2022-09-18_")
 	if len(name) > 11 && name[10] == '_' {
 		name = name[11:]
 	}
-	
+
 	// Replace underscores with spaces and capitalize words
 	parts := strings.Split(name, "_")
 	for i, part := range parts {
@@ -157,6 +164,6 @@ func formatTitleFromFilename(filename string) string {
 			parts[i] = strings.ToUpper(part[:1]) + part[1:]
 		}
 	}
-	
+
 	return strings.Join(parts, " ")
 }

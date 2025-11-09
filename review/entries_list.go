@@ -40,24 +40,24 @@ func extractFirstParagraph(content string) string {
 			}
 		}
 	}
-	
+
 	// Join remaining lines
 	text := strings.Join(lines[start:], "\n")
-	
+
 	// Remove headers and find first non-empty paragraph
 	paragraphs := strings.Split(text, "\n\n")
 	for _, p := range paragraphs {
 		p = strings.TrimSpace(p)
 		// Skip empty lines, headers, code blocks, images, and centered text
-		if p == "" || strings.HasPrefix(p, "#") || strings.HasPrefix(p, "```") || 
-		   strings.HasPrefix(p, "<img") || strings.HasPrefix(p, "<p align") ||
-		   strings.HasPrefix(p, "![") || strings.HasPrefix(p, ">") {
+		if p == "" || strings.HasPrefix(p, "#") || strings.HasPrefix(p, "```") ||
+			strings.HasPrefix(p, "<img") || strings.HasPrefix(p, "<p align") ||
+			strings.HasPrefix(p, "![") || strings.HasPrefix(p, ">") {
 			continue
 		}
 		// Remove any markdown formatting but keep the text
-		p = regexp.MustCompile(`\[([^\]]+)\]\([^\)]+\)`).ReplaceAllString(p, "$1") // Links
+		p = regexp.MustCompile(`\[([^\]]+)\]\([^\)]+\)`).ReplaceAllString(p, "$1")     // Links
 		p = regexp.MustCompile(`[*_]{1,2}([^*_]+)[*_]{1,2}`).ReplaceAllString(p, "$1") // Bold/italic
-		p = regexp.MustCompile(`^[-*+] `).ReplaceAllString(p, "") // List markers
+		p = regexp.MustCompile(`^[-*+] `).ReplaceAllString(p, "")                      // List markers
 		p = strings.TrimSpace(p)
 		if p != "" {
 			return p
@@ -77,7 +77,7 @@ func GetEntries() ([]Entry, error) {
 
 	for _, file := range files {
 		name := file.Name()
-		
+
 		// Skip non-markdown files
 		if !strings.HasSuffix(name, ".md") {
 			continue
@@ -108,7 +108,7 @@ func GetEntries() ([]Entry, error) {
 
 		// Extract metadata
 		metaData := meta.Get(context)
-		
+
 		// Get title from metadata or extract from content
 		var title string
 		if t, ok := metaData["title"].(string); ok && t != "" {
@@ -123,6 +123,12 @@ func GetEntries() ([]Entry, error) {
 					title = contentHTML[start:end]
 				}
 			}
+		}
+
+		// Get subtitle from metadata
+		subTitle := ""
+		if s, ok := metaData["subtitle"].(string); ok {
+			subTitle = s
 		}
 
 		// Get date from metadata
@@ -148,6 +154,7 @@ func GetEntries() ([]Entry, error) {
 
 		entries = append(entries, Entry{
 			Title:          title,
+			SubTitle:       subTitle,
 			Slug:           slug,
 			FirstParagraph: firstParagraph,
 			Date:           date,

@@ -1,15 +1,22 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#fafafa" />
-{{ if eq .Title "" -}}
-<title>Justin D Fuller</title>
-<meta name="description" content="Justin D Fuller" />
-<meta property="og:title" content="Justin D Fuller" />
-{{ else -}}
-<title>{{ .Title }} | Justin D Fuller</title>
-<meta name="description" content="{{ .Title }} | Justin D Fuller" />
-<meta property="og:title" content="{{ .Title }} | Justin D Fuller" />
-{{ end -}}
+{{- $siteTitle := "Justin D Fuller" -}}
+{{- $pageTitle := .Title -}}
+{{- $subTitle := .SubTitle -}}
+{{- $fullTitle := $pageTitle -}}
+{{- if and (ne $pageTitle "") (ne $subTitle "") -}}
+  {{- $fullTitle = printf "%s: %s" $pageTitle $subTitle -}}
+{{- end -}}
+{{- if eq $pageTitle "" -}}
+<title>{{ $siteTitle }}</title>
+<meta name="description" content="{{ $siteTitle }}" />
+<meta property="og:title" content="{{ $siteTitle }}" />
+{{- else -}}
+<title>{{ $fullTitle }} | {{ $siteTitle }}</title>
+<meta name="description" content="{{ $fullTitle }} | {{ $siteTitle }}" />
+<meta property="og:title" content="{{ $fullTitle }} | {{ $siteTitle }}" />
+{{- end -}}
 
 {{ if eq .Meta "" -}}
 <link rel="icon" href="/image/favicon.ico" sizes="any" />
@@ -22,4 +29,3 @@
 <link rel="apple-touch-icon" href="/image/{{ .Meta }}-apple-touch-icon.png" />
 <link rel="manifest" href="/{{ .Meta }}.webmanifest" />
 {{ end -}}
-

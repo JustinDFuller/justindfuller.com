@@ -28,10 +28,11 @@ import (
 )
 
 type data[T any] struct {
-	Title   string
-	Meta    string
-	Entries []T
-	Entry   T
+	Title    string
+	SubTitle string
+	Meta     string
+	Entries  []T
+	Entry    T
 }
 
 const (
@@ -258,8 +259,9 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/word/entry.template.html", data[word.Entry]{
-			Title: entry.Title,
-			Entry: entry,
+			Title:    entry.Title,
+			SubTitle: entry.SubTitle,
+			Entry:    entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}
@@ -371,8 +373,9 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/story/entry.template.html", data[story.EntryWithContent]{
-			Title: entry.Title,
-			Entry: entry,
+			Title:    entry.Title,
+			SubTitle: entry.SubTitle,
+			Entry:    entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/story/entry.template.html")
 		}
@@ -413,8 +416,9 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/thought/entry.template.html", data[thought.Entry]{
-			Title: entry.Title,
-			Entry: entry,
+			Title:    entry.Title,
+			SubTitle: entry.SubTitle,
+			Entry:    entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/thought/entry.template.html")
 		}
@@ -460,8 +464,9 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/programming/entry.template.html", data[programming.Entry]{
-			Title: entry.Title,
-			Entry: entry,
+			Title:    entry.Title,
+			SubTitle: entry.SubTitle,
+			Entry:    entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/programming/entry.template.html")
 		}
@@ -496,8 +501,9 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/review/entry.template.html", data[review.EntryWithContent]{
-			Title: entry.Title,
-			Entry: entry,
+			Title:    entry.Title,
+			SubTitle: entry.SubTitle,
+			Entry:    entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/review/entry.template.html")
 		}
@@ -554,8 +560,9 @@ func main() {
 		}
 
 		if err := templates.ExecuteTemplate(w, "/nature/entry.html.tmpl", data[nature.Entry]{
-			Title: Title(paths[last]),
-			Entry: entry,
+			Title:    Title(paths[last]),
+			SubTitle: entry.SubTitle,
+			Entry:    entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/word/main.template.html")
 		}

@@ -67,10 +67,16 @@ func GetEntry(want string) (EntryWithContent, error) {
 
 	// Extract metadata
 	metaData := meta.Get(context)
-	
+
+	// Get subtitle from metadata if present
+	subTitle := ""
+	if s, ok := metaData["subtitle"].(string); ok {
+		subTitle = s
+	}
+
 	// Get content HTML
 	contentHTML := buf.String()
-	
+
 	// Get title - try metadata first, then extract from content
 	var title string
 	var titleFromMeta bool
@@ -78,16 +84,16 @@ func GetEntry(want string) (EntryWithContent, error) {
 		title = t
 		titleFromMeta = true
 	}
-	
+
 	// Check if there's an H1 in content
 	if strings.Contains(contentHTML, "<h1") {
 		h1Start := strings.Index(contentHTML, "<h1")
 		h1StartTag := strings.Index(contentHTML[h1Start:], ">") + h1Start + 1
 		h1End := strings.Index(contentHTML, "</h1>")
-		
+
 		if h1StartTag > h1Start && h1End > h1StartTag {
 			h1Title := contentHTML[h1StartTag:h1End]
-			
+
 			// If we got title from metadata, always remove H1 to avoid duplication
 			// Also remove if H1 matches the title from metadata
 			if titleFromMeta || h1Title == title {
@@ -117,7 +123,7 @@ func GetEntry(want string) (EntryWithContent, error) {
 			}
 		}
 	}
-	
+
 	// If no date in metadata, try to parse from filename
 	if date.IsZero() {
 		// Pattern: year-month-day or similar
@@ -133,8 +139,9 @@ func GetEntry(want string) (EntryWithContent, error) {
 
 	return EntryWithContent{
 		Entry: Entry{
-			Title: title,
-			Date:  date,
+			Title:    title,
+			SubTitle: subTitle,
+			Date:     date,
 		},
 		Content: template.HTML(contentHTML), //nolint:gosec // Content is from trusted markdown files
 	}, nil

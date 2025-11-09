@@ -53,10 +53,16 @@ func GetEntry(name string) (Entry, error) {
 
 	// Extract metadata
 	metaData := meta.Get(context)
-	
+
+	// Get subtitle from metadata if present
+	subTitle := ""
+	if s, ok := metaData["subtitle"].(string); ok {
+		subTitle = s
+	}
+
 	// Get content HTML
 	contentHTML := buf.String()
-	
+
 	// Get title from metadata
 	var title string
 	var titleFromMeta bool
@@ -64,16 +70,16 @@ func GetEntry(name string) (Entry, error) {
 		title = t
 		titleFromMeta = true
 	}
-	
+
 	// Check if there's an H1 in content
 	if strings.Contains(contentHTML, "<h1") {
 		h1Start := strings.Index(contentHTML, "<h1")
 		h1StartTag := strings.Index(contentHTML[h1Start:], ">") + h1Start + 1
 		h1End := strings.Index(contentHTML, "</h1>")
-		
+
 		if h1StartTag > h1Start && h1End > h1StartTag {
 			h1Title := contentHTML[h1StartTag:h1End]
-			
+
 			// If we got title from metadata, remove H1 to avoid duplication
 			// Also remove if H1 matches the title from metadata
 			if titleFromMeta || h1Title == title {
@@ -88,7 +94,7 @@ func GetEntry(name string) (Entry, error) {
 			}
 		}
 	}
-	
+
 	// If still no title, format from word name
 	if title == "" {
 		// Capitalize first letter of each word
@@ -117,9 +123,10 @@ func GetEntry(name string) (Entry, error) {
 	}
 
 	return Entry{
-		Title:   title,
-		Content: template.HTML(contentHTML), //nolint:gosec // Content is from trusted markdown files
-		Date:    date,
+		Title:    title,
+		SubTitle: subTitle,
+		Content:  template.HTML(contentHTML), //nolint:gosec // Content is from trusted markdown files
+		Date:     date,
 	}, nil
 }
 
@@ -135,33 +142,33 @@ func GetRawEntry(name string) ([]byte, error) {
 // Entries returns the entries.md file split into individual word entries
 func Entries() ([][]byte, error) {
 	path := "./word/entries.md"
-	
+
 	file, err := os.ReadFile(path)
 	if err != nil {
 		return nil, errors.Wrapf(err, "error reading word entries: %s", path)
 	}
-	
+
 	// Split by ## (H2 headers) to get individual word entries
 	content := string(file)
 	parts := strings.Split(content, "\n## ")
-	
+
 	entries := make([][]byte, 0)
 	for i, part := range parts {
 		if strings.TrimSpace(part) == "" {
 			continue
 		}
-		
+
 		// Add back the ## for all parts except the first (which might not have it)
 		if i > 0 {
 			part = "## " + part
 		}
-		
+
 		// Remove HR tags since we'll use card layout instead
 		part = strings.ReplaceAll(part, "\n<hr />", "")
 		part = strings.ReplaceAll(part, "\n<hr/>", "")
 		part = strings.ReplaceAll(part, "\n<hr>", "")
 		part = strings.TrimSpace(part)
-		
+
 		if part != "" && strings.HasPrefix(part, "##") {
 			// Convert markdown to HTML for this entry
 			md := goldmark.New(
@@ -173,15 +180,15 @@ func Entries() ([][]byte, error) {
 					html.WithUnsafe(),
 				),
 			)
-			
+
 			var buf bytes.Buffer
 			if err := md.Convert([]byte(part), &buf); err != nil {
 				return nil, errors.Wrapf(err, "error converting word markdown: %s", part[:min(50, len(part))])
 			}
-			
+
 			entries = append(entries, buf.Bytes())
 		}
 	}
-	
+
 	return entries, nil
 }
