@@ -70,3 +70,6 @@ With this done, it was vibe-coding time!
 
 ### Process
 
+If you look at the [very first commit](https://github.com/JustinDFuller/daily-dash/commit/1637c223299a78ba32ae11497c1ba906876f78a3) you'll see two primary files: `REQUIREMENTS.md` and `IMPLEMENTATION_PLAN.md`.
+
+[REQUIREMENTS.md](https://github.com/JustinDFuller/daily-dash/blob/1637c223299a78ba32ae11497c1ba906876f78a3/REQUIREMENTS.md) contains a very detailed set of plain-english descriptions of the application. This document says nothing about _how_ the application will be built.
