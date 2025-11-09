@@ -49,3 +49,24 @@ When each kid completes their tasks, they are rewarded with a cute animal Gif.
 Kids can customize their colors, avatars, and check marks.
 
 ![Customize](/image/programming/daily_dash/8_customize.png)
+
+## Vibe Coding
+
+We've all heard a lot about vibe coding. Depending on who you ask, it's somewhere between actively harmful and literal magic.
+
+Based on my experience using GenAI coding assistants both at work and at home, I'd place myself squarely in the middle. At this point, I'm using Claude Code and similar tools to [write 100% of the code I ship to production](/programming/my-claude-code-setup). I've learned that is a powerful tool that, if used in the right way, can consistently yield quality results.
+
+### Tool
+
+For this project, I decided to give [OpenAI Codex](https://openai.com/codex/) a try. I headed over to OpenAI's website, gave them $20 of my hard-earned money, and got access to Codex for one month.
+
+![ChatGPT Plus includes Codex](/image/programming/daily_dash/9_chatgpt_plus.png)
+
+The only configuration I changed was setting the model to [gpt-5 codex](https://platform.openai.com/docs/models/gpt-5-codex). This is a version of GPT-5 which is optimized for Codex.
+
+With this done, it was vibe-coding time!
+
+![Codex in my terminal](/image/programming//daily_dash/10_terminal_codex.png)
+
+### Process
+
