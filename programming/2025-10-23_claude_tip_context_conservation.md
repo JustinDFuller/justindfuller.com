@@ -43,13 +43,11 @@ I updated instructions in various places to ensure Claude Code knows to use thes
 
 ## Results
 
-![Total Token Usage](/image/programming/claude-tokens.png)
+![The last party of a really long workflow.](/image/programming/claude-tokens.png)
 
 As seen in the screenshot above, I am now able to execute much longer workflows without dealing with auto-compacting. Overall, this seems to be leading to shorter task completion times and more consistent output from Claude.
 
-In this screenshot, I was able to to implement a feature which requires a total of 15.6 million tokens. Some of that token usage was from Claude communicating between sub-agents. Without sub-agents, this workflow would have caused over 80 auto-compacts.
-
-Previously, the above workflow would have required a clean context or would have caused an auto-compact.
+In this screenshot, you can see the final part of a really long implementation. Here, I had a long-running session which requires a total of 15.6 million tokens. Some of that token usage was from Claude communicating between sub-agents. Without sub-agents, this workflow would have caused over 80 auto-compacts. With sub-agents I was able to make it almost all the way to the end before running out of context.
 
 ## Experiment
 
@@ -65,4 +63,4 @@ Then, run that routine with Claude instructed to use your newly-created `@agent-
 
 An important caveat: your overall token usage will increase.
 
-For example, a routine that uses 150k tokens without sub-agents may use 250k tokens with sub-agents. This is because Claude Code uses tokens to communicate between models. So, if you are operating in a cost-sensetive environment, such as on a low-price Anthropic plan, you may want to be careful with this approach. While you will experience fewer auto-compacts, you could hit your plan's usage limit faster. If you use Amazon Bedrock or similar, it could lead to higher bills.
+For example, a routine that uses 150k tokens without sub-agents may use 250k tokens with sub-agents. This is because Claude Code uses tokens to communicate between models. So, if you are operating in a cost-sensitive environment, such as on a low-price Anthropic plan, you may want to be careful with this approach. While you will experience fewer auto-compacts, you could hit your plan's usage limit faster. If you use Amazon Bedrock or similar, it could lead to higher bills.
