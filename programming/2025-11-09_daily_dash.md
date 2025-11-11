@@ -8,7 +8,7 @@ tags: [Programming]
 
 Listen, I love my kids. I truly, unequivocally do. But if I'm perfectly honest, getting them to _brush_ their teeth is often like _pulling_ their teeth. Sometimes, I honestly think they'd prefer the latter. At least there would be no further brushing.
 
-A while back, I discovered a magical app, [School Morning Routine](https://schoolmorningroutine.com/) that actually made our routine fun. We actually ended up using it for our bedtime routine, despite the app's name. However, at some point the app stopped working. It seems you can no longer log in or create an account. Once again, our bedtime routine fell into dysfunction.
+A while back, I discovered a magical app, [School Morning Routine](https://schoolmorningroutine.com/) that actually made our routine fun. We primarily used it for our bedtime routine, despite the app's name. However, at some point the app stopped working. It seems you can no longer log in or create an account. Once again, our bedtime routine fell into dysfunction.
 
 I would have loved to create an app to replace it. But, did I mention I have kids? Three of them, to be precise. I also have a full time job, a spouse, and the usual gambit of small tasks that drain the remaining time from the day like sand sliding through fingers. In other words, I had no time.
 
@@ -68,8 +68,15 @@ With this done, it was vibe-coding time!
 
 ![Codex in my terminal](/image/programming//daily_dash/10_terminal_codex.png)
 
-### Process
-
 If you look at the [very first commit](https://github.com/JustinDFuller/daily-dash/commit/1637c223299a78ba32ae11497c1ba906876f78a3) you'll see two primary files: `REQUIREMENTS.md` and `IMPLEMENTATION_PLAN.md`.
 
-[REQUIREMENTS.md](https://github.com/JustinDFuller/daily-dash/blob/1637c223299a78ba32ae11497c1ba906876f78a3/REQUIREMENTS.md) contains a very detailed set of plain-english descriptions of the application. This document says nothing about _how_ the application will be built.
+### Requirements
+
+[REQUIREMENTS.md](https://github.com/JustinDFuller/daily-dash/blob/1637c223299a78ba32ae11497c1ba906876f78a3/REQUIREMENTS.md) contains a very detailed set of plain-english descriptions of the application. This document says nothing about _how_ the application will be built. Instead, it focuses on _what_ the application is.
+
+I had Codex generate these requirements by analyzing what it could see from the School Morning Routine. I also manually provided some requirements. Codex took these inputs and generated REQUIREMENTS.md. I'm really glad I started here, because it was clear Codex and I had vastly different explanations for what, exactly, we were building. It required several back-and-forth rounds with Codex before I had a set of requirements I agreed with.
+
+> __The lesson:__ before jumping into an implementation plan, particularly when vibe-coding, take the time to clearly and completely articulate the requirements before jumping in to implementation plans.
+
+### Implementation
+
