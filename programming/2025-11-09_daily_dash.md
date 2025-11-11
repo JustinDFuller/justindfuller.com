@@ -78,5 +78,10 @@ I had Codex generate these requirements by analyzing what it could see from the 
 
 > __The lesson:__ before jumping into an implementation plan, particularly when vibe-coding, take the time to clearly and completely articulate the requirements before jumping in to implementation plans.
 
-### Implementation
+### Implementation Plan
 
+Once requirements were in place, I had Codex generate an [IMPLEMENTATION_PLAN.md](https://github.com/JustinDFuller/daily-dash/blob/1637c223299a78ba32ae11497c1ba906876f78a3/IMPLEMENTATION_PLAN.md). I knew this project would take more than a single session. So, I wanted to create a holistic implementation plan that could be used across sessions over the days and weeks it would take to implement the website.
+
+Just like with REQUIREMENTS.md, the IMPLEMENTATION_PLAN.md required several rounds of feedback before I was happy with it. This means I actually read the IMPLEMENTATION_PLAN, even though I planned to vibe-code the application itself. The feedback primarily focused on technology choices. In my view, Codex initially chose an overly complex architecture. For example, it used [IndexDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API). While we can debate the merits and flaws of that Web API, I felt it was totally unnecessary for this simple use-case. After several rounds of feedback, I simplified the implementation plan to a point I felt it was realistic to implement.
+
+> __The lesson:__ Actually read the implementation plan. Even if you plan to vibe-code the application, it is helpful to ensure the plan and technology stack are realistic.
