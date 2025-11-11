@@ -56,6 +56,8 @@ We've all heard a lot about vibe coding. Depending on who you ask, it's somewher
 
 Based on my experience using GenAI coding assistants both at work and at home, I'd place myself squarely in the middle. At this point, I'm using Claude Code and similar tools to [write 100% of the code I ship to production](/programming/my-claude-code-setup). I've learned that is a powerful tool that, if used in the right way, can consistently yield quality results.
 
+Yet, not all use of GenAI Coding Assistants is Vibe Coding. At work, I use Claude Code to generate all my code. But due to my rigorous process and careful review of each line, I would _not_ say I am vibe coding there. For this project, I did not look at the code at all. I only looked at Codex's plan and the end result in the browser. The code was a black box that I did not look inside.
+
 ### Tool
 
 For this project, I decided to give [OpenAI Codex](https://openai.com/codex/) a try. I headed over to OpenAI's website, gave them $20 of my hard-earned money, and got access to Codex for one month.
@@ -76,12 +78,26 @@ If you look at the [very first commit](https://github.com/JustinDFuller/daily-da
 
 I had Codex generate these requirements by analyzing what it could see from the School Morning Routine. I also manually provided some requirements. Codex took these inputs and generated REQUIREMENTS.md. I'm really glad I started here, because it was clear Codex and I had vastly different explanations for what, exactly, we were building. It required several back-and-forth rounds with Codex before I had a set of requirements I agreed with.
 
-> __The lesson:__ before jumping into an implementation plan, particularly when vibe-coding, take the time to clearly and completely articulate the requirements before jumping in to implementation plans.
+__The lesson:__ before jumping into an implementation plan, particularly when vibe-coding, take the time to clearly and completely articulate the requirements before jumping in to implementation plans.
 
 ### Implementation Plan
 
 Once requirements were in place, I had Codex generate an [IMPLEMENTATION_PLAN.md](https://github.com/JustinDFuller/daily-dash/blob/1637c223299a78ba32ae11497c1ba906876f78a3/IMPLEMENTATION_PLAN.md). I knew this project would take more than a single session. So, I wanted to create a holistic implementation plan that could be used across sessions over the days and weeks it would take to implement the website.
 
-Just like with REQUIREMENTS.md, the IMPLEMENTATION_PLAN.md required several rounds of feedback before I was happy with it. This means I actually read the IMPLEMENTATION_PLAN, even though I planned to vibe-code the application itself. The feedback primarily focused on technology choices. In my view, Codex initially chose an overly complex architecture. For example, it used [IndexDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API). While we can debate the merits and flaws of that Web API, I felt it was totally unnecessary for this simple use-case. After several rounds of feedback, I simplified the implementation plan to a point I felt it was realistic to implement.
+Just like with REQUIREMENTS.md, the IMPLEMENTATION_PLAN.md required several rounds of feedback before I was happy with it. This means I actually read the implementation plan, even though I planned to vibe-code the application itself. The feedback primarily focused on technology choices. In my view, Codex initially chose an overly complex architecture. For example, it used [IndexDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API). While we can debate the merits and flaws of that Web API, I felt it was totally unnecessary for this simple use-case. After several rounds of feedback, I simplified the implementation plan to a point I felt it was realistic to implement.
 
-> __The lesson:__ Actually read the implementation plan. Even if you plan to vibe-code the application, it is helpful to ensure the plan and technology stack are realistic.
+__The lesson:__ Actually read the implementation plan. Even if you plan to vibe-code the application, it is helpful to ensure the plan and technology stack are realistic.
+
+### Problems
+
+At this point, Codex began implementing the app. As you saw in the above section, it turned out pretty decent in the end. However, it ran into several issues along the way.
+
+#### Consistent Styles
+
+#### Choosing Tasks & Icons
+
+#### Finding Celebration Gifs
+
+#### The Bug it Couldn't Fix
+
+## Takeaways
