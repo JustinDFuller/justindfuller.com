@@ -56,7 +56,7 @@ We've all heard a lot about vibe coding. Depending on who you ask, it's somewher
 
 Based on my experience using GenAI coding assistants both at work and at home, I'd place myself squarely in the middle. At this point, I'm using Claude Code and similar tools to [write 100% of the code I ship to production](/programming/my-claude-code-setup). I've learned that is a powerful tool that, if used in the right way, can consistently yield quality results.
 
-Yet, not all use of GenAI Coding Assistants is Vibe Coding. At work, I use Claude Code to generate all my code. But due to my rigorous process and careful review of each line, I would _not_ say I am vibe coding there. For this project, I did not look at the code at all. I only looked at Codex's plan and the end result in the browser. The code was a black box that I did not look inside.
+Yet, not all use of GenAI Coding Assistants is Vibe Coding. At work, I use Claude Code to generate all my code. But due to my rigorous process and careful review of each line, I would _not_ say I am vibe coding there. For this project, I did not look at the code at all. I only looked at the agent's plan and the end result in the browser. The code was a black box that I did not look inside. I still have not looked at the code for Daily Dash.
 
 ### Tool
 
@@ -90,13 +90,37 @@ __The lesson:__ Actually read the implementation plan. Even if you plan to vibe-
 
 ### Problems
 
-At this point, Codex began implementing the app. As you saw in the above section, it turned out pretty decent in the end. However, it ran into several issues along the way.
+At this point, Codex began implementing the app. As you saw in the above section, it turned out pretty decent in the end. However, it ran into several issues along the way. Reflecting on the types of errors encounted by an agent can help prepare us to use them more effectively and to mitigate these errors in the future.
 
 #### Consistent Styles
 
+The design requires roughly five buttons: the yellow start button, the blue primary button, the white secondary button, the round secondary button, and the customizable task buttons.
+
+Early on, I noticed that when I requested a global button changes, it would apply sporatically. This is because Codex's initial implementation didn't use any shared classes.
+
+The short-term fix was simple: instruct Codex to re-use classes across all buttons.
+
+The long-term fix may require carefully updating AGENTS.md to provide a framework for when and how to share code.
+
 #### Choosing Tasks & Icons
 
+The application required icons to represent the various tasks. For example, a tooth brush to represent brushing teeth and clothes to represent get dressed. Younger kids will not be able to read yet, so they require clear icons representing the task.
+
+For the first round of icon selection, I attempted to let Codex find them on its own.
+
+![The original Icons were ... interesting.](/image/programming/daily_dash/11_original_icons.png)
+
+This yielded interesting results. Notably, and to the horror of this parent, Codex chose the scissors icon for "Do Hair." I decided I needed to take a more proactive approach that wouldn't lead to any three-year-olds cutting their hair during their morning routine.
+
+My approach eventually consisted of explicitly telling Codex which tasks to create and which icons to use for each task. On reflection, it is not entirely surprising that models focused on software engineering may lack insight into what is appropriate for children. However, this seems like an important warning for anyone using Codex for apps related to children.
+
 #### Finding Celebration Gifs
+
+This is the first task Codex completely failed at. I tried instructing Codex in multiple ways that it should retrieve "fun, cute, kid-appropriate animal gifs to use as a celebration when each kid's tasks are complete." Without fail, Codex refused to retrieve GIFs from the internet. Even when I directly told it to use `giphy.com` and gave it an example GIF, it wouldn't.
+
+Instead, it decided it would create a script to _generate_ the celebration GIFs.
+
+![Nonsensical Celebration GIF](/image/programming/daily_dash/12_nonsensical_celebration_gif.png)
 
 #### The Bug it Couldn't Fix
 
