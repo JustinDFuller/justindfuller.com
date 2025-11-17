@@ -122,6 +122,38 @@ Instead, it decided it would create a script to _generate_ the celebration GIFs.
 
 ![Nonsensical Celebration GIF](/image/programming/daily_dash/12_nonsensical_celebration_gif.png)
 
+The generated GIFs were completely nonsensical. Although, I'll give it credit, the images contained items that at least _appeared_ to resemble animals (or at least parts of them).
+
+Here, I resorted to manually retrieving GIFs and uploading them as numbered files. Codex then used these numeric entries to map them to available GIFs to show in the celebration modal.
+
 #### The Bug it Couldn't Fix
 
+Codex failed at the last task, but I could kind-of understand it. It required going outside of the code to another website and evaluating images. However, I still do not understand why Codex couldn't solve this problem.
+
+Here's what happened. I eventually added the feature to support multiple routines. I wanted to have the ability to set up a morning and evening routine for my kids. I instructed Codex to implement the features and explained it detail how it should work. Codex implemented the feature. When testing the feature, I made two routines: morning and evening. Then I added tasks to the morning routine: get dressed, eat breakfast, etc. When I switched over to the evening routine, the morning tasks were there! I removed them. I went back to the morning routine and, surprise, they were removed there as well.
+
+I explained the bug to Codex. It immediately explained what was wrong and went on to fix it. I tested again and the problem persisted. I tried this about three more times before giving up. Since I wasn't looking at the code (still haven't) I resorted to looking at my data in localstorage, which is where the app stores data. I noticed there was only 1 location the tasks were stored (instead of having separate tasks associated with each routine). With this information, I was able to explain to Codex exactly what it was doing wrong and what data structure it needed to use. Only then was it finally able to fix the bug.
+
 ## Takeaways
+
+There are three parts of this project I would like to reflect on: vibe-coding as a practice, Codex as an agentic coding tool, and GPT-5 as a model.
+
+### Vibe Coding
+
+I'll state this as plainly as I can: if you are making something important, a qualified human _must_ still reading, understanding, and taking responsibility for the code these tools generate. Vibe coding was fine for this small toy app that streamlined my kids' morning routine. I would not trust it for anything more important than that.
+
+In [my professional AI workflow](/programming/my-claude-code-setup), I have a robust process for reviewing all AI-generated code. I recommend others focus on a similar human-in-the-loop workflow for all important use-cases.
+
+### Codex
+
+Codex was a decent experience. However, I would not adopt if I had the choice of either Claude Code or Cursor, as both are more full featured and easy to use than Codex.
+
+The thing I missed most were slash commands. I found myself repeating prompts, like `git add commit and push, remember to include yourself as a co-author`. These would have been nice to wrap in a slash commands. You can see many commits where Codex is not the co-author, since I forgot to include that addendum.
+
+Additionally, the main benefit of Codex (optimizing GPT-5's thinking time in low, medium, and high) went unused by me. I never bothered to switch between low/medium/high. This feature would be far better if Codex automatically switched settings based on the complexity of the task.
+
+### GPT-5 (Codex)
+
+Overall, the model performed well and eventually built a decent UI and a working application. Typically, responses felt quick and most changes worked the first time I requested them.
+
+I have no solid proof, but I believe Claude Sonnet 4.5 would not have struggled with the bug that GPT-5 was unable to fix. This is based on having it fix complicated problems in my professional workflow. This sort of bug was much simpler than what it typically solves for me.
