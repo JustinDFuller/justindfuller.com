@@ -10,7 +10,7 @@ Listen, I love my kids. I truly, unequivocally do. But if I'm honest, getting th
 
 A while back, I discovered a magical app, [School Morning Routine](https://schoolmorningroutine.com/), that actually made our routine fun. We primarily used it for our bedtime routine, despite the app's name. However, at some point the app stopped working. It seems you can no longer log in or create an account. Once again, our bedtime routine fell into dysfunction.
 
-I would have loved to create an app to replace it. But, did I mention I have kids? Three of them, to be precise. I also have a full-time job, a spouse, and the usual gambit of small tasks that drain the remaining time from the day like sand slipping between fingers. In other words, I had no time.
+I would have loved to create an app to replace it. But, did I mention I have kids? Three of them, to be precise. I also have a full-time job, a spouse, and the usual gamut of small tasks that drain the remaining time from the day like sand slipping between fingers. In other words, I had no time.
 
 Then along came GenAI. I started using Cursor and Claude Code at work. I wondered, could I vibe-code my way into a functional bedtime routine with my kids?
 
