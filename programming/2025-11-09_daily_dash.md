@@ -150,7 +150,7 @@ Codex was a decent experience. However, I would not adopt if I had the choice of
 
 The thing I missed most were slash commands. I found myself repeating prompts, like `git add commit and push, remember to include yourself as a co-author`. These would have been nice to wrap in a slash command. You can see many commits where Codex is not the co-author, since I forgot to include that addendum.
 
-Additionally, the main benefit of Codex (optimizing GPT-5's thinking time in low, medium, and high) went unused by me. I never bothered to switch between low/medium/high. This feature would be far better if Codex automatically switched settings based on the complexity of the task.
+Additionally, I never benefited from one of Codex's features: optimizing GPT-5's thinking time in low, medium, and high. I never bothered to switch between low/medium/high. This feature would be far better if Codex automatically switched settings based on the complexity of the task.
 
 ### GPT-5 (Codex)
 
