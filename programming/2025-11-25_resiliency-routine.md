@@ -20,9 +20,7 @@ All production systems should be backed with a robust set of observability tools
 
 However, no matter how good our algorithms get, no alerting strategy is perfect. Things always slip through the cracks. If we place too much trust in automated monitoring and alerting—by not manually checking our systems’ performance—we risk allowing issues to go undetected.
 
-![Credit: [https://commons.wikimedia.org/wiki/File:Swiss_cheese_model_textless.svg](https://commons.wikimedia.org/wiki/File:Swiss_cheese_model_textless.svg)](A%20simple%20routine%20to%20improve%20resiliency/image.png)
-
-Credit: [https://commons.wikimedia.org/wiki/File:Swiss_cheese_model_textless.svg](https://commons.wikimedia.org/wiki/File:Swiss_cheese_model_textless.svg)
+![Credit: https://commons.wikimedia.org/wiki/File:Swiss_cheese_model_textless.svg](/image/programming/routine/swiss-cheese.png)
 
 The Swiss Cheese model shows how flaws in each layer of protection can align to allow issues to slip through. We typically apply this model to software security, correctness, and other aspects of the software. However, we can also apply it to our practices.
 
@@ -32,7 +30,7 @@ In this case, we can think of our reliability tools and practices as a set of Sw
 
 So, you now see why we need a routine to supplement automated alerts. Let’s jump into the routine. It consists of tasks that happen at three cadences: a **daily glance**, a **weekly report**, and a **bi-weekly deep dive**.
 
-![image.png](A%20simple%20routine%20to%20improve%20resiliency/image%201.png)
+![Daily, Weekly, and Bi-Weekly Tasks](/image/programming/routine/schedule.png)
 
 ### Daily Glance
 
@@ -64,7 +62,7 @@ If this routine does its job, you will discover issues. Having a response plan w
 
 Ultimately, how you respond will vary greatly depending on the norms within your organization. However, as long as they are acceptable and make sense within your context, I recommend four escalating responses: **log**, **communicate**, **investigate**, and **declare incident.**
 
-![image.png](A%20simple%20routine%20to%20improve%20resiliency/image%202.png)
+![Declare Incident, Investigate, Communicate, and Log](/image/programming/routine/decision-tree.png)
 
 ### Log
 
@@ -90,7 +88,7 @@ Occasionally, the routine may uncover severe incidents. In these cases, you shou
 
 While the routine is permanent, the long-term goal is to reduce the time it requires. The initial rush of issues may overwhelm you. But, over time, you can slowly work down to a steady routine of proactive identification, fixes, and preventions.
 
-![image.png](A%20simple%20routine%20to%20improve%20resiliency/image%203.png)
+![An initial surge followed by steady decrease](/image/programming/routine/effort-chart.png)
 
 This steady investment can help you achieve your long-term goals: **no surprises, no repeats, and minimal time investment.**
 
