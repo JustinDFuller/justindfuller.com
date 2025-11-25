@@ -114,7 +114,7 @@ First, I want to be clear that manual checks are a *supplement to* and not a *re
 
 Second, it should be understood that simply slapping an alert on everything you identify may lead to a Slack channel or PagerDuty full of flaky alerts. This is why I stress that you must both implement fixes or guardrails as well as alerts. Without both, there is nothing preventing the issue from recurring. Your alerts should help you detect when things that *shouldn’t be able* to happen—happen.
 
-Third, you should carefully limit the time you spend on this exercise. I recommend actually setting a timer for the daily glance. It is very easy to get sucked into dashboards and spend hours (or is it just me?) looking at them and adjusting them.
+Third, you should carefully limit the time you spend on this exercise. I recommend actually setting a timer for the daily glance. It is very easy to get sucked into dashboards and spend hours looking at them and adjusting them (or is it just me?).
 
 Fourth, if your effort is going *up* over time instead of *down*, you should determine if the routine is actually working for you. If you are spending significant time identifying issues but no time fixing them, then this routine may be pointless. There may be underlying issues your team needs to fix before it can proactively invest in resiliency in this way.
 
