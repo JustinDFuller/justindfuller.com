@@ -90,7 +90,7 @@ While the routine is permanent, the long-term goal is to reduce the time it requ
 
 ![An initial surge followed by steady decrease](/image/programming/routine/effort-chart.png)
 
-This steady investment can help you achieve your long-term goals: **no surprises, no repeats, and minimal time investment.**
+This steady investment can help you achieve your long-term goals: **no surprises**, **no repeats**, and **minimal time investment.**
 
 ### No Surprises
 
