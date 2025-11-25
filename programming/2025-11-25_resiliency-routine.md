@@ -36,7 +36,7 @@ So, you now see why we need a routine to supplement automated alerts. Let’s ju
 
 The routine starts with a simple daily practice: **look at your dashboards**. It’s that simple. Just look at them.
 
-I recommend limiting this step to five minutes. You may even want to set a time to ensure you don’t accidentally spend an hour staring at your dashboards — it’s all too easy to get sucked in.
+I recommend limiting this step to five minutes. You may even want to set a timer to ensure you don’t accidentally spend an hour staring at your dashboards — it’s all too easy to get sucked in.
 
 During this step, you’re looking for anomalies or issues that were not detected by your automated alerts. Remember, our underlying assumption is that our alerts will not detect every issue worth detecting. Issues will slip through the cracks. So, your dashboard scan may look for unexpected changes such as latency or errors that were not detected by alerts.
 
