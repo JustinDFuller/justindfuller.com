@@ -35,19 +35,19 @@ So, when I look at replica count alone, I don’t get anything meaningful. Is th
 
 Here’s what it looked like at first: raw replica count. 
 
-![Raw replica Count](Good%20observably%20is%20contextualized/image.png)
+![Raw replica Count](/image/programming/observability/raw-replica-count.png)
 
 Raw replica Count
 
 I couldn’t use this to determine *why* replica counts were increasing or decreasing. So, I added a new view: requests per replica count. Now, I was able to see something meaningful. Sometime around October 30th, requests per replica count decreased. Still, it wasn’t quite detailed enough to pinpoint the issue. 
 
-![Requests Per replica Count](Good%20observably%20is%20contextualized/image%201.png)
+![Requests Per replica Count](/image/programming/observability/requests-per-replica-count.png)
 
 Requests Per replica Count
 
 I wanted to know if the change happened naturally or if it coincided with a release. Next, I updated the graph to should requests per replica count by version. This shows a clear step-change in request per replica count resulting from a specific version. Hovering over that version allowed me to see the exact version causing the regression.
 
-![Requests per Instance Count per version](Good%20observably%20is%20contextualized/image%202.png)
+![Requests per Instance Count per version](/image/programming/observability/requests-per-replica-count-by-version.png)
 
 Requests per Instance Count per version
 
@@ -61,19 +61,19 @@ You can’t. Not without more information. We have no idea if these account for 
 
 So, to answer this question, we need more context.
 
-![Raw Error Count](Good%20observably%20is%20contextualized/image%203.png)
+![Raw Error Count](/image/programming/observability/raw-error-count.png)
 
 Raw Error Count
 
 I begin by updating the display to show errors as a percentage of total requests. Now, we can see that this is only a fraction of a percent of overall requests. Still, we don’t know if these are problematic. If this is a critical system requiring 99.99% or even 99.999% up-time, we could be breaching our SLOs.
 
-![Error Rate (as pct of total requests)](Good%20observably%20is%20contextualized/image%204.png)
+![Error Rate (as pct of total requests)](/image/programming/observability/error-percentage.png)
 
 Error Rate (as pct of total requests)
 
 Finally, I add a contextual marker showing the system’s SLO. Now, we can determine at a glance if these errors are acceptable or not. This doesn’t mean they aren’t worth looking into. However, it does help us understand the severity of the situation.
 
-![Error Rate vs. SLO](Good%20observably%20is%20contextualized/image%205.png)
+![Error Rate vs. SLO](/image/programming/observability/error-percentage-vs-slo.png)
 
 Error Rate vs. SLO
 
