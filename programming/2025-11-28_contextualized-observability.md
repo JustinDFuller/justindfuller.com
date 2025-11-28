@@ -5,7 +5,7 @@ draft: false
 tags: [Programming]
 ---
 
-Hot take: numbers are meaningless. Even meaningful numbers are meaningless—on their own. 
+Hot take: numbers are meaningless. Even meaningful numbers are meaningless—on their own.
 
 Here, I’ll show you. Take this number: 1 light year. Is it big or small? It depends, of course. If it is a distance to travel, it’s huge! It will have taken Voyager 1 nearly fifty years to travel the distance when it reaches one light year from Earth in 2026. However, on the scale of the universe (and even on smaller scales, like the local cluster) one light year is microscopically tiny.
 
@@ -37,7 +37,7 @@ Here’s what it looked like at first: raw replica count.
 
 ![Raw replica Count](/image/programming/observability/raw-replica-count.png)
 
-I couldn’t use this to determine *why* replica counts were increasing or decreasing. So, I added a new view: requests per replica count. Now, I was able to see something meaningful. Sometime around October 30th, requests per replica count decreased. Still, it wasn’t quite detailed enough to pinpoint the issue. 
+I couldn’t use this to determine *why* replica counts were increasing or decreasing. So, I added a new view: requests per replica count. Now, I was able to see something meaningful. Sometime around October 30th, requests per replica count decreased. Still, it wasn’t quite detailed enough to pinpoint the issue.
 
 ![Requests Per replica Count](/image/programming/observability/requests-per-replica-count.png)
 
