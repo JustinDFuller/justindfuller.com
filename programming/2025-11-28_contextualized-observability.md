@@ -37,19 +37,13 @@ Here’s what it looked like at first: raw replica count.
 
 ![Raw replica Count](/image/programming/observability/raw-replica-count.png)
 
-Raw replica Count
-
 I couldn’t use this to determine *why* replica counts were increasing or decreasing. So, I added a new view: requests per replica count. Now, I was able to see something meaningful. Sometime around October 30th, requests per replica count decreased. Still, it wasn’t quite detailed enough to pinpoint the issue. 
 
 ![Requests Per replica Count](/image/programming/observability/requests-per-replica-count.png)
 
-Requests Per replica Count
-
 I wanted to know if the change happened naturally or if it coincided with a release. Next, I updated the graph to show requests per replica count by version. This shows a clear step-change in requests per replica count resulting from a specific version. Hovering over that version allowed me to see the exact version causing the regression.
 
 ![Requests per Instance Count per version](/image/programming/observability/requests-per-replica-count-by-version.png)
-
-Requests per Instance Count per version
 
 As you can see, I was able to launch a fix (and even an overall improvement) on Friday 11/21. Contextualized observability allowed me to understand where to look, enabling me to fix the issue.
 
@@ -63,19 +57,13 @@ So, to answer this question, we need more context.
 
 ![Raw Error Count](/image/programming/observability/raw-error-count.png)
 
-Raw Error Count
-
 I began by updating the display to show errors as a percentage of total requests. Now, we can see that this is only a fraction of a percent of overall requests. Still, we don’t know if these are problematic. If this is a critical system requiring 99.99% or even 99.999% uptime, we could be breaching our SLOs.
 
 ![Error Rate (as pct of total requests)](/image/programming/observability/error-percentage.png)
 
-Error Rate (as pct of total requests)
-
 Finally, I added a contextual marker showing the system’s SLO. Now, we can determine at a glance if these errors are acceptable or not. This doesn’t mean they aren’t worth looking into. However, it does help us understand the severity of the situation.
 
 ![Error Rate vs. SLO](/image/programming/observability/error-percentage-vs-slo.png)
-
-Error Rate vs. SLO
 
 Notice in all three graphs that the spikes all look the same. Without context, those scary red spikes could cause an on-call engineer to go down a rabbit hole. If a degradation is happening, it could waste critical minutes—increasing time to resolution. It could also lead an engineer to believe there is a degradation when there is not.
 
