@@ -6,13 +6,12 @@ draft: false
 tags: [Programming]
 ---
 
+> We have to try to cure our faults by attention and not by will.<br/>
+> **Simone Weil**
+
 Have you ever been surprised to find out your system is degraded? Have you ever been embarrassed when a client asks in your Slack channel why your system is down? Have you ever written a high-quality API, only to find out months later that its performance has degraded or billing has swelled to unacceptable levels?
 
-In this post I’d like to share a quick routine that helps improve system reliability, resiliency, and performance. It is not a hypothetical, untested routine. The teams I lead at The New York Times have adopted this routine, using it to improve the quality of our production, user-facing, business-critical systems. It keeps us effectively serving our paywalls, choosing personalized offers, and serving landing pages that support our business goals.
-
-## Assumptions
-
-This post is not for everyone. It assumes many things. For example, it assumes you work in or adjacent to software engineering; that you have runtime systems; that those systems are impactful and, therefore, need to maintain certain uptime and performance standards. It also assumes you have a basic understanding of observability and that you have already set up the basics in your system. This post is for those who want to push beyond the basics to continuously improve their systems.
+I’d like to share a quick routine that improves system reliability, resiliency, and performance. It is not a hypothetical, untested routine. The teams I lead at The New York Times adopted and use it daily to improve the quality of our production, user-facing, business-critical systems. It keeps us effectively serving our paywalls, choosing personalized offers, and serving landing pages that support our business goals.
 
 ## Why a routine?
 
@@ -22,9 +21,9 @@ However, no matter how good our algorithms get, no alerting strategy is perfect.
 
 ![Credit: https://commons.wikimedia.org/wiki/File:Swiss_cheese_model_textless.svg](/image/programming/routine/swiss-cheese.png)
 
-The Swiss Cheese model shows how flaws in each layer of protection can align to allow issues to slip through. We typically apply this model to software security, correctness, and other aspects of the software. However, we can also apply it to our practices.
+The Swiss Cheese model shows how flaws in each layer of protection can align to allow issues to slip through. We typically apply this model to software security, correctness, and other aspects of the software. However, we can also apply it to ourselves by adopting habits designed to detect issues that automation missed.
 
-In this case, we can think of our reliability tools and practices as a set of Swiss Cheese layers. We have protections in the application and infrastructure. We also have observability to detect if those protections are working. Both the protections and the observability are layers of Swiss Cheese. So, according to the model, we should assume things will slip through each layer. The routine assumes issues will slip through; thus, it adds an additional layer of protection. Still, issues can slip through this layer as well. I’ll discuss that more at the end of this post.
+In this case, we can think of our reliability tools and our daily practices as a set of Swiss Cheese layers. We have protections in the application and infrastructure layers. We also have observability to detect if those protections are failing. Both the protections and the observability are layers of Swiss Cheese. So, according to the model, we should assume things will slip through each of those layers. The routine assumes issues will slip through; thus, it adds an additional layer of protection in the form of daily, weekly, and bi-weekly habits.
 
 ## The Routine
 
