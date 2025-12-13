@@ -10,4 +10,10 @@ Today is day 2 of [Advent of Code](https://adventofcode.com/). This post explain
 
 Here is a link to [my solution for problem 1](https://go.dev/play/p/BVb6jraXuaR). Here is a link to [my solution for problem 2](https://go.dev/play/p/_FE6OfFyUQY)
 
-## Sliding Windows
+Today's solution is brought to you by the <span class="spoiler">sliding window</span> algorithm.
+
+## Problem 1
+
+
+
+
