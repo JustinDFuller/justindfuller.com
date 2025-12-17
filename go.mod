@@ -4,7 +4,7 @@ go 1.24.0
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.18.0
+require golang.org/x/sync v0.19.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.13.7
@@ -15,9 +15,9 @@ require (
 	github.com/yuin/goldmark v1.7.13
 	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 	github.com/yuin/goldmark-meta v1.1.0
-	golang.org/x/text v0.31.0
+	golang.org/x/text v0.32.0
 	golang.org/x/tools v0.39.0
-	google.golang.org/protobuf v1.36.10
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
