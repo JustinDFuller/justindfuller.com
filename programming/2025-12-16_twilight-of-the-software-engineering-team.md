@@ -7,7 +7,7 @@ tags: [Code]
 
 Since the dawn of man (or thereabouts) the typical software engineering teams have been staffed with a standard cross-functional makeup.
 
-![ChatGPT's interpretation of this post. Nothing weird here.](/image/programming/twilight/banner.png)
+![Gemini's interpretation of this post. Nothing weird here.](/image/programming/twilight/twilight.jpg)
 
 For those of you who don’t speak corporate, that means there is often some combination of product manager, engineering manager, designer, data analyst, QA tester, and software engineer.
 
