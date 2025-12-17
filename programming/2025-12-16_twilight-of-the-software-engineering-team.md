@@ -7,7 +7,7 @@ tags: [Code]
 
 Since the dawn of man (or thereabouts) the typical software engineering teams have been staffed with a standard cross-functional makeup.
 
-![ChatGPT's interpretation of this post.](/image/programming/twilight/banner.png)
+![ChatGPT's interpretation of this post. Nothing weird here.](/image/programming/twilight/banner.png)
 
 For those of you who don’t speak corporate, that means there is often some combination of product manager, engineering manager, designer, data analyst, QA tester, and software engineer.
 
@@ -17,9 +17,15 @@ Everything I’m saying is typical or average. Please don’t complain to me if 
 
 Software engineering teams want to move as fast as possible.
 
-Well, most do. Some will say they don’t, because they want to move carefully and correctly. This just means they want to move fast but don’t think they can.
+Well, most do. Some will say they don’t, because they want to move carefully and correctly. This just means they want to move fast but don’t think they can, at least not without breaking a bunch of stuff.
 
-Today, they cannot move as fast as they want to.
+Probably, that's for the best. Please Boeing, take your time. Take a little more time, even.
+
+Many of us other folks have a bit more room to make mistakes. `Stale-if-error` will save us, even if it won't for Boeing. So, we want to move a bit faster. We're willing to risk some level of mistakes to attain it. That level varies for each of us. The amount of speed varies for each of us.
+
+In my experience, that speed is always a bit more than what we have. That level of mistake is always a bit less than what we have. We're always striving.
+
+We can't go as fast as we want.
 
 The bottleneck is often (but not always) how fast teams can get code to production.
 
