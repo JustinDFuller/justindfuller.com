@@ -51,7 +51,7 @@ func New(input string) ([]Rotation, error) {
 		case 'R':
 			turn = Right
 		default:
-			return nil, fmt.Errorf("unknown direction: %s", direction)
+			return nil, fmt.Errorf("unknown direction: %v", direction)
 		}
 
 		// step 4: build the sequence of rotations
