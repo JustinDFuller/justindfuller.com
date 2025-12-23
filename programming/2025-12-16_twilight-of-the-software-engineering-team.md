@@ -5,11 +5,15 @@ draft: false
 tags: [Code]
 ---
 
-For the brief decade that I've been a Software Engineer, the teams I've worked on were staffed with a standard cross-functional makeup. For me and my teams, that means there is often some combination of product manager, engineering manager, designer, data analyst, QA tester, and software engineer, many software engineers.
+Does the advancement of AI-driven development call for a new type of team?
+
+For the brief decade that I've been a Software Engineer, the teams I've worked on were staffed with a standard cross-functional makeup. That has typically involved some combination of product manager, engineering manager, designer, data analyst, QA tester, and software engineer. Many software engineers.
 
 ![Gemini's interpretation of this post. Nothing weird here.](/image/programming/twilight/twilight.jpg)
 
-Every team I participated in had two goals: move as fast as possible while making as few mistakes as possible. What that meant in practice varied greatly based on the organization and the context within it. When it came to making mistakes, some teams had more wiggle room than others. Some could tolerate very few mistakes and thus, moved quite a bit slower. This is true for each team I worked on that handled any sort of financial transaction, both in and outside my time at banks.
+Every team I participated in had two goals. First, move as fast as possible. Second, make as few mistakes as possible. 
+
+Each team had a slightly different approach to pursuing those goals. While working at a startup, we pursued speed with long hours and little testing. At the banks, we attempted to reduce mistakes by sticking to tried-and-true tech stacks and following rigorous testing protocols. At The Times, my teams attempt to balance speed and correctness with developer tooling, such as robust CI pipelines.
 
 Yet, regardless of the team's appetite for mistakes, they had one thing in common: they wanted to move *faster*. Faster was, of course, relative. It was also a moving goalpost. Moving faster meant giving life to the idea that we can move even faster. I know this was the case because we always had a JIRA (or Trello) backlog of tickets that were never accomplished. That backlog grew at a rate faster than tickets were closed. Ideas were cheaper to articulate than to implement.
 
