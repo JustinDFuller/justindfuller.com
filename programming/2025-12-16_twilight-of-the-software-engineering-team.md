@@ -29,7 +29,7 @@ Of course, some engineers and teams have fewer steps than these and some have ev
 
 Until recently. Recently, our industry has created (and parts of it have embraced) what can only be called dynamite for the old way of operating. This new technology can automate, to varying extents (based on both who you ask and where and how you use it) nearly all of the above tasks. And it's only getting better. New releases of AI go out each month proclaiming that they are achieving even better results. More services are integrating with AI. The effectiveness and reach of the dynamite's blast only grows.
 
-My experience has validated these claims. [I have written](/programming/my-claude-code-setup) about how I am producing all of my production, user-facing, business-critical software with AI tools like Claude Code. I am able to generate far, far more code than I could before. I now have a new problem: I can generate more code than either myself or my team can handle. It's now the humans who are slowing the AI down.
+My experience has validated these claims. [I have written](/programming/my-claude-code-setup) about how I am producing all of my production, user-facing, business-critical software with AI tools like Claude Code. I am able to generate far, far more code than I could before. I now have a new problem: I can generate more code than either myself or my team can handle. It's now the humans who are slowing down the AI.
 
 Software engineers producing code is no longer the bottleneck.
 
