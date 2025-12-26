@@ -64,7 +64,7 @@
     --font-family-mono: 'Fira Code', 'JetBrains Mono', 'Monaco', 'Consolas', monospace;
     --font-size-xs: 0.75rem;     /* 12px */
     --font-size-sm: 0.875rem;    /* 14px */
-    --font-size-base: 1.125rem;  /* 18px - Josh uses larger base */
+    --font-size-base: 1.125rem;  /* 18px */
     --font-size-lg: 1.25rem;     /* 20px */
     --font-size-xl: 1.5rem;      /* 24px */
     --font-size-2xl: 1.875rem;   /* 30px */
@@ -102,33 +102,6 @@
     --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
   }
-  
-  /* Light Theme Override - Removed to keep dark gradient consistent */
-  /* Uncomment if you want light theme support later
-  @media (prefers-color-scheme: light) {
-    :root {
-      --color-bg-primary: #fff;
-      --color-bg-secondary: #f1f3f9;
-      --color-bg-card: #fff;
-      --color-text-primary: #0a0c10;
-      --color-text-secondary: #5a6072;
-      --color-text-muted: #9295a0;
-      --color-accent-pink: #e60067;
-      --color-accent-blue: #4242fa;
-      --color-accent-purple: #2c0b8e;
-      --color-link: #4242fa;
-      --color-link-hover: #3025a7;
-      --color-border: #e6e8f0;
-      --gradient-card: linear-gradient(135deg, 
-        rgba(66, 66, 250, 0.05) 0%, 
-        rgba(230, 0, 103, 0.05) 100%);
-      --shadow-sm: 0 2px 4px rgba(10, 12, 16, 0.05);
-      --shadow-md: 0 4px 8px rgba(10, 12, 16, 0.08);
-      --shadow-lg: 0 8px 16px rgba(10, 12, 16, 0.12);
-      --shadow-xl: 0 16px 32px rgba(10, 12, 16, 0.15);
-    }
-  }
-  */
 
   /* Reset & Base Styles */
   * {
@@ -149,30 +122,6 @@
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
     color: var(--color-text-primary);
-    /* background: 
-      linear-gradient(
-        to bottom,
-        var(--color-bg-primary) 0px,
-        var(--color-bg-primary) 100px,
-        hsl(210deg 15% 16%) 200px,
-        hsl(210deg 15% 14%) 300px,
-        hsl(210deg 15% 12%) 400px,
-        hsl(210deg 15% 10%) 500px,
-        hsl(210deg 15% 8%) 600px,
-        hsl(210deg 15% 7%) 700px,
-        hsl(210deg 15% 6.5%) 750px,
-        hsl(210deg 15% 6%) 800px,
-        hsl(210deg 15% 6%) calc(100% - 800px),
-        hsl(210deg 15% 6.5%) calc(100% - 750px),
-        hsl(210deg 15% 7%) calc(100% - 700px),
-        hsl(210deg 15% 8%) calc(100% - 600px),
-        hsl(210deg 15% 10%) calc(100% - 500px),
-        hsl(210deg 15% 12%) calc(100% - 400px),
-        hsl(210deg 15% 14%) calc(100% - 300px),
-        hsl(210deg 15% 16%) calc(100% - 200px),
-        var(--color-bg-primary) calc(100% - 100px),
-        var(--color-bg-primary) 100%
-      ); */
     background-color: hsl(210deg 15% 6%);
     transition: background-color var(--transition-base), color var(--transition-base);
     overflow-x: hidden;
@@ -222,6 +171,7 @@
     font-weight: 700;
     line-height: 1.3;
     margin-bottom: var(--space-md);
+    text-wrap: balance;
   }
 
   h1 {
@@ -252,6 +202,10 @@
 
   a:hover {
     color: var(--color-link-hover);
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   /* Animations */
@@ -596,8 +550,6 @@
     font-weight: 500;
   }
 
-  /* Removed hover animation for cleaner aesthetic */
-
   nav {
     display: flex;
     align-items: center;
@@ -647,7 +599,6 @@
     width: 24px;
     height: 24px;
   }
-
 
   /* Shared Entry Header */
   .entry-header {
