@@ -7,9 +7,9 @@ tags: [Code]
 
 Does the advancement of AI-driven development call for a new type of team?
 
-So far in my career, each of my teams has been staffed with some combination of: product manager, engineering manager, designer, data analyst, QA tester, and software engineer. Usually, a lot of software engineers.
-
 ![Gemini's interpretation of this post. Nothing weird here.](/image/programming/twilight/twilight.jpg)
+
+So far in my career, each of my teams has been staffed with some combination of: product manager, engineering manager, designer, data analyst, QA tester, and software engineer. Usually, a lot of software engineers.
 
 Every one of those teams had two broad principles: first, move fast; second, make few mistakes.
 
@@ -63,11 +63,13 @@ Other engineers may need to focus on building tools for agents, much like some e
 
 This is still a highly skilled, technical team. However, the shift in focus would reflect moving bottlenecks caused by evolving technology.
 
-## Alternatives
+## Caveats
 
 In reality, AI may produce teams that are very different from what I’ve described above. I do not feel confident about any particular team shape. Instead, I feel confident about two things.
 
 First, I believe teams that do not adjust to this new world will continually feel frustrated. They will experience the volume of output created by agentic tools as a detriment, and rightfully so. The current shape of Software Engineering teams is *not* equipped to handle this volume. Imagine a hose designed to output 20 liters of water per minute. You’re going to have a bad time if you suddenly try to 10x that volume.
+
+I am not saying those teams will not succeed. Just like there are successful teams still working with waterfall instead of agile, there will still be successful Software Engineering teams in the AI era. I am specifically warning against the mixing of high-output agentic coding assistants with a human-coder-centered team structure.
 
 Second, I believe the evolution will be messy. This is a rapidly evolving technology. Teams should continually experiment with new structures. Some will fail. Some will work for a time, then stop working when the technology advances further. I believe this will be an uncomfortable but healthy part of the industry’s evolution. Engineering leaders should embrace this discomfort and adopt an experimentation mindset with their teams. They should try five different structures in five different teams, then adopt whatever works best, wherever it works best.
 
