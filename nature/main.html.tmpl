@@ -19,11 +19,11 @@
           {{ range .Entries }}
             {{ if .Title }}
             <a href="/nature/{{ .Slug }}" class="nature-item">
-              <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" />
+              <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" loading="lazy" />
               <span>{{ .Title }}</span>
             </a>
             {{ else }}
-              <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" class="nature-image" />
+              <img src="/image/nature/{{ .Image }}" alt="{{ .Image }}" class="nature-image" loading="lazy" />
             {{ end }}
           {{ end }}
         </div>
