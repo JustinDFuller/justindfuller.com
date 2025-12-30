@@ -49,7 +49,7 @@ func (r *ImageRenderer) renderImage(w util.BufWriter, source []byte, n ast.Node,
 	_, _ = w.WriteString("<figure class=\"image-with-caption\">\n")
 
 	// Render the image
-	_, _ = w.WriteString("<img src=\"")
+	_, _ = w.WriteString("<img loading=\"lazy\" src=\"")
 	if img.Destination != nil {
 		_, _ = w.Write(util.EscapeHTML(util.URLEscape(img.Destination, true)))
 	}
