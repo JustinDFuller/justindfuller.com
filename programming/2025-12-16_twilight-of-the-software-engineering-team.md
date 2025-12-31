@@ -63,6 +63,21 @@ Other engineers may need to focus on building tools for agents, much like some e
 
 This is still a highly skilled, technical team. However, the shift in focus would reflect moving bottlenecks caused by evolving technology.
 
+## Short Term
+
+Let's be realistic. In the short term, few, if any, teams will be ready for this change. So, what might this look like in the near future; in 2026?
+
+Teams might begin to adjust how they spend their time.
+
+1. **Code Review**: I believe the first change is a re-evaluation of the importance of code review. At the rate of a human developer, a team of 6 might see 6-10 code reviews per day. At the rate of an agentic developer, teams could easily see twice that volume. If the time allotted for code reviews is not doubled, **the quality of code reviews will drop by half**. So, teams must first allow for more code review time.
+
+2. **Integrations**: One of the core principles of agentic coding is that **context matters**. It's not just about giving the agents _more_ context. It's about giving them the _right_ context. Teams must focus on getting their agents the best possible context, beyond files in a codebase. This might mean finding ways to safely connect agents to JIRA, Datadog, internal tools, etc. to ensure our agents aren't reliant on us feeding them the right information. This could constitute roadmapped work for the team, to improve their developers' velocity by integrating agentic coding assistants with more tools.
+
+3. **Preparation**: Again, since context is so important, teams may want to renew their focus on generating high quality plans and ticketed work. This might mean allocating more of your engineer leads to providing high quality JIRA tickets. The goal here is to ensure tickets are close to (if not perfectly) suitable to be a prompt to an agent.
+
+I'm sure there are many other short-term, small adjustments teams can make. Ideally, the adjustments can be subtle and continuous. In this way, teams may completely refactor themselves without ever experiencing a scary shift, as described above.
+
+
 ## Caveats
 
 In reality, AI may produce teams that are very different from what I’ve described above. I do not feel confident about any particular team shape. Instead, I feel confident about two things.
