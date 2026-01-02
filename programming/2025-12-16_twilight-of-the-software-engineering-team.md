@@ -9,7 +9,7 @@ Does the advancement of AI-driven development call for a new type of team?
 
 ![Gemini's interpretation of this post. Nothing weird here.](/image/programming/twilight/twilight.jpg)
 
-So far in my career, each of my teams has been staffed with some combination of: product manager, engineering manager, designer, data analyst, QA tester, and software engineer. Usually, a lot of software engineers.
+In my career, each of my teams has been staffed with: a product manager, engineering manager, designer, data analyst, QA tester, and software engineer. Usually, a lot of software engineers.
 
 Every one of those teams had two broad principles: first, move fast; second, make few mistakes. Each team assigned these principles a different weight. At a startup, we moved fast with long hours and manual testing. Later, at the banks, we used established tech stacks and rigorous testing. Now, at The Times, my teams balance speed and correctness with developer tools and robust CI pipelines.
 
