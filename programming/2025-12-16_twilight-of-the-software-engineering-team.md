@@ -11,23 +11,21 @@ Does the advancement of AI-driven development call for a new type of team?
 
 So far in my career, each of my teams has been staffed with some combination of: product manager, engineering manager, designer, data analyst, QA tester, and software engineer. Usually, a lot of software engineers.
 
-Every one of those teams had two broad principles: first, move fast; second, make few mistakes.
+Every one of those teams had two broad principles: first, move fast; second, make few mistakes. Each team assigned these principles a different weight. At a startup, we moved fast with long hours and manual testing. Later, at the banks, we used established tech stacks and rigorous testing. Now, at The Times, my teams balance speed and correctness with developer tools and robust CI pipelines.
 
-Each team enacted these principles differently. For example, at a startup, we pursued speed with long hours and manual testing. At the banks, we stuck to tried-and-true tech stacks and rigorous testing protocols. Now, at The Times, my teams attempt to balance speed and correctness with developer tooling, such as robust CI pipelines.
+Regardless of each team's appetite for mistakes, they wanted to move *faster*. There was always a growing JIRA backlog. Those JIRA backlogs always grew faster than tickets closed. Ideas were cheaper to articulate than implement. Until recently. Now, articulation and implementation are converging.
 
-Yet, regardless of each team's appetite for mistakes, they had one thing in common: the desire to move *faster*. There was always an ever-growing backlog of JIRA tickets. Those JIRA backlogs always grew faster than tickets closed. Ideas have always been cheaper to articulate than to implement. At least, until recently. Now, articulation and implementation are converging.
+The bottleneck was engineering throughput. Product specs and visual designs rarely delay engineering. Even when this happened, the engineers typically had enough business context and design savvy to create a working MVP. I've only seen an engineer waiting around a few times. When all else fails, there's always some tech debt to clean up.
 
-Even though the bottleneck was different for each team, it basically came down to one thing: engineering time. Occasionally, engineers would be stuck waiting on a product spec or a visual design, but that was rare. Even when this happened, the engineers typically had enough business context and design savvy to create a working MVP while waiting on the real specs and designs. In my career, I've only seen an engineer waiting around with nothing to do a few times. When all else fails, there's always some tech debt to clean up.
+So, in my experience, the bottleneck was always engineering. This is not an insult to any engineer's ability. These were teams of knowledgeable, efficient, capable engineers. Yet, we were the bottleneck. This is because engineering non-trivial software took a long time. Time spent hands-to-keyboard comprised only a small fraction of the total.
 
-So, in my experience, the bottleneck has always been engineering. This is not an insult to any engineer's ability. These were teams of knowledgeable, efficient, highly capable engineers. Yet, we were always the bottleneck. This is because the process of engineering non-trivial software has historically taken a long time. Time spent hands-to-keyboard comprised only a small fraction of that time.
+On any project, engineers: understand the change, understand relevant parts of the code, determine how to implement the change, write the code, debug the code, test the code, optimize, deploy, and monitor. Code review and meetings often disrupt these tasks.
 
-On any given project, engineers need to: understand the change, understand relevant parts of the code, determine how to implement the change, write the code, debug the code, test the code, optimize the code, deploy, and monitor. Code review and meetings occasionally (or often) disrupt these tasks.
-
-Of course, some engineers and teams have fewer steps than these. Some have even more. But, in general, the shape of a project is roughly like that. It takes a lot of time.
+Of course, some teams have fewer steps than these. Some have more. But, in general, the shape of a project is like that. It takes a lot of time.
 
 ![A rough sketch of typical Software Engineering teams.](/image/programming/twilight/old-team.png)
 
-Or, at least, it _took_ a lot of time. Recently, our industry created (and parts of it have embraced) what can only be called dynamite for the old way of operating. This new technology can automate, to varying extents (based on both who you ask and where and how you use it), nearly all of the above tasks. And it's only getting better. New releases go out each month proclaiming that they are achieving even better results. More services are integrating with agentic coding assistants. The effectiveness and reach of the dynamite's blast only grows.
+At least, it _took_ a lot of time. Recently, our industry created (and parts of it have embraced) what can only be called dynamite for the old way of operating. This new technology can automate, to varying extents (based on both who you ask and where and how you use it), nearly all of the above tasks. And it's only getting better. New releases go out each month proclaiming that they are achieving even better results. More services are integrating with agentic coding assistants. The effectiveness and reach of the dynamite's blast only grows.
 
 In my experience, these claims are valid. [I have written](/programming/my-claude-code-setup) about how I am producing all of my production, user-facing, business-critical software with agentic coding assistant tools like Claude Code. I am able to generate far, far more code than I could before. I now have a new problem: I can generate more code than either myself or my team can handle. It's now the humans who are slowing down the agents.
 
