@@ -39,7 +39,7 @@ What doesn't it change?
 
 [Link to GPT](https://chatgpt.com/g/g-6957257ef5e881919ca5c1514f4d7488-write-tight-coach)
 
-This GPT teaches you how to apply [Write Tight](https://amzn.to/44R77SP)'s advice to the input text. Given an input text, it will output how to apply "Write Tight" advice.
+This GPT teaches you how to apply [Write Tight](https://amzn.to/44R77SP)'s advice to the input text. Given an input text, it will output how to apply "Write Tight" advice. It does not rewrite the text. Instead, it teaches.
 
 ### Example input
 
@@ -48,9 +48,9 @@ This GPT teaches you how to apply [Write Tight](https://amzn.to/44R77SP)'s advic
 ### Example output
 
 > 1. Cut the “came down to” ramp
->   - Phrase: “came down to one thing:”
->   - Why cut: It’s a throat-clearing lead-in that delays the point; strong verbs beat verb-plus-prep padding.
->   - Example swap: “was:” / “boiled to:”
+>     * Phrase: “came down to one thing:”
+>     * Why cut: It’s a throat-clearing lead-in that delays the point; strong verbs beat verb-plus-prep padding.
+>     * Example swap: “was:” / “boiled to:”
 
 ## Blog Post Visualizer
 
@@ -74,3 +74,19 @@ The content of [Twilight Of the Software Engineering Team](https://www.justindfu
 
 ![](https://github.com/user-attachments/assets/b6b56bf9-313f-4a6a-8b9f-08229ec8768f)
 
+## Prose Elevation Coach
+
+[Link to GPT](https://chatgpt.com/g/g-6957da7fd314819197c27b711c6bb8d1-prose-elevator)
+
+This GPT teaches you how to elevate your language. It demonstrates how to quicken verbs and strengthen nouns. Don't expect it to rewrite for you, though. Instead, it provides you with the toolset
+
+### Example Input
+
+> The bottleneck was engineering throughput. Product specs and visual designs rarely delay engineering. Even when this happened, the engineers typically had enough business context and design savvy to create a working MVP. I've only seen an engineer waiting around a few times. When all else fails, there's always some tech debt to clean up.
+
+### Example Output
+
+> * **Principle**: Name the constraint, not the symptom.
+>   * **Quote**: “The bottleneck was engineering throughput.”
+>   * **Explanation**: This sentence is already doing real work, but throughput is an abstraction. Abstract nouns diffuse force. When you can, press the noun closer to a physical or operational reality—what actually slows, resists, or constrains. The goal is not flourish, but friction you can feel.
+>   * **Example change**: “The bottleneck was engineering capacity.”
