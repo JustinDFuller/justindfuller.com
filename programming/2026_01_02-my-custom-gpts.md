@@ -7,6 +7,8 @@ tags: [Code]
 
 Here is a collection of [custom GPTs](https://openai.com/index/introducing-gpts/) I made on ChatGPT. These GPTs are designed to do a single, focused task.
 
+Many of these GPTs attempt to undo AI's tendency to do the thinking for us. Instead, they teach, coach, and provide sources. Instead of doing the work, they teach and provide tools or principles. In other words, they try to prevent human laziness while still harnessing the power of AI.
+
 ![ChatGPT's interpretation of this post.](https://github.com/user-attachments/assets/b4329acb-3b07-41ea-86dd-6f5890f3b828)
 
 ## Typo Fixer
@@ -90,3 +92,31 @@ This GPT teaches you how to elevate your language. It demonstrates how to quicke
 >   * **Quote**: “The bottleneck was engineering throughput.”
 >   * **Explanation**: This sentence is already doing real work, but throughput is an abstraction. Abstract nouns diffuse force. When you can, press the noun closer to a physical or operational reality—what actually slows, resists, or constrains. The goal is not flourish, but friction you can feel.
 >   * **Example change**: “The bottleneck was engineering capacity.”
+
+## Source Finder
+
+[Link to GPT](https://chatgpt.com/g/g-69593a21c6e88191bb2d3752201e759f-source-finder)
+
+This GPT finds sources. Instead of answering the question, it links you to high-quality sources that can answer the question.
+
+### Example Input
+
+> Is bacterial pneumonia contagious?
+
+### Example Output
+
+> * "Community-Acquired Pneumonia"
+>   * Type: Peer-Reviewed Scientific Journal
+>   * Link: https://www.nejm.org/doi/full/10.1056/NEJMra1500240
+> * "Pneumonia (Bacterial)"
+>   * Type: Government or Intergovernmental Report / Dataset
+>   * Link: https://www.cdc.gov/pneumonia/bacterial/index.html
+> * "Pneumonia"
+>   * Type: University or Institutional Publication
+>   * Link: https://www.mayoclinic.org/diseases-conditions/pneumonia/symptoms-causes/syc-20354204
+> * "Mandell, Douglas, and Bennett’s Principles and Practice of Infectious Diseases"
+>   * Type: High-Quality Published Book
+>   * Link: https://www.elsevier.com/books/mandell-douglas-and-bennetts-principles-and-practice-of-infectious-diseases/mandell/978-0-323-48255-4
+> * "Pneumonia"
+>   * Type: Crowdsourced Knowledge Platform
+>   * Link: https://en.wikipedia.org/wiki/Pneumonia
