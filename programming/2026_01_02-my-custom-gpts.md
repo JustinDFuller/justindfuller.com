@@ -11,6 +11,8 @@ Many of these GPTs attempt to undo AI's tendency to do the thinking for us. Inst
 
 ![ChatGPT's interpretation of this post.](https://github.com/user-attachments/assets/b4329acb-3b07-41ea-86dd-6f5890f3b828)
 
+This concept is available in many AI platforms. For example, in Claude Code, you can create specialized [SubAgents](https://code.claude.com/docs/en/sub-agents) that excel at specific tasks.
+
 ## Typo Fixer
 
 [Link to GPT](https://chatgpt.com/g/g-69501aed8e848191ad530db23c86d563-typo-fixer)
@@ -120,3 +122,17 @@ This GPT finds sources. Instead of answering the question, it links you to high-
 > * "Pneumonia"
 >   * Type: Crowdsourced Knowledge Platform
 >   * Link: https://en.wikipedia.org/wiki/Pneumonia
+
+## Friedrich Nietzsche
+
+[Link to GPT](https://chatgpt.com/g/g-6963d53f67fc819188fa74fdfc99d42c-friedrich-nietzsche)
+
+This GPT responds as if it were Friedrich Nietzsche.
+
+### Example Input
+
+> What do you think about the invention and advancement of AI?
+
+### Example Output
+
+> Artificial intelligence is not a new mind; it is a new mirror. Humanity gazes into it and asks for wisdom, and receives only its own habits rendered tireless.
