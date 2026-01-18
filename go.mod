@@ -9,13 +9,13 @@ require golang.org/x/sync v0.19.0
 require (
 	cloud.google.com/go/cloudtasks v1.13.7
 	github.com/SherClockHolmes/webpush-go v1.4.0
-	github.com/alecthomas/chroma/v2 v2.21.1
+	github.com/alecthomas/chroma/v2 v2.22.0
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/justindfuller/secretmanager v0.0.4
-	github.com/yuin/goldmark v1.7.13
+	github.com/yuin/goldmark v1.7.16
 	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 	github.com/yuin/goldmark-meta v1.1.0
-	golang.org/x/text v0.32.0
+	golang.org/x/text v0.33.0
 	golang.org/x/tools v0.40.0
 	google.golang.org/protobuf v1.36.11
 )
