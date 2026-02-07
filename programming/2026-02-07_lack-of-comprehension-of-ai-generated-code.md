@@ -7,6 +7,8 @@ tags: [Code]
 
 There is an often-repeated criticism of AI-generated code: “You may be able to generate more code than before, but now no one on your team can understand and maintain it.”
 
+![Are you inspecting your AI-generated code?](/image/programming/lack-of-comprehension-in-ai-generated-code.png)
+
 This criticism is often delivered as if it is a decisive blow to the use of AI. If you generate your code with AI, you won’t understand it.
 
 Of course, this is not true. Shipping code that engineers don’t understand is not a given for AI-generated code. Is it a choice (a bad one) that teams who use these tools can make.
