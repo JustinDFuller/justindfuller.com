@@ -11,13 +11,13 @@ There is an often-repeated criticism of AI-generated code: “You may be able to
 
 This criticism is often delivered as if it is a decisive blow to the use of AI. If you generate your code with AI, you won’t understand it.
 
-Of course, this is not true. Shipping code that engineers don’t understand is not a given for AI-generated code. Is it a choice (a bad one) that teams who use these tools can make.
+Of course, this is not true. Shipping code that engineers don’t understand is not a given for AI-generated code. It is a choice (a bad one) that teams who use these tools can make.
 
 Since it is a choice, there is also an alternative. Teams can choose not to ship code that they do not understand. They can choose to only ship code they stand fully behind.
 
 ## Better Code Review
 
-What’s more, since AI can both generate the code for us and can help us review the code, we can actually use AI to increase our confidence in the code we ship. 
+What’s more, since AI can both generate the code for us and can help us review the code, we can actually use AI to increase our confidence in the code we ship.
 
 How? When engineers are spending less time hands-to-keyboard, they can spend more time thinking carefully about the code they are reviewing. They don’t have to rush the review to get back to coding. They are still coding (or, their agents are) while they are reviewing.
 
@@ -29,11 +29,11 @@ As a result, and if used thoughtfully, these tools can result in higher quality 
 
 This problem speaks to a general problem in software engineering. We, as engineers, over-value a single engineer’s memory.
 
-And, that’s really what this objection comes down to. “No one on the team understands how the code work.” We say this because previously we could say, “The engineer who wrote the code understands how it works.”
+And, that’s really what this objection comes down to. “No one on the team understands how the code works.” We say this because previously we could say, “The engineer who wrote the code understands how it works.”
 
 But, as anyone who has worked in the industry for more than a few weeks understands, teams change. Engineers leave. Their memory leaves with them.
 
-When teams become over-reliant of one engineer (the one who wrote the code) understanding how something works, they put the teams future at risk.
+When teams become over-reliant on one engineer (the one who wrote the code) understanding how something works, they put the team's future at risk.
 
 Thankfully, there is a tried and true (and boring) solution to this: documentation and tests.
 
