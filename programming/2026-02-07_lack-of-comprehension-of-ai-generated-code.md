@@ -27,19 +27,19 @@ As a result, and if used thoughtfully, these tools can result in higher quality 
 
 ## Over-Reliance on Engineering Memory
 
-This problem speaks to a general problem in software engineering. We, as engineers, over-value a single engineer’s memory.
+This speaks to a general problem in software engineering. We over-value a single engineer’s memory.
 
-And, that’s really what this objection comes down to. “No one on the team understands how the code works.” We say this because previously we could say, “The engineer who wrote the code understands how it works.”
+That’s really what this objection comes down to. “No one on the team understands how the code works.” We say this because previously we could say, “The engineer who wrote the code understands how it works.”
 
-But, as anyone who has worked in the industry for more than a few weeks understands, teams change. Engineers leave. Their memory leaves with them.
+As anyone who has worked in the industry for more than a few weeks understands, teams change. Engineers leave and their memory leaves with them.
 
 When teams become over-reliant on one engineer (the one who wrote the code) understanding how something works, they put the team's future at risk.
 
-Thankfully, there is a tried and true (and boring) solution to this: documentation and tests.
+Thankfully, there is a tried and true solution to this: documentation and tests.
 
-Rather than relying on a human to understand how the system works, we should actually *write down* how it works. We should write it down first in a way that is self-enforced by the system (tests) and then we should write it down in a way that humans can easily read and understand (documentation).
+Rather than relying on a human to understand how the system works, we should *write down* how it works. We should first write it down in a way that is enforced by the system (tests) and then we should write it down in a way that humans can easily understand (documentation).
 
-This is another area where AI can help us. AI can be instructed to always write tests and documentation. The tool doesn’t get tired or lazy or feel rushed.
+This is another area where AI can help us. You can instruct agents to always write tests and documentation. The tool doesn’t get tired or lazy or feel rushed.
 
 In this way, too, these tools can increase the long-term understanding of the code for the entire team.
 
