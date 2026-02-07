@@ -19,7 +19,7 @@ Today we’re going to combine two of the most useful tools that a JavaScript de
 
 <!--more-->
 
-### Promises
+## Promises
 
 The [Promise API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) is a simple but powerful way to handle asynchronous operations. To create a promise you would type new Promise() and the only argument would be a callback function.
 
@@ -41,7 +41,7 @@ Sometimes a Promise will throw an error. We can’t use a traditional [try/catch
 
 Finally, we may want to do some cleanup. What do we use? You guessed it: [Promise.prototype.finally](https://developers.google.com/web/updates/2017/10/promise-finally). Finally accepts a callback function, but that callback accepts no arguments. You can count on this function to be called after your Promise chain is finished executing. At the time of this writing finally isn’t available everywhere. You can use it in the latest version of Chrome or [Bluebird](http://bluebirdjs.com/docs/api/finally.html).
 
-### Chaining Promises
+## Chaining Promises
 
 When working with Promises you can chain them. This means when you have multiple asynchronous options in a row you can do them one after the other. It looks something like this:
 
@@ -63,7 +63,7 @@ We used [Promise.resolve](https://developer.mozilla.org/en-US/docs/Web/JavaScrip
 
 This isn’t a bad way of working with Promises, but I think we can do better.
 
-### Composition
+## Composition
 
 Function composition is simple but can be hard to wrap your mind around at first. The point of function composition is to allow you to string functions together. If we were to look at our last example, but with synchronous functions, it would look something like this:
 
@@ -102,7 +102,7 @@ In our case, the value at the current index is a function. The sum is the `initi
 
 So now we hopefully see the power of Promises, as well as the convenience and clarity of composition. What happens when we put them together?
 
-### Composing Promises
+## Composing Promises
 
 You might wonder why we can’t just compose Promises with the compose function that we just created. The problem is that we access that value through [Promise.then](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then). So unless each of our functions unwraps arguments like:
 
@@ -157,7 +157,7 @@ add100ToNumberString(new Promise(resolve => {
 
 You can continue to chain because the result of `add100ToNumberString` is a `Promise`. You can use `.catch()` and `.finally()` If needed as well!
 
-### Try it yourself
+## Try it yourself
 
 Below I’ve embedded a [CodePen](https://codepen.io/) playground with all this code in it so that you can try it out for yourself! Open up the console to see the results.
 

@@ -18,7 +18,7 @@ In the second problem, I had a database micro-service that immediately invoked f
 
 This problem seems to be somewhat common. That's where promise-funnel comes in! You can check it out [on NPM](https://www.npmjs.com/package/promise-funnel).
 
-### Concepts
+## Concepts
 
 Promise-funnel is a very tiny (4kb) and a very simple library. It exports three functions.
 
@@ -30,7 +30,7 @@ Promise-funnel is a very tiny (4kb) and a very simple library. It exports three 
 
 When combining these simple concepts we are able to create a powerful control-flow for our application!
 
-### How to use it
+## How to use it
 
 Here's how you might use it with a database application that needs to connect before sending any queries.
 
@@ -46,13 +46,13 @@ Every five minutes the user is re-logged in. While login is happening every user
 
 In case you're wondering, createFunnel will create a new funnel instance each time. This means that you can safely funnel different actions separately.
 
-### **Using your own Promises**
+## **Using your own Promises**
 
 Not every environment has Promises natively. If you want to use a library like Bluebird with promise-funnel, you can!
 
 [View code example on GitHub Gist](https://gist.github.com/JustinDFuller/5cb609d74f417ccf85dd920c53b49569#file-bluebird-js)
 
-### The Promise Part
+## The Promise Part
 
 So far we haven't really seen how a Promise is used by this library. A function won't execute immediately when both the function is wrapped and the funnel is corked. A Promise is returned instead. It will resolve or reject only when the funnel is uncorked.
 
@@ -72,6 +72,6 @@ npm install promise-funnel --save
 
 You can also view the source code here: [https://github.com/JustinDFuller/promise-funnel](https://github.com/JustinDFuller/promise-funnel)l
 
-### Feedback
+## Feedback
 
 This is a brand new library and can obviously still be improved. Do you have any suggestions? For example, maybe it would benefit from optionally uncorking with only a certain amount of concurrency to avoid large bursts. There could also be other ways to accomplish what promise-funnel is supposed to. Feel free to share suggestions and alternative tools in the comments!

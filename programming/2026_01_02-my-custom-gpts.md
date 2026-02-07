@@ -52,9 +52,9 @@ This GPT teaches you how to apply [Write Tight](https://amzn.to/44R77SP)'s advic
 ### Example output
 
 > 1. Cut the “came down to” ramp
->     * Phrase: “came down to one thing:”
->     * Why cut: It’s a throat-clearing lead-in that delays the point; strong verbs beat verb-plus-prep padding.
->     * Example swap: “was:” / “boiled to:”
+>     - Phrase: “came down to one thing:”
+>     - Why cut: It’s a throat-clearing lead-in that delays the point; strong verbs beat verb-plus-prep padding.
+>     - Example swap: “was:” / “boiled to:”
 
 ## Blog Post Visualizer
 
@@ -76,7 +76,7 @@ The content of [Twilight Of the Software Engineering Team](https://www.justindfu
 
 ### Example Output
 
-![](https://github.com/user-attachments/assets/b6b56bf9-313f-4a6a-8b9f-08229ec8768f)
+![Blog Post Visualizer example output](https://github.com/user-attachments/assets/b6b56bf9-313f-4a6a-8b9f-08229ec8768f)
 
 ## Prose Elevation Coach
 
@@ -90,10 +90,10 @@ This GPT teaches you how to elevate your language. It demonstrates how to quicke
 
 ### Example Output
 
-> * **Principle**: Name the constraint, not the symptom.
->   * **Quote**: “The bottleneck was engineering throughput.”
->   * **Explanation**: This sentence is already doing real work, but throughput is an abstraction. Abstract nouns diffuse force. When you can, press the noun closer to a physical or operational reality—what actually slows, resists, or constrains. The goal is not flourish, but friction you can feel.
->   * **Example change**: “The bottleneck was engineering capacity.”
+> - **Principle**: Name the constraint, not the symptom.
+>   - **Quote**: “The bottleneck was engineering throughput.”
+>   - **Explanation**: This sentence is already doing real work, but throughput is an abstraction. Abstract nouns diffuse force. When you can, press the noun closer to a physical or operational reality—what actually slows, resists, or constrains. The goal is not flourish, but friction you can feel.
+>   - **Example change**: “The bottleneck was engineering capacity.”
 
 ## Source Finder
 
@@ -107,21 +107,21 @@ This GPT finds sources. Instead of answering the question, it links you to high-
 
 ### Example Output
 
-> * "Community-Acquired Pneumonia"
->   * Type: Peer-Reviewed Scientific Journal
->   * Link: https://www.nejm.org/doi/full/10.1056/NEJMra1500240
-> * "Pneumonia (Bacterial)"
->   * Type: Government or Intergovernmental Report / Dataset
->   * Link: https://www.cdc.gov/pneumonia/bacterial/index.html
-> * "Pneumonia"
->   * Type: University or Institutional Publication
->   * Link: https://www.mayoclinic.org/diseases-conditions/pneumonia/symptoms-causes/syc-20354204
-> * "Mandell, Douglas, and Bennett’s Principles and Practice of Infectious Diseases"
->   * Type: High-Quality Published Book
->   * Link: https://www.elsevier.com/books/mandell-douglas-and-bennetts-principles-and-practice-of-infectious-diseases/mandell/978-0-323-48255-4
-> * "Pneumonia"
->   * Type: Crowdsourced Knowledge Platform
->   * Link: https://en.wikipedia.org/wiki/Pneumonia
+> - "Community-Acquired Pneumonia"
+>   - Type: Peer-Reviewed Scientific Journal
+>   - Link: https://www.nejm.org/doi/full/10.1056/NEJMra1500240
+> - "Pneumonia (Bacterial)"
+>   - Type: Government or Intergovernmental Report / Dataset
+>   - Link: https://www.cdc.gov/pneumonia/bacterial/index.html
+> - "Pneumonia"
+>   - Type: University or Institutional Publication
+>   - Link: https://www.mayoclinic.org/diseases-conditions/pneumonia/symptoms-causes/syc-20354204
+> - "Mandell, Douglas, and Bennett’s Principles and Practice of Infectious Diseases"
+>   - Type: High-Quality Published Book
+>   - Link: https://www.elsevier.com/books/mandell-douglas-and-bennetts-principles-and-practice-of-infectious-diseases/mandell/978-0-323-48255-4
+> - "Pneumonia"
+>   - Type: Crowdsourced Knowledge Platform
+>   - Link: https://en.wikipedia.org/wiki/Pneumonia
 
 ## Friedrich Nietzsche
 

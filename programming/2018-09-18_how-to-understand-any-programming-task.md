@@ -22,7 +22,7 @@ It means that in some way you are expanding your skill and knowledge beyond what
 
 In the next few paragraphs I'm going to detail how you can bridge the gap between the requirements you've been handed, and the knowledge you need to complete the task you've been given.
 
-### About 'requirements'
+## About 'requirements'
 
 You may have noticed that I used the word "requirements". That word might have certain connotations depending on where you work.
 

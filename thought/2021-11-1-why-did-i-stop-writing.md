@@ -6,7 +6,7 @@ draft: false
 tags: [Life]
 ---
 
-### Why have I been writing?
+## Why have I been writing?
 
 I think I’ve been writing to get some external benefit out of the experience.
 
@@ -16,7 +16,7 @@ That’s why negative feedback felt bad to me, even if on the surface I managed 
 
 The negative feedback was “getting in the way” of the outcome I wanted: prestige, respect, a job offer, money.
 
-### Why should I write?
+## Why should I write?
 
 All of this naturally leads to the question, why should I write?
 
@@ -24,7 +24,7 @@ I could just privately reflect on my problems and interests, which is pretty muc
 
 But, even though it was sometimes painful, I did learn a lot from the responses. I don’t want to give that up. I just want to find a way to make it less painful, even enjoyable (hopefully).
 
-### So, why will I write?
+## So, why will I write?
 
 I don’t want to convince others that I’m a perfect, flawless expert in some field (I couldn’t if I tried).
 
