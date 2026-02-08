@@ -14,7 +14,7 @@ In the Go programming language, functions can accept many different types as arg
 
 Often, I find myself wondering if there's a reason to prefer using Structs vs. individual function arguments.
 
-### Example Function
+## Example Function
 
 Here's an example function that I'm writing for [Better Interviews](https://www.betterinterview.club).
 
@@ -56,7 +56,7 @@ It does a few things:
 3. Executes the template with provided "To", "Subject" and "HTML" fields.
 4. Send the email.
 
-### Problem
+## Problem
 
 I realized that my service could be used to send emails to other domains.
 The idea for the product is to let teams communicate interview feedback to hiring managers.
@@ -66,7 +66,7 @@ I'm sure there will be exceptions to the rule. But until that happens, I want to
 
 So, I need to prevent emails from sending to another organization.
 
-### Solution
+## Solution
 
 This should be pretty easy.
 I have an `Organization` struct that can tell me if a particular email is within it.
@@ -110,7 +110,7 @@ func Email(opts EmailOptions) error {
 
 I update the code and... everything still compiles! Great!
 
-### Problem 2
+## Problem 2
 
 Or, maybe not so great. Now I need to find all the places I need to update my code.
 I really would prefer if my compiler would help me out here.
@@ -172,11 +172,11 @@ feedback/request.go:153:32: not enough arguments in call to interview.Email
 
 The compiler tells me where I need to add a new argument.
 
-### Exceptions & Tradeoffs
+## Exceptions & Tradeoffs
 
 This is a tip, not a hard rule to follow. Here are some things to consider.
 
-#### Clarity
+## Clarity
 
 I find structs to be incredibly helpful in representing **related domain concepts**.
 
@@ -198,7 +198,7 @@ err := Email("me@betterinterviews.com", "Check out this example", "<h1>Example</
 
 We no longer have any named properties. Here it is fairly clear what each argument does, but that may not always be the case.
 
-#### Verbosity
+## Verbosity
 
 In the examples in this post, the function has one to four arguments at the most. It's a fairly small function.
 Sometimes you have a function that needs far more data. Having twenty function arguments is not feasible and possibly represents a deeper issue.

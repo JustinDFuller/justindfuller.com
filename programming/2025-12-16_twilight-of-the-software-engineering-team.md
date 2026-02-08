@@ -25,7 +25,7 @@ Of course, some teams have fewer steps than these. Some have more. But, in gener
 
 ![A rough sketch of typical Software Engineering teams.](/image/programming/twilight/old-team.png)
 
-At least, it _took_ a lot of time. Recently, our industry created (and parts of it have embraced) what can only be called dynamite for the old way of operating. This new technology can automate, to varying extents (based on both who you ask and where and how you use it), nearly all of the above tasks. And it's only getting better. New releases go out each month proclaiming that they are achieving even better results. More services are integrating with agentic coding assistants. The effectiveness and reach of the dynamite's blast only grows.
+At least, it *took* a lot of time. Recently, our industry created (and parts of it have embraced) what can only be called dynamite for the old way of operating. This new technology can automate, to varying extents (based on both who you ask and where and how you use it), nearly all of the above tasks. And it's only getting better. New releases go out each month proclaiming that they are achieving even better results. More services are integrating with agentic coding assistants. The effectiveness and reach of the dynamite's blast only grows.
 
 In my experience, these claims are valid. [I have written](/programming/my-claude-code-setup) about how I am producing all of my production, user-facing, business-critical software with agentic coding assistant tools like Claude Code. I am able to generate far, far more code than I could before. I now have a new problem: I can generate more code than either myself or my team can handle. It's now the humans who are slowing down the agents.
 
@@ -69,12 +69,11 @@ Teams might begin to adjust how they spend their time.
 
 1. **Code Review**: I believe the first change is a re-evaluation of the importance of code review. At the rate of a human developer, a team of 6 might see 6-10 code reviews per day. At the rate of an agentic developer, teams could easily see twice that volume. If the time allotted for code reviews is not doubled, **the quality of code reviews will drop by half**. So, teams must first allow for more code review time.
 
-2. **Integrations**: One of the core principles of agentic coding is that **context matters**. It's not just about giving the agents _more_ context. It's about giving them the _right_ context. Teams must focus on getting their agents the best possible context, beyond files in a codebase. This might mean finding ways to safely connect agents to JIRA, Datadog, internal tools, etc. to ensure our agents aren't reliant on us feeding them the right information. This could constitute roadmapped work for the team, to improve their developers' velocity by integrating agentic coding assistants with more tools.
+2. **Integrations**: One of the core principles of agentic coding is that **context matters**. It's not just about giving the agents *more* context. It's about giving them the *right* context. Teams must focus on getting their agents the best possible context, beyond files in a codebase. This might mean finding ways to safely connect agents to JIRA, Datadog, internal tools, etc. to ensure our agents aren't reliant on us feeding them the right information. This could constitute roadmapped work for the team, to improve their developers' velocity by integrating agentic coding assistants with more tools.
 
 3. **Preparation**: Again, since context is so important, teams may want to renew their focus on generating high quality plans and ticketed work. This might mean allocating more of your engineer leads to providing high quality JIRA tickets. The goal here is to ensure tickets are close to (if not perfectly) suitable to be a prompt to an agent.
 
 I'm sure there are many other short-term, small adjustments teams can make. Ideally, the adjustments can be subtle and continuous. In this way, teams may completely refactor themselves without ever experiencing a scary shift, as described above.
-
 
 ## Caveats
 

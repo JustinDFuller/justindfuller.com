@@ -24,7 +24,7 @@ I now follow this principle:
 In other words, assume the engineer can understand your code when you take the time to name variables and functions properly.
 But they don't know *why* you needed to write this code.
 
-#### Why Assume Competency?
+## Why Assume Competency?
 
 If your experience is anything like mine, you work with a lot of *really* excellent engineers.
 
@@ -35,7 +35,7 @@ In the few cases where an engineer can't understand the code, there are still re
 First, I've never worked on a team where a more experienced engineer wouldn't be willing to explain confusing code.
 Second, if you are using a well-documented language like Go, there are many resources to help the engineer to learn.
 
-#### Why Not Context?
+## Why Not Context?
 
 Conversely, if your experience is anything like mine, you've experience a lot of turnover on your team or
 re-orgs moving people around.
@@ -46,28 +46,28 @@ for a long time is almost unheard of.
 That's why I don't assume engineers have context. At any given time, half the team may be highly-skilled engineers
 who are brand new to the team.
 
-### Types of Information
+## Types of Information
 
 I believe there are two types of information we want to share about code.
 One category can be understood by simply reading the code.
 The other cannot.
 
-#### What is self-documentable?
+## What is self-documentable?
 
 * The type of a variable
 * The logical concept a type or function operates on
 * The process by which code completes its task
 
-#### What is not self-documentable?
+## What is not self-documentable?
 
 * Why you needed to write this particular line of code
 * Examples of the data it operates on (not the type but individual instances)
 
-### Example
+## Example
 
 Let's look at an example of some code with a few different types of comments associated with it.
 
-#### Self-Documenting
+## Self-Documenting
 
 Here's the first example which attempts to be self-documenting:
 
@@ -96,7 +96,7 @@ Here are some things we can't learn from reading the code:
 2. On average, do we expect to have mostly used or unused tests?
 3. When will this be used?
 
-#### Unhelpful Comments
+## Unhelpful Comments
 
 Now, here's the same code with some *unhelpful* comments added.
 
@@ -124,7 +124,7 @@ to be learned from these comments.
 
 They simply explain what the code is doing. We could learn exactly the same information just by reading the code.
 
-### Explain the *why*
+## Explain the *why*
 
 Finally, here's how I believe code like this should be commented:
 
@@ -155,7 +155,7 @@ If we don't remove them from the API response, we get a giant (for this API) res
 We can also learn where this `Used` value comes from. Maybe we don't know about the "filtering" step yet, but
 if we are debugging something, we at least have a lead on where to look next!
 
-### Exceptions
+## Exceptions
 
 There are exceptions to every rule. Here are some I can think of:
 

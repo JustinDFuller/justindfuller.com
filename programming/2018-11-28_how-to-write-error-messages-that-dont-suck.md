@@ -18,19 +18,19 @@ Wouldn't it be so helpful to know that?
 
 It would be helpful to be informed of several things when errors happen. I don't need to know everything. The history of programming won't help me here. The message should give me just enough info for me to get this error fixed so that I can finish my work, go home, and play with my kids.
 
-### What makes an Error?
+## What makes an Error?
 
 In JavaScript, an error object always has the name, message, and stack properties. The name gives you an at-a-glance classification of the error. The stack tells you where it happened. The message? Well, according to some developers, you don't need to worry about that! "The stack trace gives you everything you need."
 
 Please, don't be one of those developers.
 
-### Useful Error Messages
+## Useful Error Messages
 
 Raise your right hand, place your left hand on a copy of "Clean Code" and repeat after me.
 
 "I swear to include enough detail in my error messages that future developers will easily be able to determine what went wrong and what they need to do to fix it."
 
-### What Happened
+## What Happened
 
 When a police officer pulls you over to give you a ticket, does it say "Bad Driving"? No! It says you were going 65 miles per hour in a school zone, you passed a stopped bus, and your car hasn't been inspected in four years! Sure, you're going to jail, but at least you know *why*.
 
@@ -48,7 +48,7 @@ The option "update" is not valid. Valid options include "upsert", "get", and "de
 
 These updated error messages attempt to help us understand the cause, giving us a start toward the solution.
 
-### How It Might Have Happened
+## How It Might Have Happened
 
 Now that the error is describing what exactly went wrong, it's time to help the poor soul who stumbled into this predicament begin to climb back out. Watch carefully. When done correctly it will seem like you're reaching forward through time by anticipating what could have led to this unfortunate turn of events. You'll be right there with that future developer — maybe yourself — telling them that everything is fine, that you'll get through this together.
 
@@ -72,7 +72,7 @@ ReactDOMServer.renderToNodeStream(): The streaming API is not available in the b
 
 There could be other ways for that error to occur, but they guess that the most common reason is that renderToNodeStream was called in the browser.
 
-### Relevant Data
+## Relevant Data
 
 While writing error messages you must remember that applications rarely do only one thing at a time. So when errors occur it's a challenge to find the state of the application at that time. For this reason, it's very important to capture the relevant data and relay it back to the developer so that they can pinpoint the cause.
 
@@ -86,7 +86,7 @@ This is very useful but could be impractical. It may take too much effort or tim
 
 The choice of what data is safe to print is tricky: if you choose exactly what properties to include then you end up modifying the list every time there is a new property, or, worse, you forget and it doesn't show up when needed; on the other hand you can remove properties that are known to be unsafe, but here you risk adding a new property and forgetting to exclude it, causing leaked sensitive data. You have to use your judgment and consider your company rules. Does your software handle highly valuable or personal data that should not be written to a non-encrypted destination? Thoughtlessly logging out every object that causes an error is liable to get you fired from some jobs, while at others it's the standard operating procedure. So please, use common sense and be careful!
 
-### Unexpected Errors
+## Unexpected Errors
 
 There are two ways to include relevant data when you don't know exactly which property or action caused the error.
 
@@ -94,7 +94,7 @@ The first should be used when you intend for the error to be read by humans, you
 
 In other cases, you may not want the data to leak to a log file or an API response. You can provide a reference ID, a timestamp that can be manually or automatically referenced to data later, or some other property that will allow the developer to track down the pesky data-point that caused an error.
 
-### Expected Errors
+## Expected Errors
 
 I'll be the first to admit that I'm prone to making simple mistakes. I type "upswert" instead of "upsert"; I type "npm tes" instead of "npm test". So it's refreshing when I get an error message saying:
 
@@ -106,10 +106,10 @@ When the developers prepped for this, they must have gazed into the future and s
 
 Whenever there's a step in a process that can go predictably wrong you have an opportunity to prepare clear guidance on what went wrong and how to fix it.
 
-### Steps To Fix The Issue
+## Steps To Fix The Issue
 
 For some errors, it will be possible to give a solution to the error instead of just reporting that it happened. Some times it will be easy, like earlier when we showed the correct options after accidentally typing "update" instead of "upsert". Other times you'll need to put in more effort to give the user enough information to correct their mistake, like if you've detected a recursive dependency, and you need to tell them where the loop is and what they must do to remove it.
 
-### An error that doesn't suck
+## An error that doesn't suck
 
 So, do you want to provide helpful error messages? Next time you write an error, try to include a full description of what happened, how it might have happened, any relevant data that is safe to include, and any steps that might help resolve the problem.
