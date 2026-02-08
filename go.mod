@@ -9,7 +9,7 @@ require golang.org/x/sync v0.19.0
 require (
 	cloud.google.com/go/cloudtasks v1.13.7
 	github.com/SherClockHolmes/webpush-go v1.4.0
-	github.com/alecthomas/chroma/v2 v2.23.0
+	github.com/alecthomas/chroma/v2 v2.23.1
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/justindfuller/secretmanager v0.0.4
 	github.com/yuin/goldmark v1.7.16
