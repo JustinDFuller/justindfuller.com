@@ -29,8 +29,8 @@
   "devDependencies": {
     "chalk": "^5.6.2",
     "chalk-cli": "^6.0.0",
-    "eslint": "^10.0.3",
-    "markdownlint-cli2": "^0.21.0",
+    "eslint": "^10.1.0",
+    "markdownlint-cli2": "^0.22.0",
     "prettier": "^3.8.1",
     "stylelint": "^17.5.0",
     "stylelint-config-standard": "^40.0.0"
