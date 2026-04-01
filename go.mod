@@ -12,7 +12,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.23.1
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/justindfuller/secretmanager v0.0.4
-	github.com/yuin/goldmark v1.7.17
+	github.com/yuin/goldmark v1.8.1
 	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 	github.com/yuin/goldmark-meta v1.1.0
 	golang.org/x/text v0.35.0
