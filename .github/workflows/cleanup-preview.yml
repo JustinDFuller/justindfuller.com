@@ -103,7 +103,7 @@ jobs:
 
       - name: Comment Cleanup Status
         if: steps.cleanup.outputs.service_found == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const pr_number = context.payload.pull_request.number;

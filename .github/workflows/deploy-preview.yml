@@ -130,7 +130,7 @@ jobs:
           gcloud app deploy dispatch.yaml --project=justindfuller --quiet || true
 
       - name: Comment Preview URL
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const pr_number = context.payload.pull_request.number;
