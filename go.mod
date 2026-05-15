@@ -7,7 +7,7 @@ require github.com/pkg/errors v0.9.1
 require golang.org/x/sync v0.20.0
 
 require (
-	cloud.google.com/go/cloudtasks v1.17.0
+	cloud.google.com/go/cloudtasks v1.18.0
 	github.com/SherClockHolmes/webpush-go v1.4.0
 	github.com/alecthomas/chroma/v2 v2.24.1
 	github.com/golangci/golangci-lint v1.64.8
