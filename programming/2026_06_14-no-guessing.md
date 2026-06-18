@@ -15,6 +15,7 @@ While using any AI-based tool for research, I typically include a section like t
 > Do not guess. Do not jump to conclusions. Focus on gathering and presenting facts. <br />
 > Understand that a wrong guess or made-up conclusion is far more harmful than stating, "I do not know." <br />
 > If you cannot find an answer with great certainty, instead, focus on presenting these things: <br />
+>
 > 1. What you *were* able to determine with certainty. <br />
 > 2. What you *weren't* able to determine. <br />
 > 3. What was blocking you from being able to determine all the necessary facts. (e.g., missing data, missing access, missing context, etc.) <br />
