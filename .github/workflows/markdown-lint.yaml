@@ -19,7 +19,7 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
 
       - uses: DavidAnson/markdownlint-cli2-action@v23.2.0
         with:
