@@ -5,7 +5,7 @@ draft: false
 tags: [Code]
 ---
 
-We’ve been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands of years. In Ancient Greece, almost 2500 years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium. 
+We’ve been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands of years. In Ancient Greece, almost 2500 years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium.
 
 ![The Coding Gym](/image/programming/the-coding-gym.PNG)
 
@@ -65,11 +65,17 @@ Here, I am specifically not looking for how others solved it or for hints. Inste
 
 Previously, I would look at other people’s solutions to see how they did it better. However, I found that I didn’t actually learn much from this exercise because seeing the answer didn’t make me work out the solution on my own.
 
-Instead, I ended up creating this custom GPT that analyzes the problem and my solution and tells me which strategies I should know about to improve my implementation: [https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8](https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8) It is specifically forbidden from solving the problem or giving hints unless explicitly asked for. 
+Instead, I ended up creating this custom GPT that analyzes the problem and my solution and tells me which strategies I should know about to improve my implementation: [https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8](https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8) It is specifically forbidden from solving the problem or giving hints unless explicitly asked for.
 
 For example, maybe a solution would benefit from a sliding window algorithm. It would tell me that I should try to learn about and implement a sliding window algorithm. It would not tell me exactly how to do that, but would tell me about sliding window algorithms in general and allow me to go apply it to the solution myself.
 
 I prefer this approach to looking at solved problems or getting hints because it forces me to try to figure out how to do it on my own. I find that this helps me learn more than if the solution is simply handed to me.
+
+## Closing Thoughts
+
+I want to be clear: I am not advocating in this post for LeetCode-style interviews. Instead, I am recommending the use of these tools for coding practice. The aim is specifically to prevent basic coding skills from becoming rusty due to underuse, now that many of us rely on AI to write code for us. The usefulness of that type of interview is debated and I do not seek to enter that debate with this post.
+
+It is fair to point out the paradox here. We are relying on these tools to write all our code, but they are not yet reliable enough to be fully trusted. They are helpful, but must be used with great caution. So, at this point, it is not yet safe to let coding skills atrophy. Yet, we are entering a phase where they will naturally do so if steps are taken to prevent it.
 
 ## Sources
 
