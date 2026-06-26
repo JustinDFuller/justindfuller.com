@@ -5,19 +5,21 @@ draft: false
 tags: [Code]
 ---
 
-We’ve been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands of years. In Ancient Greece, almost 2500 years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium.
+People have been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands of years. In Ancient Greece, over two thousand years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium.
 
 ![The Coding Gym](/image/programming/the-coding-gym.PNG)
 
 At first, these gyms were socially privileged institutions. In ancient Athens, they were limited to free men, which excluded most of the population. But over the centuries access to gyms (both in terms of available time and privilege) expanded to include more of the population.
 
-As our lives grew more sedentary, and our labor demanded less from our bodies, the need for intentional exercise became increasingly important.
+As lives grew more sedentary, and labor demanded less from bodies, the need for intentional exercise became increasingly important.
 
 Now, AI is creating the same need for coding practice.
 
 ## Story Time
 
-I try to interview a few times a year, and I recommend others do the same. It reveals if my current compensation is below market, it tells me if my resume is still up to par, and importantly, it reveals if my interview skills are still intact. I’ve written about how I’ve been using AI to write 100% of my code since about August 2025. So it was a jarring experience to walk into a coding interview only to be asked to, can you believe it, write code. As you might guess, I failed the interview.
+I try to interview a couple times each year. It reveals if my current compensation is below market, if my resume is still up to par and, importantly, if my interview skills are still intact. 
+
+I’ve written about how I’ve been using AI to write 100% of my code since about August 2025. So it was a jarring experience to walk into a coding interview only to be asked to, can you believe it, write code. As you might guess, I failed the interview.
 
 It’s not that I couldn’t code any more. Instead, I was slow, awkward with the keyboard, and while I believe my solution was still heading in the right direction, I wasn’t able to get there in time. If I had to guess, the interviewer probably left with the impression that I knew where I wanted to get, but struggled to get the code to that place in a reasonable amount of time.
 
@@ -34,16 +36,15 @@ If you’re convinced that you should hit the gym, here are some of the options 
 - [LeetCode](https://leetcode.com/): Algorithm and data-structure practice.
 - [Exercism](https://exercism.org/): Language-focused exercises with feedback.
 - [Codewars](https://www.codewars.com/): Community-made coding kata.
-- [HackerRank](https://www.hackerrank.com/): Practice across algorithms, SQL, and languages.
-- [CodeSignal](https://codesignal.com/): Coding challenges and interview assessments.
+- [HackerRank](https://www.hackerrank.com/dashboard): Practice across algorithms, system design, and more.
+- [CodeSignal](https://codesignal.com/learn/course-paths): Coding challenges and interview assessments.
 - [Advent of Code](https://adventofcode.com/): Story-driven programming puzzles.
 - [Project Euler](https://projecteuler.net/): Math-heavy programming problems.
 - [CodeCrafters](https://codecrafters.io/): Rebuild tools like Git, Redis, and SQLite.
 - [Build Your Own X](https://github.com/codecrafters-io/build-your-own-x): Tutorials for building software from scratch.
 - [Frontend Mentor](https://www.frontendmentor.io/): Realistic front-end project challenges.
-- [Codeforces](https://codeforces.com/): Competitive programming contests and practice.
-- [AtCoder](https://atcoder.jp/): High-quality competitive programming problems.
-- [CodeChef](https://www.codechef.com/): Coding contests and practice problems.
+
+If you don't like these, a quick search will reveal many more options.
 
 ## How to Practice
 
