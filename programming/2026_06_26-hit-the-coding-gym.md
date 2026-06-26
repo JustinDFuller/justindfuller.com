@@ -7,7 +7,7 @@ tags: [Code]
 
 We’ve been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands. In Ancient Greece, almost 2500 years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium. 
 
-![The Coding Gym](/image/programming/hit-the-coding-gym.jpg)
+![The Coding Gym](/image/programming/the-coding-gym.png)
 
 At first, these gyms were socially privileged institutions. In ancient Athens, they were limited to free men, which excluded most of the population. But over the centuries access to gyms (both in terms of available time and privilege) expanded to include more of the population.
 
