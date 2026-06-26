@@ -9,7 +9,7 @@ People have been working out for a long time. While the modern gym has only exis
 
 ![The Coding Gym](/image/programming/the-coding-gym.PNG)
 
-At first, these gyms were socially privileged institutions. In ancient Athens, they were limited to free men, which excluded most of the population. But over the centuries access to gyms (both in terms of available time and privilege) expanded to include more of the population.
+At first, these gyms were socially privileged institutions. In ancient Athens, they were limited to free men, which excluded most of the population. But over the centuries, access to gyms (both in terms of available time and privilege) expanded to include more of the population.
 
 As lives grew more sedentary, and labor demanded less from bodies, the need for intentional exercise became increasingly important.
 
@@ -17,15 +17,15 @@ Now, AI is creating the same need for coding practice.
 
 ## Story Time
 
-I try to interview a couple times each year. It reveals if my current compensation is below market, if my resume is still up to par and, importantly, if my interview skills are still intact.
+I try to interview a couple of times each year. It reveals if my current compensation is below market, if my resume is still up to par and, importantly, if my interview skills are still intact.
 
 I’ve written about how I’ve been using AI to write 100% of my code since about August 2025. So it was a jarring experience to walk into a coding interview only to be asked to, can you believe it, write code. As you might guess, I failed the interview.
 
-It’s not that I couldn’t code any more. Instead, I was slow, awkward with the keyboard, and while I believe my solution was still heading in the right direction, I wasn’t able to get there in time. If I had to guess, the interviewer probably left with the impression that I knew where I wanted to get, but struggled to get the code to that place in a reasonable amount of time.
+It’s not that I couldn’t code anymore. Instead, I was slow, awkward with the keyboard, and while I believe my solution was still heading in the right direction, I wasn’t able to get there in time. If I had to guess, the interviewer probably left with the impression that I knew where I wanted to get, but struggled to get the code to that place in a reasonable amount of time.
 
 I realized: it’s time to hit the coding gym.
 
-Just like when people began to exercise intentionally because physical labor stopped demanding the use of bodies; we should begin to practice coding intentionally now that daily work doesn’t require us to manually write code.
+Just like when people began to exercise intentionally because physical labor stopped demanding the use of bodies, we should begin to practice coding intentionally now that daily work doesn’t require us to manually write code.
 
 This affects more than just interviews. Recently at NYT, our internal gateway for Claude code experienced an outage. As an engineer on the Developer AI team, it was my team's responsibility to fix it. We had to fix Claude Code, without Claude Code.
 
@@ -56,7 +56,7 @@ First, I try not to overdo it. My weekly goal is to practice three times for abo
 
 When I encounter a problem I don’t know how to solve, I try my best guess or try to “brute force” my way through. The goal is not to solve it perfectly but to see how close I can get with the strategies I already know.
 
-My primary goals are to:
+My primary goals are to
 
 - Get a working solution for any provided test cases.
 - Correctly identify the space and time complexity of what I implemented.
@@ -76,9 +76,9 @@ I prefer this approach to looking at solved problems or getting hints because it
 
 ## Closing Thoughts
 
-I want to be clear: I am not advocating in this post for LeetCode-style interviews. Instead, I am recommending the use of these tools for coding practice. The aim is specifically to prevent basic coding skills from becoming rusty due to underuse, now that many of us rely on AI to write code for us. The usefulness of that type of interview is debated and I do not seek to enter that debate with this post.
+I want to be clear: I am not advocating in this post for LeetCode-style interviews. Instead, I am recommending the use of these tools for coding practice. The aim is specifically to prevent basic coding skills from becoming rusty due to underuse, now that many of us rely on AI to write code for us. The usefulness of that type of interview is debated, and I do not seek to enter that debate with this post.
 
-It is fair to point out the paradox here. We are relying on these tools to write all our code, but they are not yet reliable enough to be fully trusted. They are helpful, but must be used with great caution. So, at this point, it is not yet safe to let coding skills atrophy. Yet, we are entering a phase where they will naturally do so if steps are taken to prevent it.
+It is fair to point out the paradox here. We are relying on these tools to write all our code, but they are not yet reliable enough to be fully trusted. They are helpful, but must be used with great caution. So, at this point, it is not yet safe to let coding skills atrophy. Yet, we are entering a phase where they will naturally do so if steps are not taken to prevent it.
 
 ## Sources
 
