@@ -25,9 +25,11 @@ It’s not that I couldn’t code any more. Instead, I was slow, awkward with th
 
 I realized: it’s time to hit the coding gym.
 
-Just like when physical labor stopped demanding the use of our bodies, people began to exercise intentionally in a gym; now that our daily work doesn’t demand us to manually write code, we should begin practicing it intentionally.
+Just like when people began to exercise intentionally because physical labor stopped demanding the use of bodies; we should begin to practice coding intentionally now that daily work doesn’t require us to manually write code.
 
-This affects more than just interviews. Recently, our internal gateway for Claude code experienced an outage. As an engineer on the Developer AI team, it was up to me and the other engineers on the team to fix it. We had to fix Claude Code, without Claude Code.
+This affects more than just interviews. Recently at NYT, our internal gateway for Claude code experienced an outage. As an engineer on the Developer AI team, it was my team's responsibility to fix it. We had to fix Claude Code, without Claude Code.
+
+If we allow our engineering skills to atrophy, we wouldn't be able to adequately respond to such incidents.
 
 ## Gyms
 
