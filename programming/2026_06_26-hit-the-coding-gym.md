@@ -5,7 +5,7 @@ draft: false
 tags: [Code]
 ---
 
-We’ve been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands. In Ancient Greece, almost 2500 years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium. 
+We’ve been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands of years. In Ancient Greece, almost 2500 years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium. 
 
 ![The Coding Gym](/image/programming/the-coding-gym.PNG)
 
@@ -17,7 +17,7 @@ Now, AI is creating the same need for coding practice.
 
 ## Story Time
 
-I try to interview a few times a year, and I recommend others do the same. It reveals if my current compensation is below market, it tells me if my resume is still up to par, and importantly, it reveals if my interview skills are still in tact. I’ve written about how I’ve been using AI to write 100% of my code since about August 2025. So it was a jarring experience to walk into a coding interview only to be asked to, can you believe it, write code. As you might guess, I failed the interview.
+I try to interview a few times a year, and I recommend others do the same. It reveals if my current compensation is below market, it tells me if my resume is still up to par, and importantly, it reveals if my interview skills are still intact. I’ve written about how I’ve been using AI to write 100% of my code since about August 2025. So it was a jarring experience to walk into a coding interview only to be asked to, can you believe it, write code. As you might guess, I failed the interview.
 
 It’s not that I couldn’t code any more. Instead, I was slow, awkward with the keyboard, and while I believe my solution was still heading in the right direction, I wasn’t able to get there in time. If I had to guess, the interviewer probably left with the impression that I knew where I wanted to get, but struggled to get the code to that place in a reasonable amount of time.
 
@@ -65,9 +65,9 @@ Here, I am specifically not looking for how others solved it or for hints. Inste
 
 Previously, I would look at other people’s solutions to see how they did it better. However, I found that I didn’t actually learn much from this exercise because seeing the answer didn’t make me work out the solution on my own.
 
-Instead, I ended up creating this custom GPT that analyzes the problem and my solution and tells me which strategies I should know about to improve my implementation: [https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8](https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8) Is specifically forbidden from solving the problem or giving hints unless explicitly asked for. 
+Instead, I ended up creating this custom GPT that analyzes the problem and my solution and tells me which strategies I should know about to improve my implementation: [https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8](https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8) It is specifically forbidden from solving the problem or giving hints unless explicitly asked for. 
 
-For example, maybe a solution would benefit from a sliding window algorithm. It would tell me that I should try to learn about an implement a sliding window algorithm. It would not tell me exactly how to do that, but would tell me about sliding window, algorithms in general and allow me to go apply it to the solution myself.
+For example, maybe a solution would benefit from a sliding window algorithm. It would tell me that I should try to learn about and implement a sliding window algorithm. It would not tell me exactly how to do that, but would tell me about sliding window algorithms in general and allow me to go apply it to the solution myself.
 
 I prefer this approach to looking at solved problems or getting hints because it forces me to try to figure out how to do it on my own. I find that this helps me learn more than if the solution is simply handed to me.
 
