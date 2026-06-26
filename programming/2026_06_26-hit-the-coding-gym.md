@@ -5,7 +5,7 @@ draft: false
 tags: [Code]
 ---
 
-People have been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands. Plato built his school, the Academy, in ancient Greece, the name inspired by a nearby gymnasium.
+People have been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands. Plato built his school, the Academy, in ancient Greece, with the name inspired by a nearby gymnasium.
 
 ![The Coding Gym](/image/programming/the-coding-gym.PNG)
 
@@ -68,7 +68,7 @@ Here, I am specifically not looking for how others solved it or for hints. Inste
 
 Previously, I would look at other people’s solutions to see how they did it better. However, I found that I didn’t actually learn much from this exercise because seeing the answer didn’t make me work out the solution on my own.
 
-Instead, I ended up creating this custom GPT that analyzes the problem and my solution and tells me which strategies I should know about to improve my implementation: [https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8](https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8) It is specifically forbidden from solving the problem or giving hints unless explicitly asked for.
+Instead, I ended up creating this custom GPT that analyzes the problem and my solution and tells me which strategies I should know about to improve my implementation: [https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8](https://chatgpt.com/g/g-6a3d2c6556448191a65b1190bf1450b8). It is specifically forbidden from solving the problem or giving hints unless explicitly asked for.
 
 For example, maybe a solution would benefit from a sliding window algorithm. It would tell me that I should try to learn about and implement a sliding window algorithm. It would not tell me exactly how to do that, but would tell me about sliding window algorithms in general and allow me to go apply it to the solution myself.
 
@@ -137,7 +137,7 @@ To be clear, this implementation was incorrect and insufficient and not optimal 
 5. Learn the dummy-head linked-list pattern.
 6. Learn the tail-pointer append pattern.
 
-This answer did not tell me how to solve the problem. Instead, it told me what to learn. After researching these strategies, I was able to improve my implementation to the following.
+This answer did not tell me how to solve the problem. Instead, it told me what to learn. After researching these strategies, I was able to improve my implementation to the following:
 
 ```go
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
@@ -157,7 +157,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
         
         if l2 != nil {
             l2v = l2.Val
-            l2= l2.Next
+            l2 = l2.Next
         }
         
         sum := l1v + l2v + carry
