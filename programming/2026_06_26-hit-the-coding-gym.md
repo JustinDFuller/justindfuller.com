@@ -1,5 +1,8 @@
 ---
 title: It’s time to hit the coding gym
+date: 2026-06-26
+draft: false
+tags: [Code]
 ---
 
 We’ve been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands. In Ancient Greece, almost 2500 years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium. 
