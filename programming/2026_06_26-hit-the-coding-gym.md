@@ -5,7 +5,7 @@ draft: false
 tags: [Code]
 ---
 
-People have been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands of years. In Ancient Greece, over two thousand years ago, Plato built the Academy, which was both the name of his school as well as a nearby gymnasium.
+People have been working out for a long time. While the modern gym has only existed for a couple of hundred years, the idea goes back thousands. Plato built his school, the Academy, in ancient Greece, the name inspired by a nearby gymnasium.
 
 ![The Coding Gym](/image/programming/the-coding-gym.PNG)
 
@@ -17,7 +17,7 @@ Now, AI is creating the same need for coding practice.
 
 ## Story Time
 
-I try to interview a couple times each year. It reveals if my current compensation is below market, if my resume is still up to par and, importantly, if my interview skills are still intact. 
+I try to interview a couple times each year. It reveals if my current compensation is below market, if my resume is still up to par and, importantly, if my interview skills are still intact.
 
 I’ve written about how I’ve been using AI to write 100% of my code since about August 2025. So it was a jarring experience to walk into a coding interview only to be asked to, can you believe it, write code. As you might guess, I failed the interview.
 
