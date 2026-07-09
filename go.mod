@@ -4,7 +4,7 @@ go 1.25.0
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.21.0
+require golang.org/x/sync v0.22.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.18.0
