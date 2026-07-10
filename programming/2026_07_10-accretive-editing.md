@@ -47,4 +47,3 @@ So, I do *not* recommend adding something like this to your instructions: “Avo
 Instead, focus on explaining how it should think about updating documents.
 
 > When updating prose, replace obsolete text with accurate text rather than preserving the obsolete text and adding a correction. The final document should read as if it were written correctly from the beginning.
->
