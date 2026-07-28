@@ -32,7 +32,7 @@
     "eslint": "^10.7.0",
     "markdownlint-cli2": "^0.23.1",
     "prettier": "^3.9.5",
-    "stylelint": "^17.14.0",
+    "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0"
   }
 }
