@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"os"
+	"path/filepath"
 	"regexp"
 	"sort"
 	"strconv"
@@ -42,6 +43,7 @@ type Entry struct {
 type EditorPage struct {
 	Before   template.HTML
 	After    template.HTML
+	Original template.HTML
 	Variants []EditorVariant
 }
 
@@ -55,7 +57,7 @@ type EditorVariant struct {
 	Diff     []DiffHunk
 }
 
-// DiffHunk and DiffRow model a unified, line-numbered source diff.
+// DiffHunk models a unified, line-numbered source diff.
 type DiffHunk struct {
 	OldStart int
 	OldLines int
@@ -64,6 +66,7 @@ type DiffHunk struct {
 	Rows     []DiffRow
 }
 
+// DiffRow is one context, deletion, or insertion row in a diff hunk.
 type DiffRow struct {
 	Kind     string
 	OldLine  int
@@ -244,7 +247,6 @@ func renderMarkdown(source []byte) (template.HTML, parser.Context, error) {
 }
 
 func entryFromMetadata(name string, file []byte, content template.HTML, metaData map[string]interface{}) Entry {
-
 	// Extract metadata
 
 	// Extract title from metadata
@@ -402,9 +404,13 @@ func parseEditorPage(directory string, post []byte) (*EditorPage, error) {
 		return nil, err
 	}
 
-	original, err := os.ReadFile(directory + "/0-original-copy.md")
+	original, err := os.ReadFile(filepath.Join(directory, "0-original-copy.md")) //nolint:gosec // Directory is the trusted editor content root.
 	if err != nil {
 		return nil, errors.Wrap(err, "reading editor original copy")
+	}
+	originalContent, _, err := renderMarkdown(original)
+	if err != nil {
+		return nil, errors.Wrap(err, "rendering editor original copy")
 	}
 	files, err := os.ReadDir(directory)
 	if err != nil {
@@ -421,7 +427,7 @@ func parseEditorPage(directory string, post []byte) (*EditorPage, error) {
 			continue
 		}
 		order, _ := strconv.Atoi(matches[1])
-		body, readErr := os.ReadFile(directory + "/" + file.Name())
+		body, readErr := os.ReadFile(filepath.Join(directory, filepath.Clean(file.Name()))) //nolint:gosec // Filename is from the filtered editor directory listing.
 		if readErr != nil {
 			return nil, errors.Wrap(readErr, "reading editor variant")
 		}
@@ -436,7 +442,7 @@ func parseEditorPage(directory string, post []byte) (*EditorPage, error) {
 		return variants[i].order < variants[j].order
 	})
 
-	page := &EditorPage{Before: before, After: after, Variants: make([]EditorVariant, len(variants))}
+	page := &EditorPage{Before: before, After: after, Original: originalContent, Variants: make([]EditorVariant, len(variants))}
 	anchorIDs := make(map[string]struct{}, len(variants))
 	for i, numbered := range variants {
 		if _, exists := anchorIDs[numbered.variant.AnchorID]; exists {
@@ -578,8 +584,8 @@ func GetEntry(want string) (Entry, error) {
 		name := file.Name()
 
 		if file.IsDir() {
-			postPath := fmt.Sprintf("./programming/%s/post.md", name)
-			content, readErr := os.ReadFile(postPath)
+			postPath := filepath.Join("./programming", filepath.Clean(name), "post.md")
+			content, readErr := os.ReadFile(postPath) //nolint:gosec // Directory name is from the programming directory listing.
 			if readErr != nil {
 				continue
 			}

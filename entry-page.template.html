@@ -11,24 +11,28 @@ Expected data structure: - .Entry: The content entry with Title, Content, etc. -
       {{ template "/entry-header.template.html" .Entry }} {{ if
       .Entry.EditorPage }}
       <div class="entry-body entry-body--{{ .ContentType }}">
-        {{ printf "%s" .Entry.EditorPage.Before }}
+        {{ .Entry.EditorPage.Before }}
       </div>
       <section class="editor-comparison" aria-label="Editor type comparisons">
-        <nav class="editor-comparison__nav" aria-label="Editor variants">
-          <ol class="editor-comparison__nav-list">
-            {{ range .Entry.EditorPage.Variants }}
-            <li>
-              <a href="#{{ .AnchorID }}">{{ .Name }}</a>
-            </li>
-            {{ end }}
-          </ol>
-        </nav>
         <div class="editor-comparison__viewport">
           <div
             class="editor-comparison__scroller"
             tabindex="0"
             aria-label="Editor comparison cards"
           >
+            <article
+              id="editor-original"
+              class="editor-variant editor-variant--original"
+              aria-labelledby="editor-original-title"
+            >
+              <p class="editor-variant__position">
+                0 out of {{ len .Entry.EditorPage.Variants }}
+              </p>
+              <h2 id="editor-original-title">Original</h2>
+              <div class="editor-original-copy">
+                {{ .Entry.EditorPage.Original }}
+              </div>
+            </article>
             {{ range .Entry.EditorPage.Variants }}
             <article
               id="{{ .AnchorID }}"
@@ -36,58 +40,60 @@ Expected data structure: - .Entry: The content entry with Title, Content, etc. -
               aria-labelledby="{{ .AnchorID }}-title"
             >
               <p class="editor-variant__position">
-                {{ .Position }} of {{ len $.Entry.EditorPage.Variants }}
+                {{ .Position }} out of {{ len $.Entry.EditorPage.Variants }}
               </p>
               <h2 id="{{ .AnchorID }}-title">{{ .Name }}</h2>
-              <section class="editor-variant__section">
-                <h3>Prompt</h3>
-                {{ printf "%s" .Prompt }}
-              </section>
-              <section class="editor-variant__section">
-                <h3>Response</h3>
-                {{ printf "%s" .Response }}
-              </section>
-              {{ if .Diff }}
-              <section
-                class="editor-variant__section editor-variant__section--diff"
-              >
-                <h3>Diff</h3>
-                {{ range .Diff }}
-                <div class="editor-diff__hunk">
-                  <div class="editor-diff__header">
-                    @@ -{{ .OldStart }},{{ .OldLines }} +{{ .NewStart }},{{
-                    .NewLines }} @@
-                  </div>
-                  {{ range .Rows }}
-                  <div class="editor-diff__row editor-diff__row--{{ .Kind }}">
-                    <span class="editor-diff__line"
-                      >{{ if .OldLine }}{{ .OldLine }}{{ end }}</span
-                    >
-                    <span class="editor-diff__line"
-                      >{{ if .NewLine }}{{ .NewLine }}{{ end }}</span
-                    >
-                    <span class="editor-diff__mark"
-                      >{{ if eq .Kind "delete" }}-{{ else if eq .Kind "insert"
-                      }}+{{ else }} {{ end }}</span
-                    >
-                    <code
-                      >{{ range .Segments }}{{ if .Changed }}<mark
-                        >{{ printf "%s" .Text }}</mark
-                      >{{ else }}{{ printf "%s" .Text }}{{ end }}{{ end }}</code
-                    >
-                  </div>
+              <div class="editor-conversation">
+                <section class="editor-message editor-message--author">
+                  <h3 class="editor-message__label">Prompt</h3>
+                  {{ .Prompt }}
+                </section>
+                <section class="editor-message editor-message--model">
+                  <h3 class="editor-message__label">Model</h3>
+                  {{ .Response }}
+                  {{ if .Diff }}
+                  <section
+                    class="editor-variant__section editor-variant__section--diff"
+                  >
+                    <h4>Diff</h4>
+                    {{ range .Diff }}
+                    <div class="editor-diff__hunk">
+                      <div class="editor-diff__header">
+                        @@ -{{ .OldStart }},{{ .OldLines }} +{{ .NewStart }},{{
+                        .NewLines }} @@
+                      </div>
+                      {{ range .Rows }}
+                      <div class="editor-diff__row editor-diff__row--{{ .Kind }}">
+                        <span class="editor-diff__line"
+                          >{{ if .OldLine }}{{ .OldLine }}{{ end }}</span
+                        >
+                        <span class="editor-diff__line"
+                          >{{ if .NewLine }}{{ .NewLine }}{{ end }}</span
+                        >
+                        <span class="editor-diff__mark"
+                          >{{ if eq .Kind "delete" }}-{{ else if eq .Kind "insert"
+                          }}+{{ else }} {{ end }}</span
+                        >
+                        <code
+                          >{{ range .Segments }}{{ if .Changed }}<mark
+                            >{{ printf "%s" .Text }}</mark
+                          >{{ else }}{{ printf "%s" .Text }}{{ end }}{{ end }}</code
+                        >
+                      </div>
+                      {{ end }}
+                    </div>
+                    {{ end }}
+                  </section>
                   {{ end }}
-                </div>
-                {{ end }}
-              </section>
-              {{ end }}
+                </section>
+              </div>
             </article>
             {{ end }}
           </div>
         </div>
       </section>
       <div class="entry-body entry-body--{{ .ContentType }}">
-        {{ printf "%s" .Entry.EditorPage.After }}
+        {{ .Entry.EditorPage.After }}
       </div>
       {{ else }}
       <div class="entry-body entry-body--{{ .ContentType }}">

@@ -12,7 +12,7 @@ The main issue in this draft is that the I did half develops into a fairly compl
 
 <!-- EditedCopy -->
 
-# Two Types of Advice
+#### Two Types of Advice
 
 Broadly speaking, there are two categories of advice you might receive.
 

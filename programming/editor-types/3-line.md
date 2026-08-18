@@ -9,7 +9,7 @@ As a line edit, I’d focus on sentence-level clarity, rhythm, emphasis, and tra
 
 <!-- EditedCopy -->
 
-# Two Types of Advice
+#### Two Types of Advice
 
 Broadly speaking, there are two categories of advice you might receive.
 

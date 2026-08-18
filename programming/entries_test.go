@@ -56,6 +56,9 @@ func TestParseEditorPageOrdersAndRendersVariants(t *testing.T) {
 	if !strings.Contains(string(page.Before), "Before") || !strings.Contains(string(page.After), "After") {
 		t.Fatal("post content was not split around placement")
 	}
+	if !strings.Contains(string(page.Original), "one, two") {
+		t.Fatal("original copy was not rendered")
+	}
 	if !strings.Contains(string(page.Variants[1].Prompt), "<em>markdown</em>") || !strings.Contains(string(page.Variants[1].Response), "<strong>markdown</strong>") {
 		t.Fatal("variant markdown was not rendered")
 	}
@@ -86,11 +89,16 @@ func TestEditorComparisonTemplateRendersNavigationAndAccessibleCards(t *testing.
 	if _, err := templates.New("/entry-header.template.html").Parse("<header>{{ .Title }}</header>"); err != nil {
 		t.Fatal(err)
 	}
-	page := &EditorPage{Variants: []EditorVariant{
-		{AnchorID: "editor-variant-developmental", Name: "Developmental", Position: 1},
-		{AnchorID: "editor-variant-substantive", Name: "Substantive", Position: 2},
-		{AnchorID: "editor-variant-line", Name: "Line", Position: 3},
-	}}
+	page := &EditorPage{
+		Before:   template.HTML("<p>Before <em>markup</em>.</p>"),
+		After:    template.HTML("<p>After <strong>markup</strong>.</p>"),
+		Original: template.HTML("<p>Original <em>markup</em>.</p>"),
+		Variants: []EditorVariant{
+			{AnchorID: "editor-variant-developmental", Name: "Developmental", Position: 1, Prompt: template.HTML("<p>Author <em>markup</em>.</p>"), Response: template.HTML("<p>Model <strong>markup</strong>.</p>"), Diff: []DiffHunk{{OldStart: 1, OldLines: 1, NewStart: 1, NewLines: 1}}},
+			{AnchorID: "editor-variant-substantive", Name: "Substantive", Position: 2},
+			{AnchorID: "editor-variant-line", Name: "Line", Position: 3},
+		},
+	}
 	var rendered bytes.Buffer
 	err = templates.ExecuteTemplate(&rendered, "/entry-page.template.html", map[string]any{
 		"Entry":       Entry{Title: "Types of Editors", EditorPage: page},
@@ -101,18 +109,39 @@ func TestEditorComparisonTemplateRendersNavigationAndAccessibleCards(t *testing.
 	}
 	html := rendered.String()
 	for _, want := range []string{
-		`href="#editor-variant-developmental"`,
+		`id="editor-original"`,
+		`aria-labelledby="editor-original-title"`,
+		`<h2 id="editor-original-title">Original</h2>`,
 		`id="editor-variant-developmental"`,
 		`aria-labelledby="editor-variant-developmental-title"`,
-		`1 of 3`,
-		`2 of 3`,
-		`3 of 3`,
+		`0 out of 3`,
+		`1 out of 3`,
+		`2 out of 3`,
+		`3 out of 3`,
 		`class="editor-comparison__scroller"`,
 		`aria-label="Editor comparison cards"`,
+		`class="editor-message editor-message--author"`,
+		`class="editor-message editor-message--model"`,
+		`<h3 class="editor-message__label">Prompt</h3>`,
+		`<h3 class="editor-message__label">Model</h3>`,
+		`<h4>Diff</h4>`,
+		`<p>Before <em>markup</em>.</p>`,
+		`<p>After <strong>markup</strong>.</p>`,
+		`<p>Original <em>markup</em>.</p>`,
+		`<p>Author <em>markup</em>.</p>`,
+		`<p>Model <strong>markup</strong>.</p>`,
 	} {
 		if !strings.Contains(html, want) {
 			t.Fatalf("rendered template missing %q:\n%s", want, html)
 		}
+	}
+	if strings.Contains(html, "editor-comparison__nav") {
+		t.Fatalf("rendered template includes removed editor navigation:\n%s", html)
+	}
+	modelStart := strings.Index(html, `class="editor-message editor-message--model"`)
+	diffStart := strings.Index(html, `class="editor-variant__section editor-variant__section--diff"`)
+	if modelStart == -1 || diffStart < modelStart {
+		t.Fatalf("diff is not rendered inside the model message:\n%s", html)
 	}
 }
 
