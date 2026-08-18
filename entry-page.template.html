@@ -45,17 +45,14 @@ Expected data structure: - .Entry: The content entry with Title, Content, etc. -
               <h2 id="{{ .AnchorID }}-title">{{ .Name }}</h2>
               <div class="editor-conversation">
                 <section class="editor-message editor-message--author">
-                  <h3 class="editor-message__label">Prompt</h3>
                   {{ .Prompt }}
                 </section>
                 <section class="editor-message editor-message--model">
-                  <h3 class="editor-message__label">Model</h3>
                   {{ .Response }}
                   {{ if .Diff }}
                   <section
                     class="editor-variant__section editor-variant__section--diff"
                   >
-                    <h4>Diff</h4>
                     {{ range .Diff }}
                     <div class="editor-diff__hunk">
                       <div class="editor-diff__header">

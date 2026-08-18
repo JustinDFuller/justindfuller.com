@@ -81,22 +81,12 @@
   justify-self: start;
 }
 
-.editor-message__label {
-  font-size: var(--font-size-sm);
-  margin: 0 0 var(--space-xs);
-}
-
-.editor-message--author .editor-message__label,
 .editor-message--author :is(p, li, blockquote, code, a) {
   color: #fff;
 }
 
 .editor-message--author a {
   text-decoration-color: currentcolor;
-}
-
-.editor-message--model .editor-message__label {
-  color: var(--color-accent-blue);
 }
 
 .editor-message :is(p, ul, ol, blockquote):last-child {
@@ -107,15 +97,13 @@
   margin-top: var(--space-md);
 }
 
-.editor-variant h3,
-.editor-variant h4 {
+.editor-variant h3 {
   color: var(--color-accent-yellow);
   font-size: var(--font-size-lg);
 }
 
 .editor-variant p,
 .editor-variant li {
-  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   line-height: var(--line-height-relaxed);
 }
