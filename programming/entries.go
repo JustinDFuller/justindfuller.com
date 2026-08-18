@@ -8,12 +8,14 @@ import (
 	"os"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/justindfuller/justindfuller.com/renderer"
 	"github.com/justindfuller/justindfuller.com/syntax"
 	"github.com/pkg/errors"
+	"github.com/pmezard/go-difflib/difflib"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/extension"
@@ -33,8 +35,47 @@ type Entry struct {
 	Content        template.HTML
 	Date           time.Time
 	IsDraft        bool
+	EditorPage     *EditorPage
 }
 
+// EditorPage is the template-facing comparison content for an editor-types post.
+type EditorPage struct {
+	Before   template.HTML
+	After    template.HTML
+	Variants []EditorVariant
+}
+
+// EditorVariant is one editor's prompt, response, and optional source diff.
+type EditorVariant struct {
+	AnchorID string
+	Name     string
+	Position int
+	Prompt   template.HTML
+	Response template.HTML
+	Diff     []DiffHunk
+}
+
+// DiffHunk and DiffRow model a unified, line-numbered source diff.
+type DiffHunk struct {
+	OldStart int
+	OldLines int
+	NewStart int
+	NewLines int
+	Rows     []DiffRow
+}
+
+type DiffRow struct {
+	Kind     string
+	OldLine  int
+	NewLine  int
+	Segments []ChangedSegment
+}
+
+// ChangedSegment is safely escaped diff text with an optional changed-span marker.
+type ChangedSegment struct {
+	Text    template.HTML
+	Changed bool
+}
 
 // parseEntryMetadata parses only the metadata from a markdown file without rendering content
 func parseEntryMetadata(name string, file []byte) Entry {
@@ -170,6 +211,15 @@ func parseEntryMetadata(name string, file []byte) Entry {
 }
 
 func parseEntry(name string, file []byte) (Entry, error) {
+	content, context, err := renderMarkdown(file)
+	if err != nil {
+		return Entry{}, err
+	}
+
+	return entryFromMetadata(name, file, content, meta.Get(context)), nil
+}
+
+func renderMarkdown(source []byte) (template.HTML, parser.Context, error) {
 	md := goldmark.New(
 		goldmark.WithExtensions(
 			extension.GFM,
@@ -187,12 +237,15 @@ func parseEntry(name string, file []byte) (Entry, error) {
 
 	var buf bytes.Buffer
 	context := parser.NewContext()
-	if err := md.Convert(file, &buf, parser.WithContext(context)); err != nil {
-		return Entry{}, errors.Wrap(err, "error converting markdown")
+	if err := md.Convert(source, &buf, parser.WithContext(context)); err != nil {
+		return "", nil, errors.Wrap(err, "error converting markdown")
 	}
+	return template.HTML(buf.String()), context, nil //nolint:gosec // Content is from trusted markdown files
+}
+
+func entryFromMetadata(name string, file []byte, content template.HTML, metaData map[string]interface{}) Entry {
 
 	// Extract metadata
-	metaData := meta.Get(context)
 
 	// Extract title from metadata
 	title := ""
@@ -283,10 +336,10 @@ func parseEntry(name string, file []byte) (Entry, error) {
 		Slug:           slug,
 		Description:    description,
 		FirstParagraph: firstParagraph,
-		Content:        template.HTML(buf.String()), //nolint:gosec // Content is from trusted markdown files
+		Content:        content,
 		Date:           date,
 		IsDraft:        isDraft,
-	}, nil
+	}
 }
 
 func extractFirstParagraph(markdown string) string {
@@ -329,6 +382,191 @@ func extractFirstParagraph(markdown string) string {
 	return ""
 }
 
+const placementMarker = "<!--PlaceVariantsHere-->"
+
+var variantName = regexp.MustCompile(`^([1-9][0-9]*)-(.+)\.md$`)
+var sectionMarker = regexp.MustCompile(`(?m)^<!--\s*(Prompt|PlainTextResponse|EditedCopy)\s*-->\s*$`)
+var diffToken = regexp.MustCompile(`\s+|[\pL\pN_]+|[^\s\pL\pN_]`)
+
+func parseEditorPage(directory string, post []byte) (*EditorPage, error) {
+	if strings.Count(string(post), placementMarker) != 1 {
+		return nil, errors.New("editor post must contain exactly one PlaceVariantsHere marker")
+	}
+	parts := strings.Split(string(post), placementMarker)
+	before, _, err := renderMarkdown([]byte(parts[0]))
+	if err != nil {
+		return nil, err
+	}
+	after, _, err := renderMarkdown([]byte(parts[1]))
+	if err != nil {
+		return nil, err
+	}
+
+	original, err := os.ReadFile(directory + "/0-original-copy.md")
+	if err != nil {
+		return nil, errors.Wrap(err, "reading editor original copy")
+	}
+	files, err := os.ReadDir(directory)
+	if err != nil {
+		return nil, errors.Wrap(err, "reading editor variants")
+	}
+	type numberedVariant struct {
+		order   int
+		variant EditorVariant
+	}
+	variants := make([]numberedVariant, 0)
+	for _, file := range files {
+		matches := variantName.FindStringSubmatch(file.Name())
+		if file.IsDir() || matches == nil {
+			continue
+		}
+		order, _ := strconv.Atoi(matches[1])
+		body, readErr := os.ReadFile(directory + "/" + file.Name())
+		if readErr != nil {
+			return nil, errors.Wrap(readErr, "reading editor variant")
+		}
+		variant, parseErr := parseEditorVariant(matches[2], body, original)
+		if parseErr != nil {
+			return nil, errors.Wrapf(parseErr, "parsing editor variant %s", file.Name())
+		}
+		variant.AnchorID = editorVariantAnchorID(matches[2])
+		variants = append(variants, numberedVariant{order: order, variant: variant})
+	}
+	sort.Slice(variants, func(i, j int) bool {
+		return variants[i].order < variants[j].order
+	})
+
+	page := &EditorPage{Before: before, After: after, Variants: make([]EditorVariant, len(variants))}
+	anchorIDs := make(map[string]struct{}, len(variants))
+	for i, numbered := range variants {
+		if _, exists := anchorIDs[numbered.variant.AnchorID]; exists {
+			return nil, errors.Errorf("editor variant anchor ID %q is not unique", numbered.variant.AnchorID)
+		}
+		anchorIDs[numbered.variant.AnchorID] = struct{}{}
+		numbered.variant.Position = i + 1
+		page.Variants[i] = numbered.variant
+	}
+	return page, nil
+}
+
+func editorVariantAnchorID(filename string) string {
+	anchor := strings.ToLower(filename)
+	anchor = strings.ReplaceAll(anchor, "_", "-")
+	anchor = regexp.MustCompile(`[^a-z0-9]+`).ReplaceAllString(anchor, "-")
+	return "editor-variant-" + strings.Trim(anchor, "-")
+}
+
+func parseEditorVariant(filename string, source, original []byte) (EditorVariant, error) {
+	matches := sectionMarker.FindAllStringSubmatchIndex(string(source), -1)
+	if len(matches) < 2 || len(matches) > 3 {
+		return EditorVariant{}, errors.New("variant must contain Prompt, PlainTextResponse, and optional EditedCopy exactly once")
+	}
+	sections := make(map[string]string, len(matches))
+	previous := ""
+	for i, match := range matches {
+		name := string(source[match[2]:match[3]])
+		if (i == 0 && name != "Prompt") || (i == 1 && name != "PlainTextResponse") || (i == 2 && name != "EditedCopy") || name == previous {
+			return EditorVariant{}, errors.New("variant sections are missing, duplicated, or out of order")
+		}
+		end := len(source)
+		if i+1 < len(matches) {
+			end = matches[i+1][0]
+		}
+		sections[name] = strings.TrimSpace(string(source[match[1]:end]))
+		previous = name
+	}
+	if sections["Prompt"] == "" || sections["PlainTextResponse"] == "" {
+		return EditorVariant{}, errors.New("Prompt and PlainTextResponse must not be empty")
+	}
+	prompt, _, err := renderMarkdown([]byte(sections["Prompt"]))
+	if err != nil {
+		return EditorVariant{}, err
+	}
+	response, _, err := renderMarkdown([]byte(sections["PlainTextResponse"]))
+	if err != nil {
+		return EditorVariant{}, err
+	}
+	variant := EditorVariant{Name: displayName(filename), Prompt: prompt, Response: response}
+	if edited := sections["EditedCopy"]; edited != "" {
+		variant.Diff = buildDiff(string(original), edited)
+	}
+	return variant, nil
+}
+
+func displayName(value string) string {
+	value = strings.ReplaceAll(value, "-", " ")
+	value = strings.ReplaceAll(value, "_", " ")
+	return cases.Title(language.English).String(value)
+}
+
+func buildDiff(original, edited string) []DiffHunk {
+	a, b := strings.Split(original, "\n"), strings.Split(edited, "\n")
+	matcher := difflib.NewMatcher(a, b)
+	groups := matcher.GetGroupedOpCodes(3)
+	if len(groups) == 0 {
+		return nil
+	}
+	hunks := make([]DiffHunk, 0, len(groups))
+	for _, group := range groups {
+		first, last := group[0], group[len(group)-1]
+		hunk := DiffHunk{OldStart: first.I1 + 1, OldLines: last.I2 - first.I1, NewStart: first.J1 + 1, NewLines: last.J2 - first.J1}
+		for _, op := range group {
+			switch op.Tag {
+			case 'e':
+				for i := 0; i < op.I2-op.I1; i++ {
+					hunk.Rows = append(hunk.Rows, plainDiffRow("context", op.I1+i+1, op.J1+i+1, a[op.I1+i]))
+				}
+			case 'd':
+				for i := op.I1; i < op.I2; i++ {
+					hunk.Rows = append(hunk.Rows, plainDiffRow("delete", i+1, 0, a[i]))
+				}
+			case 'i':
+				for j := op.J1; j < op.J2; j++ {
+					hunk.Rows = append(hunk.Rows, plainDiffRow("insert", 0, j+1, b[j]))
+				}
+			case 'r':
+				oldCount, newCount := op.I2-op.I1, op.J2-op.J1
+				paired := min(oldCount, newCount)
+				for i := 0; i < paired; i++ {
+					old, added := changedLineSegments(a[op.I1+i], b[op.J1+i])
+					hunk.Rows = append(hunk.Rows, DiffRow{Kind: "delete", OldLine: op.I1 + i + 1, Segments: old}, DiffRow{Kind: "insert", NewLine: op.J1 + i + 1, Segments: added})
+				}
+				for i := paired; i < oldCount; i++ {
+					hunk.Rows = append(hunk.Rows, plainDiffRow("delete", op.I1+i+1, 0, a[op.I1+i]))
+				}
+				for j := paired; j < newCount; j++ {
+					hunk.Rows = append(hunk.Rows, plainDiffRow("insert", 0, op.J1+j+1, b[op.J1+j]))
+				}
+			}
+		}
+		hunks = append(hunks, hunk)
+	}
+	return hunks
+}
+
+func plainDiffRow(kind string, oldLine, newLine int, value string) DiffRow {
+	return DiffRow{Kind: kind, OldLine: oldLine, NewLine: newLine, Segments: []ChangedSegment{{Text: escapedDiff(value)}}}
+}
+
+func changedLineSegments(old, added string) ([]ChangedSegment, []ChangedSegment) {
+	a, b := diffToken.FindAllString(old, -1), diffToken.FindAllString(added, -1)
+	matcher := difflib.NewMatcher(a, b)
+	oldSegments, newSegments := []ChangedSegment{}, []ChangedSegment{}
+	for _, op := range matcher.GetOpCodes() {
+		for i := op.I1; i < op.I2; i++ {
+			oldSegments = append(oldSegments, ChangedSegment{Text: escapedDiff(a[i]), Changed: op.Tag != 'e'})
+		}
+		for j := op.J1; j < op.J2; j++ {
+			newSegments = append(newSegments, ChangedSegment{Text: escapedDiff(b[j]), Changed: op.Tag != 'e'})
+		}
+	}
+	return oldSegments, newSegments
+}
+
+func escapedDiff(value string) template.HTML {
+	return template.HTML(template.HTMLEscapeString(value)) //nolint:gosec // Escaped before trusted template rendering
+}
+
 // GetEntry retrieves a programming entry by slug
 func GetEntry(want string) (Entry, error) {
 	files, err := os.ReadDir("./programming")
@@ -339,8 +577,26 @@ func GetEntry(want string) (Entry, error) {
 	for _, file := range files {
 		name := file.Name()
 
-		// Skip non-markdown files and directories
-		if file.IsDir() || !strings.HasSuffix(name, ".md") {
+		if file.IsDir() {
+			postPath := fmt.Sprintf("./programming/%s/post.md", name)
+			content, readErr := os.ReadFile(postPath)
+			if readErr != nil {
+				continue
+			}
+			entry, parseErr := parseEntry(name+".md", content)
+			if parseErr != nil || entry.Slug != want {
+				continue
+			}
+			page, pageErr := parseEditorPage(fmt.Sprintf("./programming/%s", name), content)
+			if pageErr != nil {
+				return Entry{}, pageErr
+			}
+			entry.EditorPage = page
+			return entry, nil
+		}
+
+		// Skip non-markdown files
+		if !strings.HasSuffix(name, ".md") {
 			continue
 		}
 
@@ -382,8 +638,20 @@ func GetEntries() ([]Entry, error) {
 	for _, file := range files {
 		name := file.Name()
 
-		// Skip non-markdown files and directories
-		if file.IsDir() || !strings.HasSuffix(name, ".md") {
+		if file.IsDir() {
+			content, readErr := os.ReadFile(fmt.Sprintf("./programming/%s/post.md", name))
+			if readErr != nil {
+				continue
+			}
+			entry := parseEntryMetadata(name+".md", content)
+			if !entry.IsDraft {
+				entries = append(entries, entry)
+			}
+			continue
+		}
+
+		// Skip non-markdown files
+		if !strings.HasSuffix(name, ".md") {
 			continue
 		}
 
