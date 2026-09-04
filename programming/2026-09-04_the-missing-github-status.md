@@ -9,7 +9,7 @@ Today, a Pull Request on GitHub can have a few statuses: Draft, Open, Merged, or
 
 ![The Missing Status](/image/programming/ready-for-ai-code-review.png)
 
-A typical workflow might look like this:
+A typical pre-AI workflow might look like this:
 
 1. Work locally.
 2. Push to a branch.
