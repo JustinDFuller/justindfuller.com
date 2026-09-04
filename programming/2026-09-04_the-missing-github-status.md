@@ -33,7 +33,7 @@ There are other options of course. Most of these tools allow you to manually req
 
 This is why I think tools like GitHub will need to evolve for the AI era. Not by slapping AI features on top of their existing workflows, but by rethinking them. Today's workflows are built around human actions, not agents.
 
-The missing Github PR status: `Ready for AI Review`. 
+The missing Github PR status: `Ready for AI Review`.
 
 The new workflow would be: `Draft` -> `Ready for AI Review` -> `Ready for Human Review` -> `Merged`.
 
