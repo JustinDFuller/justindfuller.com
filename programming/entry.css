@@ -1,4 +1,191 @@
-/* Programming Entry Specific Styles - Only overrides */
+/* stylelint-disable selector-class-pattern */
 
-/* No programming-specific overrides needed currently */
-/* All styles are handled by the shared .entry-content and .entry-body classes in main.css */
+.editor-comparison {
+  margin: var(--space-2xl) calc(50% - 50vw);
+  width: 100vw;
+}
+
+.entry-content--editor-comparison {
+  overflow: visible;
+}
+
+.editor-comparison__scroller {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--space-lg);
+  overflow-x: auto;
+  padding: var(--space-md)
+    max(var(--space-lg), calc((100vw - var(--max-width-container)) / 2))
+    var(--space-xl);
+  scroll-padding-inline: max(
+    var(--space-lg),
+    calc((100vw - var(--max-width-container)) / 2)
+  );
+  scroll-snap-type: x mandatory;
+  scrollbar-color: var(--color-accent-blue) var(--color-bg-secondary);
+  scrollbar-width: auto;
+}
+
+.editor-comparison__viewport {
+  position: relative;
+}
+
+.editor-comparison__scroller:focus-visible {
+  outline: 3px solid var(--color-accent-yellow);
+  outline-offset: 3px;
+}
+
+.editor-variant {
+  background: #111820;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  flex: 0 0 min(44vw, 36rem);
+  padding: var(--space-xl);
+  scroll-snap-align: start;
+  scroll-margin-top: 120px;
+}
+
+.editor-variant__position {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.editor-variant h2 {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+}
+
+.editor-conversation {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.editor-message {
+  border-radius: var(--border-radius-lg);
+  max-width: min(90%, 34rem);
+  padding: var(--space-md) var(--space-lg);
+}
+
+.editor-message--author {
+  background: #003b73;
+  color: #fff;
+  justify-self: end;
+}
+
+.editor-message--model {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  justify-self: start;
+}
+
+.editor-message--author :is(p, li, blockquote, code, a) {
+  color: #fff;
+}
+
+.editor-message--author a {
+  text-decoration-color: currentcolor;
+}
+
+.editor-message :is(p, ul, ol, blockquote):last-child {
+  margin-bottom: 0;
+}
+
+.editor-variant__section--diff {
+  margin-top: var(--space-md);
+}
+
+.editor-variant h3 {
+  color: var(--color-accent-yellow);
+  font-size: var(--font-size-lg);
+}
+
+.editor-variant p,
+.editor-variant li {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+.editor-variant p,
+.editor-variant ul,
+.editor-variant ol,
+.editor-variant blockquote {
+  margin-bottom: var(--space-md);
+}
+
+.editor-variant blockquote {
+  border-left: 3px solid var(--color-accent-blue);
+  margin-left: 0;
+  padding-left: var(--space-md);
+}
+
+.editor-diff__hunk {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  line-height: 1.55;
+  margin-top: var(--space-md);
+}
+
+.editor-diff__header {
+  background: var(--color-bg-secondary);
+  color: var(--color-accent-blue);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.editor-diff__row {
+  display: grid;
+  grid-template-columns: max-content max-content 1ch minmax(0, 1fr);
+}
+
+.editor-diff__line,
+.editor-diff__mark {
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.editor-diff__row code {
+  overflow-wrap: anywhere;
+  padding-left: var(--space-sm);
+  white-space: pre-wrap;
+}
+
+.editor-diff__row--delete {
+  background: color-mix(in srgb, #d9534f 17%, transparent);
+}
+
+.editor-diff__row--insert {
+  background: color-mix(in srgb, #4f9d69 17%, transparent);
+}
+
+.editor-diff__row--delete .editor-diff__mark {
+  color: #f17a76;
+}
+
+.editor-diff__row--insert .editor-diff__mark {
+  color: #71c58e;
+}
+
+.editor-diff__row mark {
+  color: var(--color-text-primary);
+}
+
+.editor-diff__row--delete mark {
+  background: color-mix(in srgb, #d9534f 45%, transparent);
+}
+
+.editor-diff__row--insert mark {
+  background: color-mix(in srgb, #4f9d69 45%, transparent);
+}
+
+@media (width <= 700px) {
+  .editor-variant {
+    flex-basis: calc(100vw - (2 * var(--space-lg)));
+    padding: var(--space-lg);
+  }
+
+  .editor-message {
+    max-width: 100%;
+  }
+}
