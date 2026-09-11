@@ -1,10 +1,10 @@
 module github.com/justindfuller/justindfuller.com
 
-go 1.25.0
+go 1.26.0
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.22.0
+require golang.org/x/sync v0.23.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.19.0
@@ -12,7 +12,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.27.0
 	github.com/golangci/golangci-lint v1.64.8
 	github.com/justindfuller/secretmanager v0.0.4
-	github.com/yuin/goldmark v1.8.5
+	github.com/yuin/goldmark v1.8.6
 	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 	github.com/yuin/goldmark-meta v1.1.0
 	golang.org/x/text v0.41.0
