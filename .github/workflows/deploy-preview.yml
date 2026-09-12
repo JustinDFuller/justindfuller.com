@@ -68,7 +68,6 @@ jobs:
           project_id: "justindfuller"
           deliverables: "app.yaml"
           promote: true
-          stop_previous_version: true
           version: "pr-${{ github.event.pull_request.number }}-${{ github.run_id }}"
 
       - name: Re-authenticate for cleanup
