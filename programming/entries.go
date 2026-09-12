@@ -416,6 +416,7 @@ func GetEntries() ([]Entry, error) {
 }
 
 // Entries is a cached list of all non-draft entries.
+//
 // Deprecated: Use GetEntries() instead for dynamic loading.
 var Entries []Entry
 

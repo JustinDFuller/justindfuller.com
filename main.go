@@ -96,7 +96,7 @@ func main() {
 	}
 
 	var mut sync.Mutex
-	var files []File //nolint:prealloc // false positive
+	var files []File
 
 	for _, entry := range dir {
 		if strings.HasPrefix(entry.Name(), ".") {
