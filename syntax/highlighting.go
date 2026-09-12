@@ -1,5 +1,5 @@
 // Package syntax provides code syntax highlighting for the website
-package syntax
+package syntax //nolint:revive // package name is part of the public API
 
 import (
 	"bytes"

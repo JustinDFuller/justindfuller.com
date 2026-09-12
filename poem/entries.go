@@ -108,7 +108,7 @@ func Entries() ([][]byte, error) {
 			// Clean the path to prevent directory traversal
 			path := filepath.Join("./poem", filepath.Clean(name))
 
-			file, err := os.ReadFile(path) //nolint:gosec // Path is from filtered directory listing
+			file, err := os.ReadFile(path)
 			if err != nil {
 				return errors.Wrapf(err, "error reading file: %s", path)
 			}
