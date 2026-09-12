@@ -6,7 +6,7 @@ draft: false
 tags: [Code]
 ---
 
-If you've been noticing your agents write terrible pull request descriptions, you aren't alone. We all know agents tend to write verbosely, and to share information that assumes the wrong context. If you've been using Claude to write pull request descriptions, you may haven noticed that it tends to merely regurgitate what you can already find by reading the diff yourself. It doesn't provide an explanation for _why_ a change was needed or what will be different after it merges. It just summarizes the changed code and lists the files it touched.
+If you've been noticing your agents write terrible pull request descriptions, you aren't alone. We all know agents tend to write verbosely, and to share information that assumes the wrong context. If you've been using Claude to write pull request descriptions, you may have noticed that it tends to merely regurgitate what you can already find by reading the diff yourself. It doesn't provide an explanation for _why_ a change was needed or what will be different after it merges. It just summarizes the changed code and lists the files it touched.
 
 <!--more-->
 
@@ -50,7 +50,7 @@ This is what will be different for users, what will be available, what will go a
 
 ex:
 - "When an invalid input is entered, only that row is rejected. The rest of the entries process and the invalid row is ignored."
-- "The summary will be more concise. It will have a clear color indicator of the status. It will have a 1-2 sentence summary of the results. Detailed information still available, but it hidden by default."
+- "The summary will be more concise. It will have a clear color indicator of the status. It will have a 1-2 sentence summary of the results. Detailed information is still available, but it is hidden by default."
 -->
 
 - TODO
@@ -78,6 +78,6 @@ See the results for yourself:
 
 ## Configuration
 
-I highly recommend adjusting the exact guidelines to suit your particular needs for descriptions. Personally, I want to know what sparked the need for this PR and what differences I should expect to see after. I also want to know how the author knows the change will actually work, I want to see proof.
+I highly recommend adjusting the exact guidelines to suit your particular needs for descriptions. Personally, I want to know what sparked the need for this PR and what differences I should expect to see after. I also want to know how the author knows the change will actually work. I want to see proof.
 
 I also am a slow reader, so I like things to be concise. I force the agents to stick to 300 words. This seems to generally give it enough room to explain itself properly, while also preventing it from going overboard with detail.
