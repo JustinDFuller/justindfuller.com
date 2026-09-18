@@ -16,7 +16,7 @@ You may also want to read up on [OpenSpec](https://openspec.dev/), which is the 
 > OpenSpec is a lightweight and configurable framework for creating and managing software specifications.
 > https://openspec.dev/
 
-![High Level Workflow](/image/programming/1-high-level-workflow.png)
+![High Level Workflow](/image/programming/1-high-level-workflow.jpg)
 
 ## Three Phases
 
@@ -32,7 +32,7 @@ The plan phase is a loop with a human in it. The execute phase is an agentic loo
 
 The planning phase has a human in the loop.
 
-![High Level Workflow](/image/programming/2-plan.png)
+![High Level Workflow](/image/programming/2-plan.jpg)
 
 1. OpenSpec `/explore` skill to research the problem.
 2. OpenSpec `/propose` skill to record the spec.
