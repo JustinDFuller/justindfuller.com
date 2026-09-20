@@ -38,4 +38,9 @@ The planning phase has a human in the loop.
 2. OpenSpec `/propose` skill to record the spec.
 3. Manually review and iterate on the spec.
 
+### Explore
+
+The first step uses the openspec-explore skill.
+
+It directs the agent to explore the problem, investigate the codebase, compare options, ask question, and visualize flows.
 
