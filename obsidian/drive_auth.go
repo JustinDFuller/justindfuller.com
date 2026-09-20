@@ -20,10 +20,6 @@ type keychainOAuthCredentials struct {
 }
 
 func newDriveHTTPClient(ctx context.Context, config Config) (*http.Client, error) {
-	if config.Environment != EnvironmentLocal {
-		return nil, nil
-	}
-
 	service := config.GoogleOAuthKeychainService
 	if service == "" {
 		service = defaultGoogleOAuthKeychainService
@@ -46,10 +42,10 @@ func newDriveHTTPClient(ctx context.Context, config Config) (*http.Client, error
 		return nil, errors.New("invalid Keychain OAuth credentials")
 	}
 	if credentials.Type != "authorized_user" {
-		return nil, errors.New("Keychain OAuth credentials must be authorized_user credentials")
+		return nil, errors.New("keychain OAuth credentials must be authorized_user credentials")
 	}
 	if credentials.ClientID == "" || credentials.RefreshToken == "" {
-		return nil, errors.New("Keychain OAuth credentials are missing required fields")
+		return nil, errors.New("keychain OAuth credentials are missing required fields")
 	}
 
 	oauthConfig := &oauth2.Config{

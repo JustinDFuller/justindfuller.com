@@ -1,3 +1,5 @@
+# Obsidian Programming Sync
+
 ## Purpose
 
 Allow programming posts and their image assets to be read from the configured Obsidian Google Drive folder and overlaid onto the existing Git-backed blog in production, pull-request previews, and local development without requiring content commits or deployments.

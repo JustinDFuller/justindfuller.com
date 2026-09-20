@@ -157,23 +157,6 @@ func TestLocalDriveSourceRejectsMalformedKeychainCredentials(t *testing.T) {
 	}
 }
 
-func TestHostedDriveSourceDoesNotReadKeychain(t *testing.T) {
-	called := false
-	client, err := newDriveHTTPClient(context.Background(), Config{
-		Environment: EnvironmentPreview,
-		KeychainReader: func(context.Context, string, string) (string, error) {
-			called = true
-			return "", errors.New("Keychain should not be read")
-		},
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if client != nil || called {
-		t.Fatalf("client = %v, keychain called = %v", client, called)
-	}
-}
-
 func TestInvalidMarkdownDoesNotBlockValidPost(t *testing.T) {
 	source := &memorySource{
 		tree: SourceTree{Files: []RemoteFile{

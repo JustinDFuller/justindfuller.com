@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net/http"
 	"path"
 	"sort"
 	"strings"
@@ -19,9 +20,13 @@ type driveSource struct {
 }
 
 func newDriveSource(ctx context.Context, config Config) (Source, error) {
-	client, err := newDriveHTTPClient(ctx, config)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errInvalidSourceConfiguration, err)
+	var client *http.Client
+	if config.Environment == EnvironmentLocal {
+		var err error
+		client, err = newDriveHTTPClient(ctx, config)
+		if err != nil {
+			return nil, fmt.Errorf("%w: %w", errInvalidSourceConfiguration, err)
+		}
 	}
 
 	options := []option.ClientOption{option.WithScopes(drive.DriveReadonlyScope)}
