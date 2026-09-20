@@ -15,3 +15,5 @@ security add-generic-password \
 ```
 
 The application reads the item at runtime through `/usr/bin/security`. `OBSIDIAN_GOOGLE_OAUTH_KEYCHAIN_SERVICE` and `OBSIDIAN_GOOGLE_OAUTH_KEYCHAIN_ACCOUNT` override the defaults for local development. Preview and production use their hosted ADC identity instead.
+
+The App Engine default service account is `justindfuller@appspot.gserviceaccount.com`. The configured Drive folder must be shared with that identity as a viewer. The GitHub Actions deployment service account only deploys the application; it is not the runtime identity used to read Drive.
