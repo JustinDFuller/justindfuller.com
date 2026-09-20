@@ -35,6 +35,34 @@ type Entry struct {
 	IsDraft        bool
 }
 
+func newMarkdown() goldmark.Markdown {
+	return goldmark.New(
+		goldmark.WithExtensions(
+			extension.GFM,
+			meta.Meta,
+			syntax.GetHighlighting(),
+			renderer.NewExtension(),
+		),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+		goldmark.WithRendererOptions(
+			html.WithUnsafe(),
+		),
+	)
+}
+
+func renderMarkdown(file []byte) (template.HTML, error) {
+	entry, err := parseEntry("", file)
+	if err != nil {
+		return "", err
+	}
+	return entry.Content, nil
+}
+
+var RenderMarkdown = renderMarkdown
+
+var ExtractFirstParagraph = extractFirstParagraph
 
 // parseEntryMetadata parses only the metadata from a markdown file without rendering content
 func parseEntryMetadata(name string, file []byte) Entry {
@@ -170,20 +198,7 @@ func parseEntryMetadata(name string, file []byte) Entry {
 }
 
 func parseEntry(name string, file []byte) (Entry, error) {
-	md := goldmark.New(
-		goldmark.WithExtensions(
-			extension.GFM,
-			meta.Meta,
-			syntax.GetHighlighting(),
-			renderer.NewExtension(),
-		),
-		goldmark.WithParserOptions(
-			parser.WithAutoHeadingID(),
-		),
-		goldmark.WithRendererOptions(
-			html.WithUnsafe(),
-		),
-	)
+	md := newMarkdown()
 
 	var buf bytes.Buffer
 	context := parser.NewContext()

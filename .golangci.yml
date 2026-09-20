@@ -61,3 +61,13 @@ linters:
         - name: unused-parameter
         - name: var-declaration
         - name: var-naming
+
+  exclusions:
+    rules:
+      - path: "^obsidian/"
+        linters:
+          - revive
+      - path: "^programming/entries\\.go$"
+        text: "exported: exported var (RenderMarkdown|ExtractFirstParagraph)"
+        linters:
+          - revive

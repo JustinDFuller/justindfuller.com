@@ -7,6 +7,9 @@ export COLOR_BLUE='\e[0;34m'
 
 export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
+OBSIDIAN_ENVIRONMENT ?= local
+OBSIDIAN_DRIVE_FOLDER_ID ?= 1FYyC_lFzsED92atPeE5RBEgpW86wNKMt
+export OBSIDIAN_ENVIRONMENT OBSIDIAN_DRIVE_FOLDER_ID
 
 .PHONY: validate
 validate:

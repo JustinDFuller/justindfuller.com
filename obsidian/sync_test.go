@@ -1,0 +1,651 @@
+package obsidian
+
+import (
+	"context"
+	"encoding/base64"
+	"errors"
+	"strings"
+	"sync"
+	"testing"
+	"time"
+
+	"github.com/justindfuller/justindfuller.com/programming"
+	"google.golang.org/api/googleapi"
+)
+
+type memorySource struct {
+	tree        SourceTree
+	content     map[string][]byte
+	downloadErr map[string]error
+	readErr     error
+	readStarted chan struct{}
+	readWait    chan struct{}
+	readOnce    sync.Once
+}
+
+func (m *memorySource) Read(context.Context, string) (SourceTree, error) {
+	if m.readStarted != nil {
+		m.readOnce.Do(func() { close(m.readStarted) })
+	}
+	if m.readWait != nil {
+		<-m.readWait
+	}
+	if m.readErr != nil {
+		return SourceTree{}, m.readErr
+	}
+	return m.tree, nil
+}
+
+func (m *memorySource) Download(_ context.Context, fileID string) ([]byte, error) {
+	if err := m.downloadErr[fileID]; err != nil {
+		return nil, err
+	}
+	return m.content[fileID], nil
+}
+
+func fixedConfig(source Source, environment Environment) Config {
+	return Config{
+		FolderID:      "folder",
+		Environment:   environment,
+		SyncInterval:  time.Second,
+		SourceFactory: func(context.Context) (Source, error) { return source, nil },
+		EventLogger:   func(Event) {},
+	}
+}
+
+func markdown(slug, environment, mode string, body string) []byte {
+	return []byte("---\n" +
+		"environment: " + environment + "\n" +
+		"section: programming\n" +
+		"slug: " + slug + "\n" +
+		"title: Test Post\n" +
+		"date: 2026-09-20\n" +
+		"draft: false\n" +
+		"sync: " + mode + "\n" +
+		"tags:\n  - test\n" +
+		"---\n" + body)
+}
+
+func file(id, name, path string) RemoteFile {
+	return RemoteFile{ID: id, Name: name, Path: path, Revision: "1"}
+}
+
+func validPNG() []byte {
+	data, err := base64.StdEncoding.DecodeString("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=")
+	if err != nil {
+		panic(err)
+	}
+	return data
+}
+
+func TestStoreAddsValidEntryAndRewritesImage(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram.png", "image/nested/diagram.png"),
+		}},
+		content: map[string][]byte{
+			"post":  markdown("external-post", "local", "add", "![[nested/diagram.png|Diagram]]"),
+			"image": validPNG(),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "external-post" {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+		t.Fatalf("content did not contain rewritten image URL: %s", entries[0].Content)
+	}
+
+	start := strings.Index(string(entries[0].Content), "/__obsidian/image/") + len("/__obsidian/image/")
+	end := strings.IndexAny(string(entries[0].Content)[start:], "\"' >)")
+	token := string(entries[0].Content)[start : start+end]
+	asset, ok := store.Image(context.Background(), token, nil)
+	if !ok || string(asset.Data) != string(validPNG()) {
+		t.Fatalf("asset = %#v, ok = %v", asset, ok)
+	}
+}
+
+func TestLocalDriveSourceUsesKeychainOAuthCredentials(t *testing.T) {
+	var gotAccount string
+	var gotService string
+	source, err := newDriveSource(context.Background(), Config{
+		Environment:                EnvironmentLocal,
+		GoogleOAuthKeychainAccount: "test-account",
+		GoogleOAuthKeychainService: "test-service",
+		KeychainReader: func(_ context.Context, account, service string) (string, error) {
+			gotAccount = account
+			gotService = service
+			return `{"type":"authorized_user","client_id":"client-id","client_secret":"client-secret","refresh_token":"refresh-token"}`, nil
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if source == nil {
+		t.Fatal("source is nil")
+	}
+	if gotAccount != "test-account" || gotService != "test-service" {
+		t.Fatalf("Keychain lookup = %q/%q", gotAccount, gotService)
+	}
+}
+
+func TestLocalDriveSourceRejectsServiceAccountCredentials(t *testing.T) {
+	_, err := newDriveSource(context.Background(), Config{
+		Environment: EnvironmentLocal,
+		KeychainReader: func(context.Context, string, string) (string, error) {
+			return `{"type":"service_account","client_email":"service@example.com","private_key":"private-key"}`, nil
+		},
+	})
+	if err == nil || !errors.Is(err, errInvalidSourceConfiguration) {
+		t.Fatalf("error = %v", err)
+	}
+}
+
+func TestLocalDriveSourceRejectsMalformedKeychainCredentials(t *testing.T) {
+	_, err := newDriveSource(context.Background(), Config{
+		Environment: EnvironmentLocal,
+		KeychainReader: func(context.Context, string, string) (string, error) {
+			return "not-json", nil
+		},
+	})
+	if err == nil || !errors.Is(err, errInvalidSourceConfiguration) {
+		t.Fatalf("error = %v", err)
+	}
+}
+
+func TestHostedDriveSourceDoesNotReadKeychain(t *testing.T) {
+	called := false
+	client, err := newDriveHTTPClient(context.Background(), Config{
+		Environment: EnvironmentPreview,
+		KeychainReader: func(context.Context, string, string) (string, error) {
+			called = true
+			return "", errors.New("Keychain should not be read")
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if client != nil || called {
+		t.Fatalf("client = %v, keychain called = %v", client, called)
+	}
+}
+
+func TestInvalidMarkdownDoesNotBlockValidPost(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("bad", "bad.md", "bad.md"),
+			file("good", "good.md", "good.md"),
+		}},
+		content: map[string][]byte{
+			"bad":  []byte("---\ntitle: missing required fields\n---\nbody"),
+			"good": markdown("good-post", "local", "add", "Good body"),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "good-post" {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].FileID != "bad" {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestInvalidImageOnlyOmitsImage(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram.png", "image/diagram.png"),
+		}},
+		content: map[string][]byte{
+			"post": markdown("external-post", "local", "add", "Before\n\n![Diagram](image/diagram.png)\n\nAfter"),
+		},
+		downloadErr: map[string]error{"image": errors.New("temporary image failure")},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || strings.Contains(string(entries[0].Content), "<img") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if !strings.Contains(string(entries[0].Content), "Before") || !strings.Contains(string(entries[0].Content), "After") {
+		t.Fatalf("post body was not retained: %s", entries[0].Content)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Category != "image_download" || diagnostics.Issues[0].Route != "external-post" {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestInvalidImageBytesOnlyOmitImage(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram.png", "image/diagram.png"),
+		}},
+		content: map[string][]byte{
+			"post":  markdown("external-post", "local", "add", "Before\n\n![Diagram](image/diagram.png)\n\nAfter"),
+			"image": validPNG()[:len(validPNG())-2],
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || strings.Contains(string(entries[0].Content), "<img") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Category != "image_validation" {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestMalformedImageSyntaxInvalidatesOnlyPost(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("bad", "bad.md", "bad.md"),
+			file("good", "good.md", "good.md"),
+		}},
+		content: map[string][]byte{
+			"bad":  markdown("bad-post", "local", "add", "Before\n\n![broken image.png)"),
+			"good": markdown("good-post", "local", "add", "Good body"),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "good-post" {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Category != "markdown_image_syntax" {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestRawHTMLImageIsOmittedWithoutBlockingPost(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content: map[string][]byte{
+			"post": markdown("external-post", "local", "add", `Before\n\n<img src="https://example.com/image.png">\n\nAfter`),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || strings.Contains(string(entries[0].Content), "<img") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Category != "image_reference_outside_source" {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestEnvironmentPromotionMatrix(t *testing.T) {
+	for _, test := range []struct {
+		environment Environment
+		active      Environment
+		want        bool
+	}{
+		{EnvironmentProduction, EnvironmentProduction, true},
+		{EnvironmentProduction, EnvironmentPreview, true},
+		{EnvironmentProduction, EnvironmentLocal, true},
+		{EnvironmentPreview, EnvironmentProduction, false},
+		{EnvironmentPreview, EnvironmentPreview, true},
+		{EnvironmentPreview, EnvironmentLocal, true},
+		{EnvironmentLocal, EnvironmentProduction, false},
+		{EnvironmentLocal, EnvironmentPreview, false},
+		{EnvironmentLocal, EnvironmentLocal, true},
+	} {
+		source := &memorySource{
+			tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+			content:     map[string][]byte{"post": markdown("post", string(test.environment), "add", "body")},
+			downloadErr: map[string]error{},
+		}
+		store := NewStore(fixedConfig(source, test.active))
+		entries := store.Entries(context.Background(), nil)
+		if test.active == EnvironmentProduction {
+			deadline := time.Now().Add(time.Second)
+			for len(entries) != 1 && time.Now().Before(deadline) {
+				time.Sleep(10 * time.Millisecond)
+				entries = store.Entries(context.Background(), nil)
+			}
+		}
+		if got := len(entries) == 1; got != test.want {
+			t.Errorf("file environment=%s active=%s: got %v, want %v", test.environment, test.active, got, test.want)
+		}
+	}
+}
+
+func TestSourceFailureRetainsLastKnownGoodAndMarksStale(t *testing.T) {
+	now := time.Date(2026, 9, 20, 12, 0, 0, 0, time.UTC)
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("post", "local", "add", "body")},
+		downloadErr: map[string]error{},
+	}
+	config := fixedConfig(source, EnvironmentLocal)
+	config.Now = func() time.Time { return now }
+	store := NewStore(config)
+	if entries := store.Entries(context.Background(), nil); len(entries) != 1 {
+		t.Fatalf("initial entries = %#v", entries)
+	}
+
+	source.readErr = errors.New("temporary source outage")
+	now = now.Add(2 * time.Second)
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "post" {
+		t.Fatalf("fallback entries = %#v diagnostics = %#v", entries, store.Diagnostics(context.Background(), nil))
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if !diagnostics.Status.Stale || diagnostics.Status.State != "degraded" {
+		t.Fatalf("status = %#v", diagnostics.Status)
+	}
+}
+
+func TestProductionSyncDoesNotBlockContentRequests(t *testing.T) {
+	readStarted := make(chan struct{})
+	readWait := make(chan struct{})
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("post", "prd", "add", "body")},
+		downloadErr: map[string]error{},
+		readStarted: readStarted,
+		readWait:    readWait,
+	}
+	store := NewStore(fixedConfig(source, EnvironmentProduction))
+	started := time.Now()
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 0 || time.Since(started) > 100*time.Millisecond {
+		t.Fatalf("production request was blocked: entries=%#v duration=%s", entries, time.Since(started))
+	}
+	select {
+	case <-readStarted:
+	case <-time.After(time.Second):
+		t.Fatal("background synchronization did not start")
+	}
+	close(readWait)
+	deadline := time.Now().Add(time.Second)
+	for time.Now().Before(deadline) {
+		entries = store.Entries(context.Background(), nil)
+		if len(entries) == 1 && entries[0].Slug == "post" {
+			return
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	t.Fatalf("background entries = %#v", entries)
+}
+
+func TestSourceFailureCategories(t *testing.T) {
+	if category := sourceFailureCategory(errors.New("temporary network failure")); category != "transient_source_failure" {
+		t.Fatalf("generic error category = %q", category)
+	}
+	if category := sourceFailureCategory(&googleapi.Error{Code: 403}); category != "configuration_or_authorization_failure" {
+		t.Fatalf("authorization error category = %q", category)
+	}
+	if category := sourceFailureCategory(&googleapi.Error{Code: 408}); category != "transient_source_failure" {
+		t.Fatalf("timeout error category = %q", category)
+	}
+	if category := sourceFailureCategory(errInvalidSourceConfiguration); category != "configuration_or_authorization_failure" {
+		t.Fatalf("configuration error category = %q", category)
+	}
+}
+
+func TestLocalDraftRouteIsNotResolved(t *testing.T) {
+	store := NewStore(fixedConfig(&memorySource{readErr: errors.New("source unavailable")}, EnvironmentLocal))
+	resolution := store.Resolve(context.Background(), "draft", []programming.Entry{{Slug: "draft", IsDraft: true}}, func() (programming.Entry, error) {
+		return programming.Entry{Slug: "draft", IsDraft: true}, nil
+	})
+	if resolution.Found || resolution.Masked {
+		t.Fatalf("resolution = %#v", resolution)
+	}
+}
+
+func TestEnvironmentIneligibleFileIsIgnoredInDiagnostics(t *testing.T) {
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("post", "local", "add", "body")},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentPreview))
+	store.Entries(context.Background(), nil)
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Files) != 1 || diagnostics.Files[0].State != "ignored" {
+		t.Fatalf("files = %#v", diagnostics.Files)
+	}
+}
+
+func TestBuildSitemapPreservesBaseAndAddsProgrammingEntries(t *testing.T) {
+	slashes := string([]byte{47, 47})
+	site := "https:" + slashes + "justindfuller.com"
+	base := []byte("<?xml version=\"1.0\"?><urlset xmlns=\"http:" + slashes + "www.sitemaps.org/schemas/sitemap/0.9\"><url><loc>" + site + "/</loc></url><url><loc>" + site + "/programming/local-post</loc></url></urlset>")
+	entries := []programming.Entry{{Slug: "external-post", Date: time.Date(2026, 9, 20, 0, 0, 0, 0, time.UTC)}}
+	sitemap, err := BuildSitemap(base, entries, site)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result := string(sitemap)
+	if !strings.Contains(result, site+"/") || !strings.Contains(result, site+"/programming/external-post") || strings.Contains(result, "programming/local-post") {
+		t.Fatalf("sitemap = %s", result)
+	}
+}
+
+func TestOverwriteAndDraftMaskLocalRoute(t *testing.T) {
+	now := time.Date(2026, 9, 20, 12, 0, 0, 0, time.UTC)
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("local-post", "local", "overwrite", "external body")},
+		downloadErr: map[string]error{},
+	}
+	config := fixedConfig(source, EnvironmentLocal)
+	config.Now = func() time.Time { return now }
+	store := NewStore(config)
+	local := programming.Entry{Slug: "local-post", Title: "Local", Date: now}
+	entries := store.Entries(context.Background(), []programming.Entry{local})
+	if len(entries) != 1 || entries[0].Title != "Test Post" {
+		t.Fatalf("overwrite entries = %#v", entries)
+	}
+
+	draft := strings.Replace(string(source.content["post"]), "draft: false", "draft: true", 1)
+	source.content["post"] = []byte(draft)
+	source.tree.Files[0].Revision = "2"
+	now = now.Add(2 * time.Second)
+	entries = store.Entries(context.Background(), []programming.Entry{local})
+	if len(entries) != 0 {
+		t.Fatalf("draft overwrite entries = %#v", entries)
+	}
+	resolution := store.Resolve(context.Background(), "local-post", []programming.Entry{local}, func() (programming.Entry, error) {
+		return local, nil
+	})
+	if !resolution.Masked || resolution.Found {
+		t.Fatalf("resolution = %#v", resolution)
+	}
+
+	source.tree.Files = nil
+	now = now.Add(2 * time.Second)
+	entries = store.Entries(context.Background(), []programming.Entry{local})
+	if len(entries) != 1 || entries[0].Title != "Local" {
+		t.Fatalf("restored entries = %#v", entries)
+	}
+}
+
+func TestUnsupportedImageIsolatedFromPost(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram.gif", "image/diagram.gif"),
+		}},
+		content: map[string][]byte{
+			"post": markdown("external-post", "local", "add", "Before\n\n![Diagram](image/diagram.gif)\n\nAfter"),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "Before") || !strings.Contains(string(entries[0].Content), "After") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	categories := make(map[string]bool, len(diagnostics.Issues))
+	for _, issue := range diagnostics.Issues {
+		categories[issue.Category] = true
+	}
+	if !categories["source_layout"] || !categories["image_validation"] {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestMetadataRejectsUnknownKeysAndMalformedTags(t *testing.T) {
+	for _, frontMatter := range []string{
+		"environment: local\nsection: programming\nslug: post\ntitle: Post\ndate: 2026-09-20\ndraft: false\nsync: add\ntags: [test]\nextra: true",
+		"environment: local\nsection: programming\nslug: post\ntitle: Post\ndate: 2026-09-20\ndraft: false\nsync: add\ntags: test",
+	} {
+		if _, err := parseMetadata(frontMatter); err == nil {
+			t.Fatalf("front matter unexpectedly valid: %s", frontMatter)
+		}
+	}
+}
+
+func TestInvalidLayoutRevisionRetainsLastKnownGoodPost(t *testing.T) {
+	now := time.Date(2026, 9, 20, 12, 0, 0, 0, time.UTC)
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("post", "local", "add", "body")},
+		downloadErr: map[string]error{},
+	}
+	config := fixedConfig(source, EnvironmentLocal)
+	config.Now = func() time.Time { return now }
+	store := NewStore(config)
+	if entries := store.Entries(context.Background(), nil); len(entries) != 1 {
+		t.Fatalf("initial entries = %#v", entries)
+	}
+
+	source.tree.Files[0].Path = "notes/post.md"
+	source.tree.Files[0].Revision = "2"
+	now = now.Add(2 * time.Second)
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "post" {
+		t.Fatalf("fallback entries = %#v diagnostics = %#v", entries, store.Diagnostics(context.Background(), nil))
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Fallback != "last_known_good_external" {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestUnpublishableRevisionRetainsLastKnownGoodPost(t *testing.T) {
+	now := time.Date(2026, 9, 20, 12, 0, 0, 0, time.UTC)
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("post", "local", "add", "body")},
+		downloadErr: map[string]error{},
+	}
+	config := fixedConfig(source, EnvironmentLocal)
+	config.Now = func() time.Time { return now }
+	store := NewStore(config)
+	if entries := store.Entries(context.Background(), nil); len(entries) != 1 {
+		t.Fatalf("initial entries = %#v", entries)
+	}
+	source.content["post"] = []byte(strings.Replace(string(source.content["post"]), "sync: add", "sync: overwrite", 1))
+	source.tree.Files[0].Revision = "2"
+	now = now.Add(2 * time.Second)
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "post" {
+		t.Fatalf("fallback entries = %#v diagnostics = %#v", entries, store.Diagnostics(context.Background(), nil))
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	foundFallback := false
+	for _, issue := range diagnostics.Issues {
+		if issue.Fallback == "last_known_good_external" {
+			foundFallback = true
+		}
+	}
+	if !foundFallback {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestRouteCollisionRetainsPreviousOwner(t *testing.T) {
+	now := time.Date(2026, 9, 20, 12, 0, 0, 0, time.UTC)
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("owner", "owner.md", "owner.md")}},
+		content:     map[string][]byte{"owner": markdown("post", "local", "add", "owner body")},
+		downloadErr: map[string]error{},
+	}
+	config := fixedConfig(source, EnvironmentLocal)
+	config.Now = func() time.Time { return now }
+	store := NewStore(config)
+	if entries := store.Entries(context.Background(), nil); len(entries) != 1 {
+		t.Fatalf("initial entries = %#v", entries)
+	}
+	source.tree.Files = append(source.tree.Files, file("new", "new.md", "new.md"))
+	source.content["new"] = markdown("post", "local", "add", "new body")
+	now = now.Add(2 * time.Second)
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || string(entries[0].Content) == "" {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	foundCollision := false
+	for _, issue := range diagnostics.Issues {
+		if issue.FileID == "new" && issue.Category == "route_collision" {
+			foundCollision = true
+		}
+	}
+	if !foundCollision {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestSynchronizationEventsAreDeduplicatedAndDeletionIsObservable(t *testing.T) {
+	now := time.Date(2026, 9, 20, 12, 0, 0, 0, time.UTC)
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("post", "local", "add", "body")},
+		downloadErr: map[string]error{},
+	}
+	events := make([]Event, 0)
+	config := fixedConfig(source, EnvironmentLocal)
+	config.Now = func() time.Time { return now }
+	config.EventLogger = func(event Event) { events = append(events, event) }
+	store := NewStore(config)
+	store.Entries(context.Background(), nil)
+	firstCount := len(events)
+	store.Entries(context.Background(), nil)
+	if len(events) != firstCount {
+		t.Fatalf("events were not deduplicated: %d then %d", firstCount, len(events))
+	}
+
+	source.tree.Files = nil
+	now = now.Add(2 * time.Second)
+	store.Entries(context.Background(), nil)
+	foundDeletion := false
+	for _, event := range events {
+		if event.Name == "sync_entry_deleted" {
+			foundDeletion = true
+		}
+	}
+	if !foundDeletion {
+		t.Fatalf("events = %#v", events)
+	}
+}
+
+func TestRenderedSafetyValidationRejectsExecutableContent(t *testing.T) {
+	for _, rendered := range []string{
+		`<p><script>alert(1)</script></p>`,
+		`<p><a href=javascript:alert(1)>link</a></p>`,
+		`<p><img src="../secret.png"></p>`,
+	} {
+		if !containsProhibitedRenderedContent(rendered) {
+			t.Fatalf("rendered content unexpectedly passed: %s", rendered)
+		}
+	}
+}

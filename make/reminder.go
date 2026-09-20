@@ -23,9 +23,10 @@ type Reminder struct {
 
 // ReminderConfig contains configuration for sending reminders
 type ReminderConfig struct {
-	PublicKey  string `secretmanager:"reminder_public_key"`
-	PrivateKey string `secretmanager:"reminder_private_key"`
-	Subscriber string `secretmanager:"reminder_subscriber"`
+	PublicKey                string `secretmanager:"reminder_public_key"`
+	PrivateKey               string `secretmanager:"reminder_private_key"`
+	Subscriber               string `secretmanager:"reminder_subscriber"`
+	ObsidianDiagnosticsToken string `secretmanager:"obsidian_diagnostics_token"`
 }
 
 // SetHandler handles requests to set reminder preferences
