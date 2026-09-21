@@ -823,9 +823,8 @@ func sourceFailureCategory(err error) string {
 	if errors.Is(err, errInvalidSourceConfiguration) {
 		return "configuration_or_authorization_failure"
 	}
-	var retrieveError *oauth2.RetrieveError
-	if errors.As(err, &retrieveError) {
-		return "configuration_or_authorization_failure"
+	if category, ok := oauthRetrieveFailureCategory(err); ok {
+		return category
 	}
 	var apiError *googleapi.Error
 	if errors.As(err, &apiError) {
@@ -849,9 +848,8 @@ func sourceFailureCategory(err error) string {
 }
 
 func sourceDownloadFailureCategory(err error) (string, bool) {
-	var retrieveError *oauth2.RetrieveError
-	if errors.As(err, &retrieveError) {
-		return "configuration_or_authorization_failure", true
+	if category, ok := oauthRetrieveFailureCategory(err); ok {
+		return category, true
 	}
 	var apiError *googleapi.Error
 	if errors.As(err, &apiError) {
@@ -869,6 +867,24 @@ func sourceDownloadFailureCategory(err error) (string, bool) {
 		return "transient_source_failure", true
 	}
 	return "", false
+}
+
+func oauthRetrieveFailureCategory(err error) (string, bool) {
+	var retrieveError *oauth2.RetrieveError
+	if !errors.As(err, &retrieveError) {
+		return "", false
+	}
+	if retrieveError.Response != nil {
+		switch retrieveError.Response.StatusCode {
+		case 408, 429:
+			return "transient_source_failure", true
+		default:
+			if retrieveError.Response.StatusCode >= 500 {
+				return "transient_source_failure", true
+			}
+		}
+	}
+	return "configuration_or_authorization_failure", true
 }
 
 func isRateLimitError(apiError *googleapi.Error) bool {

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"image"
 	"image/jpeg"
+	"net/http"
 	"strings"
 	"sync"
 	"testing"
@@ -255,6 +256,39 @@ func TestInvalidMetadataRevisionsDoNotBlockValidPost(t *testing.T) {
 	}
 }
 
+func TestIndependentErrorsDoNotBlockValidContent(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("bad-markdown", "bad.md", "bad.md"),
+			file("bad-image-post", "bad-image.md", "bad-image.md"),
+			file("bad-image", "bad.png", "image/bad.png"),
+			file("good-post", "good.md", "good.md"),
+			file("good-image", "good.png", "image/good.png"),
+		}},
+		content: map[string][]byte{
+			"bad-markdown":   []byte("---\ntitle: invalid\n---\nbody"),
+			"bad-image-post": markdown("bad-image-post", "local", "add", "Before\n\n![Bad](image/bad.png)\n\nAfter"),
+			"bad-image":      []byte("not an image"),
+			"good-post":      markdown("good-post", "local", "add", "Good body\n\n![Good](image/good.png)"),
+			"good-image":     validPNG(),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 2 {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	categories := make(map[string]bool)
+	for _, issue := range diagnostics.Issues {
+		categories[issue.Category] = true
+	}
+	if !categories["markdown_metadata"] || !categories["image_validation"] || len(diagnostics.Issues) != 2 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
 func TestInvalidImageOnlyOmitsImage(t *testing.T) {
 	source := &memorySource{
 		tree: SourceTree{Files: []RemoteFile{
@@ -264,7 +298,7 @@ func TestInvalidImageOnlyOmitsImage(t *testing.T) {
 		content: map[string][]byte{
 			"post": markdown("external-post", "local", "add", "Before\n\n![Diagram](image/diagram.png)\n\nAfter"),
 		},
-		downloadErr: map[string]error{"image": errors.New("temporary image failure")},
+		downloadErr: map[string]error{"image": &googleapi.Error{Code: 503}},
 	}
 	store := NewStore(fixedConfig(source, EnvironmentLocal))
 
@@ -329,6 +363,59 @@ func TestSupportedJPEGAndSVGImagesAreServed(t *testing.T) {
 	}
 	if !contentTypes["image/jpeg"] || !contentTypes["image/svg+xml"] {
 		t.Fatalf("content types = %#v", contentTypes)
+	}
+}
+
+func TestMarkdownImageDestinationWithTitleIsServed(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram.png", "image/nested/diagram.png"),
+		}},
+		content: map[string][]byte{
+			"post":  markdown("external-post", "local", "add", `![Diagram](<image/nested/diagram.png> "Title")`),
+			"image": validPNG(),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+		t.Fatalf("entries = %#v", entries)
+	}
+}
+
+func TestMultilineRawHTMLImageIsOmitted(t *testing.T) {
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("external-post", "local", "add", "Before\n\n<img\n  src=\"https://example.com/image.png\">\n\nAfter")},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || strings.Contains(string(entries[0].Content), "example.com/image.png") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Category != "image_reference_outside_source" {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
+	}
+}
+
+func TestObsidianSyntaxInCodeIsPreserved(t *testing.T) {
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("external-post", "local", "add", "```text\n[[example]]\n%%example%%\n```\n\n    [[indented]]")},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "example") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 0 {
+		t.Fatalf("issues = %#v", diagnostics.Issues)
 	}
 }
 
@@ -544,6 +631,9 @@ func TestSourceFailureCategories(t *testing.T) {
 	if category := sourceFailureCategory(&oauth2.RetrieveError{ErrorCode: "invalid_grant"}); category != "configuration_or_authorization_failure" {
 		t.Fatalf("OAuth error category = %q", category)
 	}
+	if category := sourceFailureCategory(&oauth2.RetrieveError{Response: &http.Response{StatusCode: 500}}); category != "transient_source_failure" {
+		t.Fatalf("OAuth server error category = %q", category)
+	}
 	if category := sourceFailureCategory(&googleapi.Error{Code: 403, Errors: []googleapi.ErrorItem{{Reason: "rateLimitExceeded"}}}); category != "transient_source_failure" {
 		t.Fatalf("rate-limit error category = %q", category)
 	}
@@ -692,6 +782,10 @@ func TestOverwriteAndDraftMaskLocalRoute(t *testing.T) {
 	entries = store.Entries(context.Background(), []programming.Entry{local})
 	if len(entries) != 1 || entries[0].Title != "Local" {
 		t.Fatalf("restored entries = %#v", entries)
+	}
+	sitemap, err := BuildSitemap(FallbackSitemap(), entries, "https://justindfuller.com")
+	if err != nil || !strings.Contains(string(sitemap), "/programming/local-post") {
+		t.Fatalf("restored sitemap = %s, err = %v", sitemap, err)
 	}
 }
 

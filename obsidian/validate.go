@@ -149,7 +149,7 @@ func validateMarkdown(
 			return candidate{}, issues
 		}
 	}
-	if unsupportedObsid.MatchString(rewrittenBody) {
+	if containsUnsupportedObsidianSyntax(rewrittenBody) {
 		return candidate{}, append(issues, fileIssue(file, "markdown_syntax", "unsupported Obsidian syntax", now))
 	}
 
@@ -187,81 +187,137 @@ func validateMarkdown(
 
 func stripRawHTMLImages(markdown string, file RemoteFile, now time.Time) (string, []Issue) {
 	issues := make([]Issue, 0, 1)
+	masked := maskMarkdownCode(markdown)
+	matches := renderedImage.FindAllStringIndex(masked, -1)
+	if len(matches) == 0 {
+		return markdown, issues
+	}
 	var result strings.Builder
-	inFence := byte(0)
-	for _, line := range strings.SplitAfter(markdown, "\n") {
-		if marker, ok := markdownFenceMarker(line); ok {
-			if inFence == 0 {
-				inFence = marker
-			} else if inFence == marker {
-				inFence = 0
-			}
-			result.WriteString(line)
-			continue
-		}
-		if inFence != 0 {
-			result.WriteString(line)
-			continue
-		}
-		cleaned, lineIssues := stripRawHTMLImagesFromLine(line, file, now)
-		result.WriteString(cleaned)
-		issues = append(issues, lineIssues...)
-	}
-	return result.String(), issues
-}
-
-func markdownFenceMarker(line string) (byte, bool) {
-	trimmed := strings.TrimLeft(line, " \t")
-	if len(trimmed) < 3 || (trimmed[0] != '`' && trimmed[0] != '~') {
-		return 0, false
-	}
-	marker := trimmed[0]
-	count := 0
-	for count < len(trimmed) && trimmed[count] == marker {
-		count++
-	}
-	if count < 3 {
-		return 0, false
-	}
-	return marker, true
-}
-
-func stripRawHTMLImagesFromLine(line string, file RemoteFile, now time.Time) (string, []Issue) {
-	issues := make([]Issue, 0, 1)
-	var result strings.Builder
-	for offset := 0; offset < len(line); {
-		if line[offset] == '`' {
-			count := 0
-			for offset+count < len(line) && line[offset+count] == '`' {
-				count++
-			}
-			fence := strings.Repeat("`", count)
-			end := strings.Index(line[offset+count:], fence)
-			if end >= 0 {
-				end += offset + count
-				result.WriteString(line[offset : end+count])
-				offset = end + count
-				continue
-			}
-		}
-
-		match := renderedImage.FindStringIndex(line[offset:])
-		if match == nil {
-			result.WriteString(line[offset:])
-			break
-		}
-		start := offset + match[0]
-		end := offset + match[1]
-		result.WriteString(line[offset:start])
-		parts := renderedSrc.FindStringSubmatch(line[start:end])
+	previous := 0
+	for _, match := range matches {
+		result.WriteString(markdown[previous:match[0]])
+		parts := renderedSrc.FindStringSubmatch(markdown[match[0]:match[1]])
 		if len(parts) == 2 {
 			issues = append(issues, imageIssue(file, parts[1], "image_reference_outside_source", now))
 		} else {
 			issues = append(issues, imageIssue(file, "", "markdown_image_syntax", now))
 		}
-		offset = end
+		previous = match[1]
 	}
+	result.WriteString(markdown[previous:])
 	return result.String(), issues
+}
+
+func maskMarkdownCode(markdown string) string {
+	masked := []byte(markdown)
+	marker := byte(0)
+	markerLength := 0
+	offset := 0
+	for _, line := range strings.SplitAfter(markdown, "\n") {
+		_, lineLength, isFence := markdownFence(line)
+		if marker != 0 {
+			maskMarkdownRange(masked, offset, offset+len(line))
+			if isFence && line[leadingFenceOffset(line)] == marker && lineLength >= markerLength && markdownFenceCloses(line, marker, markerLength) {
+				marker = 0
+				markerLength = 0
+			}
+			offset += len(line)
+			continue
+		}
+		if isFence {
+			marker = line[leadingFenceOffset(line)]
+			markerLength = lineLength
+			maskMarkdownRange(masked, offset, offset+len(line))
+			offset += len(line)
+			continue
+		}
+		if markdownIsIndentedCode(line) {
+			maskMarkdownRange(masked, offset, offset+len(line))
+			offset += len(line)
+			continue
+		}
+		maskInlineCode(masked, line, offset)
+		offset += len(line)
+	}
+	return string(masked)
+}
+
+func containsUnsupportedObsidianSyntax(markdown string) bool {
+	return unsupportedObsid.MatchString(maskMarkdownCode(markdown))
+}
+
+func markdownFence(line string) (byte, int, bool) {
+	leading := 0
+	for leading < len(line) && leading < 4 && line[leading] == ' ' {
+		leading++
+	}
+	if leading > 3 || leading >= len(line) || (line[leading] != '`' && line[leading] != '~') {
+		return 0, 0, false
+	}
+	marker := line[leading]
+	count := 0
+	for leading+count < len(line) && line[leading+count] == marker {
+		count++
+	}
+	if count < 3 {
+		return 0, 0, false
+	}
+	return marker, count, true
+}
+
+func leadingFenceOffset(line string) int {
+	offset := 0
+	for offset < len(line) && offset < 4 && line[offset] == ' ' {
+		offset++
+	}
+	return offset
+}
+
+func markdownFenceCloses(line string, marker byte, minimumLength int) bool {
+	foundMarker, length, ok := markdownFence(line)
+	if !ok || foundMarker != marker || length < minimumLength {
+		return false
+	}
+	remaining := line[leadingFenceOffset(line)+length:]
+	return strings.TrimSpace(remaining) == ""
+}
+
+func markdownIsIndentedCode(line string) bool {
+	spaces := 0
+	for spaces < len(line) && line[spaces] == ' ' {
+		spaces++
+	}
+	return spaces >= 4 || (spaces < len(line) && line[spaces] == '\t')
+}
+
+func maskMarkdownRange(masked []byte, start, end int) {
+	for index := start; index < end && index < len(masked); index++ {
+		if masked[index] != '\n' && masked[index] != '\r' {
+			masked[index] = ' '
+		}
+	}
+}
+
+func maskInlineCode(masked []byte, line string, offset int) {
+	for index := 0; index < len(line); {
+		if line[index] != '`' {
+			index++
+			continue
+		}
+		count := 0
+		for index+count < len(line) && line[index+count] == '`' {
+			count++
+		}
+		fence := strings.Repeat("`", count)
+		end := strings.Index(line[index+count:], fence)
+		if end < 0 {
+			index += count
+			continue
+		}
+		end += index + count + count
+		maskMarkdownRange(masked, offset+index, offset+end)
+		index = end
+	}
 }
 
 func containsProhibitedRenderedContent(rendered string) bool {
@@ -559,11 +615,13 @@ func validateImageData(name string, data []byte) error {
 
 func imageReference(value string) string {
 	value = strings.TrimSpace(value)
-	if strings.HasPrefix(value, "<") && strings.HasSuffix(value, ">") {
-		return strings.TrimSuffix(strings.TrimPrefix(value, "<"), ">")
+	if strings.HasPrefix(value, "<") {
+		if end := strings.IndexByte(value, '>'); end > 0 {
+			return value[1:end]
+		}
 	}
 	if fields := strings.Fields(value); len(fields) > 0 {
-		return fields[0]
+		return strings.Trim(fields[0], "<>")
 	}
 	return value
 }
