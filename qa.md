@@ -113,7 +113,7 @@ Status values used below:
 
 Test date: 2026-09-20.
 
-The automated tests were run against the working tree at commit `a4966cc` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
+The automated tests were run against implementation commit `a4966cc` on branch `codex/obsidian-programming-sync-final`; the current head `dc9e173` contains only this QA-record wording update. No credentials or token values are recorded here.
 
 ### Automated validation
 
