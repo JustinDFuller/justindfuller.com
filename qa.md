@@ -113,7 +113,7 @@ Status values used below:
 
 Test date: 2026-09-20.
 
-The automated tests were run against the working tree at commit `28d33ba` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
+The automated tests were run against the working tree at commit `6675a5b` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
 
 ### Automated validation
 
@@ -152,13 +152,13 @@ Automated scenario results:
 | `QA-13` | `TestRouteCollisionRetainsPreviousOwner` | `PASS` |
 | `QA-14` | `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
 | `QA-15` | `TestLocalDraftRouteIsNotResolved` and `TestDraftAdditiveEntryIsExcludedFromRoutesAndSitemap` | `PASS` |
-| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed`, `TestMarkdownImageDestinationWithTitleIsServed`, `TestMarkdownImageDestinationWithParenthesesIsServed`, and `TestMarkdownImageDestinationWithEscapedParenthesesIsServed` | `PASS`; MIME types and standard Markdown destination/title/parenthesis/escape syntax were asserted |
+| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed`, title, balanced-parenthesis, escaped-parenthesis, and nested-path image tests | `PASS`; MIME types and standard Markdown destination/title/parenthesis/escape syntax were asserted |
 | `QA-18` | `TestInvalidImageOnlyOmitsImage`, `TestInvalidImageBytesOnlyOmitImage`, and the 503 download case | `PASS`; an image-specific 503 remains an `image_download` issue, omits only that image, and keeps the post available |
 | `QA-19` | `TestRawHTMLImageIsOmittedWithoutBlockingPost` and `TestMultilineRawHTMLImageIsOmitted` | `PASS` for outside-source raw HTML images, including multiline tags |
 | `QA-21` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; an invalid Markdown file does not affect a valid post or its valid image |
 | `QA-22` | Invalid image download and invalid image bytes tests | `PASS` |
 | `QA-23` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; independent Markdown metadata and image-validation failures are both reported while valid content publishes |
-| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed and malformed-angle image syntax, Markdown image titles and balanced/escaped destinations, multiline raw HTML images, fenced/indented/inline/multiline-inline code preservation, outside-source images, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
+| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed and malformed-angle image syntax, Markdown image titles including parentheses, balanced/escaped destinations, multiline raw HTML images, fenced/indented/inline/multiline-inline code with exact delimiter lengths, outside-source images, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
 | `QA-26` | `TestInvalidMetadataRevisionsDoNotBlockValidPost`, `TestIndependentErrorsDoNotBlockValidContent`, and last-known-good revision tests | `PASS` for valid-content isolation during invalid revisions |
 | `QA-28` | `TestInvalidMarkdownDoesNotBlockValidPost` | `PASS` |
 | `QA-29` | `TestInvalidLayoutRevisionRetainsLastKnownGoodPost` and `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
@@ -176,7 +176,7 @@ Automated scenario results:
 | `QA-51` | Unknown metadata rejection prevents unsupported feature behavior | `PARTIAL`: no dedicated homepage snapshot comparison was run |
 | `QA-52`, `QA-53` | Read-only source interfaces, collision tests, invalid-file tests, and code review | `PARTIAL`: no external mutation audit can be proven by a runtime smoke test |
 
-The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles and balanced/escaped destinations, malformed angle destinations, multiline raw HTML image removal, independent file-error isolation, images in fenced and multiline inline code, generic transport recovery, and source-initialization request isolation.
+The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles with parentheses and balanced/escaped destinations, malformed angle destinations, exact-length inline-code delimiters, multiline raw HTML image removal, independent file-error isolation, images in fenced and multiline inline code, generic transport recovery, and source-initialization request isolation.
 
 ### Local manual smoke test
 
