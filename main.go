@@ -68,6 +68,10 @@ func setOneYearCache(w http.ResponseWriter) {
 	w.Header().Set("Cache-Control", cacheControlOneYear)
 }
 
+func setNoStore(w http.ResponseWriter) {
+	w.Header().Set("Cache-Control", "no-store")
+}
+
 func withOneDayCache(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		setOneDayCache(w)
@@ -471,6 +475,7 @@ func main() {
 		last := len(paths) - 1
 
 		if len(paths) == 0 {
+			setNoStore(w)
 			http.Error(w, "Programming post not found.", http.StatusNotFound)
 			log.Printf("Programming post not found: %s", r.URL.Path)
 
@@ -485,6 +490,7 @@ func main() {
 			return programming.GetEntry(paths[last])
 		})
 		if resolution.Masked || !resolution.Found {
+			setNoStore(w)
 			http.Error(w, "Programming post not found.", http.StatusNotFound)
 			log.Printf("Programming post not found: %s", r.URL.Path)
 
@@ -509,6 +515,7 @@ func main() {
 		}
 		asset, ok := obsidianStore.Image(r.Context(), token, localEntries)
 		if !ok {
+			setNoStore(w)
 			http.NotFound(w, r)
 			return
 		}

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
+	"fmt"
 	"net"
 	"os"
 	"sort"
@@ -13,11 +13,12 @@ import (
 	"time"
 
 	"github.com/justindfuller/justindfuller.com/programming"
+	"golang.org/x/oauth2"
 	"google.golang.org/api/googleapi"
 )
 
 const defaultSyncInterval = 30 * time.Second
-const productionSyncTimeout = 30 * time.Second
+const defaultSyncTimeout = 30 * time.Second
 const unrecoverableRetryInterval = 5 * time.Minute
 
 var errInvalidSourceConfiguration = errors.New("invalid Obsidian source configuration")
@@ -86,6 +87,9 @@ func NewStore(config Config) *Store {
 	if config.SyncInterval <= 0 {
 		config.SyncInterval = defaultSyncInterval
 	}
+	if config.SyncTimeout <= 0 {
+		config.SyncTimeout = defaultSyncTimeout
+	}
 	if config.SiteURL == "" {
 		config.SiteURL = "https://justindfuller.com"
 	}
@@ -139,10 +143,10 @@ func NewStore(config Config) *Store {
 func defaultEventLogger(event Event) {
 	encoded, err := json.Marshal(event)
 	if err != nil {
-		log.Printf("obsidian_sync event=serialization_error")
+		fmt.Println(`{"event":"serialization_error","severity":"ERROR"}`)
 		return
 	}
-	log.Printf("obsidian_sync %s", encoded)
+	fmt.Println(string(encoded))
 }
 
 func (s *Store) Entries(ctx context.Context, local []programming.Entry) []programming.Entry {
@@ -332,13 +336,15 @@ func (s *Store) ensureSynced(ctx context.Context, localRoutes map[string]int) {
 
 	if s.config.Environment == EnvironmentProduction {
 		go func() {
-			backgroundContext, cancel := context.WithTimeout(context.WithoutCancel(ctx), productionSyncTimeout)
+			backgroundContext, cancel := context.WithTimeout(context.WithoutCancel(ctx), s.config.SyncTimeout)
 			defer cancel()
 			s.synchronize(backgroundContext, localRoutes, now)
 		}()
 		return
 	}
-	s.synchronize(ctx, localRoutes, now)
+	syncContext, cancel := context.WithTimeout(ctx, s.config.SyncTimeout)
+	defer cancel()
+	s.synchronize(syncContext, localRoutes, now)
 }
 
 func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now time.Time) {
@@ -400,6 +406,10 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 
 		raw, err := source.Download(ctx, file.ID)
 		if err != nil {
+			if _, sourceWide := sourceDownloadFailureCategory(err); sourceWide {
+				s.sourceFailure(err, now)
+				return
+			}
 			issue := fileIssue(file, "markdown_download", "Markdown file could not be read", now)
 			issues[issue.Key] = issue
 			if previous, ok := s.lastGood[file.ID]; ok {
@@ -433,7 +443,7 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 		}
 
 		if !environmentEligible(parsed.Environment, s.config.Environment) {
-			s.emit(Event{
+			s.dispatch([]Event{{
 				Name:       "sync_file_ignored",
 				Severity:   "INFO",
 				Category:   "environment_ineligible",
@@ -443,7 +453,7 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 				Route:      parsed.Entry.Slug,
 				Message:    "file is not eligible for the active environment",
 				ObservedAt: now,
-			})
+			}}, nil)
 			diagnostics = append(diagnostics, DiagnosticFile{
 				FileID:   file.ID,
 				Path:     file.Path,
@@ -542,7 +552,7 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 	}
 
 	s.mu.Lock()
-	s.emitReconciliationEventsLocked(allCandidates, sourceFileIDs, now)
+	events := s.emitReconciliationEventsLocked(allCandidates, sourceFileIDs, now)
 	s.current = snapshot{Candidates: allCandidates, Routes: make(map[string]candidate), Masked: masked, Images: images, Files: filesForDiagnostics}
 	for _, parsed := range active {
 		s.current.Routes[parsed.Entry.Slug] = parsed
@@ -556,8 +566,10 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 	} else {
 		s.statusState = "healthy"
 	}
-	s.replaceIssuesLocked(issues, now)
+	issueEvents, notifications := s.replaceIssuesLocked(issues, now)
+	events = append(events, issueEvents...)
 	s.mu.Unlock()
+	s.dispatch(events, notifications)
 }
 
 func (s *Store) recordFileIssue(issue Issue, file RemoteFile, current map[string]candidate, issues map[string]Issue) {
@@ -569,13 +581,14 @@ func (s *Store) recordFileIssue(issue Issue, file RemoteFile, current map[string
 	issues[issue.Key] = issue
 }
 
-func (s *Store) emitReconciliationEventsLocked(current map[string]candidate, sourceFileIDs map[string]bool, now time.Time) {
+func (s *Store) emitReconciliationEventsLocked(current map[string]candidate, sourceFileIDs map[string]bool, now time.Time) []Event {
+	events := make([]Event, 0)
 	for fileID, parsed := range current {
 		previous, existed := s.current.Candidates[fileID]
 		if existed && previous.File.Revision == parsed.File.Revision {
 			continue
 		}
-		s.emit(Event{
+		events = append(events, Event{
 			Name:       "sync_file_succeeded",
 			Severity:   "INFO",
 			FileID:     parsed.File.ID,
@@ -589,7 +602,7 @@ func (s *Store) emitReconciliationEventsLocked(current map[string]candidate, sou
 		if parsed.Mode == "overwrite" {
 			entryEvent = "sync_entry_overwritten"
 		}
-		s.emit(Event{
+		events = append(events, Event{
 			Name:       entryEvent,
 			Severity:   "INFO",
 			FileID:     parsed.File.ID,
@@ -604,7 +617,7 @@ func (s *Store) emitReconciliationEventsLocked(current map[string]candidate, sou
 		if sourceFileIDs[fileID] {
 			continue
 		}
-		s.emit(Event{
+		events = append(events, Event{
 			Name:       "sync_entry_deleted",
 			Severity:   "INFO",
 			FileID:     previous.File.ID,
@@ -615,6 +628,7 @@ func (s *Store) emitReconciliationEventsLocked(current map[string]candidate, sou
 			ObservedAt: now,
 		})
 	}
+	return events
 }
 
 func environmentEligible(fileEnvironment, activeEnvironment Environment) bool {
@@ -800,18 +814,23 @@ func (s *Store) sourceFailure(err error, now time.Time) {
 	s.statusState = "degraded"
 	s.statusStale = s.initialized
 	s.statusMessage = issue.Message
-	s.replaceIssuesLocked(issues, now)
+	events, notifications := s.replaceIssuesLocked(issues, now)
 	s.mu.Unlock()
+	s.dispatch(events, notifications)
 }
 
 func sourceFailureCategory(err error) string {
 	if errors.Is(err, errInvalidSourceConfiguration) {
 		return "configuration_or_authorization_failure"
 	}
+	var retrieveError *oauth2.RetrieveError
+	if errors.As(err, &retrieveError) {
+		return "configuration_or_authorization_failure"
+	}
 	var apiError *googleapi.Error
 	if errors.As(err, &apiError) {
 		switch {
-		case apiError.Code == 408 || apiError.Code == 429 || apiError.Code >= 500:
+		case isRateLimitError(apiError) || apiError.Code == 408 || apiError.Code == 429 || apiError.Code >= 500:
 			return "transient_source_failure"
 		case apiError.Code == 401 || apiError.Code == 403 || apiError.Code == 404 || (apiError.Code >= 400 && apiError.Code < 500):
 			return "configuration_or_authorization_failure"
@@ -829,6 +848,39 @@ func sourceFailureCategory(err error) string {
 	return "transient_source_failure"
 }
 
+func sourceDownloadFailureCategory(err error) (string, bool) {
+	var retrieveError *oauth2.RetrieveError
+	if errors.As(err, &retrieveError) {
+		return "configuration_or_authorization_failure", true
+	}
+	var apiError *googleapi.Error
+	if errors.As(err, &apiError) {
+		switch {
+		case apiError.Code == 401 || (apiError.Code == 403 && !isRateLimitError(apiError)):
+			return "configuration_or_authorization_failure", true
+		case isRateLimitError(apiError) || apiError.Code == 408 || apiError.Code == 429 || apiError.Code >= 500:
+			return "transient_source_failure", true
+		default:
+			return "", false
+		}
+	}
+	var networkError net.Error
+	if errors.As(err, &networkError) || errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
+		return "transient_source_failure", true
+	}
+	return "", false
+}
+
+func isRateLimitError(apiError *googleapi.Error) bool {
+	for _, detail := range apiError.Errors {
+		switch detail.Reason {
+		case "rateLimitExceeded", "userRateLimitExceeded", "quotaExceeded":
+			return true
+		}
+	}
+	return false
+}
+
 func sourceFailureMessage(category string) string {
 	if category == "transient_source_failure" {
 		return "Obsidian source temporarily unavailable; using the configured content fallback"
@@ -836,14 +888,16 @@ func sourceFailureMessage(category string) string {
 	return "Obsidian source configuration or authorization requires operator action"
 }
 
-func (s *Store) replaceIssuesLocked(next map[string]Issue, now time.Time) {
+func (s *Store) replaceIssuesLocked(next map[string]Issue, now time.Time) ([]Event, []Issue) {
+	events := make([]Event, 0)
+	notifications := make([]Issue, 0)
 	for key, issue := range next {
 		if _, existed := s.activeIssues[key]; existed {
 			continue
 		}
 		issue.ObservedAt = now
-		s.config.NotificationLogger(issue)
-		s.emit(Event{
+		notifications = append(notifications, issue)
+		events = append(events, Event{
 			Name:       "sync_issue",
 			Severity:   "ERROR",
 			Category:   issue.Category,
@@ -861,7 +915,7 @@ func (s *Store) replaceIssuesLocked(next map[string]Issue, now time.Time) {
 		if _, stillActive := next[key]; stillActive {
 			continue
 		}
-		s.emit(Event{
+		events = append(events, Event{
 			Name:       "sync_issue_recovered",
 			Severity:   "INFO",
 			Category:   issue.Category,
@@ -875,8 +929,14 @@ func (s *Store) replaceIssuesLocked(next map[string]Issue, now time.Time) {
 		})
 	}
 	s.activeIssues = next
+	return events, notifications
 }
 
-func (s *Store) emit(event Event) {
-	s.config.EventLogger(event)
+func (s *Store) dispatch(events []Event, notifications []Issue) {
+	for _, issue := range notifications {
+		s.config.NotificationLogger(issue)
+	}
+	for _, event := range events {
+		s.config.EventLogger(event)
+	}
 }

@@ -19,6 +19,7 @@ type Config struct {
 	FolderID                   string
 	Environment                Environment
 	SyncInterval               time.Duration
+	SyncTimeout                time.Duration
 	DiagnosticsToken           string
 	SiteURL                    string
 	GoogleOAuthKeychainService string

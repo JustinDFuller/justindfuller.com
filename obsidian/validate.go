@@ -6,6 +6,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	htmlstd "html"
 	"image/jpeg"
 	"image/png"
 	"io"
@@ -160,20 +161,21 @@ func validateMarkdown(
 		return candidate{}, append(issues, fileIssue(file, "markdown_safety", "rendered content contains prohibited executable or traversal content", now))
 	}
 
+	firstParagraph := htmlstd.EscapeString(programming.ExtractFirstParagraph("---\n" + frontMatter + "\n---\n" + body))
+	description := htmlstd.EscapeString(metadata.Description)
+	if description == "" {
+		description = firstParagraph
+	}
 	entry := programming.Entry{
-		Title:          metadata.Title,
-		SubTitle:       metadata.Subtitle,
+		Title:          htmlstd.EscapeString(metadata.Title),
+		SubTitle:       htmlstd.EscapeString(metadata.Subtitle),
 		Slug:           metadata.Slug,
-		Description:    metadata.Description,
-		FirstParagraph: programming.ExtractFirstParagraph("---\n" + frontMatter + "\n---\n" + body),
+		Description:    description,
+		FirstParagraph: firstParagraph,
 		Content:        rendered,
 		Date:           metadata.Date,
 		IsDraft:        metadata.Draft,
 	}
-	if entry.Description == "" {
-		entry.Description = entry.FirstParagraph
-	}
-
 	return candidate{
 		File:        file,
 		Entry:       entry,
@@ -185,16 +187,81 @@ func validateMarkdown(
 
 func stripRawHTMLImages(markdown string, file RemoteFile, now time.Time) (string, []Issue) {
 	issues := make([]Issue, 0, 1)
-	result := renderedImage.ReplaceAllStringFunc(markdown, func(match string) string {
-		parts := renderedSrc.FindStringSubmatch(match)
+	var result strings.Builder
+	inFence := byte(0)
+	for _, line := range strings.SplitAfter(markdown, "\n") {
+		if marker, ok := markdownFenceMarker(line); ok {
+			if inFence == 0 {
+				inFence = marker
+			} else if inFence == marker {
+				inFence = 0
+			}
+			result.WriteString(line)
+			continue
+		}
+		if inFence != 0 {
+			result.WriteString(line)
+			continue
+		}
+		cleaned, lineIssues := stripRawHTMLImagesFromLine(line, file, now)
+		result.WriteString(cleaned)
+		issues = append(issues, lineIssues...)
+	}
+	return result.String(), issues
+}
+
+func markdownFenceMarker(line string) (byte, bool) {
+	trimmed := strings.TrimLeft(line, " \t")
+	if len(trimmed) < 3 || (trimmed[0] != '`' && trimmed[0] != '~') {
+		return 0, false
+	}
+	marker := trimmed[0]
+	count := 0
+	for count < len(trimmed) && trimmed[count] == marker {
+		count++
+	}
+	if count < 3 {
+		return 0, false
+	}
+	return marker, true
+}
+
+func stripRawHTMLImagesFromLine(line string, file RemoteFile, now time.Time) (string, []Issue) {
+	issues := make([]Issue, 0, 1)
+	var result strings.Builder
+	for offset := 0; offset < len(line); {
+		if line[offset] == '`' {
+			count := 0
+			for offset+count < len(line) && line[offset+count] == '`' {
+				count++
+			}
+			fence := strings.Repeat("`", count)
+			end := strings.Index(line[offset+count:], fence)
+			if end >= 0 {
+				end += offset + count
+				result.WriteString(line[offset : end+count])
+				offset = end + count
+				continue
+			}
+		}
+
+		match := renderedImage.FindStringIndex(line[offset:])
+		if match == nil {
+			result.WriteString(line[offset:])
+			break
+		}
+		start := offset + match[0]
+		end := offset + match[1]
+		result.WriteString(line[offset:start])
+		parts := renderedSrc.FindStringSubmatch(line[start:end])
 		if len(parts) == 2 {
 			issues = append(issues, imageIssue(file, parts[1], "image_reference_outside_source", now))
-			return ""
+		} else {
+			issues = append(issues, imageIssue(file, "", "markdown_image_syntax", now))
 		}
-		issues = append(issues, imageIssue(file, "", "markdown_image_syntax", now))
-		return ""
-	})
-	return result, issues
+		offset = end
+	}
+	return result.String(), issues
 }
 
 func containsProhibitedRenderedContent(rendered string) bool {
