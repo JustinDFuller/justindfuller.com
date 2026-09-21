@@ -308,15 +308,31 @@ func maskInlineCode(masked []byte) {
 			count++
 		}
 		fence := strings.Repeat("`", count)
-		end := bytes.Index(masked[index+count:], []byte(fence))
+		end := findInlineCodeDelimiter(masked, index+count, fence)
 		if end < 0 {
 			index += count
 			continue
 		}
-		end += index + count + count
+		end += count
 		maskMarkdownRange(masked, index, end)
 		index = end
 	}
+}
+
+func findInlineCodeDelimiter(markdown []byte, start int, fence string) int {
+	for offset := start; offset+len(fence) <= len(markdown); offset++ {
+		if !bytes.HasPrefix(markdown[offset:], []byte(fence)) {
+			continue
+		}
+		if offset > 0 && markdown[offset-1] == '`' {
+			continue
+		}
+		if offset+len(fence) < len(markdown) && markdown[offset+len(fence)] == '`' {
+			continue
+		}
+		return offset
+	}
+	return -1
 }
 
 func containsProhibitedRenderedContent(rendered string) bool {
@@ -622,29 +638,121 @@ func findMarkdownImageMatches(markdown, masked string) []markdownImageMatch {
 }
 
 func parseMarkdownImageDestination(markdown string, start int) (int, string, bool) {
-	if start < len(markdown) && markdown[start] == '<' {
-		closing := strings.IndexByte(markdown[start+1:], '>')
-		if closing < 0 {
-			return 0, "", false
-		}
+	offset := start
+	for offset < len(markdown) && (markdown[offset] == ' ' || markdown[offset] == '\t') {
+		offset++
 	}
-	depth := 0
-	for offset := start; offset < len(markdown); offset++ {
-		switch markdown[offset] {
-		case '\\':
-			offset++
-		case '\n', '\r':
-			return 0, "", false
-		case '(':
-			depth++
-		case ')':
-			if depth == 0 {
-				return offset + 1, imageReference(markdown[start:offset]), true
+	if offset >= len(markdown) || markdown[offset] == '\n' || markdown[offset] == '\r' {
+		return 0, "", false
+	}
+
+	reference := ""
+	if markdown[offset] == '<' {
+		startReference := offset + 1
+		offset++
+		for offset < len(markdown) {
+			switch markdown[offset] {
+			case '\\':
+				offset += 2
+				continue
+			case '\n', '\r', ' ', '\t':
+				return 0, "", false
+			case '>':
+				reference = unescapeMarkdownDestination(markdown[startReference:offset])
+				offset++
+				goto destinationParsed
 			}
-			depth--
+			offset++
 		}
+		return 0, "", false
+	} else {
+		startReference := offset
+		depth := 0
+		for offset < len(markdown) {
+			switch markdown[offset] {
+			case '\\':
+				offset += 2
+				continue
+			case '\n', '\r':
+				return 0, "", false
+			case '(':
+				depth++
+			case ')':
+				if depth == 0 {
+					return offset + 1, imageReference(markdown[startReference:offset]), true
+				}
+				depth--
+			case ' ', '\t':
+				if depth == 0 {
+					reference = imageReference(markdown[startReference:offset])
+					goto destinationParsed
+				}
+			}
+			offset++
+		}
+		return 0, "", false
 	}
-	return 0, "", false
+
+destinationParsed:
+	for offset < len(markdown) && (markdown[offset] == ' ' || markdown[offset] == '\t') {
+		offset++
+	}
+	if offset >= len(markdown) {
+		return 0, "", false
+	}
+	if markdown[offset] == ')' {
+		return offset + 1, reference, true
+	}
+
+	titleDelimiter := markdown[offset]
+	if titleDelimiter == '"' || titleDelimiter == '\'' {
+		offset++
+		for offset < len(markdown) {
+			if markdown[offset] == '\\' {
+				offset += 2
+				continue
+			}
+			if markdown[offset] == titleDelimiter {
+				offset++
+				break
+			}
+			if markdown[offset] == '\n' || markdown[offset] == '\r' {
+				return 0, "", false
+			}
+			offset++
+		}
+		if offset > len(markdown) || (offset == len(markdown) && markdown[offset-1] != titleDelimiter) {
+			return 0, "", false
+		}
+	} else if titleDelimiter == '(' {
+		depth := 1
+		offset++
+		for offset < len(markdown) && depth > 0 {
+			switch markdown[offset] {
+			case '\\':
+				offset += 2
+				continue
+			case '(':
+				depth++
+			case ')':
+				depth--
+			}
+			offset++
+		}
+		if depth != 0 {
+			return 0, "", false
+		}
+	} else {
+		return 0, "", false
+	}
+
+	for offset < len(markdown) && (markdown[offset] == ' ' || markdown[offset] == '\t') {
+		offset++
+	}
+	if offset >= len(markdown) || markdown[offset] != ')' {
+		return 0, "", false
+	}
+	return offset + 1, reference, true
 }
 
 func rewriteObsidianImages(markdown string, rewrite func(string, string, string) string) string {

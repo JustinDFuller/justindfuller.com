@@ -430,6 +430,28 @@ func TestMarkdownImageDestinationWithEscapedParenthesesIsServed(t *testing.T) {
 	}
 }
 
+func TestMarkdownImageTitleWithParenthesesIsServed(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram.png", "image/diagram.png"),
+		}},
+		content: map[string][]byte{
+			"post":  markdown("external-post", "local", "add", `![Diagram](image/diagram.png "Title (example)")`),
+			"image": validPNG(),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
 func TestMarkdownImagesInCodeArePreserved(t *testing.T) {
 	source := &memorySource{
 		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md"), file("image", "diagram.png", "image/diagram.png")}},
@@ -462,11 +484,47 @@ func TestMultilineInlineCodeIsPreserved(t *testing.T) {
 	}
 }
 
+func TestLongerInlineCodeDelimiterIsPreserved(t *testing.T) {
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("external-post", "local", "add", "`![Not an image](image.png)``value`")},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "Not an image") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
 func TestMalformedAngleImageInvalidatesOnlyPost(t *testing.T) {
 	source := &memorySource{
 		tree: SourceTree{Files: []RemoteFile{file("bad", "bad.md", "bad.md"), file("good", "good.md", "good.md")}},
 		content: map[string][]byte{
 			"bad":  markdown("bad-post", "local", "add", `![Bad](<image/diagram.png)`),
+			"good": markdown("good-post", "local", "add", "Good body"),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "good-post" {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Category != "markdown_image_syntax" {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
+func TestMalformedAngleImageWithLaterDelimiterInvalidatesOnlyPost(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{file("bad", "bad.md", "bad.md"), file("good", "good.md", "good.md")}},
+		content: map[string][]byte{
+			"bad":  markdown("bad-post", "local", "add", `![Bad](<image/diagram.png) trailing >)`),
 			"good": markdown("good-post", "local", "add", "Good body"),
 		},
 		downloadErr: map[string]error{},
