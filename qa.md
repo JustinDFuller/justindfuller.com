@@ -113,7 +113,7 @@ Status values used below:
 
 Test date: 2026-09-20.
 
-The tests were run against the working tree at commit `09d7d9f` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
+The automated tests were run against the working tree at commit `5e3321b` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
 
 ### Automated validation
 
@@ -152,18 +152,18 @@ Automated scenario results:
 | `QA-13` | `TestRouteCollisionRetainsPreviousOwner` | `PASS` |
 | `QA-14` | `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
 | `QA-15` | `TestLocalDraftRouteIsNotResolved` and `TestDraftAdditiveEntryIsExcludedFromRoutesAndSitemap` | `PASS` |
-| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed` with nested JPEG and SVG assets, plus `TestMarkdownImageDestinationWithTitleIsServed` | `PASS`; MIME types and standard Markdown destination/title syntax were asserted |
+| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed`, `TestMarkdownImageDestinationWithTitleIsServed`, and `TestMarkdownImageDestinationWithParenthesesIsServed` | `PASS`; MIME types and standard Markdown destination/title/parenthesis syntax were asserted |
 | `QA-18` | `TestInvalidImageOnlyOmitsImage`, `TestInvalidImageBytesOnlyOmitImage`, and the 503 download case | `PASS`; an image-specific 503 remains an `image_download` issue, omits only that image, and keeps the post available |
 | `QA-19` | `TestRawHTMLImageIsOmittedWithoutBlockingPost` and `TestMultilineRawHTMLImageIsOmitted` | `PASS` for outside-source raw HTML images, including multiline tags |
 | `QA-21` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; an invalid Markdown file does not affect a valid post or its valid image |
 | `QA-22` | Invalid image download and invalid image bytes tests | `PASS` |
 | `QA-23` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; independent Markdown metadata and image-validation failures are both reported while valid content publishes |
-| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed image syntax, Markdown image titles, multiline raw HTML images, outside-source images, code-sample preservation, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
+| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed image syntax, Markdown image titles and balanced destinations, multiline raw HTML images, outside-source images, code-sample preservation, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
 | `QA-26` | `TestInvalidMetadataRevisionsDoNotBlockValidPost`, `TestIndependentErrorsDoNotBlockValidContent`, and last-known-good revision tests | `PASS` for valid-content isolation during invalid revisions |
 | `QA-28` | `TestInvalidMarkdownDoesNotBlockValidPost` | `PASS` |
 | `QA-29` | `TestInvalidLayoutRevisionRetainsLastKnownGoodPost` and `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
-| `QA-30`, `QA-35` | `TestSourceFailureRetainsLastKnownGoodAndMarksStale` and `TestMarkdownDownloadSourceFailureRetainsLastKnownGood` | `PASS` for fallback/stale state; production deployment was not used |
-| `QA-31`, `QA-32`, `QA-33`, `QA-34`, `QA-36` | Production nonblocking, failure classification, fallback, and image-isolation unit coverage | `PARTIAL`: production-specific failure/recovery drills remain outstanding |
+| `QA-30`, `QA-35` | `TestSourceFailureRetainsLastKnownGoodAndMarksStale` and `TestMarkdownDownloadSourceFailureRetainsLastKnownGood` with `io.ErrUnexpectedEOF` | `PASS` for fallback/stale state and generic truncated-download classification; production deployment was not used |
+| `QA-31`, `QA-32`, `QA-33`, `QA-34`, `QA-36` | Production nonblocking, source-initialization nonblocking, failure classification, fallback, and image-isolation unit coverage | `PARTIAL`: production-specific failure/recovery drills remain outstanding |
 | `QA-37` | Keychain credential unit test plus live local Keychain-backed synchronization | `PASS` |
 | `QA-38` | Malformed and service-account credential unit tests | `PARTIAL`: missing-item behavior was not induced live |
 | `QA-39` | Successful hosted PR preview synchronization | `PASS` |
@@ -176,11 +176,11 @@ Automated scenario results:
 | `QA-51` | Unknown metadata rejection prevents unsupported feature behavior | `PARTIAL`: no dedicated homepage snapshot comparison was run |
 | `QA-52`, `QA-53` | Read-only source interfaces, collision tests, invalid-file tests, and code review | `PARTIAL`: no external mutation audit can be proven by a runtime smoke test |
 
-The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles, multiline raw HTML image removal, and independent file-error isolation.
+The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles and balanced destinations, multiline raw HTML image removal, independent file-error isolation, images in code blocks, generic truncated-download recovery, and source-initialization request isolation.
 
 ### Local manual smoke test
 
-The local server was started with the Keychain-backed OAuth credential and the configured Drive folder. The credential was read from the existing macOS Keychain item; its value was never printed.
+The local server was started with the Keychain-backed OAuth credential and the configured Drive folder. The credential was read from the existing macOS Keychain item; its value was never printed. This smoke test was rerun against commit `5e3321b` after the parser, source-initialization, and dynamic-cache hardening.
 
 Steps:
 
@@ -201,6 +201,7 @@ Observed results:
 - Image response: HTTP `200`, MIME type `image/png`, `4762` bytes.
 - Image SHA-256: `6f60d49a6d4e4f3b808d2ceb123499fb6fe2ff45f1c7deaf20cc833d1a6dfaf0`.
 - Sitemap: contained `obsidian-local-keychain-test`.
+- Dynamic programming and sitemap responses returned `Cache-Control: no-store`; synchronized image responses retained the content-addressed long-cache policy.
 - Unknown post response: HTTP `404` with `Cache-Control: no-store`.
 - Unknown synchronized image response: HTTP `404` with `Cache-Control: no-store`.
 - Authorized diagnostics: HTTP `200`; route provenance was `{source: "obsidian", mode: "add"}`.
