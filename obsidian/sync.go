@@ -882,7 +882,7 @@ func sourceDownloadFailureCategory(err error) (string, bool) {
 	if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
 		return "transient_source_failure", true
 	}
-	return "", false
+	return "transient_source_failure", true
 }
 
 func oauthRetrieveFailureCategory(err error) (string, bool) {

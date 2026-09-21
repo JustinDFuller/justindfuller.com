@@ -408,6 +408,28 @@ func TestMarkdownImageDestinationWithParenthesesIsServed(t *testing.T) {
 	}
 }
 
+func TestMarkdownImageDestinationWithEscapedParenthesesIsServed(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram(2).png", "image/nested/diagram(2).png"),
+		}},
+		content: map[string][]byte{
+			"post":  markdown("external-post", "local", "add", `![Diagram](image/nested/diagram\(2\).png)`),
+			"image": validPNG(),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
 func TestMarkdownImagesInCodeArePreserved(t *testing.T) {
 	source := &memorySource{
 		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md"), file("image", "diagram.png", "image/diagram.png")}},
@@ -420,6 +442,42 @@ func TestMarkdownImagesInCodeArePreserved(t *testing.T) {
 		t.Fatalf("entries = %#v", entries)
 	}
 	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
+func TestMultilineInlineCodeIsPreserved(t *testing.T) {
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("external-post", "local", "add", "`![Not an image](image.png\n)`")},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "Not an image") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
+func TestMalformedAngleImageInvalidatesOnlyPost(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{file("bad", "bad.md", "bad.md"), file("good", "good.md", "good.md")}},
+		content: map[string][]byte{
+			"bad":  markdown("bad-post", "local", "add", `![Bad](<image/diagram.png)`),
+			"good": markdown("good-post", "local", "add", "Good body"),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || entries[0].Slug != "good-post" {
+		t.Fatalf("entries = %#v", entries)
+	}
+	diagnostics := store.Diagnostics(context.Background(), nil)
+	if len(diagnostics.Issues) != 1 || diagnostics.Issues[0].Category != "markdown_image_syntax" {
 		t.Fatalf("diagnostics = %#v", diagnostics)
 	}
 }
@@ -698,6 +756,12 @@ func TestProductionSourceInitializationDoesNotBlockContentRequests(t *testing.T)
 }
 
 func TestSourceFailureCategories(t *testing.T) {
+	if category, ok := sourceDownloadFailureCategory(io.ErrUnexpectedEOF); !ok || category != "transient_source_failure" {
+		t.Fatalf("unexpected EOF download category = %q, %v", category, ok)
+	}
+	if category, ok := sourceDownloadFailureCategory(errors.New("generic transport failure")); !ok || category != "transient_source_failure" {
+		t.Fatalf("generic download category = %q, %v", category, ok)
+	}
 	if category := sourceFailureCategory(errors.New("temporary network failure")); category != "transient_source_failure" {
 		t.Fatalf("generic error category = %q", category)
 	}
@@ -734,7 +798,7 @@ func TestMarkdownDownloadSourceFailureRetainsLastKnownGood(t *testing.T) {
 	if entries := store.Entries(context.Background(), nil); len(entries) != 1 {
 		t.Fatalf("initial entries = %#v", entries)
 	}
-	source.downloadErr["post"] = io.ErrUnexpectedEOF
+	source.downloadErr["post"] = errors.New("generic transport failure")
 	source.tree.Files[0].Revision = "2"
 	now = now.Add(2 * time.Second)
 	entries := store.Entries(context.Background(), nil)

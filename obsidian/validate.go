@@ -235,9 +235,9 @@ func maskMarkdownCode(markdown string) string {
 			offset += len(line)
 			continue
 		}
-		maskInlineCode(masked, line, offset)
 		offset += len(line)
 	}
+	maskInlineCode(masked)
 	return string(masked)
 }
 
@@ -297,24 +297,24 @@ func maskMarkdownRange(masked []byte, start, end int) {
 	}
 }
 
-func maskInlineCode(masked []byte, line string, offset int) {
-	for index := 0; index < len(line); {
-		if line[index] != '`' {
+func maskInlineCode(masked []byte) {
+	for index := 0; index < len(masked); {
+		if masked[index] != '`' {
 			index++
 			continue
 		}
 		count := 0
-		for index+count < len(line) && line[index+count] == '`' {
+		for index+count < len(masked) && masked[index+count] == '`' {
 			count++
 		}
 		fence := strings.Repeat("`", count)
-		end := strings.Index(line[index+count:], fence)
+		end := bytes.Index(masked[index+count:], []byte(fence))
 		if end < 0 {
 			index += count
 			continue
 		}
 		end += index + count + count
-		maskMarkdownRange(masked, offset+index, offset+end)
+		maskMarkdownRange(masked, index, end)
 		index = end
 	}
 }
@@ -622,6 +622,12 @@ func findMarkdownImageMatches(markdown, masked string) []markdownImageMatch {
 }
 
 func parseMarkdownImageDestination(markdown string, start int) (int, string, bool) {
+	if start < len(markdown) && markdown[start] == '<' {
+		closing := strings.IndexByte(markdown[start+1:], '>')
+		if closing < 0 {
+			return 0, "", false
+		}
+	}
 	depth := 0
 	for offset := start; offset < len(markdown); offset++ {
 		switch markdown[offset] {
@@ -715,13 +721,25 @@ func imageReference(value string) string {
 	value = strings.TrimSpace(value)
 	if strings.HasPrefix(value, "<") {
 		if end := strings.IndexByte(value, '>'); end > 0 {
-			return value[1:end]
+			return unescapeMarkdownDestination(value[1:end])
 		}
+		return value
 	}
 	if fields := strings.Fields(value); len(fields) > 0 {
-		return strings.Trim(fields[0], "<>")
+		return unescapeMarkdownDestination(fields[0])
 	}
 	return value
+}
+
+func unescapeMarkdownDestination(value string) string {
+	var result strings.Builder
+	for offset := 0; offset < len(value); offset++ {
+		if value[offset] == '\\' && offset+1 < len(value) && strings.ContainsRune("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~", rune(value[offset+1])) {
+			offset++
+		}
+		result.WriteByte(value[offset])
+	}
+	return result.String()
 }
 
 func resolveAsset(reference string, index assetIndex) (RemoteFile, bool, string) {
