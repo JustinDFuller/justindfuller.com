@@ -113,7 +113,7 @@ Status values used below:
 
 Test date: 2026-09-20.
 
-The tests were run against the working tree at commit `d0e2b20` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
+The tests were run against the working tree at commit `abba957` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
 
 ### Automated validation
 
@@ -122,6 +122,7 @@ Commands run:
 ```sh
 GOCACHE=/private/tmp/justindfuller-go-cache go test ./...
 GOCACHE=/private/tmp/justindfuller-go-cache go test -race ./...
+GOCACHE=/private/tmp/justindfuller-go-cache go vet ./...
 openspec validate --changes --strict --no-interactive
 git diff --check
 ```
@@ -130,6 +131,7 @@ Results:
 
 - `go test ./...`: `PASS`; all packages passed, including `obsidian`.
 - `go test -race ./...`: `PASS`; the `obsidian` package passed under the race detector.
+- `go vet ./...`: `PASS`.
 - OpenSpec strict validation: `PASS`; one change validated successfully.
 - `git diff --check`: `PASS`; no whitespace errors.
 
@@ -139,39 +141,42 @@ Automated scenario results:
 
 | Tests | What was run | Result |
 | --- | --- | --- |
-| `QA-01`, `QA-02`, `QA-17` | `TestStoreAddsValidEntryAndRewritesImage` with root Markdown and a nested image | `PASS` |
-| `QA-03`, `QA-20` | `TestUnsupportedImageIsolatedFromPost` | `PARTIAL`: unsupported images are covered; a dedicated unsupported root-file and non-`image/` directory fixture is not present |
+| `QA-01`, `QA-02` | `TestStoreAddsValidEntryAndRewritesImage` with root Markdown and a nested PNG image | `PASS` |
+| `QA-03`, `QA-20` | `TestUnsupportedImageIsolatedFromPost` and `TestUnsupportedRootLayoutIsolatedFromValidPost` | `PASS` |
 | `QA-04` | Valid metadata through `TestStoreAddsValidEntryAndRewritesImage` | `PASS` |
-| `QA-05`, `QA-06` | `TestInvalidMarkdownDoesNotBlockValidPost` and `TestMetadataRejectsUnknownKeysAndMalformedTags` | `PASS` |
+| `QA-05`, `QA-06` | `TestInvalidMarkdownDoesNotBlockValidPost`, `TestMetadataRejectsUnknownKeysAndMalformedTags`, and `TestInvalidMetadataRevisionsDoNotBlockValidPost` | `PASS` |
 | `QA-07`, `QA-08`, `QA-09` | `TestEnvironmentPromotionMatrix` | `PASS` |
 | `QA-10` | Malformed/service-account credential rejection tests; source-failure fallback tests | `PARTIAL`: unit behavior is covered, but a live preview/local authentication outage was not induced |
 | `QA-11` | `TestStoreAddsValidEntryAndRewritesImage` | `PASS` |
 | `QA-12`, `QA-16`, `QA-41` | `TestOverwriteAndDraftMaskLocalRoute` | `PASS` |
 | `QA-13` | `TestRouteCollisionRetainsPreviousOwner` | `PASS` |
 | `QA-14` | `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
-| `QA-15` | `TestLocalDraftRouteIsNotResolved` | `PARTIAL`: direct draft-route behavior is covered; a dedicated draft-additive sitemap assertion is not present |
+| `QA-15` | `TestLocalDraftRouteIsNotResolved` and `TestDraftAdditiveEntryIsExcludedFromRoutesAndSitemap` | `PASS` |
 | `QA-18` | `TestInvalidImageOnlyOmitsImage` and `TestInvalidImageBytesOnlyOmitImage` | `PASS` |
+| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed` with nested JPEG and SVG assets | `PASS`; MIME types were also asserted |
 | `QA-19` | `TestRawHTMLImageIsOmittedWithoutBlockingPost` | `PASS` for an outside-source image reference |
 | `QA-21` | `TestInvalidMarkdownDoesNotBlockValidPost` | `PARTIAL`: valid-post isolation is covered, but the exact invalid-Markdown-plus-valid-image combination is not dedicated |
 | `QA-22` | Invalid image download and invalid image bytes tests | `PASS` |
 | `QA-23` | `TestUnsupportedImageIsolatedFromPost` plus invalid-Markdown isolation | `PARTIAL`: independent errors are represented, but not in one dedicated multi-error fixture |
-| `QA-24`, `QA-25` | Valid rendering, malformed image syntax, outside-source image, metadata, and executable-content tests | `PASS` for the implemented validation cases |
+| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed image syntax, outside-source image, code-sample preservation, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
 | `QA-26`, `QA-27` | Existing invalid-revision and safety tests | `PARTIAL`: no dedicated revision-change/benign-content regression fixture |
 | `QA-28` | `TestInvalidMarkdownDoesNotBlockValidPost` | `PASS` |
 | `QA-29` | `TestInvalidLayoutRevisionRetainsLastKnownGoodPost` and `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
-| `QA-30`, `QA-35` | `TestSourceFailureRetainsLastKnownGoodAndMarksStale` | `PASS` for fallback/stale state; production deployment was not used |
+| `QA-30`, `QA-35` | `TestSourceFailureRetainsLastKnownGoodAndMarksStale` and `TestMarkdownDownloadSourceFailureRetainsLastKnownGood` | `PASS` for fallback/stale state; production deployment was not used |
 | `QA-31`, `QA-32`, `QA-33`, `QA-34`, `QA-36` | Production nonblocking, failure classification, fallback, and image-isolation unit coverage | `PARTIAL`: production-specific failure/recovery drills remain outstanding |
 | `QA-37` | Keychain credential unit test plus live local Keychain-backed synchronization | `PASS` |
 | `QA-38` | Malformed and service-account credential unit tests | `PARTIAL`: missing-item behavior was not induced live |
 | `QA-39` | Successful hosted PR preview synchronization | `PASS` |
-| `QA-40` | `TestSynchronizationEventsAreDeduplicatedAndDeletionIsObservable` | `PARTIAL`: deletion event is covered; a dedicated additive-route removal assertion is not present |
+| `QA-40`, `QA-50` | `TestSynchronizationEventsAreDeduplicatedAndDeletionIsObservable` and `TestAdditiveDeletionRemovesRouteAndPreservesLocalSitemapEntries` | `PASS` |
 | `QA-42`, `QA-43` | Diagnostics model tests and live protected diagnostics checks | `PASS` |
-| `QA-44`, `QA-47` | Recovery event behavior is represented in synchronization code | `PARTIAL`: a dedicated corrected-file notification/recovery test is not present |
+| `QA-44` | `TestCorrectedFileEmitsRecoveryEventWithoutDuplicateNotifications` | `PASS` for valid revision publication and recovery event; external alert delivery remains untested |
 | `QA-45`, `QA-46` | Event/issue deduplication behavior | `PARTIAL`: structured log signals are covered, but no external alert destination is configured or tested |
-| `QA-48`, `QA-49` | `TestBuildSitemapPreservesBaseAndAddsProgrammingEntries`, draft/environment tests, and live sitemap checks | `PASS` for valid-route inclusion and current exclusions |
-| `QA-50` | Overwrite restoration and deletion event tests | `PARTIAL`: a dedicated additive-deletion sitemap assertion is not present |
+| `QA-47` | `TestCorrectedFileEmitsRecoveryEventWithoutDuplicateNotifications` | `PARTIAL`: recovery event and notification deduplication are tested, but no external alert destination is configured |
+| `QA-48`, `QA-49` | `TestBuildSitemapPreservesBaseAndAddsProgrammingEntries`, draft/environment tests, `TestDraftAdditiveEntryIsExcludedFromRoutesAndSitemap`, and live sitemap checks | `PASS` for valid-route inclusion and current exclusions |
 | `QA-51` | Unknown metadata rejection prevents unsupported feature behavior | `PARTIAL`: no dedicated homepage snapshot comparison was run |
 | `QA-52`, `QA-53` | Read-only source interfaces, collision tests, invalid-file tests, and code review | `PARTIAL`: no external mutation audit can be proven by a runtime smoke test |
+
+The hardening pass added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, and corrected-file recovery.
 
 ### Local manual smoke test
 
@@ -179,7 +184,7 @@ The local server was started with the Keychain-backed OAuth credential and the c
 
 Steps:
 
-1. Start the local server with `OBSIDIAN_ENVIRONMENT=local`, the configured Drive folder ID, and `OBSIDIAN_DIAGNOSTICS_TOKEN` populated from the Keychain diagnostics item.
+1. Start the local server with `OBSIDIAN_ENVIRONMENT=local`, the configured Drive folder ID, and `OBSIDIAN_DIAGNOSTICS_TOKEN="$(security find-generic-password -a "$USER" -s "justindfuller.com/obsidian-diagnostics-token" -w)"`; the application receives the token through its environment configuration.
 2. Request `/programming/obsidian-local-keychain-test`.
 3. Extract the generated `/__obsidian/image/<token>` reference from the HTML.
 4. Request that image URL.
@@ -196,6 +201,8 @@ Observed results:
 - Image response: HTTP `200`, MIME type `image/png`, `4762` bytes.
 - Image SHA-256: `6f60d49a6d4e4f3b808d2ceb123499fb6fe2ff45f1c7deaf20cc833d1a6dfaf0`.
 - Sitemap: contained `obsidian-local-keychain-test`.
+- Unknown post response: HTTP `404` with `Cache-Control: no-store`.
+- Unknown synchronized image response: HTTP `404` with `Cache-Control: no-store`.
 - Authorized diagnostics: HTTP `200`; route provenance was `{source: "obsidian", mode: "add"}`.
 - Unauthorized diagnostics: HTTP `404`.
 - Diagnostics reported `Test.md` as valid and `Test-NonProd.md` as invalid with a `markdown_metadata` issue.
@@ -235,4 +242,4 @@ The following are intentionally recorded as incomplete rather than treated as pa
 - No live source outage, missing production credential, denied folder access, or recovery drill has been run.
 - No actual Cloud Logging/Monitoring notification destination has been configured or tested.
 - No destructive Drive deletion test has been run against the configured source.
-- Dedicated fixtures are still needed for unsupported root files/directories, multiple simultaneous independent errors, benign content outside the closed validation set, corrected-file recovery, and homepage feature-post noninterference.
+- Dedicated fixtures are still needed for multiple simultaneous independent errors, benign content outside the closed validation set, and homepage feature-post noninterference.
