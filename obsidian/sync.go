@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"sort"
@@ -353,9 +354,7 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 		s.syncing = false
 		s.mu.Unlock()
 	}()
-	s.mu.Lock()
 	source, err := s.sourceFor(ctx, now)
-	s.mu.Unlock()
 	if err != nil {
 		s.sourceFailure(err, now)
 		return
@@ -762,19 +761,33 @@ func candidateAllowed(candidate candidate, grouped map[string][]candidate, local
 }
 
 func (s *Store) sourceFor(ctx context.Context, now time.Time) (Source, error) {
+	s.mu.Lock()
 	if s.source != nil {
-		return s.source, nil
+		source := s.source
+		s.mu.Unlock()
+		return source, nil
 	}
 	if now.Before(s.nextSourceTry) && s.sourceError != nil {
-		return nil, s.sourceError
+		err := s.sourceError
+		s.mu.Unlock()
+		return nil, err
 	}
 	if s.config.FolderID == "" || !isEnvironment(s.config.Environment) {
 		s.sourceError = errInvalidSourceConfiguration
 		s.nextSourceTry = now.Add(unrecoverableRetryInterval)
-		return nil, s.sourceError
+		err := s.sourceError
+		s.mu.Unlock()
+		return nil, err
 	}
+	factory := s.config.SourceFactory
+	s.mu.Unlock()
 
-	source, err := s.config.SourceFactory(ctx)
+	source, err := factory(ctx)
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.source != nil {
+		return s.source, nil
+	}
 	if err != nil {
 		s.sourceError = err
 		if sourceFailureCategory(err) == "configuration_or_authorization_failure" {
@@ -864,6 +877,9 @@ func sourceDownloadFailureCategory(err error) (string, bool) {
 	}
 	var networkError net.Error
 	if errors.As(err, &networkError) || errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
+		return "transient_source_failure", true
+	}
+	if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
 		return "transient_source_failure", true
 	}
 	return "", false

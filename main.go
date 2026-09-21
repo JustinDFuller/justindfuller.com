@@ -44,7 +44,6 @@ const (
 	noColor             = "\033[0m"
 	cacheControlOneDay  = "public, max-age=86400"
 	cacheControlOneYear = "public, max-age=31536000"
-	cacheControlSync    = "public, max-age=30"
 )
 
 func logWarning(message string, err error) {
@@ -88,7 +87,7 @@ func withOneYearCache(handler func(http.ResponseWriter, *http.Request)) func(htt
 
 func withSyncCache(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Cache-Control", cacheControlSync)
+		setNoStore(w)
 		handler(w, r)
 	}
 }

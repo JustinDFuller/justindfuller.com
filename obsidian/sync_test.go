@@ -7,6 +7,7 @@ import (
 	"errors"
 	"image"
 	"image/jpeg"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
@@ -385,6 +386,44 @@ func TestMarkdownImageDestinationWithTitleIsServed(t *testing.T) {
 	}
 }
 
+func TestMarkdownImageDestinationWithParenthesesIsServed(t *testing.T) {
+	source := &memorySource{
+		tree: SourceTree{Files: []RemoteFile{
+			file("post", "post.md", "post.md"),
+			file("image", "diagram(1).png", "image/nested/diagram(1).png"),
+		}},
+		content: map[string][]byte{
+			"post":  markdown("external-post", "local", "add", `![Diagram](image/nested/diagram(1).png)`),
+			"image": validPNG(),
+		},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
+func TestMarkdownImagesInCodeArePreserved(t *testing.T) {
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md"), file("image", "diagram.png", "image/diagram.png")}},
+		content:     map[string][]byte{"post": markdown("external-post", "local", "add", "```markdown\n![Diagram](image/diagram.png)\n```"), "image": validPNG()},
+		downloadErr: map[string]error{},
+	}
+	store := NewStore(fixedConfig(source, EnvironmentLocal))
+	entries := store.Entries(context.Background(), nil)
+	if len(entries) != 1 || strings.Contains(string(entries[0].Content), "/__obsidian/image/") || !strings.Contains(string(entries[0].Content), "image/diagram.png") {
+		t.Fatalf("entries = %#v", entries)
+	}
+	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
+		t.Fatalf("diagnostics = %#v", diagnostics)
+	}
+}
+
 func TestMultilineRawHTMLImageIsOmitted(t *testing.T) {
 	source := &memorySource{
 		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
@@ -615,6 +654,49 @@ func TestProductionSyncDoesNotBlockContentRequests(t *testing.T) {
 	t.Fatalf("background entries = %#v", entries)
 }
 
+func TestProductionSourceInitializationDoesNotBlockContentRequests(t *testing.T) {
+	factoryStarted := make(chan struct{})
+	releaseFactory := make(chan struct{})
+	source := &memorySource{
+		tree:        SourceTree{Files: []RemoteFile{file("post", "post.md", "post.md")}},
+		content:     map[string][]byte{"post": markdown("post", "prd", "add", "body")},
+		downloadErr: map[string]error{},
+	}
+	config := fixedConfig(source, EnvironmentProduction)
+	config.SourceFactory = func(context.Context) (Source, error) {
+		close(factoryStarted)
+		<-releaseFactory
+		return source, nil
+	}
+	store := NewStore(config)
+	store.Entries(context.Background(), nil)
+	select {
+	case <-factoryStarted:
+	case <-time.After(time.Second):
+		t.Fatal("source initialization did not start")
+	}
+	requestDone := make(chan struct{})
+	go func() {
+		store.Diagnostics(context.Background(), nil)
+		close(requestDone)
+	}()
+	select {
+	case <-requestDone:
+	case <-time.After(100 * time.Millisecond):
+		close(releaseFactory)
+		t.Fatal("content request blocked during source initialization")
+	}
+	close(releaseFactory)
+	deadline := time.Now().Add(time.Second)
+	for time.Now().Before(deadline) {
+		if entries := store.Entries(context.Background(), nil); len(entries) == 1 && entries[0].Slug == "post" {
+			return
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	t.Fatal("background synchronization did not publish the source entry")
+}
+
 func TestSourceFailureCategories(t *testing.T) {
 	if category := sourceFailureCategory(errors.New("temporary network failure")); category != "transient_source_failure" {
 		t.Fatalf("generic error category = %q", category)
@@ -652,7 +734,7 @@ func TestMarkdownDownloadSourceFailureRetainsLastKnownGood(t *testing.T) {
 	if entries := store.Entries(context.Background(), nil); len(entries) != 1 {
 		t.Fatalf("initial entries = %#v", entries)
 	}
-	source.downloadErr["post"] = &googleapi.Error{Code: 503}
+	source.downloadErr["post"] = io.ErrUnexpectedEOF
 	source.tree.Files[0].Revision = "2"
 	now = now.Add(2 * time.Second)
 	entries := store.Entries(context.Background(), nil)

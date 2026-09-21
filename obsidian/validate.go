@@ -35,7 +35,6 @@ var (
 		"description": true,
 	}
 	slugPattern      = regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
-	markdownImage    = regexp.MustCompile(`!\[([^\]]*)\]\(([^)\n]+)\)`)
 	obsidianImage    = regexp.MustCompile(`!\[\[([^\]\n]+)\]\]`)
 	renderedImage    = regexp.MustCompile(`(?is)<img\b[^>]*>`)
 	renderedSrc      = regexp.MustCompile(`(?is)\bsrc\s*=\s*["']?([^"'\s>]+)`)
@@ -512,6 +511,13 @@ func tagsValue(values map[string]interface{}, key string) ([]string, error) {
 	return tags, nil
 }
 
+type markdownImageMatch struct {
+	start     int
+	end       int
+	alt       string
+	reference string
+}
+
 func rewriteImages(body string, index assetIndex, download func(string) ([]byte, error), file RemoteFile, now time.Time) (string, map[string]Asset, []Issue) {
 	assets := make(map[string]Asset)
 	issues := make([]Issue, 0, 1)
@@ -546,26 +552,118 @@ func rewriteImages(body string, index assetIndex, download func(string) ([]byte,
 		return fmt.Sprintf("![%s](/__obsidian/image/%s)", alt, token)
 	}
 
-	result := markdownImage.ReplaceAllStringFunc(body, func(match string) string {
-		parts := markdownImage.FindStringSubmatch(match)
-		return rewrite(match, parts[1], imageReference(parts[2]))
-	})
-	result = obsidianImage.ReplaceAllStringFunc(result, func(match string) string {
-		parts := obsidianImage.FindStringSubmatch(match)
-		reference := parts[1]
+	masked := maskMarkdownCode(body)
+	markdownMatches := findMarkdownImageMatches(body, masked)
+	obsidianMatches := obsidianImage.FindAllStringIndex(masked, -1)
+	result := rewriteMarkdownImages(body, markdownMatches, rewrite)
+	result = rewriteObsidianImages(result, rewrite)
+
+	remaining := []byte(masked)
+	for _, match := range markdownMatches {
+		maskMarkdownRange(remaining, match.start, match.end)
+	}
+	for _, match := range obsidianMatches {
+		maskMarkdownRange(remaining, match[0], match[1])
+	}
+	if strings.Contains(string(remaining), "![") {
+		issues = append(issues, fileIssue(file, "markdown_image_syntax", "image reference syntax is malformed", now))
+	}
+
+	return result, assets, issues
+}
+
+func rewriteMarkdownImages(markdown string, matches []markdownImageMatch, rewrite func(string, string, string) string) string {
+	if len(matches) == 0 {
+		return markdown
+	}
+
+	var result strings.Builder
+	previous := 0
+	for _, match := range matches {
+		result.WriteString(markdown[previous:match.start])
+		result.WriteString(rewrite(markdown[match.start:match.end], match.alt, match.reference))
+		previous = match.end
+	}
+	result.WriteString(markdown[previous:])
+	return result.String()
+}
+
+func findMarkdownImageMatches(markdown, masked string) []markdownImageMatch {
+	matches := make([]markdownImageMatch, 0, 1)
+	for offset := 0; offset < len(markdown); {
+		relative := strings.Index(masked[offset:], "![")
+		if relative < 0 {
+			break
+		}
+		start := offset + relative
+		altEnd := strings.IndexByte(markdown[start+2:], ']')
+		if altEnd < 0 {
+			break
+		}
+		altEnd += start + 2
+		if altEnd+1 >= len(markdown) || markdown[altEnd+1] != '(' {
+			offset = altEnd + 1
+			continue
+		}
+		end, reference, ok := parseMarkdownImageDestination(markdown, altEnd+2)
+		if !ok {
+			offset = altEnd + 2
+			continue
+		}
+		matches = append(matches, markdownImageMatch{
+			start:     start,
+			end:       end,
+			alt:       markdown[start+2 : altEnd],
+			reference: reference,
+		})
+		offset = end
+	}
+	return matches
+}
+
+func parseMarkdownImageDestination(markdown string, start int) (int, string, bool) {
+	depth := 0
+	for offset := start; offset < len(markdown); offset++ {
+		switch markdown[offset] {
+		case '\\':
+			offset++
+		case '\n', '\r':
+			return 0, "", false
+		case '(':
+			depth++
+		case ')':
+			if depth == 0 {
+				return offset + 1, imageReference(markdown[start:offset]), true
+			}
+			depth--
+		}
+	}
+	return 0, "", false
+}
+
+func rewriteObsidianImages(markdown string, rewrite func(string, string, string) string) string {
+	masked := maskMarkdownCode(markdown)
+	matches := obsidianImage.FindAllStringIndex(masked, -1)
+	if len(matches) == 0 {
+		return markdown
+	}
+
+	var result strings.Builder
+	previous := 0
+	for _, match := range matches {
+		result.WriteString(markdown[previous:match[0]])
+		rawReference := markdown[match[0]+3 : match[1]-2]
+		reference := rawReference
 		alt := reference
 		if separator := strings.Index(reference, "|"); separator >= 0 {
 			alt = strings.TrimSpace(reference[separator+1:])
 			reference = strings.TrimSpace(reference[:separator])
 		}
-		return rewrite(match, alt, reference)
-	})
-
-	if strings.Contains(markdownImage.ReplaceAllString(result, ""), "![") {
-		issues = append(issues, fileIssue(file, "markdown_image_syntax", "image reference syntax is malformed", now))
+		result.WriteString(rewrite(markdown[match[0]:match[1]], alt, reference))
+		previous = match[1]
 	}
-
-	return result, assets, issues
+	result.WriteString(markdown[previous:])
+	return result.String()
 }
 
 func validateImageData(name string, data []byte) error {
