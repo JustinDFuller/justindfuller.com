@@ -113,7 +113,7 @@ Status values used below:
 
 Test date: 2026-09-20.
 
-The automated tests were run against the working tree at commit `6675a5b` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
+The automated tests were run against the working tree at commit `a4966cc` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
 
 ### Automated validation
 
@@ -176,7 +176,7 @@ Automated scenario results:
 | `QA-51` | Unknown metadata rejection prevents unsupported feature behavior | `PARTIAL`: no dedicated homepage snapshot comparison was run |
 | `QA-52`, `QA-53` | Read-only source interfaces, collision tests, invalid-file tests, and code review | `PARTIAL`: no external mutation audit can be proven by a runtime smoke test |
 
-The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles with parentheses and balanced/escaped destinations, malformed angle destinations, exact-length inline-code delimiters, multiline raw HTML image removal, independent file-error isolation, images in fenced and multiline inline code, generic transport recovery, and source-initialization request isolation.
+The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles with parentheses and balanced/escaped destinations, malformed angle destinations, exact-length inline-code delimiters, multiline raw HTML image removal, independent file-error isolation, images in fenced and multiline inline code, generic transport recovery, source-initialization request isolation, and hosted parser-lint compliance.
 
 ### Local manual smoke test
 
