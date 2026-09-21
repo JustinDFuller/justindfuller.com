@@ -113,7 +113,7 @@ Status values used below:
 
 Test date: 2026-09-20.
 
-The tests were run against the working tree at commit `abba957` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
+The tests were run against the working tree at commit `09d7d9f` on branch `codex/obsidian-programming-sync-final`. No credentials or token values are recorded here.
 
 ### Automated validation
 
@@ -152,14 +152,14 @@ Automated scenario results:
 | `QA-13` | `TestRouteCollisionRetainsPreviousOwner` | `PASS` |
 | `QA-14` | `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
 | `QA-15` | `TestLocalDraftRouteIsNotResolved` and `TestDraftAdditiveEntryIsExcludedFromRoutesAndSitemap` | `PASS` |
-| `QA-18` | `TestInvalidImageOnlyOmitsImage` and `TestInvalidImageBytesOnlyOmitImage` | `PASS` |
-| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed` with nested JPEG and SVG assets | `PASS`; MIME types were also asserted |
-| `QA-19` | `TestRawHTMLImageIsOmittedWithoutBlockingPost` | `PASS` for an outside-source image reference |
-| `QA-21` | `TestInvalidMarkdownDoesNotBlockValidPost` | `PARTIAL`: valid-post isolation is covered, but the exact invalid-Markdown-plus-valid-image combination is not dedicated |
+| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed` with nested JPEG and SVG assets, plus `TestMarkdownImageDestinationWithTitleIsServed` | `PASS`; MIME types and standard Markdown destination/title syntax were asserted |
+| `QA-18` | `TestInvalidImageOnlyOmitsImage`, `TestInvalidImageBytesOnlyOmitImage`, and the 503 download case | `PASS`; an image-specific 503 remains an `image_download` issue, omits only that image, and keeps the post available |
+| `QA-19` | `TestRawHTMLImageIsOmittedWithoutBlockingPost` and `TestMultilineRawHTMLImageIsOmitted` | `PASS` for outside-source raw HTML images, including multiline tags |
+| `QA-21` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; an invalid Markdown file does not affect a valid post or its valid image |
 | `QA-22` | Invalid image download and invalid image bytes tests | `PASS` |
-| `QA-23` | `TestUnsupportedImageIsolatedFromPost` plus invalid-Markdown isolation | `PARTIAL`: independent errors are represented, but not in one dedicated multi-error fixture |
-| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed image syntax, outside-source image, code-sample preservation, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
-| `QA-26`, `QA-27` | Existing invalid-revision and safety tests | `PARTIAL`: no dedicated revision-change/benign-content regression fixture |
+| `QA-23` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; independent Markdown metadata and image-validation failures are both reported while valid content publishes |
+| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed image syntax, Markdown image titles, multiline raw HTML images, outside-source images, code-sample preservation, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
+| `QA-26` | `TestInvalidMetadataRevisionsDoNotBlockValidPost`, `TestIndependentErrorsDoNotBlockValidContent`, and last-known-good revision tests | `PASS` for valid-content isolation during invalid revisions |
 | `QA-28` | `TestInvalidMarkdownDoesNotBlockValidPost` | `PASS` |
 | `QA-29` | `TestInvalidLayoutRevisionRetainsLastKnownGoodPost` and `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
 | `QA-30`, `QA-35` | `TestSourceFailureRetainsLastKnownGoodAndMarksStale` and `TestMarkdownDownloadSourceFailureRetainsLastKnownGood` | `PASS` for fallback/stale state; production deployment was not used |
@@ -167,7 +167,7 @@ Automated scenario results:
 | `QA-37` | Keychain credential unit test plus live local Keychain-backed synchronization | `PASS` |
 | `QA-38` | Malformed and service-account credential unit tests | `PARTIAL`: missing-item behavior was not induced live |
 | `QA-39` | Successful hosted PR preview synchronization | `PASS` |
-| `QA-40`, `QA-50` | `TestSynchronizationEventsAreDeduplicatedAndDeletionIsObservable` and `TestAdditiveDeletionRemovesRouteAndPreservesLocalSitemapEntries` | `PASS` |
+| `QA-40`, `QA-50` | `TestSynchronizationEventsAreDeduplicatedAndDeletionIsObservable`, `TestAdditiveDeletionRemovesRouteAndPreservesLocalSitemapEntries`, and overwrite restoration sitemap assertions | `PASS` |
 | `QA-42`, `QA-43` | Diagnostics model tests and live protected diagnostics checks | `PASS` |
 | `QA-44` | `TestCorrectedFileEmitsRecoveryEventWithoutDuplicateNotifications` | `PASS` for valid revision publication and recovery event; external alert delivery remains untested |
 | `QA-45`, `QA-46` | Event/issue deduplication behavior | `PARTIAL`: structured log signals are covered, but no external alert destination is configured or tested |
@@ -176,7 +176,7 @@ Automated scenario results:
 | `QA-51` | Unknown metadata rejection prevents unsupported feature behavior | `PARTIAL`: no dedicated homepage snapshot comparison was run |
 | `QA-52`, `QA-53` | Read-only source interfaces, collision tests, invalid-file tests, and code review | `PARTIAL`: no external mutation audit can be proven by a runtime smoke test |
 
-The hardening pass added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, and corrected-file recovery.
+The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles, multiline raw HTML image removal, and independent file-error isolation.
 
 ### Local manual smoke test
 
@@ -242,4 +242,4 @@ The following are intentionally recorded as incomplete rather than treated as pa
 - No live source outage, missing production credential, denied folder access, or recovery drill has been run.
 - No actual Cloud Logging/Monitoring notification destination has been configured or tested.
 - No destructive Drive deletion test has been run against the configured source.
-- Dedicated fixtures are still needed for multiple simultaneous independent errors, benign content outside the closed validation set, and homepage feature-post noninterference.
+- A dedicated homepage feature-post noninterference comparison remains outstanding.
