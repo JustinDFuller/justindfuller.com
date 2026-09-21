@@ -646,7 +646,7 @@ func parseMarkdownImageDestination(markdown string, start int) (int, string, boo
 		return 0, "", false
 	}
 
-	reference := ""
+	var reference string
 	if markdown[offset] == '<' {
 		startReference := offset + 1
 		offset++
@@ -705,7 +705,8 @@ destinationParsed:
 	}
 
 	titleDelimiter := markdown[offset]
-	if titleDelimiter == '"' || titleDelimiter == '\'' {
+	switch titleDelimiter {
+	case '"', '\'':
 		offset++
 		for offset < len(markdown) {
 			if markdown[offset] == '\\' {
@@ -724,7 +725,7 @@ destinationParsed:
 		if offset > len(markdown) || (offset == len(markdown) && markdown[offset-1] != titleDelimiter) {
 			return 0, "", false
 		}
-	} else if titleDelimiter == '(' {
+	case '(':
 		depth := 1
 		offset++
 		for offset < len(markdown) && depth > 0 {
@@ -742,7 +743,7 @@ destinationParsed:
 		if depth != 0 {
 			return 0, "", false
 		}
-	} else {
+	default:
 		return 0, "", false
 	}
 
