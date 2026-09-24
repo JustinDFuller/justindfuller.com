@@ -330,5 +330,5 @@ Outputs:
     Description: Public HTTPS hostname for image references.
     Value: https://media.justindfuller.com/
   MediaUploadPolicyArn:
-    Description: Attach this policy to the dedicated IAM Identity Center permission set used for image uploads.
+    Description: Attach this policy to the dedicated IAM user used by the Obsidian image publisher.
     Value: !Ref MediaUploadPolicy
