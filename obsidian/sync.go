@@ -628,10 +628,9 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 func assetRevisionEpoch(files []RemoteFile) [sha256.Size]byte {
 	hash := sha256.New()
 	for _, file := range files {
-		if !(file.Path == assetManifestPath || strings.HasPrefix(file.Path, "image/") && isSupportedImage(file.Path)) {
-			continue
+		if file.Path == assetManifestPath || (strings.HasPrefix(file.Path, "image/") && isSupportedImage(file.Path)) {
+			_, _ = fmt.Fprintf(hash, "%q\x00%q\x00%q\x00%q\x00%d\x00", file.Path, file.ID, file.Revision, file.MD5, file.Size)
 		}
-		_, _ = fmt.Fprintf(hash, "%q\x00%q\x00%q\x00%q\x00%d\x00", file.Path, file.ID, file.Revision, file.MD5, file.Size)
 	}
 	var epoch [sha256.Size]byte
 	copy(epoch[:], hash.Sum(nil))
