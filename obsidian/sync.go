@@ -24,7 +24,7 @@ const defaultSyncTimeout = 30 * time.Second
 const unrecoverableRetryInterval = 5 * time.Minute
 
 var errInvalidSourceConfiguration = errors.New("invalid Obsidian source configuration")
-var errSourceObjectTooLarge = errors.New("Obsidian source object exceeds download limit")
+var errSourceObjectTooLarge = errors.New("source object exceeds download limit")
 
 type snapshot struct {
 	Candidates map[string]candidate
@@ -628,7 +628,7 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 func assetRevisionEpoch(files []RemoteFile) [sha256.Size]byte {
 	hash := sha256.New()
 	for _, file := range files {
-		if file.Path != assetManifestPath && !(strings.HasPrefix(file.Path, "image/") && isSupportedImage(file.Path)) {
+		if !(file.Path == assetManifestPath || strings.HasPrefix(file.Path, "image/") && isSupportedImage(file.Path)) {
 			continue
 		}
 		_, _ = fmt.Fprintf(hash, "%q\x00%q\x00%q\x00%q\x00%d\x00", file.Path, file.ID, file.Revision, file.MD5, file.Size)

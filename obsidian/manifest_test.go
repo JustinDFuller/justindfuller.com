@@ -2,9 +2,6 @@ package obsidian
 
 import (
 	"context"
-	"crypto/md5"
-	"encoding/base64"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -12,6 +9,9 @@ import (
 	"testing"
 	"time"
 )
+
+const validPNGMD5Hex = "e44e7ecfec99356632c13cd3eaa3e250"
+const validPNGMD5Base64 = "5E5+z+yZNWYywTzT6qPiUA=="
 
 type countedSource struct {
 	*memorySource
@@ -25,11 +25,10 @@ func (s *countedSource) Download(ctx context.Context, id string) ([]byte, error)
 
 func manifestFixture(t *testing.T, imagePath string, imageBytes []byte) []byte {
 	t.Helper()
-	digest := md5.Sum(imageBytes)
 	manifest := imageManifest{Version: 1, Images: map[string]imageRecord{
 		imagePath: {
 			SHA256:      strings.Repeat("a", 64),
-			MD5:         hex.EncodeToString(digest[:]),
+			MD5:         validPNGMD5Hex,
 			Size:        int64(len(imageBytes)),
 			ContentType: imageContentType(imagePath),
 			Key:         "v1/" + strings.Repeat("a", 64) + ".png",
@@ -44,9 +43,8 @@ func manifestFixture(t *testing.T, imagePath string, imageBytes []byte) []byte {
 
 func TestManifestPublishesURLWithoutDownloadingImageAndCachesUnchangedFiles(t *testing.T) {
 	imageBytes := validPNG()
-	digest := md5.Sum(imageBytes)
 	image := file("image", "diagram.png", "image/diagram.png")
-	image.MD5 = base64.StdEncoding.EncodeToString(digest[:])
+	image.MD5 = validPNGMD5Base64
 	image.Size = int64(len(imageBytes))
 	source := &countedSource{
 		memorySource: &memorySource{
@@ -91,9 +89,8 @@ func TestManifestPublishesURLWithoutDownloadingImageAndCachesUnchangedFiles(t *t
 
 func TestInvalidManifestRecordOnlyAffectsReferencedImage(t *testing.T) {
 	imageBytes := validPNG()
-	digest := md5.Sum(imageBytes)
 	image := file("image", "diagram.png", "image/diagram.png")
-	image.MD5 = base64.StdEncoding.EncodeToString(digest[:])
+	image.MD5 = validPNGMD5Base64
 	image.Size = int64(len(imageBytes))
 	var manifest imageManifest
 	if err := json.Unmarshal(manifestFixture(t, image.Path, imageBytes), &manifest); err != nil {

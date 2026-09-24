@@ -138,7 +138,6 @@ func TestStoreAddsValidEntryAndRewritesImage(t *testing.T) {
 	if !strings.Contains(string(entries[0].Content), "https://media.justindfuller.com/v1/") {
 		t.Fatalf("content did not contain rewritten image URL: %s", entries[0].Content)
 	}
-
 }
 
 func TestLocalDriveSourceUsesKeychainOAuthCredentials(t *testing.T) {
