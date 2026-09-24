@@ -168,7 +168,7 @@ class ImagePublisherSettings extends PluginSettingTab {
     containerEl.createEl("p", { text: "Uploads JPG, PNG, and safe SVG files from Blog/image to immutable S3 keys. Local files and Markdown references are not changed." });
     new Setting(containerEl)
       .setName("AWS credentials")
-      .setDesc("Stored in the macOS Keychain. Scope the access key to PutObject and GetObject on each bucket's v1/* prefix.")
+      .setDesc("Stored in the macOS Keychain. Grant PutObject and GetObject for v1/* plus ListBucket on the dedicated media bucket for missing-object checks.")
       .addButton((button) => button.setButtonText("Set credentials").onClick(() => new CredentialModal(this.app, this.plugin.keychain).open()));
     new Setting(containerEl)
       .setName("Clear credentials")
@@ -233,7 +233,7 @@ class CredentialModal extends Modal {
 
   onOpen(): void {
     this.contentEl.createEl("h2", { text: "Store AWS credentials in Keychain" });
-    this.contentEl.createEl("p", { text: "Use a dedicated key with only PutObject and GetObject permissions for the configured v1/* object prefixes." });
+    this.contentEl.createEl("p", { text: "Use a dedicated key with PutObject and GetObject for v1/* plus ListBucket on the dedicated media bucket." });
     const access = this.contentEl.createEl("input", { attr: { type: "text", autocomplete: "off", placeholder: "AWS access key ID" } });
     access.addEventListener("input", () => { this.accessKeyId = access.value; });
     const secret = this.contentEl.createEl("input", { attr: { type: "password", autocomplete: "new-password", placeholder: "AWS secret access key" } });
