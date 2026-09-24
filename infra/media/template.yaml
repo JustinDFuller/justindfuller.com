@@ -1,0 +1,334 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Private S3 image origin and protected CloudFront delivery — keeps blog images public only through the named media hostname.
+Metadata:
+  AWSToolsMetrics:
+    AWSAgentToolkit: aws-cloudformation@3
+  com.aws.cloudformation.Context:
+    arch: Private S3 -> OAC -> CloudFront + WAF -> public HTTPS media hostname
+    must:
+      - S3 objects are readable only through this CloudFront distribution
+      - Only the CloudFront FREE plan is attached by this stack
+      - The upload policy cannot read, delete, or change bucket configuration
+      - Existing authoritative DNS remains outside AWS
+    ref:
+      - at: infra/media/README.md
+        has: deployment sequence, DNS handoff, IAM upload and cost notes
+        scope: stack
+Parameters:
+  CertificateArn:
+    Type: String
+    Description: Issued ACM certificate ARN for media.justindfuller.com in us-east-1.
+    AllowedPattern: '^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[0-9a-fA-F-]+$'
+  BudgetAlertEmail:
+    Type: String
+    Description: Email address for the S3 and CloudFront monthly cost budget notifications.
+    AllowedPattern: '^[^\s@]+@[^\s@]+\.[^\s@]+$'
+Resources:
+  MediaBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Stores public blog image objects privately; CloudFront OAC is the only read path, and versioning protects replaced images.
+        must:
+          - Keep all four S3 Block Public Access controls enabled
+          - Keep ACLs disabled and server-side encryption enabled
+          - Retain the bucket and its data when the stack is deleted or replaced
+        mutable: change-with-constraints
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireNoncurrentImageVersions
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+          - Id: AbortIncompleteUploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+  MediaOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Signs CloudFront origin requests so the private S3 bucket does not need public access.
+        must:
+          - Sign every origin request with SigV4
+        mutable: review-required
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub '${AWS::StackName}-media-s3-oac'
+        Description: Restricts the media bucket origin to CloudFront.
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+  MediaCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Caches image paths for long-lived delivery while ignoring query strings, cookies, and arbitrary headers that would fragment the cache.
+        must:
+          - Use versioned image paths when replacing published image bytes
+        mutable: change-with-constraints
+    Properties:
+      CachePolicyConfig:
+        Name: !Sub '${AWS::StackName}-media-images'
+        Comment: Long-lived cache for versioned image object paths.
+        DefaultTTL: 86400
+        MaxTTL: 31536000
+        MinTTL: 0
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          CookiesConfig:
+            CookieBehavior: none
+          HeadersConfig:
+            HeaderBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
+  MediaSecurityHeaders:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Adds browser-side transport and content-sniffing protections to image responses.
+        must:
+          - Require HTTPS for viewer requests
+        mutable: change-with-constraints
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: !Sub '${AWS::StackName}-media-security-headers'
+        Comment: Security headers for public image responses.
+        SecurityHeadersConfig:
+          ContentSecurityPolicy:
+            ContentSecurityPolicy: "sandbox; default-src 'none'"
+            Override: true
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 63072000
+            IncludeSubdomains: false
+            Preload: false
+            Override: true
+          ContentTypeOptions:
+            Override: true
+          ReferrerPolicy:
+            ReferrerPolicy: strict-origin-when-cross-origin
+            Override: true
+          FrameOptions:
+            FrameOption: DENY
+            Override: true
+  MediaWebAcl:
+    Type: AWS::WAFv2::WebACL
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Applies an included per-IP rate rule before requests consume CloudFront plan allowance or reach S3.
+        must:
+          - Keep this CLOUDFRONT-scope ACL attached to the distribution and included in its FREE subscription
+        mutable: change-with-constraints
+    Properties:
+      Name: !Sub '${AWS::StackName}-media-waf'
+      Scope: CLOUDFRONT
+      Description: Rate limits excessive image requests by viewer IP.
+      DefaultAction:
+        Allow: {}
+      Rules:
+        - Name: MediaPerIpRateLimit
+          Priority: 0
+          Action:
+            Block: {}
+          Statement:
+            RateBasedStatement:
+              Limit: 10000
+              AggregateKeyType: IP
+              EvaluationWindowSec: 300
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: MediaPerIpRateLimit
+            SampledRequestsEnabled: true
+      VisibilityConfig:
+        CloudWatchMetricsEnabled: true
+        MetricName: MediaWebAcl
+        SampledRequestsEnabled: true
+  MediaDistribution:
+    Type: AWS::CloudFront::Distribution
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Serves image objects over HTTPS at the requested hostname; signed OAC and a private origin prevent direct S3 bypass.
+        must:
+          - Keep only GET and HEAD viewer methods enabled
+          - Keep the distribution protected by MediaWebAcl and MediaOriginAccessControl
+          - Use the issued ACM certificate in us-east-1
+        mutable: change-with-constraints
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: Public blog image delivery for media.justindfuller.com.
+        Aliases:
+          - media.justindfuller.com
+        HttpVersion: http2and3
+        IPV6Enabled: true
+        PriceClass: PriceClass_All
+        WebACLId: !GetAtt MediaWebAcl.Arn
+        Origins:
+          - Id: MediaS3Origin
+            DomainName: !GetAtt MediaBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt MediaOriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultCacheBehavior:
+          TargetOriginId: MediaS3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          CachePolicyId: !Ref MediaCachePolicy
+          ResponseHeadersPolicyId: !Ref MediaSecurityHeaders
+          Compress: true
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateArn
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
+  MediaBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Allows the single CloudFront distribution to read content-addressed image objects and rejects unencrypted transport.
+        must:
+          - Never grant anonymous S3 access
+          - Bind CloudFront service access to this account and distribution ARN
+        mutable: review-required
+    Properties:
+      Bucket: !Ref MediaBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowCloudFrontOriginRead
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub '${MediaBucket.Arn}/v1/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${MediaDistribution}'
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: '*'
+            Action: s3:*
+            Resource:
+              - !GetAtt MediaBucket.Arn
+              - !Sub '${MediaBucket.Arn}/*'
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+  MediaUploadPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Supplies narrowly scoped permissions for the Obsidian publisher to create immutable images, verify metadata, and distinguish missing keys within v1/.
+        must:
+          - Grant object access only beneath v1/ and bucket listing only for this dedicated media bucket
+          - Do not attach to root or grant bucket administration
+        mutable: review-required
+    Properties:
+      Description: Upload and verify image metadata in this media bucket without delete or bucket administration.
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: UploadImageObjectsOnly
+            Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:AbortMultipartUpload
+              - s3:GetObject
+            Resource: !Sub '${MediaBucket.Arn}/v1/*'
+          - Sid: ListBucketForMissingHeadChecks
+            Effect: Allow
+            Action: s3:ListBucket
+            Resource: !GetAtt MediaBucket.Arn
+  MediaMonthlyCostBudget:
+    Type: AWS::Budgets::Budget
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Sends actual and forecast monthly cost alerts for S3 and CloudFront usage across this AWS account.
+        must:
+          - Treat the budget as notification only; it does not cap or stop spend
+        mutable: change-with-constraints
+    Properties:
+      Budget:
+        BudgetName: !Sub '${AWS::StackName}-monthly-cost'
+        BudgetLimit:
+          Amount: 1
+          Unit: USD
+        TimeUnit: MONTHLY
+        BudgetType: COST
+        CostFilters:
+          Service:
+            - Amazon Simple Storage Service
+            - Amazon CloudFront
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 80
+            ThresholdType: PERCENTAGE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref BudgetAlertEmail
+        - Notification:
+            NotificationType: FORECASTED
+            ComparisonOperator: GREATER_THAN
+            Threshold: 100
+            ThresholdType: PERCENTAGE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref BudgetAlertEmail
+  MediaFreePlanSubscription:
+    Type: AWS::PricingPlanManager::Subscription
+    DependsOn:
+      - MediaBucketPolicy
+    Metadata:
+      com.aws.cloudformation.Context:
+        why: Associates the image distribution and WAF with CloudFront's $0 FREE flat-rate plan to avoid viewer-transfer overages.
+        must:
+          - Keep PlanTier FREE unless an explicit future user decision authorizes a paid tier
+          - Keep both the distribution and CLOUDFRONT-scope WAF ACL in ResourceArns
+        mutable: review-required
+    Properties:
+      PlanFamily: CloudFront
+      PlanTier: FREE
+      UsageLevel: DEFAULT
+      ResourceArns:
+        - !Sub 'arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${MediaDistribution}'
+        - !GetAtt MediaWebAcl.Arn
+Outputs:
+  MediaBucketName:
+    Description: Private S3 bucket name for uploading public image assets under v1/.
+    Value: !Ref MediaBucket
+  MediaDistributionId:
+    Description: CloudFront distribution ID associated with the FREE flat-rate plan.
+    Value: !Ref MediaDistribution
+  MediaDistributionDomainName:
+    Description: CloudFront target for the media hostname CNAME at the existing DNS provider.
+    Value: !GetAtt MediaDistribution.DomainName
+  MediaHostname:
+    Description: Public HTTPS hostname for image references.
+    Value: https://media.justindfuller.com/
+  MediaUploadPolicyArn:
+    Description: Attach this policy to the dedicated IAM Identity Center permission set used for image uploads.
+    Value: !Ref MediaUploadPolicy

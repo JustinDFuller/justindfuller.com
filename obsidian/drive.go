@@ -2,6 +2,8 @@ package obsidian
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"io"
 	"net/http"
@@ -66,7 +68,7 @@ func (s *driveSource) readFolder(ctx context.Context, folderID, prefix string, f
 	for {
 		call := s.service.Files.List().
 			Q(fmt.Sprintf("'%s' in parents and trashed = false", folderID)).
-			Fields("nextPageToken,files(id,name,mimeType,version,modifiedTime)").
+			Fields("nextPageToken,files(id,name,mimeType,version,modifiedTime,md5Checksum,size)").
 			PageSize(1000).
 			OrderBy("name")
 		if pageToken != "" {
@@ -89,12 +91,18 @@ func (s *driveSource) readFolder(ctx context.Context, folderID, prefix string, f
 				revision = 1
 			}
 
+			md5Value := ""
+			if digest, err := hex.DecodeString(file.Md5Checksum); err == nil && len(digest) == 16 {
+				md5Value = base64.StdEncoding.EncodeToString(digest)
+			}
 			*files = append(*files, RemoteFile{
 				ID:       file.Id,
 				Name:     file.Name,
 				Path:     filePath,
 				Revision: fmt.Sprintf("%d:%s", revision, file.ModifiedTime),
 				MimeType: file.MimeType,
+				MD5:      md5Value,
+				Size:     file.Size,
 				IsFolder: file.MimeType == driveFolderMimeType,
 			})
 
@@ -119,5 +127,12 @@ func (s *driveSource) Download(ctx context.Context, fileID string) ([]byte, erro
 	}
 	defer func() { _ = response.Body.Close() }()
 
-	return io.ReadAll(response.Body)
+	data, err := io.ReadAll(io.LimitReader(response.Body, maxSourceDownloadBytes+1))
+	if err != nil {
+		return nil, err
+	}
+	if len(data) > maxSourceDownloadBytes {
+		return nil, fmt.Errorf("%w: Drive object exceeds %d bytes", errSourceObjectTooLarge, maxSourceDownloadBytes)
+	}
+	return data, nil
 }

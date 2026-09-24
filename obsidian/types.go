@@ -17,6 +17,9 @@ const (
 
 type Config struct {
 	FolderID                   string
+	GCSBucket                  string
+	GCSPrefix                  string
+	MediaBaseURL               string
 	Environment                Environment
 	SyncInterval               time.Duration
 	SyncTimeout                time.Duration
@@ -26,6 +29,7 @@ type Config struct {
 	GoogleOAuthKeychainAccount string
 	KeychainReader             KeychainReader
 	SourceFactory              func(context.Context) (Source, error)
+	ImageResolver              func(RemoteFile) (Asset, error)
 	EventLogger                func(Event)
 	NotificationLogger         func(Issue)
 	Now                        func() time.Time
@@ -39,6 +43,8 @@ type RemoteFile struct {
 	Path     string
 	Revision string
 	MimeType string
+	MD5      string
+	Size     int64
 	IsFolder bool
 }
 
@@ -84,7 +90,7 @@ type Asset struct {
 	Path        string `json:"path"`
 	Revision    string `json:"revision"`
 	ContentType string `json:"content_type"`
-	Data        []byte `json:"-"`
+	URL         string `json:"url"`
 }
 
 type Provenance struct {

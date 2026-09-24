@@ -59,7 +59,6 @@ type candidate struct {
 	Entry       programming.Entry
 	Environment Environment
 	Mode        string
-	Assets      map[string]Asset
 }
 
 type assetIndex struct {
@@ -111,7 +110,7 @@ func validateMarkdown(
 	file RemoteFile,
 	raw []byte,
 	index assetIndex,
-	download func(string) ([]byte, error),
+	resolve func(RemoteFile) (Asset, error),
 	now time.Time,
 ) (candidate, []Issue) {
 	issues := make([]Issue, 0, 1)
@@ -138,7 +137,7 @@ func validateMarkdown(
 		rawImageIssues[index].Route = metadata.Slug
 	}
 	issues = append(issues, rawImageIssues...)
-	rewrittenBody, assets, imageIssues := rewriteImages(body, index, download, file, now)
+	rewrittenBody, imageIssues := rewriteImages(body, index, resolve, file, now)
 	for index := range imageIssues {
 		imageIssues[index].Route = metadata.Slug
 	}
@@ -180,7 +179,6 @@ func validateMarkdown(
 		Entry:       entry,
 		Environment: metadata.Environment,
 		Mode:        metadata.Sync,
-		Assets:      assets,
 	}, issues
 }
 
@@ -534,8 +532,8 @@ type markdownImageMatch struct {
 	reference string
 }
 
-func rewriteImages(body string, index assetIndex, download func(string) ([]byte, error), file RemoteFile, now time.Time) (string, map[string]Asset, []Issue) {
-	assets := make(map[string]Asset)
+func rewriteImages(body string, index assetIndex, resolve func(RemoteFile) (Asset, error), file RemoteFile, now time.Time) (string, []Issue) {
+	assetURLs := make(map[string]string)
 	issues := make([]Issue, 0, 1)
 	rewrite := func(_, alt, reference string) string {
 		remote, ok, category := resolveAsset(reference, index)
@@ -545,27 +543,25 @@ func rewriteImages(body string, index assetIndex, download func(string) ([]byte,
 		}
 
 		token := imageToken(remote)
-		if _, loaded := assets[token]; !loaded {
-			data, err := download(remote.ID)
+		if _, loaded := assetURLs[token]; !loaded {
+			asset, err := resolve(remote)
 			if err != nil {
-				issues = append(issues, imageIssue(file, reference, "image_download", now))
+				category := "image_not_ready"
+				var resolutionError imageResolveError
+				if errors.As(err, &resolutionError) {
+					category = resolutionError.category
+				}
+				issues = append(issues, imageIssue(file, reference, category, now))
 				return ""
 			}
-			if err := validateImageData(remote.Path, data); err != nil {
-				issues = append(issues, imageIssue(file, reference, "image_validation", now))
+			if asset.URL == "" {
+				issues = append(issues, imageIssue(file, reference, "image_not_ready", now))
 				return ""
 			}
-			assets[token] = Asset{
-				Token:       token,
-				FileID:      remote.ID,
-				Path:        remote.Path,
-				Revision:    remote.Revision,
-				ContentType: imageContentType(remote.Path),
-				Data:        data,
-			}
+			assetURLs[token] = asset.URL
 		}
 
-		return fmt.Sprintf("![%s](/__obsidian/image/%s)", alt, token)
+		return fmt.Sprintf("![%s](%s)", alt, assetURLs[token])
 	}
 
 	masked := maskMarkdownCode(body)
@@ -585,7 +581,7 @@ func rewriteImages(body string, index assetIndex, download func(string) ([]byte,
 		issues = append(issues, fileIssue(file, "markdown_image_syntax", "image reference syntax is malformed", now))
 	}
 
-	return result, assets, issues
+	return result, issues
 }
 
 func rewriteMarkdownImages(markdown string, matches []markdownImageMatch, rewrite func(string, string, string) string) string {

@@ -8,8 +8,10 @@ export COLOR_BLUE='\e[0;34m'
 export GAE_DEPLOYMENT_ID=localhost/$(shell date --iso=seconds)
 export PORT=9000
 OBSIDIAN_ENVIRONMENT ?= local
-OBSIDIAN_DRIVE_FOLDER_ID ?= 1FYyC_lFzsED92atPeE5RBEgpW86wNKMt
-export OBSIDIAN_ENVIRONMENT OBSIDIAN_DRIVE_FOLDER_ID
+OBSIDIAN_GCS_BUCKET ?= justindfuller-obsidian-prd
+OBSIDIAN_GCS_PREFIX ?= Documents/Blog/
+OBSIDIAN_MEDIA_BASE_URL ?= https://media.justindfuller.com
+export OBSIDIAN_ENVIRONMENT OBSIDIAN_GCS_BUCKET OBSIDIAN_GCS_PREFIX OBSIDIAN_MEDIA_BASE_URL
 
 .PHONY: validate
 validate:

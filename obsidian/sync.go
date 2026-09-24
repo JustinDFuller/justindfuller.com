@@ -2,6 +2,7 @@ package obsidian
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -18,18 +19,24 @@ import (
 	"google.golang.org/api/googleapi"
 )
 
-const defaultSyncInterval = 30 * time.Second
+const defaultSyncInterval = 60 * time.Second
 const defaultSyncTimeout = 30 * time.Second
 const unrecoverableRetryInterval = 5 * time.Minute
 
 var errInvalidSourceConfiguration = errors.New("invalid Obsidian source configuration")
+var errSourceObjectTooLarge = errors.New("Obsidian source object exceeds download limit")
 
 type snapshot struct {
 	Candidates map[string]candidate
 	Routes     map[string]candidate
 	Masked     map[string]candidate
-	Images     map[string]Asset
 	Files      []DiagnosticFile
+}
+
+type cachedCandidate struct {
+	Revision   string
+	AssetEpoch [sha256.Size]byte
+	Candidate  candidate
 }
 
 type Store struct {
@@ -42,6 +49,10 @@ type Store struct {
 	lastAttempt   time.Time
 	lastSuccess   time.Time
 	lastGood      map[string]candidate
+	parsedCache   map[string]cachedCandidate
+	manifestID    string
+	manifestRev   string
+	manifestCache func(RemoteFile) (Asset, error)
 	activeIssues  map[string]Issue
 	current       snapshot
 	initialized   bool
@@ -60,6 +71,9 @@ func ConfigFromEnv() Config {
 
 	return Config{
 		FolderID:                   os.Getenv("OBSIDIAN_DRIVE_FOLDER_ID"),
+		GCSBucket:                  os.Getenv("OBSIDIAN_GCS_BUCKET"),
+		GCSPrefix:                  os.Getenv("OBSIDIAN_GCS_PREFIX"),
+		MediaBaseURL:               os.Getenv("OBSIDIAN_MEDIA_BASE_URL"),
 		Environment:                environment,
 		SyncInterval:               defaultSyncInterval,
 		DiagnosticsToken:           os.Getenv("OBSIDIAN_DIAGNOSTICS_TOKEN"),
@@ -94,6 +108,9 @@ func NewStore(config Config) *Store {
 	if config.SiteURL == "" {
 		config.SiteURL = "https://justindfuller.com"
 	}
+	if config.MediaBaseURL == "" {
+		config.MediaBaseURL = "https://media.justindfuller.com"
+	}
 	if config.Now == nil {
 		config.Now = time.Now
 	}
@@ -103,6 +120,9 @@ func NewStore(config Config) *Store {
 	if config.SourceFactory == nil {
 		sourceConfig := config
 		config.SourceFactory = func(ctx context.Context) (Source, error) {
+			if sourceConfig.GCSBucket != "" {
+				return newGCSSource(ctx, sourceConfig)
+			}
 			return newDriveSource(ctx, sourceConfig)
 		}
 	}
@@ -130,12 +150,12 @@ func NewStore(config Config) *Store {
 	return &Store{
 		config:       config,
 		lastGood:     make(map[string]candidate),
+		parsedCache:  make(map[string]cachedCandidate),
 		activeIssues: make(map[string]Issue),
 		current: snapshot{
 			Candidates: make(map[string]candidate),
 			Routes:     make(map[string]candidate),
 			Masked:     make(map[string]candidate),
-			Images:     make(map[string]Asset),
 		},
 		statusState: "uninitialized",
 	}
@@ -248,15 +268,6 @@ func (s *Store) Resolve(ctx context.Context, slug string, local []programming.En
 	}
 }
 
-func (s *Store) Image(ctx context.Context, token string, local []programming.Entry) (Asset, bool) {
-	s.ensureSynced(ctx, routeCounts(local))
-
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	asset, ok := s.current.Images[token]
-	return asset, ok
-}
-
 func (s *Store) Diagnostics(ctx context.Context, local []programming.Entry) Diagnostics {
 	localRoutes := routeCounts(local)
 	s.ensureSynced(ctx, localRoutes)
@@ -360,7 +371,11 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 		return
 	}
 
-	tree, err := source.Read(ctx, s.config.FolderID)
+	sourceRoot := s.config.FolderID
+	if s.config.GCSBucket != "" {
+		sourceRoot = s.config.GCSPrefix
+	}
+	tree, err := source.Read(ctx, sourceRoot)
 	if err != nil {
 		s.sourceFailure(err, now)
 		return
@@ -373,6 +388,37 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 		}
 		return files[i].Path < files[j].Path
 	})
+	assetEpoch := assetRevisionEpoch(files)
+	resolve := s.config.ImageResolver
+	if resolve == nil {
+		manifestCount := 0
+		for _, file := range files {
+			if file.Path == assetManifestPath {
+				manifestCount++
+				if !file.IsFolder && file.ID == s.manifestID && file.Revision == s.manifestRev {
+					resolve = s.manifestCache
+				}
+			}
+		}
+		if manifestCount != 1 {
+			resolve = nil
+		}
+		if resolve == nil {
+			resolve, err = manifestResolver(ctx, source, files, s.config.MediaBaseURL)
+			if err != nil {
+				s.sourceFailure(err, now)
+				return
+			}
+			for _, file := range files {
+				if file.Path == assetManifestPath && !file.IsFolder {
+					s.manifestID = file.ID
+					s.manifestRev = file.Revision
+					s.manifestCache = resolve
+					break
+				}
+			}
+		}
+	}
 
 	index := buildAssetIndex(files)
 	current := make(map[string]candidate)
@@ -384,6 +430,9 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 	}
 
 	for _, file := range files {
+		if file.Path == assetManifestPath {
+			continue
+		}
 		if file.IsFolder {
 			if file.Path != "image" && !strings.HasPrefix(file.Path, "image/") {
 				issue := fileIssue(file, "source_layout", "only the root image directory and its descendants are supported", now)
@@ -403,26 +452,32 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 			continue
 		}
 
-		raw, err := source.Download(ctx, file.ID)
-		if err != nil {
-			if _, sourceWide := sourceDownloadFailureCategory(err); sourceWide {
-				s.sourceFailure(err, now)
-				return
-			}
-			issue := fileIssue(file, "markdown_download", "Markdown file could not be read", now)
-			issues[issue.Key] = issue
-			if previous, ok := s.lastGood[file.ID]; ok {
-				current[file.ID] = previous
-				issue.Route = previous.Entry.Slug
-				issue.Fallback = "last_known_good_external"
+		parsed := candidate{}
+		fileIssues := []Issue(nil)
+		if cached, ok := s.parsedCache[file.ID]; ok && s.config.ImageResolver == nil && cached.Revision == file.Revision && cached.AssetEpoch == assetEpoch {
+			parsed = cached.Candidate
+		} else {
+			raw, downloadErr := source.Download(ctx, file.ID)
+			if downloadErr != nil {
+				if _, sourceWide := sourceDownloadFailureCategory(downloadErr); sourceWide {
+					s.sourceFailure(downloadErr, now)
+					return
+				}
+				issue := fileIssue(file, "markdown_download", "Markdown file could not be read", now)
 				issues[issue.Key] = issue
+				if previous, ok := s.lastGood[file.ID]; ok {
+					current[file.ID] = previous
+					issue.Route = previous.Entry.Slug
+					issue.Fallback = "last_known_good_external"
+					issues[issue.Key] = issue
+				}
+				continue
 			}
-			continue
+			parsed, fileIssues = validateMarkdown(file, raw, index, resolve, now)
+			if parsed.File.ID != "" && len(fileIssues) == 0 && s.config.ImageResolver == nil {
+				s.parsedCache[file.ID] = cachedCandidate{Revision: file.Revision, AssetEpoch: assetEpoch, Candidate: parsed}
+			}
 		}
-
-		parsed, fileIssues := validateMarkdown(file, raw, index, func(fileID string) ([]byte, error) {
-			return source.Download(ctx, fileID)
-		}, now)
 		for _, issue := range fileIssues {
 			issues[issue.Key] = issue
 		}
@@ -480,6 +535,11 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 			delete(s.lastGood, fileID)
 		}
 	}
+	for fileID := range s.parsedCache {
+		if !sourceFileIDs[fileID] {
+			delete(s.parsedCache, fileID)
+		}
+	}
 
 	active, masked := applyPublicationPolicy(current, localRoutes, s.lastGood, &issues, now)
 	allCandidates := make(map[string]candidate, len(active)+len(masked))
@@ -488,12 +548,6 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 	}
 	for fileID, parsed := range masked {
 		allCandidates[fileID] = parsed
-	}
-	images := make(map[string]Asset)
-	for _, parsed := range active {
-		for token, asset := range parsed.Assets {
-			images[token] = asset
-		}
 	}
 	for fileID, parsed := range allCandidates {
 		s.lastGood[fileID] = parsed
@@ -552,7 +606,7 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 
 	s.mu.Lock()
 	events := s.emitReconciliationEventsLocked(allCandidates, sourceFileIDs, now)
-	s.current = snapshot{Candidates: allCandidates, Routes: make(map[string]candidate), Masked: masked, Images: images, Files: filesForDiagnostics}
+	s.current = snapshot{Candidates: allCandidates, Routes: make(map[string]candidate), Masked: masked, Files: filesForDiagnostics}
 	for _, parsed := range active {
 		s.current.Routes[parsed.Entry.Slug] = parsed
 	}
@@ -569,6 +623,19 @@ func (s *Store) synchronize(ctx context.Context, localRoutes map[string]int, now
 	events = append(events, issueEvents...)
 	s.mu.Unlock()
 	s.dispatch(events, notifications)
+}
+
+func assetRevisionEpoch(files []RemoteFile) [sha256.Size]byte {
+	hash := sha256.New()
+	for _, file := range files {
+		if file.Path != assetManifestPath && !(strings.HasPrefix(file.Path, "image/") && isSupportedImage(file.Path)) {
+			continue
+		}
+		_, _ = fmt.Fprintf(hash, "%q\x00%q\x00%q\x00%q\x00%d\x00", file.Path, file.ID, file.Revision, file.MD5, file.Size)
+	}
+	var epoch [sha256.Size]byte
+	copy(epoch[:], hash.Sum(nil))
+	return epoch
 }
 
 func (s *Store) recordFileIssue(issue Issue, file RemoteFile, current map[string]candidate, issues map[string]Issue) {
@@ -772,7 +839,7 @@ func (s *Store) sourceFor(ctx context.Context, now time.Time) (Source, error) {
 		s.mu.Unlock()
 		return nil, err
 	}
-	if s.config.FolderID == "" || !isEnvironment(s.config.Environment) {
+	if (s.config.FolderID == "" && s.config.GCSBucket == "") || !isEnvironment(s.config.Environment) {
 		s.sourceError = errInvalidSourceConfiguration
 		s.nextSourceTry = now.Add(unrecoverableRetryInterval)
 		err := s.sourceError
@@ -861,6 +928,9 @@ func sourceFailureCategory(err error) string {
 }
 
 func sourceDownloadFailureCategory(err error) (string, bool) {
+	if errors.Is(err, errSourceObjectTooLarge) {
+		return "", false
+	}
 	if category, ok := oauthRetrieveFailureCategory(err); ok {
 		return category, true
 	}

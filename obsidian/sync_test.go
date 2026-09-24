@@ -55,7 +55,21 @@ func fixedConfig(source Source, environment Environment) Config {
 		Environment:   environment,
 		SyncInterval:  time.Second,
 		SourceFactory: func(context.Context) (Source, error) { return source, nil },
-		EventLogger:   func(Event) {},
+		ImageResolver: func(file RemoteFile) (Asset, error) {
+			memory, ok := source.(*memorySource)
+			if !ok {
+				return Asset{}, imageResolveError{category: "image_not_ready"}
+			}
+			data, err := memory.Download(context.Background(), file.ID)
+			if err != nil {
+				return Asset{}, imageResolveError{category: "image_download"}
+			}
+			if err := validateImageData(file.Path, data); err != nil {
+				return Asset{}, imageResolveError{category: "image_validation"}
+			}
+			return Asset{Token: imageToken(file), FileID: file.ID, Path: file.Path, Revision: file.Revision, ContentType: imageContentType(file.Path), URL: "https://media.justindfuller.com/v1/" + imageToken(file)}, nil
+		},
+		EventLogger: func(Event) {},
 	}
 }
 
@@ -121,17 +135,10 @@ func TestStoreAddsValidEntryAndRewritesImage(t *testing.T) {
 	if len(entries) != 1 || entries[0].Slug != "external-post" {
 		t.Fatalf("entries = %#v", entries)
 	}
-	if !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+	if !strings.Contains(string(entries[0].Content), "https://media.justindfuller.com/v1/") {
 		t.Fatalf("content did not contain rewritten image URL: %s", entries[0].Content)
 	}
 
-	start := strings.Index(string(entries[0].Content), "/__obsidian/image/") + len("/__obsidian/image/")
-	end := strings.IndexAny(string(entries[0].Content)[start:], "\"' >)")
-	token := string(entries[0].Content)[start : start+end]
-	asset, ok := store.Image(context.Background(), token, nil)
-	if !ok || string(asset.Data) != string(validPNG()) {
-		t.Fatalf("asset = %#v, ok = %v", asset, ok)
-	}
 }
 
 func TestLocalDriveSourceUsesKeychainOAuthCredentials(t *testing.T) {
@@ -339,7 +346,7 @@ func TestInvalidImageBytesOnlyOmitImage(t *testing.T) {
 	}
 }
 
-func TestSupportedJPEGAndSVGImagesAreServed(t *testing.T) {
+func TestSupportedJPEGAndSVGImagesAreLinked(t *testing.T) {
 	source := &memorySource{
 		tree: SourceTree{Files: []RemoteFile{
 			file("post", "post.md", "post.md"),
@@ -355,15 +362,8 @@ func TestSupportedJPEGAndSVGImagesAreServed(t *testing.T) {
 	}
 	store := NewStore(fixedConfig(source, EnvironmentLocal))
 	entries := store.Entries(context.Background(), nil)
-	if len(entries) != 1 || strings.Count(string(entries[0].Content), "/__obsidian/image/") != 2 {
+	if len(entries) != 1 || strings.Count(string(entries[0].Content), "https://media.justindfuller.com/v1/") != 2 {
 		t.Fatalf("entries = %#v", entries)
-	}
-	contentTypes := make(map[string]bool)
-	for _, asset := range store.current.Images {
-		contentTypes[asset.ContentType] = true
-	}
-	if !contentTypes["image/jpeg"] || !contentTypes["image/svg+xml"] {
-		t.Fatalf("content types = %#v", contentTypes)
 	}
 }
 
@@ -381,7 +381,7 @@ func TestMarkdownImageDestinationWithTitleIsServed(t *testing.T) {
 	}
 	store := NewStore(fixedConfig(source, EnvironmentLocal))
 	entries := store.Entries(context.Background(), nil)
-	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "https://media.justindfuller.com/v1/") {
 		t.Fatalf("entries = %#v", entries)
 	}
 }
@@ -400,7 +400,7 @@ func TestMarkdownImageDestinationWithParenthesesIsServed(t *testing.T) {
 	}
 	store := NewStore(fixedConfig(source, EnvironmentLocal))
 	entries := store.Entries(context.Background(), nil)
-	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "https://media.justindfuller.com/v1/") {
 		t.Fatalf("entries = %#v", entries)
 	}
 	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
@@ -422,7 +422,7 @@ func TestMarkdownImageDestinationWithEscapedParenthesesIsServed(t *testing.T) {
 	}
 	store := NewStore(fixedConfig(source, EnvironmentLocal))
 	entries := store.Entries(context.Background(), nil)
-	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "https://media.justindfuller.com/v1/") {
 		t.Fatalf("entries = %#v", entries)
 	}
 	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
@@ -444,7 +444,7 @@ func TestMarkdownImageTitleWithParenthesesIsServed(t *testing.T) {
 	}
 	store := NewStore(fixedConfig(source, EnvironmentLocal))
 	entries := store.Entries(context.Background(), nil)
-	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "/__obsidian/image/") {
+	if len(entries) != 1 || !strings.Contains(string(entries[0].Content), "https://media.justindfuller.com/v1/") {
 		t.Fatalf("entries = %#v", entries)
 	}
 	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {
@@ -460,7 +460,7 @@ func TestMarkdownImagesInCodeArePreserved(t *testing.T) {
 	}
 	store := NewStore(fixedConfig(source, EnvironmentLocal))
 	entries := store.Entries(context.Background(), nil)
-	if len(entries) != 1 || strings.Contains(string(entries[0].Content), "/__obsidian/image/") || !strings.Contains(string(entries[0].Content), "image/diagram.png") {
+	if len(entries) != 1 || strings.Contains(string(entries[0].Content), "https://media.justindfuller.com/v1/") || !strings.Contains(string(entries[0].Content), "image/diagram.png") {
 		t.Fatalf("entries = %#v", entries)
 	}
 	if diagnostics := store.Diagnostics(context.Background(), nil); len(diagnostics.Issues) != 0 {

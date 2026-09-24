@@ -1,5 +1,7 @@
 # Obsidian Programming Sync QA
 
+> Historical baseline: Sections 1 and 2 below document the Drive-backed implementation and its 2026-09-20 tests and manual smoke runs. They do not validate the current GCS, manifest, S3 publisher, or CloudFront migration described in section 3.
+
 ## 1. Tests to run to verify the spec
 
 Status values used below:
@@ -244,3 +246,38 @@ The following are intentionally recorded as incomplete rather than treated as pa
 - No actual Cloud Logging/Monitoring notification destination has been configured or tested.
 - No destructive Drive deletion test has been run against the configured source.
 - A dedicated homepage feature-post noninterference comparison remains outstanding.
+
+## 3. GCS and CloudFront migration status (2026-09-24)
+
+**Overall status: NOT DEPLOYED AND NOT END-TO-END VERIFIED.** The implementation and infrastructure files in the current checkout describe the target design. They are not evidence that the live Obsidian sync backend, AWS stack, DNS, IAM permissions, preview service, or production service has been changed.
+
+### Current configuration evidence
+
+- The inspected live Obsidian Google Sync `data.json` has `syncFolder: Blog`, `autoSync: true`, a one-minute interval, `driveEnabled: true`, and `gcsEnabled: false`. Only nonsecret settings were inspected. The GCS bucket contains older Blog objects, but the configured source prefix does not currently have the required `asset-manifest.json`.
+- The App Engine default service account `justindfuller@appspot.gserviceaccount.com` currently has project-level `roles/editor` and legacy bucket `projectEditor` grants. This provides GCS read access, but it is not a read-only identity. The sync code performs read operations; reducing the broader IAM grants is a separate, unverified least-privilege change that may affect other application operations.
+- The current checkout targets `gs://justindfuller-obsidian-prd/Documents/Blog/` with `OBSIDIAN_GCS_BUCKET`, `OBSIDIAN_GCS_PREFIX`, and `OBSIDIAN_MEDIA_BASE_URL` in `.appengine/app.yaml` and the Makefile. This target configuration has not been deployed or proven to match the live sync plugin's object mapping.
+- The runtime code lists GCS metadata and uses object generations for revisions. It downloads the manifest only when its generation changes, caches parsed Markdown while its revision and the shared image revision epoch stay unchanged, and defaults to a 60-second reconciliation interval. The Go application does not download image bytes and does not serve `/__obsidian/image/`; it emits immutable URLs under `https://media.justindfuller.com/v1/`.
+- Manifest version 1 is `{"version":1,"images":{...}}`. Each `image/...` entry contains `sha256`, `md5`, `size`, `contentType`, and `key`, where `key` is `v1/<sha256>.<extension>`. The runtime checks source GCS image MD5 and size against the manifest. Missing or malformed manifest is source-wide and retains the last-known-good overlay; an absent or mismatched individual image record omits only that reference.
+- `tools/obsidian-image-publisher/` contains the desktop Obsidian S3 publisher. It validates JPG, PNG, and safe SVG bytes, uploads content-addressed immutable objects, verifies destination metadata, and writes the manifest note to `Blog/asset-manifest.json`. The Google Sync GCS backend must then sync the note into `Documents/Blog/asset-manifest.json` and sync source image objects to the matching paths.
+- `infra/media/` contains the private S3 origin, CloudFront, OAC, WAF, certificate, budget, and deployment scripts. No stack execution, certificate issuance, DNS change, IAM attachment, plugin installation, or live CDN request is recorded here.
+
+### Migration acceptance gates
+
+| Gate | Required evidence | Status |
+| --- | --- | --- |
+| `MIG-01` | Change the live Obsidian Google Sync backend to GCS, disable Drive, and confirm the `Blog/` vault folder maps to the configured `Documents/Blog/` prefix without divergent dual-backend state. | `NOT RUN`; current settings show Drive on and GCS off |
+| `MIG-02` | Confirm private GCS contains the current Markdown, each matching `image/...` source object, and exactly one synced version-1 `asset-manifest.json`. | `NOT RUN`; inspected prefix has no manifest |
+| `MIG-03` | Verify metadata listing and generation-pinned Markdown/manifest reads in each environment. Separately assess the current project `roles/editor` and bucket `projectEditor` grants before any least-privilege reduction; verify application impact and avoid treating the existing runtime identity as read-only. | GCS read access currently exists through broad grants; end-to-end sync verification and IAM reduction are `NOT RUN` |
+| `MIG-04` | Install and configure the Obsidian Image Publisher, validate a sample image, upload it, verify immutable S3 metadata, and confirm its matching manifest entry reaches GCS. | `NOT RUN` |
+| `MIG-05` | Provision the reviewed media stack in `us-east-1`, issue/validate the ACM certificate, attach the distribution CNAME at the existing DNS provider, and confirm CloudFront serves the test object over HTTPS. | `NOT RUN`; stack and DNS are not recorded as deployed |
+| `MIG-06` | Configure the publisher with a dedicated non-root uploader identity restricted to the `v1/*` prefix and the `PutObject` plus `GetObject` permission needed by its upload and `HeadObject` verification path. Store the access key only in macOS Keychain. | `NOT RUN`; current plugin accepts static access keys only; IAM Identity Center short-lived profile support is not implemented |
+| `MIG-07` | Verify a synced post renders the `media.justindfuller.com` immutable URL, browser requests go directly to CloudFront, and image downloads never hit the Go application. | `NOT RUN` |
+| `MIG-08` | Verify a missing image or stale/mismatched manifest record removes only that image, while invalid/missing manifest preserves the last-known-good overlay and reports the source issue. | `NOT RUN` against the GCS/S3 integration |
+| `MIG-09` | In PR preview, verify post, sitemap, protected diagnostics, direct CDN response, and source freshness within the configured one-minute reconciliation window; repeat on production only after an approved rollout. | `NOT RUN` |
+| `MIG-10` | Confirm media delivery cost controls and alert delivery after rollout; inspect plan eligibility, S3 charges, and actual budget notifications. | `NOT RUN` |
+
+The current code unit suite passed in an earlier working-tree run during implementation; this QA entry does not claim a fresh test run against the current tree. A complete application test run, plugin build/test run, GCS integration check, and live AWS/preview/production smoke remain separate gates.
+
+### Cost and access caveats
+
+The CloudFront subscription in the proposed template is the `$0/month FREE` plan with baseline allowances of 1 million viewer requests, 100 GB transfer, and 5 GB S3 Standard storage credit per month. This is not a guarantee that the overall workflow costs $0: S3 API requests, uploads, and storage beyond the credit can incur charges. The proposed `$1/month` budget sends alerts and cannot stop spending. Confirm eligibility and budget delivery; allowances are not hard caps. The image URL is public to anyone who knows it; private Markdown and the S3 origin remain separate and private. See `infra/media/README.md` for resource-retention behavior, budget limitations, and rollout commands.

@@ -1,7 +1,9 @@
 runtime: go125
 
 env_variables:
-  OBSIDIAN_DRIVE_FOLDER_ID: "1FYyC_lFzsED92atPeE5RBEgpW86wNKMt"
+  OBSIDIAN_GCS_BUCKET: "justindfuller-obsidian-prd"
+  OBSIDIAN_GCS_PREFIX: "Documents/Blog/"
+  OBSIDIAN_MEDIA_BASE_URL: "https://media.justindfuller.com"
   OBSIDIAN_ENVIRONMENT: "prd"
 
 automatic_scaling:

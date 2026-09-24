@@ -506,26 +506,6 @@ func main() {
 		}
 	}))
 
-	http.HandleFunc("/__obsidian/image/", withOneYearCache(func(w http.ResponseWriter, r *http.Request) {
-		token := strings.TrimPrefix(r.URL.Path, "/__obsidian/image/")
-		localEntries, err := programming.GetEntries()
-		if err != nil {
-			localEntries = []programming.Entry{}
-		}
-		asset, ok := obsidianStore.Image(r.Context(), token, localEntries)
-		if !ok {
-			setNoStore(w)
-			http.NotFound(w, r)
-			return
-		}
-		w.Header().Set("Content-Type", asset.ContentType)
-		w.Header().Set("X-Content-Type-Options", "nosniff")
-		w.WriteHeader(http.StatusOK)
-		if _, err := w.Write(asset.Data); err != nil {
-			log.Printf("obsidian image response error=%s", err)
-		}
-	}))
-
 	http.HandleFunc("/__obsidian/diagnostics", func(w http.ResponseWriter, r *http.Request) {
 		authorized := obsidianConfig.DiagnosticsToken != "" && r.Header.Get("Authorization") == "Bearer "+obsidianConfig.DiagnosticsToken
 		if !authorized {
