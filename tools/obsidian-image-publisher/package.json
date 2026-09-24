@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild src/main.ts --bundle --external:obsidian --external:@napi-rs/keyring --platform=node --format=cjs --target=node20 --outfile=main.js",
+    "build": "esbuild src/main.ts --bundle --external:obsidian --platform=node --format=cjs --target=node20 --outfile=main.js",
     "package": "npm run build && node scripts/package.mjs",
     "test": "node --test tests/*.test.ts"
   },

@@ -20,7 +20,7 @@ const publisherPrefix = "Blog/image/";
 
 export default class ObsidianImagePublisher extends Plugin {
   settings: Settings = defaultSettings;
-  readonly keychain = new MacKeychain();
+  readonly keychain = new MacKeychain(this.app, this.manifest.id);
   private timer: number | undefined;
   private publisher: ImagePublisher | undefined;
   private running = false;
