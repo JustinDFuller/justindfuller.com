@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-image-publisher",
+  "name": "Obsidian Image Publisher",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Publishes validated Blog image assets to private S3 storage served through CloudFront.",
+  "author": "Justin Fuller",
+  "isDesktopOnly": true
+}

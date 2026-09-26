@@ -1,0 +1,5 @@
+schema: spec-driven
+created: 2026-09-20
+goal: Allow Markdown programming posts and images from the configured Obsidian
+  Drive folder to appear in production, PR previews, and local development
+  without replacing Git-backed content

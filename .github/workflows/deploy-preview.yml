@@ -47,6 +47,7 @@ jobs:
           
           # Copy app.yaml from .appengine and append service name
           cp ./.appengine/app.yaml ./app.yaml
+          sed -i 's/OBSIDIAN_ENVIRONMENT: "prd"/OBSIDIAN_ENVIRONMENT: "pr"/' ./app.yaml
           echo "" >> ./app.yaml
           echo "service: ${SERVICE_NAME}" >> ./app.yaml
 
@@ -127,7 +128,7 @@ jobs:
           EOF
           
           # Deploy only the dispatch rules for this preview
-          gcloud app deploy dispatch.yaml --project=justindfuller --quiet || true
+          gcloud app deploy dispatch.yaml --project=justindfuller --quiet
 
       - name: Comment Preview URL
         uses: actions/github-script@v9
