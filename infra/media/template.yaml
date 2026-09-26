@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Private S3 image origin and protected CloudFront delivery — keeps blog images public only through the named media hostname.
+Description: Private S3 image origin with optional CloudFront delivery — creates the upload path while CloudFront account verification is pending.
 Metadata:
   AWSToolsMetrics:
     AWSAgentToolkit: aws-cloudformation@3
@@ -17,12 +17,28 @@ Metadata:
 Parameters:
   CertificateArn:
     Type: String
-    Description: Issued ACM certificate ARN for media.justindfuller.com in us-east-1.
-    AllowedPattern: '^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[0-9a-fA-F-]+$'
+    Description: Issued ACM certificate ARN for media.justindfuller.com in us-east-1, required when delivery is enabled.
+    Default: ''
+    AllowedPattern: '(^$|^arn:aws:acm:us-east-1:[0-9]{12}:certificate/[0-9a-fA-F-]+$)'
   BudgetAlertEmail:
     Type: String
     Description: Email address for the S3 and CloudFront monthly cost budget notifications.
     AllowedPattern: '^[^\s@]+@[^\s@]+\.[^\s@]+$'
+  EnableDelivery:
+    Type: String
+    Description: Set to true after AWS enables CloudFront creation for this account.
+    Default: 'false'
+    AllowedValues:
+      - 'false'
+      - 'true'
+Rules:
+  DeliveryRequiresCertificate:
+    RuleCondition: !Equals [!Ref EnableDelivery, 'true']
+    Assertions:
+      - Assert: !Not [!Equals [!Ref CertificateArn, '']]
+        AssertDescription: An issued ACM certificate ARN is required when delivery is enabled.
+Conditions:
+  DeliveryEnabled: !Equals [!Ref EnableDelivery, 'true']
 Resources:
   MediaBucket:
     Type: AWS::S3::Bucket
@@ -63,6 +79,7 @@ Resources:
               DaysAfterInitiation: 7
   MediaOriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
+    Condition: DeliveryEnabled
     Metadata:
       com.aws.cloudformation.Context:
         why: Signs CloudFront origin requests so the private S3 bucket does not need public access.
@@ -78,6 +95,7 @@ Resources:
         SigningProtocol: sigv4
   MediaCachePolicy:
     Type: AWS::CloudFront::CachePolicy
+    Condition: DeliveryEnabled
     Metadata:
       com.aws.cloudformation.Context:
         why: Caches image paths for long-lived delivery while ignoring query strings, cookies, and arbitrary headers that would fragment the cache.
@@ -102,6 +120,7 @@ Resources:
             QueryStringBehavior: none
   MediaSecurityHeaders:
     Type: AWS::CloudFront::ResponseHeadersPolicy
+    Condition: DeliveryEnabled
     Metadata:
       com.aws.cloudformation.Context:
         why: Adds browser-side transport and content-sniffing protections to image responses.
@@ -131,6 +150,7 @@ Resources:
             Override: true
   MediaWebAcl:
     Type: AWS::WAFv2::WebACL
+    Condition: DeliveryEnabled
     Metadata:
       com.aws.cloudformation.Context:
         why: Applies an included per-IP rate rule before requests consume CloudFront plan allowance or reach S3.
@@ -163,6 +183,7 @@ Resources:
         SampledRequestsEnabled: true
   MediaDistribution:
     Type: AWS::CloudFront::Distribution
+    Condition: DeliveryEnabled
     Metadata:
       com.aws.cloudformation.Context:
         why: Serves image objects over HTTPS at the requested hostname; signed OAC and a private origin prevent direct S3 bypass.
@@ -207,7 +228,7 @@ Resources:
     Type: AWS::S3::BucketPolicy
     Metadata:
       com.aws.cloudformation.Context:
-        why: Allows the single CloudFront distribution to read content-addressed image objects and rejects unencrypted transport.
+        why: Rejects unencrypted transport before delivery is available, then allows only the named CloudFront distribution to read image objects.
         must:
           - Never grant anonymous S3 access
           - Bind CloudFront service access to this account and distribution ARN
@@ -217,15 +238,6 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Sid: AllowCloudFrontOriginRead
-            Effect: Allow
-            Principal:
-              Service: cloudfront.amazonaws.com
-            Action: s3:GetObject
-            Resource: !Sub '${MediaBucket.Arn}/v1/*'
-            Condition:
-              StringEquals:
-                AWS:SourceArn: !Sub 'arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${MediaDistribution}'
           - Sid: DenyInsecureTransport
             Effect: Deny
             Principal: '*'
@@ -236,6 +248,18 @@ Resources:
             Condition:
               Bool:
                 aws:SecureTransport: false
+          - !If
+            - DeliveryEnabled
+            - Sid: AllowCloudFrontOriginRead
+              Effect: Allow
+              Principal:
+                Service: cloudfront.amazonaws.com
+              Action: s3:GetObject
+              Resource: !Sub '${MediaBucket.Arn}/v1/*'
+              Condition:
+                StringEquals:
+                  AWS:SourceArn: !Sub 'arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${MediaDistribution}'
+            - !Ref AWS::NoValue
   MediaUploadPolicy:
     Type: AWS::IAM::ManagedPolicy
     Metadata:
@@ -300,6 +324,7 @@ Resources:
               Address: !Ref BudgetAlertEmail
   MediaFreePlanSubscription:
     Type: AWS::PricingPlanManager::Subscription
+    Condition: DeliveryEnabled
     DependsOn:
       - MediaBucketPolicy
     Metadata:
@@ -322,12 +347,15 @@ Outputs:
     Value: !Ref MediaBucket
   MediaDistributionId:
     Description: CloudFront distribution ID associated with the FREE flat-rate plan.
+    Condition: DeliveryEnabled
     Value: !Ref MediaDistribution
   MediaDistributionDomainName:
     Description: CloudFront target for the media hostname CNAME at the existing DNS provider.
+    Condition: DeliveryEnabled
     Value: !GetAtt MediaDistribution.DomainName
   MediaHostname:
     Description: Public HTTPS hostname for image references.
+    Condition: DeliveryEnabled
     Value: https://media.justindfuller.com/
   MediaUploadPolicyArn:
     Description: Attach this policy to the dedicated IAM user used by the Obsidian image publisher.

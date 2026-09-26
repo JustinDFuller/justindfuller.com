@@ -4,10 +4,11 @@ set -euo pipefail
 profile_name=""
 certificate_arn=""
 alert_email=""
+enable_delivery=""
 stack_name="justindfuller-media"
 
 usage() {
-  printf 'Usage: %s --profile PROFILE --certificate-arn ARN --alert-email EMAIL [--stack-name NAME]\n' "$0" >&2
+  printf 'Usage: %s --profile PROFILE --alert-email EMAIL [--certificate-arn ARN --enable-delivery] [--stack-name NAME]\n' "$0" >&2
 }
 
 while (($#)); do
@@ -24,6 +25,10 @@ while (($#)); do
       alert_email="${2:?Missing alert email}"
       shift 2
       ;;
+    --enable-delivery)
+      enable_delivery="true"
+      shift
+      ;;
     --stack-name)
       stack_name="${2:?Missing stack name}"
       shift 2
@@ -39,8 +44,12 @@ while (($#)); do
   esac
 done
 
-if [[ -z "$profile_name" || -z "$certificate_arn" || -z "$alert_email" ]]; then
+if [[ -z "$profile_name" || -z "$alert_email" ]]; then
   usage
+  exit 2
+fi
+if [[ "$enable_delivery" == "true" && -z "$certificate_arn" ]]; then
+  printf 'The certificate ARN is required when delivery is enabled.\n' >&2
   exit 2
 fi
 
@@ -59,20 +68,29 @@ if [[ "$caller_arn" == *:root ]]; then
   exit 1
 fi
 
-certificate_status="$(aws_cmd acm describe-certificate \
-  --certificate-arn "$certificate_arn" \
-  --query Certificate.Status \
-  --output text)"
-if [[ "$certificate_status" != "ISSUED" ]]; then
-  printf 'Certificate status is %s; it must be ISSUED before preparing the stack.\n' "$certificate_status" >&2
-  exit 1
+if [[ "$enable_delivery" == "true" ]]; then
+  certificate_status="$(aws_cmd acm describe-certificate \
+    --certificate-arn "$certificate_arn" \
+    --query Certificate.Status \
+    --output text)"
+  if [[ "$certificate_status" != "ISSUED" ]]; then
+    printf 'Certificate status is %s; it must be ISSUED before preparing delivery.\n' "$certificate_status" >&2
+    exit 1
+  fi
 fi
 
 template_path="$(cd "$(dirname "$0")" && pwd)/template.yaml"
+parameter_overrides=("BudgetAlertEmail=$alert_email")
+if [[ -n "$enable_delivery" ]]; then
+  parameter_overrides+=("EnableDelivery=$enable_delivery")
+fi
+if [[ -n "$certificate_arn" ]]; then
+  parameter_overrides+=("CertificateArn=$certificate_arn")
+fi
 aws_cmd cloudformation deploy \
   --stack-name "$stack_name" \
   --template-file "$template_path" \
-  --parameter-overrides "CertificateArn=$certificate_arn" "BudgetAlertEmail=$alert_email" \
+  --parameter-overrides "${parameter_overrides[@]}" \
   --capabilities CAPABILITY_IAM \
   --no-execute-changeset
 
