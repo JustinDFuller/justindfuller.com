@@ -16,19 +16,19 @@ export class MacKeychain {
     ensureMacOS();
     if (!(this.app.vault.adapter instanceof FileSystemAdapter)) throw new Error("Image publishing requires a local vault");
     const bindingPath = join(this.app.vault.adapter.getBasePath(), this.app.vault.configDir, "plugins", this.pluginId, `keyring.darwin-${process.arch}.node`);
-    const binding = require(bindingPath) as { Entry: new (service: string, account: string) => KeychainEntry };
-    return new binding.Entry(keychainService, keychainAccount);
+    const binding = require(bindingPath) as { AsyncEntry: new (service: string, account: string) => KeychainEntry };
+    return new binding.AsyncEntry(keychainService, keychainAccount);
   }
 
   async save(credentials: AwsCredentials): Promise<void> {
     ensureMacOS();
     if (!credentials.accessKeyId.trim() || !credentials.secretAccessKey) throw new Error("Enter both AWS key fields");
-    this.entry().setPassword(JSON.stringify(credentials));
+    await this.entry().setPassword(JSON.stringify(credentials));
   }
 
   async read(): Promise<AwsCredentials | undefined> {
     ensureMacOS();
-    const value = this.entry().getPassword();
+    const value = await this.entry().getPassword();
     if (!value) return undefined;
     let parsed: unknown;
     try {
@@ -45,14 +45,14 @@ export class MacKeychain {
 
   async clear(): Promise<void> {
     ensureMacOS();
-    this.entry().deletePassword();
+    await this.entry().deletePassword();
   }
 }
 
 type KeychainEntry = {
-  setPassword(password: string): void;
-  getPassword(): string | null;
-  deletePassword(): void;
+  setPassword(password: string): Promise<void>;
+  getPassword(): Promise<string | undefined>;
+  deletePassword(): Promise<boolean>;
 };
 
 function ensureMacOS(): void {

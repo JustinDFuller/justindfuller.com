@@ -19,4 +19,4 @@ await cp(join(root, "manifest.json"), join(release, "manifest.json"));
 await cp(nativePath, join(release, `keyring.darwin-${process.arch}.node`));
 
 const nativeBinding = require(join(release, `keyring.darwin-${process.arch}.node`));
-if (!nativeBinding.Entry) throw new Error("Packaged Keychain binding did not expose Entry");
+if (!nativeBinding.AsyncEntry) throw new Error("Packaged Keychain binding did not expose AsyncEntry");
