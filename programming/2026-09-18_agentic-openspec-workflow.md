@@ -1,6 +1,6 @@
 ---
 title: Agentic OpenSpec Workflow
-date: 2026-07-28
+date: 2026-09-28
 draft: false
 tags: [Code]
 ---
@@ -15,6 +15,34 @@ You may also want to read up on [OpenSpec](https://openspec.dev/), which is the 
 
 > OpenSpec is a lightweight and configurable framework for creating and managing software specifications.
 > https://openspec.dev/
+
+## Problem
+
+This workflow addresses two problems that have occurred due to both me and my team's adoption of agentic workflows.
+
+### Deviation
+
+The first problem is deviation. As I worked with agents, I noticed they would often deviate from my original expectations. What's worse, they would often name those deviations as requirements. Why? They would lose track of my original prompt and all they had to go off of was the plan file, if it existed, and the git history. This could happen if a single pull request lasted multiple sessions or experienced compactions. Sometimes it could even happen if the context window got too full.
+
+I needed a way to prevent agents from deviating from my expectations, no matter how many sessions I ran, how many compacts happened, or how full my context window got.
+
+### Pull Requests
+
+The second problem is pull requests. We have more of them than ever, they are often bigger than ever, and depending on the agent being used, can be harder to understand than ever.
+
+I needed a way to deal with this influx of pull requests that was generating more code than I could possibly review.
+
+## Solution
+
+The solution to these problems? Simple: start by writing down (or having the agent write down) exactly what I expect to be developed, in detail. Then, work hard to ensure I am aligned with what was written down. Check that file (or files) in, so that they are available for all future sessions and for pull requests reviewers. This is spec-driven development.
+
+## Benefits
+
+It has two main benefits:
+
+1. No matter how many sessions, sub-agents, compactions, or how long the context window, the context cannot be forgotten. It is checked into the git history and clear for all agents to read.
+
+2. Now, instead of parsing intent from the code, code reviewers can go straight to the spec. Instead of reading the code to determine, "did we implement the right thing?" They can read the spec to answer that question directly. It provides a higher-level vantage point from which to review the code, creating a venue for more efficient and productive feedback.
 
 ## Three Phases
 
@@ -106,7 +134,7 @@ It has detailed requirements about:
 
 ![Standard Execution Loop Skill](/image/programming/execution-loop-outline.png)
 
-#### Required Invariants 
+#### Required Invariants
 
 Ensures the session is ready and safe to begin the loop in.
 
@@ -131,7 +159,7 @@ Additionally, you must have the following available:
 - The gh cli "stack" extensions.
 ```
 
-#### End State 
+#### End State
 
 Clearly explains what it means for the goal to be met.
 
@@ -232,4 +260,3 @@ You can find my custom skills at: [https://github.com/JustinDFuller/.agents](htt
 OpenSpec:  [https://openspec.dev/](https://openspec.dev/)
 
 The harness used in the examples in the post was [Codex CLI](https://learn.chatgpt.com/docs/codex/cli) and the code was generated with [GPT 5.6 Luna](https://developers.openai.com/api/docs/models/gpt-5.6-luna).
-
