@@ -1,11 +1,11 @@
 ---
-title: Agentic OpenSpec Workflow
+title: Agentic Spec-Driven Development Workflow
 date: 2026-09-28
 draft: false
 tags: [Code]
 ---
 
-In this post I'll share my agentic OpenSpec workflow that I use for software development.
+In this post I'll share my agentic spec-driven development workflow that I use for software development.
 
 ## Pre-Requisites
 
