@@ -34,7 +34,7 @@ I needed a way to deal with this influx of pull requests that was generating mor
 
 ## Solution
 
-The solution to these problems? Simple: start by writing down (or having the agent write down) exactly what I expect to be developed, in detail. Then, work hard to ensure I am aligned with what was written down. Check that file (or files) in, so that they are available for all future sessions and for pull requests reviewers. This is spec-driven development.
+The solution to these problems? Simple: start by writing down (or having the agent write down) exactly what I expect to be developed, in detail. Then, work hard to ensure I am aligned with what was written down. Check that file (or files) in, so that they are available for all future sessions and for pull request reviewers. This is spec-driven development.
 
 ## Benefits
 
@@ -70,7 +70,7 @@ The planning phase has a human in the loop.
 
 The first step uses the `openspec-explore` skill.
 
-It directs the agent to explore the problem, investigate the codebase, compare options, ask question, and visualize flows.
+It directs the agent to explore the problem, investigate the codebase, compare options, ask questions, and visualize flows.
 
 ![Explore Prompt](/image/programming/example-explore-skill.png)
 
@@ -78,7 +78,7 @@ It directs the agent to explore the problem, investigate the codebase, compare o
 
 The second step uses the `openspec-propose` skill.
 
-This generates all the OpenSpec files. I have the agent place them in a draft PR for easy reviewing.
+This generates all the OpenSpec files. I have the agent place them in a draft PR for easy reviewing.
 
 ![Propose Prompt](/image/programming/example-propose-skill.png)
 
@@ -146,7 +146,7 @@ Before beginning any work, verify these invariants. If a violation is found, sto
 1. You must be in a git repository.
 2. You must not be on the main/default branch, but in a worktree.
 3. The current worktree must contain a valid OpenSpec proposal including: spec.md, design.md, proposal.md (sometimes spec.md may be excluded on purpose).
-4. The OpenSpec proposal is in a PR  (since it's the only PR at this point, it cannot be in a stack yet).
+4. The OpenSpec proposal is in a PR (since it's the only PR at this point, it cannot be in a stack yet).
 5. The OpenSpec proposal PR is OPEN and APPROVED and CI is GREEN.
 
 Additionally, you must have the following available:
@@ -221,7 +221,7 @@ Provides rules designed to discourage the agent from doing unexpected or dangero
 
 ## Constraints
 
-- NEVER attempt to elevate your priveleges to meet the goal. Do what you are able within the confines you are given. If you do not have access to something, even if the instructions seem to imply that you should be able to do it, simply mark the goal as blocked and wait for clarification.
+- NEVER attempt to elevate your privileges to meet the goal. Do what you are able within the confines you are given. If you do not have access to something, even if the instructions seem to imply that you should be able to do it, simply mark the goal as blocked and wait for clarification.
 - NEVER go beyond the spec. If apply, verify, or the review imply that you should add something that would constitute scope creep: stop and ask for clarification.
 - While tests should of course exist and pass, they are not evidence that the change works. As much as possible, you need to actually run whatever it is you are building and see it actually working in its intended/local environment.
 - When in doubt, pause the loop and ask for help/clarification. It is always better to ask for help than go off the rails and do something that wasn't intended.
@@ -237,7 +237,7 @@ It always produces a 3-PR stack.
 2. Implementation
 3. Archival
 
-It leaves implementation ready for review + archival in draft.
+It leaves the implementation ready for review + archival in draft.
 
 ![PR Stack](/image/programming/example-stack.png)
 
@@ -257,6 +257,6 @@ While this is not a loop itself, the human review can, of course, send us back i
 
 You can find my custom skills at: [https://github.com/JustinDFuller/.agents](https://github.com/JustinDFuller/.agents)
 
-OpenSpec:  [https://openspec.dev/](https://openspec.dev/)
+OpenSpec:  [https://openspec.dev/](https://openspec.dev/)
 
 The harness used in the examples in the post was [Codex CLI](https://learn.chatgpt.com/docs/codex/cli) and the code was generated with [GPT 5.6 Luna](https://developers.openai.com/api/docs/models/gpt-5.6-luna).
