@@ -1,6 +1,9 @@
 {
  "noProgress": true,
  "showFound": false,
+ "ignores": [
+   ".agents/skills/**/*.md"
+ ],
  "config": {
    "line-length": false,
    "no-inline-html": false,
