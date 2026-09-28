@@ -38,7 +38,7 @@ My workflow has three phases.
 
 The plan phase is a loop with a human in it. The execute phase is an agentic loop. Archive can send the process back into the loop.
 
-![High Level Workflow](image/programming/1-high-level-workflow.png)
+![High Level Workflow](/image/programming/1-high-level-workflow.jpg)
 
 ### Plan
 
@@ -48,7 +48,7 @@ The planning phase has a human in the loop.
 2. OpenSpec `/propose` skill to record the spec.
 3. Manually review and iterate on the spec.
 
-![Plan Phase](image/programming/2-plan.jpg)
+![Plan Phase](/image/programming/2-plan.jpg)
 
 #### Explore
 
@@ -56,7 +56,7 @@ The first step uses the `openspec-explore` skill.
 
 It directs the agent to explore the problem, investigate the codebase, compare options, ask question, and visualize flows.
 
-![Explore Prompt](image/programming/example-explore-skill.png)
+![Explore Prompt](/image/programming/example-explore-skill.png)
 
 #### Propose
 
@@ -64,7 +64,7 @@ The second step uses the `openspec-propose` skill.
 
 This generates all the OpenSpec files. I have the agent place them in a draft PR for easy reviewing.
 
-![Propose Prompt](image/programming/example-propose-skill.png)
+![Propose Prompt](/image/programming/example-propose-skill.png)
 
 The draft PR contains:
 
@@ -80,13 +80,13 @@ This covers:
 - How?
 - Process
 
-![OpenSpec Files](image/programming/example-openspec-files.png)
+![OpenSpec Files](/image/programming/example-openspec-files.png)
 
 If you’ve been having trouble reviewing AI code, you’ll find `proposal.md` particularly helpful.
 
 It has a brief “why” and “what changes” that does an excellent job of preparing a reviewer for the change.
 
-![proposal.md](image/programming/example-proposal.png)
+![proposal.md](/image/programming/example-proposal.png)
 
 The `spec.md` is critical reading before implementation.
 
@@ -94,7 +94,7 @@ It locks in the requirements and scenarios that must be covered.
 
 I carefully read this to ensure it is aligned with my expectations.
 
-![spec.md](image/programming/example-spec.png)
+![spec.md](/image/programming/example-spec.png)
 
 ### Execute
 
@@ -105,7 +105,7 @@ The execute phase is an agentic loop.
 3. OpenSpec `/verify` to check completion.  
 4. AI code review.
 
-![Execute Phase](image/programming/3-execute.jpg)
+![Execute Phase](/image/programming/3-execute.jpg)
 
 I use a standard execution loop for every OpenSpec change.
 
@@ -116,7 +116,7 @@ It has detailed requirements about:
 - Final State
 - PR structure
 
-![Standard Execution Loop Skill](image/programming/execution-loop-outline.png)
+![Standard Execution Loop Skill](/image/programming/execution-loop-outline.png)
 
 #### Required Invariants 
 
@@ -223,7 +223,7 @@ It always produces a 3-PR stack.
 
 It leaves implementation ready for review + archival in draft.
 
-![PR Stack](image/programming/example-stack.png)
+![PR Stack](/image/programming/example-stack.png)
 
 ### Finalize
 
@@ -235,7 +235,7 @@ After implementation is complete.
 
 While this is not a loop itself, the human review can, of course, send us back into one of the previous loops. I would go all the way back to the plan phase if a critical issue is found. I would jump right into the execution phase if a small issue is found.
 
-![Finalize Phase](image/programming/4-finalize.jpg)
+![Finalize Phase](/image/programming/4-finalize.jpg)
 
 ## Resources
 
