@@ -1,22 +1,10 @@
 ---
 title: Agentic OpenSpec Workflow
-date: 2026-07-10
+date: 2026-07-28
 draft: false
 tags: [Code]
 ---
----
-environment: pr
-section: programming
-slug: agentic-spec-driven-workflow
-title: Agentic Spec-Driven Workflow
-date: 2026-09-20
-draft: false
-sync: add
-tags:
-  - programming
-  - ai
-  - spec-driven-development
----
+
 In this post I'll share my agentic OpenSpec workflow that I use for software development.
 
 ## Pre-Requisites
