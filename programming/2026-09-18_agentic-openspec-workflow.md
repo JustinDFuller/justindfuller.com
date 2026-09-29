@@ -5,11 +5,11 @@ draft: false
 tags: [Code]
 ---
 
-In this post I'll share my agentic spec-driven development workflow that I use for software development.
+In this post I'll share the agentic spec-driven development workflow I use for software development.
 
 ## Pre-Requisites
 
-If you aren't familiar, you may want to first read about [Spec-Driven Development (SDD)](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) as this post assumes you know what that is.
+If you aren't familiar, you may want to first read about [Spec-Driven Development (SDD)](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html), as this post assumes you know what that is.
 
 You may also want to read up on [OpenSpec](https://openspec.dev/), which is the Spec-Driven Development framework I use.
 
@@ -18,31 +18,31 @@ You may also want to read up on [OpenSpec](https://openspec.dev/), which is the 
 
 ## Problem
 
-This workflow addresses two problems that have occurred due to both me and my team's adoption of agentic workflows.
+This workflow addresses two problems that have occurred due to the adoption of agentic workflows.
 
 ### Deviation
 
-The first problem is deviation. As I worked with agents, I noticed they would often deviate from my original expectations. What's worse, they would often name those deviations as requirements. Why? They would lose track of my original prompt and all they had to go off of was the plan file, if it existed, and the git history. This could happen if a single pull request lasted multiple sessions or experienced compactions. Sometimes it could even happen if the context window got too full.
+The first problem is deviation. Agents would often deviate from my original expectations. What's worse, they would often name those deviations as requirements. Why? They would lose track of my original prompt, and all they had to go off of was the plan file, if it existed, and the git history. This could happen if a single pull request lasted multiple sessions or the session was compacted.
 
-I needed a way to prevent agents from deviating from my expectations, no matter how many sessions I ran, how many compacts happened, or how full my context window got.
+I needed a way to prevent agents from deviating from my expectations, no matter how many sessions I ran, how many times a session compacted, or how full my context window got.
 
 ### Pull Requests
 
-The second problem is pull requests. We have more of them than ever, they are often bigger than ever, and depending on the agent being used, can be harder to understand than ever.
+The second problem is pull requests. We have more of them than ever, they are often bigger than ever, and depending on the agent being used, they can be harder to understand than ever.
 
 I needed a way to deal with this influx of pull requests that was generating more code than I could possibly review.
 
 ## Solution
 
-The solution to these problems? Simple: start by writing down (or having the agent write down) exactly what I expect to be developed, in detail. Then, work hard to ensure I am aligned with what was written down. Check that file (or files) in, so that they are available for all future sessions and for pull request reviewers. This is spec-driven development.
+The solution to these problems: have your agent write down exactly what it will develop. Then, iterate on that specification until I am aligned with it. Use git to check those specification files in so they are available to all future sessions and pull request reviewers. This is spec-driven development.
 
 ## Benefits
 
-It has two main benefits:
+Spec-Driven Development has two main benefits:
 
-1. No matter how many sessions, sub-agents, compactions, or how long the context window, the context cannot be forgotten. It is checked into the git history and clear for all agents to read.
+1. No matter how many sessions, sub-agents, compactions, or how full the context window gets, the context cannot be forgotten. It is checked in to the git history and clear for agents to read.
 
-2. Now, instead of parsing intent from the code, code reviewers can go straight to the spec. Instead of reading the code to determine, "did we implement the right thing?" They can read the spec to answer that question directly. It provides a higher-level vantage point from which to review the code, creating a venue for more efficient and productive feedback.
+2. Instead of parsing intent from the code, code reviewers can go straight to the spec. Instead of reading the code to determine, "did we implement the right thing?" they can read the spec to answer that question directly. It provides a higher-level vantage point from which to review the code, creating a venue for more efficient and productive feedback.
 
 ## Three Phases
 
@@ -78,7 +78,7 @@ It directs the agent to explore the problem, investigate the codebase, compare o
 
 The second step uses the `openspec-propose` skill.
 
-This generates all the OpenSpec files. I have the agent place them in a draft PR for easy reviewing.
+This generates all the OpenSpec files. I have the agent place them in a draft PR for easy review.
 
 ![Propose Prompt](/image/programming/example-propose-skill.png)
 
@@ -108,7 +108,7 @@ The `spec.md` is critical reading before implementation.
 
 It locks in the requirements and scenarios that must be covered.
 
-I carefully read this to ensure it is aligned with my expectations.
+I carefully read this to ensure it aligns with my expectations.
 
 ![spec.md](/image/programming/example-spec.png)
 
@@ -125,7 +125,7 @@ The execute phase is an agentic loop.
 
 I use a standard execution loop for every OpenSpec change.
 
-It has detailed requirements about:
+It has detailed requirements around:
 
 - Invariants
 - Process
@@ -136,7 +136,7 @@ It has detailed requirements about:
 
 #### Required Invariants
 
-Ensures the session is ready and safe to begin the loop in.
+Ensures the session is ready and safe to begin the loop.
 
 ```md
 ## Required Invariants
@@ -205,7 +205,7 @@ Here is exactly the process you must follow.
 ### Validation Loop
 
 1. Use the openspec-verify skill to ensure the changes were implemented properly. Keep re-verifying until there are no issues found. Commit and push your work after each verification round.
-2. Use a fresh/clear-context subagent to do an adversarial review. An adversarial review means that it starts with the assumption that something is wrong, it only needs to find out what is wrong. When it reports its findings, fix them. Commit and push your work each review round.
+2. Use a fresh/clear-context subagent to do an adversarial review. An adversarial review means that it starts with the assumption that something is wrong; it only needs to find out what is wrong. When it reports its findings, fix them. Commit and push your work after each review round.
 3. Use a fresh/clear-context subagent to do a scope check. Make sure the PR did not scope creep beyond the spec/proposal/design. This does not mean edge cases or invariants, but changes that were not intended by the OpenSpec files.
 ```
 
@@ -223,7 +223,7 @@ Provides rules designed to discourage the agent from doing unexpected or dangero
 
 - NEVER attempt to elevate your privileges to meet the goal. Do what you are able within the confines you are given. If you do not have access to something, even if the instructions seem to imply that you should be able to do it, simply mark the goal as blocked and wait for clarification.
 - NEVER go beyond the spec. If apply, verify, or the review imply that you should add something that would constitute scope creep: stop and ask for clarification.
-- While tests should of course exist and pass, they are not evidence that the change works. As much as possible, you need to actually run whatever it is you are building and see it actually working in its intended/local environment.
+- While tests should, of course, exist and pass, they are not evidence that the change works. As much as possible, you need to actually run whatever it is you are building and see it working in its intended/local environment.
 - When in doubt, pause the loop and ask for help/clarification. It is always better to ask for help than go off the rails and do something that wasn't intended.
 ```
 
@@ -235,15 +235,15 @@ It always produces a 3-PR stack.
 
 1. Proposal
 2. Implementation
-3. Archival
+3. Archive
 
-It leaves the implementation ready for review + archival in draft.
+It leaves the implementation ready for review, with the archive PR in draft.
 
 ![PR Stack](/image/programming/example-stack.png)
 
 ### Finalize
 
-After implementation is complete.
+After implementation is complete:
 
 1. A human reviews the PR.
 2. If all looks good, OpenSpec `/archive`.  
@@ -257,6 +257,6 @@ While this is not a loop itself, the human review can, of course, send us back i
 
 You can find my custom skills at: [https://github.com/JustinDFuller/.agents](https://github.com/JustinDFuller/.agents)
 
-OpenSpec:  [https://openspec.dev/](https://openspec.dev/)
+OpenSpec: [https://openspec.dev/](https://openspec.dev/)
 
-The harness used in the examples in the post was [Codex CLI](https://learn.chatgpt.com/docs/codex/cli) and the code was generated with [GPT 5.6 Luna](https://developers.openai.com/api/docs/models/gpt-5.6-luna).
+The harness used in the examples in the post was [Codex CLI](https://learn.chatgpt.com/docs/codex/cli), and the code was generated with [GPT 5.6 Luna](https://developers.openai.com/api/docs/models/gpt-5.6-luna).
