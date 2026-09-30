@@ -5,7 +5,7 @@ draft: false
 tags: [Code]
 ---
 
-In this post I'll share the agentic spec-driven development workflow I use for software development.
+In this post, I'll share the workflow I use every day for software development. It is agentic, meaning it gives agents a good deal of freedom to complete their tasks unattended. It uses Spec-Driven Development to keep the agents aligned with my expectations.
 
 ## Pre-Requisites
 
