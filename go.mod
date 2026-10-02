@@ -7,7 +7,7 @@ require github.com/pkg/errors v0.9.1
 require golang.org/x/sync v0.23.0
 
 require (
-	cloud.google.com/go/cloudtasks v1.19.0
+	cloud.google.com/go/cloudtasks v1.20.0
 	github.com/SherClockHolmes/webpush-go v1.4.0
 	github.com/alecthomas/chroma/v2 v2.27.0
 	github.com/golangci/golangci-lint v1.64.8
@@ -23,10 +23,12 @@ require (
 require (
 	4d63.com/gocheckcompilerdirectives v1.3.0 // indirect
 	4d63.com/gochecknoglobals v0.2.2 // indirect
+	cloud.google.com/go v0.123.0 // indirect
 	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	cloud.google.com/go/iam v1.11.0 // indirect
+	cloud.google.com/go/longrunning v1.2.0 // indirect
 	cloud.google.com/go/secretmanager v1.16.0 // indirect
 	github.com/4meepo/tagalign v1.4.2 // indirect
 	github.com/Abirdcfly/dupword v0.1.3 // indirect
