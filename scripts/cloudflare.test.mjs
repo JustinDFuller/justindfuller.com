@@ -98,6 +98,13 @@ for (const scenario of [
     success: false,
   },
   {
+    name: "missing transformation protection rejected",
+    mode: "production",
+    noindex: false,
+    success: false,
+    transformable: true,
+  },
+  {
     name: "changed HTML rejected",
     mode: "production",
     noindex: false,
@@ -131,11 +138,16 @@ for (const scenario of [
           location: location + (scenario.dropQuery ? "" : url.search),
         });
       } else if (url.pathname === "/") {
+        if (!scenario.transformable)
+          response.setHeader(
+            "Cache-Control",
+            "public, max-age=0, must-revalidate, no-transform",
+          );
         response.writeHead(200);
         response.end(scenario.mismatch ? "different" : html);
         return;
       } else if (url.pathname === "/grass/worker.js") {
-        response.writeHead(200, { "Cache-Control": "no-store" });
+        response.writeHead(200, { "Cache-Control": "no-transform, no-store" });
       } else response.writeHead(404);
       response.end();
     });

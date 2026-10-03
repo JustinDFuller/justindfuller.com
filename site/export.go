@@ -232,10 +232,11 @@ func Export(directory string, indexable bool) (Manifest, error) {
 	if err := write("_redirects", []byte(redirects)); err != nil {
 		return manifest, err
 	}
-	headers := "/grass/worker.js\n  Cache-Control: no-store\n"
+	headers := "/*\n  Cache-Control: public, max-age=0, must-revalidate, no-transform\n"
 	if !indexable {
-		headers = "/*\n  X-Robots-Tag: noindex\n" + headers
+		headers += "  X-Robots-Tag: noindex\n"
 	}
+	headers += "/grass/worker.js\n  Cache-Control: no-store\n"
 	if err := write("_headers", []byte(headers)); err != nil {
 		return manifest, err
 	}
