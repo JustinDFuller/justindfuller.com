@@ -1,14 +1,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#fafafa" />
-{{- $siteTitle := "Justin D Fuller" -}}
-{{- $pageTitle := .Title -}}
-{{- $subTitle := .SubTitle -}}
-{{- $fullTitle := $pageTitle -}}
-{{- if and (ne $pageTitle "") (ne $subTitle "") -}}
-  {{- $fullTitle = printf "%s: %s" $pageTitle $subTitle -}}
-{{- end -}}
-{{- if eq $pageTitle "" -}}
+{{- $siteTitle := "Justin D Fuller" -}} {{- $pageTitle := .Title -}} {{-
+$subTitle := .SubTitle -}} {{- $fullTitle := $pageTitle -}} {{- if and (ne
+$pageTitle "") (ne $subTitle "") -}} {{- $fullTitle = printf "%s: %s" $pageTitle
+$subTitle -}} {{- end -}} {{- if eq $pageTitle "" -}}
 <title>{{ $siteTitle }}</title>
 <meta name="description" content="{{ $siteTitle }}" />
 <meta property="og:title" content="{{ $siteTitle }}" />
@@ -16,16 +12,14 @@
 <title>{{ $fullTitle }} | {{ $siteTitle }}</title>
 <meta name="description" content="{{ $fullTitle }} | {{ $siteTitle }}" />
 <meta property="og:title" content="{{ $fullTitle }} | {{ $siteTitle }}" />
-{{- end -}}
-
-{{ if eq .Meta "" -}}
+{{- end -}} {{ if eq .Meta "grass" -}}
+<link rel="icon" href="/image/grass.ico" sizes="any" />
+<link rel="icon" href="/image/grass.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/image/grass-apple-touch-icon.png" />
+<link rel="manifest" href="/grass.webmanifest" />
+{{ else -}}
 <link rel="icon" href="/image/favicon.ico" sizes="any" />
 <link rel="icon" href="/image/icon.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/image/icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-{{ else -}}
-<link rel="icon" href="/image/{{ .Meta }}.ico" sizes="any" />
-<link rel="icon" href="/image/{{ .Meta }}.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="/image/{{ .Meta }}-apple-touch-icon.png" />
-<link rel="manifest" href="/{{ .Meta }}.webmanifest" />
 {{ end -}}

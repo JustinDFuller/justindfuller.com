@@ -18,7 +18,7 @@ To figure out why we keep falling into the rewrite trap, I want to first step ba
 
 ### Cold–what?
 
-My first job was with a fun, scrappy startup called [SignUpGenius](www.signupgenius.com). Most of SignUpGenius's code had been written before I was even thinking of becoming a web developer, on a platform called Coldfusion (you've probably never heard of it), with a sprinkling of Angular.js. We had no microservices, no Node.js, no React, Go, Docker, or Kubernetes. Our production deployment consisted of arriving early in the morning to manually copy over files and debug issues (I told you we were scrappy).
+My first job was with a fun, scrappy startup called [SignUpGenius](https://www.signupgenius.com). Most of SignUpGenius's code had been written before I was even thinking of becoming a web developer, on a platform called Coldfusion (you've probably never heard of it), with a sprinkling of Angular.js. We had no microservices, no Node.js, no React, Go, Docker, or Kubernetes. Our production deployment consisted of arriving early in the morning to manually copy over files and debug issues (I told you we were scrappy).
 
 Yes, this situation is not ideal and, no, I am not advocating for anyone to manually FTP files for their production deploys. However, one thing that cannot be denied is that we were very productive. Granted, the Coldfusion code was old, but we were constantly improving it. There was never talk of a rewrite; instead, the code was improved, little by little, each time we worked on adding a feature or fixing a bug.
 

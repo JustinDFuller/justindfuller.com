@@ -24,3 +24,11 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 node_modules
+/dist/
+/.cloudflare/
+/.wrangler/
+/wrangler.config.ts
+/cloudflare.config.ts
+/cloudflare-artifact.tar
+/cloudflare-artifact.sha256
+/cloudflare-deployment.log

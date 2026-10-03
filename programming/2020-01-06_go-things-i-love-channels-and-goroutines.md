@@ -15,7 +15,7 @@ tags: [Code]
 
 This series, _Go Things I Love_, is my attempt to show the parts of Go that I like the best, as well as why I love working with it at [The New York Times](https://open.nytimes.com).
 
-In my last post [Go Things I Love: Methods On Any Type](/2019/12/go-things-i-love-methods-on-any-type/), I demonstrated a feature of Go that makes it easy to build Object-Oriented software.
+In my last post [Go Things I Love: Methods On Any Type](/programming/go-things-i-love-methods-on-any-type), I demonstrated a feature of Go that makes it easy to build Object-Oriented software.
 
 This post, _Channels and Goroutines_, will demonstrate a few neat concurrency patterns in Go.
 

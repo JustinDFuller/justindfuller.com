@@ -68,7 +68,7 @@ The only configuration I changed was setting the model to [gpt-5 codex](https://
 
 With that done, it was vibe-coding time!
 
-![Codex in my terminal](/image/programming//daily_dash/10_terminal_codex.png)
+![Codex in my terminal](/image/programming/daily_dash/10_terminal_codex.png)
 
 If you look at the [very first commit](https://github.com/JustinDFuller/daily-dash/commit/1637c223299a78ba32ae11497c1ba906876f78a3), you'll see two primary files: `REQUIREMENTS.md` and `IMPLEMENTATION_PLAN.md`.
 

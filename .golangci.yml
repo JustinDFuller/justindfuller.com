@@ -32,6 +32,12 @@ linters:
     - unparam
     - wastedassign
     - whitespace
+  exclusions:
+    paths: [node_modules]
+    rules:
+      - path: "^(site|cmd/export-static)/|^main\\.go$"
+        linters: [revive]
+        text: "(should have comment|should have a package comment)"
   settings:
     exhaustruct:
       include:
