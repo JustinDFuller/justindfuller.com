@@ -285,21 +285,36 @@ func validateLinks(root *os.Root, manifest Manifest) error {
 		if err != nil {
 			return err
 		}
-		checkCSS(route, body)
 		base, err := url.Parse("https://static.invalid" + route)
 		if err != nil {
 			return err
 		}
 		tokens := html.NewTokenizer(strings.NewReader(string(body)))
+		inStyle := false
 		for {
 			tokenType := tokens.Next()
 			if tokenType == html.ErrorToken {
 				break
 			}
+			token := tokens.Token()
+			if token.Data == "style" {
+				switch tokenType {
+				case html.StartTagToken:
+					inStyle = true
+				case html.EndTagToken:
+					inStyle = false
+				}
+			}
+			if inStyle && tokenType == html.TextToken {
+				checkCSS(route, []byte(token.Data))
+			}
 			if tokenType != html.StartTagToken && tokenType != html.SelfClosingTagToken {
 				continue
 			}
-			for _, attr := range tokens.Token().Attr {
+			for _, attr := range token.Attr {
+				if attr.Key == "style" {
+					checkCSS(route, []byte(attr.Val))
+				}
 				if attr.Key != "src" && attr.Key != "href" {
 					continue
 				}
