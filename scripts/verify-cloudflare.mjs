@@ -87,10 +87,16 @@ await Promise.all(
           throw new Error("production indexing is restricted");
         if (
           job.path === "/grass/worker.js" &&
-          response.headers.get("cache-control") !== "no-store"
+          !/\bno-store\b/i.test(response.headers.get("cache-control") ?? "")
         )
           throw new Error("cleanup service worker must use no-store");
         if (job.method === "GET" && job.status === 200) {
+          if (
+            !/\bno-transform\b/i.test(
+              response.headers.get("cache-control") ?? "",
+            )
+          )
+            throw new Error("HTML must prevent edge transformations");
           const pathname = new URL(job.path, base).pathname;
           const filename = pathname.endsWith("/")
             ? `${pathname.slice(1)}index.html`

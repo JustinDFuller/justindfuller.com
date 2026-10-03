@@ -90,6 +90,9 @@ func TestStaticExportMatchesServer(t *testing.T) {
 			if bytes.Contains(headers, []byte("noindex")) == indexable {
 				t.Errorf("incorrect indexing headers: %s", headers)
 			}
+			if !bytes.Contains(headers, []byte("/*\n  Cache-Control: public, max-age=0, must-revalidate, no-transform\n")) {
+				t.Errorf("missing artifact preservation policy: %s", headers)
+			}
 			if !bytes.Contains(headers, []byte("/grass/worker.js\n  Cache-Control: no-store\n")) {
 				t.Errorf("missing cleanup cache policy: %s", headers)
 			}

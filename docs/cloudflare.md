@@ -2,6 +2,8 @@
 
 Go renders public pages at build time and Workers Static Assets serves production on `justindfuller.com` and `www.justindfuller.com`. Both hostnames serve the same site. Markdown, templates, source files, drafts, and the private validation manifest are excluded from public assets. Grass reminders remain removed; its cleanup service worker uses `Cache-Control: no-store`.
 
+Exported responses use `Cache-Control: public, max-age=0, must-revalidate, no-transform` to preserve their bytes through Cloudflare. The cleanup worker additionally uses `no-store`; matching header rules combine these directives. Cloudflare honors `no-transform` by suppressing JavaScript Detections injection and edge compression or image transformations. This keeps strict artifact verification intact without changing zone-wide Bot Fight Mode or unrelated applications. See [Cloudflare Cache-Control behavior](https://developers.cloudflare.com/cache/concepts/cache-control/).
+
 ## Build and Validate
 
 Use Go 1.26 and Node 22. Install pinned tooling with `npm ci`, then run `go test ./...` and `node --test scripts/*.test.mjs`.
