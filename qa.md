@@ -1,0 +1,287 @@
+# Obsidian Programming Sync QA
+
+> Historical baseline: Sections 1 and 2 below document the Drive-backed implementation and its 2026-09-20 tests and manual smoke runs. They do not validate the current GCS, manifest, S3 publisher, or CloudFront migration described in section 3.
+
+## 1. Tests to run to verify the spec
+
+Status values used below:
+
+- `PASS`: the exact scenario was exercised by an automated test or manual smoke test.
+- `PARTIAL`: related coverage exists, but the exact scenario still needs a dedicated test or environment.
+- `NOT RUN`: the test requires production deployment, an alerting destination, or an external mutation that was intentionally not performed.
+
+### Source layout
+
+- [ ] `QA-01` A supported root Markdown file is discovered.
+- [ ] `QA-02` A supported nested image below `image/` is discovered.
+- [ ] `QA-03` An unsupported file or directory is reported and isolated from valid files.
+
+### Markdown metadata
+
+- [ ] `QA-04` Complete supported programming metadata produces a valid candidate.
+- [ ] `QA-05` Missing, malformed, unknown, or unsupported metadata invalidates only that Markdown revision.
+- [ ] `QA-06` Missing, empty, or malformed tags invalidates only that Markdown revision.
+
+### Environment targeting
+
+- [ ] `QA-07` A `prd` file is eligible in production, previews, and local development.
+- [ ] `QA-08` A `pr` file is eligible in previews and local development, but not production.
+- [ ] `QA-09` A `local` file is eligible only in local development.
+- [ ] `QA-10` Preview or local authentication failure preserves Git-backed content and exposes the failure.
+
+### Additive and overwrite merging
+
+- [ ] `QA-11` A valid additive entry is served at its new route.
+- [ ] `QA-12` A valid overwrite entry replaces exactly one local route while retaining the local fallback.
+- [ ] `QA-13` An additive collision leaves the local route unchanged and reports the collision.
+- [ ] `QA-14` A missing or ambiguous overwrite target is rejected without affecting other routes.
+
+### Draft behavior
+
+- [ ] `QA-15` A draft additive entry is excluded from public lists, routes, and the sitemap.
+- [ ] `QA-16` A draft overwrite masks its local route rather than exposing the local post.
+
+### Image synchronization
+
+- [ ] `QA-17` A valid nested `.jpg`, `.png`, or `.svg` image is served through the synchronized post.
+- [ ] `QA-18` A missing, unreadable, or invalid image is omitted while the post remains available.
+- [ ] `QA-19` An image reference outside the synchronized source is omitted and reported.
+- [ ] `QA-20` An unsupported image format is omitted and reported without invalidating the post.
+
+### File-level isolation
+
+- [ ] `QA-21` An invalid Markdown post does not affect a valid post or its valid image.
+- [ ] `QA-22` An invalid image does not affect its valid Markdown post or unrelated content.
+- [ ] `QA-23` Multiple independent file errors remain isolated from one another and from valid content.
+
+### Closed Markdown validation set
+
+- [ ] `QA-24` A file satisfying exactly the specified Markdown validation set is accepted.
+- [ ] `QA-25` Malformed or unsupported Markdown content is rejected according to the specified rules.
+- [ ] `QA-26` A valid file revision remains usable while another file is invalid.
+- [ ] `QA-27` Content conditions outside the validation set are not rejected by undocumented heuristics.
+
+### Invalid-file and source failure behavior
+
+- [ ] `QA-28` A never-before-published invalid file is omitted without affecting valid content.
+- [ ] `QA-29` A previously published file that becomes invalid retains its last-known-good revision.
+- [ ] `QA-30` A source outage after successful synchronization retains the last-known-good external overlay.
+
+### Production graceful degradation
+
+- [ ] `QA-31` A temporary first production synchronization failure leaves Git-backed pages and the local sitemap available.
+- [ ] `QA-32` An initial production credential, configuration, or authorization failure leaves Git-backed pages available and avoids a tight retry loop.
+- [ ] `QA-33` A temporary production source failure recovers and clears the active failure after reconciliation.
+- [ ] `QA-34` A corrected production credential or authorization failure resumes synchronization and emits recovery information.
+- [ ] `QA-35` A later production source failure preserves the last-known-good external state and marks it stale.
+- [ ] `QA-36` An unavailable production image is omitted without failing the post, programming collection, or sitemap.
+
+### Authentication
+
+- [ ] `QA-37` Local synchronization uses the macOS Keychain authorized-user OAuth credential.
+- [ ] `QA-38` Missing, malformed, or service-account local credentials produce a configuration issue without falling back to a credential file.
+- [ ] `QA-39` Preview and production use hosted ADC and do not invoke the local Keychain reader.
+
+### Deletion behavior
+
+- [ ] `QA-40` Deleting an additive Drive file removes only the external route and does not change Git content.
+- [ ] `QA-41` Deleting an overwrite Drive file restores the matching local route and does not change Git content.
+
+### Observability
+
+- [ ] `QA-42` Protected diagnostics identify local, additive Obsidian, and Obsidian-overwrite route provenance.
+- [ ] `QA-43` Invalid files expose file identity, revision, category, actionable message, route, and fallback state.
+- [ ] `QA-44` Correcting an invalid file publishes the valid revision and emits recovery information.
+
+### Notifications
+
+- [ ] `QA-45` A new invalid-file or source-wide issue produces an administrator-notifiable signal.
+- [ ] `QA-46` Reobserving the same issue does not produce an unbounded duplicate notification.
+- [ ] `QA-47` Correcting an issue resolves it and produces recovery information.
+
+### Sitemap
+
+- [ ] `QA-48` A valid, published external programming route appears in the sitemap.
+- [ ] `QA-49` Draft, invalid, environment-ineligible, and unsupported files do not appear in the sitemap.
+- [ ] `QA-50` Removing an external entry updates the sitemap without removing unrelated local URLs.
+
+### Homepage and source safety
+
+- [ ] `QA-51` Synchronized posts do not modify the dynamic homepage feature-post collection.
+- [ ] `QA-52` Synchronization performs no Drive or repository mutation.
+- [ ] `QA-53` A collision or invalid file changes only runtime overlay state and does not mutate Git or Drive.
+
+## 2. What was done for each test and the results
+
+Test date: 2026-09-20.
+
+The automated tests were run against implementation commit `a4966cc` on branch `codex/obsidian-programming-sync-final`; the current head `dc9e173` contains only this QA-record wording update. No credentials or token values are recorded here.
+
+### Automated validation
+
+Commands run:
+
+```sh
+GOCACHE=/private/tmp/justindfuller-go-cache go test ./...
+GOCACHE=/private/tmp/justindfuller-go-cache go test -race ./...
+GOCACHE=/private/tmp/justindfuller-go-cache go vet ./...
+openspec validate --changes --strict --no-interactive
+git diff --check
+```
+
+Results:
+
+- `go test ./...`: `PASS`; all packages passed, including `obsidian`.
+- `go test -race ./...`: `PASS`; the `obsidian` package passed under the race detector.
+- `go vet ./...`: `PASS`.
+- OpenSpec strict validation: `PASS`; one change validated successfully.
+- `git diff --check`: `PASS`; no whitespace errors.
+
+The first `go test ./...` attempt used the default macOS Go build cache and was blocked by the sandbox from reading that cache. Repeating the same test with the task-local `GOCACHE` above passed; this was a test-environment issue, not a product failure.
+
+Automated scenario results:
+
+| Tests | What was run | Result |
+| --- | --- | --- |
+| `QA-01`, `QA-02` | `TestStoreAddsValidEntryAndRewritesImage` with root Markdown and a nested PNG image | `PASS` |
+| `QA-03`, `QA-20` | `TestUnsupportedImageIsolatedFromPost` and `TestUnsupportedRootLayoutIsolatedFromValidPost` | `PASS` |
+| `QA-04` | Valid metadata through `TestStoreAddsValidEntryAndRewritesImage` | `PASS` |
+| `QA-05`, `QA-06` | `TestInvalidMarkdownDoesNotBlockValidPost`, `TestMetadataRejectsUnknownKeysAndMalformedTags`, and `TestInvalidMetadataRevisionsDoNotBlockValidPost` | `PASS` |
+| `QA-07`, `QA-08`, `QA-09` | `TestEnvironmentPromotionMatrix` | `PASS` |
+| `QA-10` | Malformed/service-account credential rejection tests; source-failure fallback tests | `PARTIAL`: unit behavior is covered, but a live preview/local authentication outage was not induced |
+| `QA-11` | `TestStoreAddsValidEntryAndRewritesImage` | `PASS` |
+| `QA-12`, `QA-16`, `QA-41` | `TestOverwriteAndDraftMaskLocalRoute` | `PASS` |
+| `QA-13` | `TestRouteCollisionRetainsPreviousOwner` | `PASS` |
+| `QA-14` | `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
+| `QA-15` | `TestLocalDraftRouteIsNotResolved` and `TestDraftAdditiveEntryIsExcludedFromRoutesAndSitemap` | `PASS` |
+| `QA-17` | `TestSupportedJPEGAndSVGImagesAreServed`, title, balanced-parenthesis, escaped-parenthesis, and nested-path image tests | `PASS`; MIME types and standard Markdown destination/title/parenthesis/escape syntax were asserted |
+| `QA-18` | `TestInvalidImageOnlyOmitsImage`, `TestInvalidImageBytesOnlyOmitImage`, and the 503 download case | `PASS`; an image-specific 503 remains an `image_download` issue, omits only that image, and keeps the post available |
+| `QA-19` | `TestRawHTMLImageIsOmittedWithoutBlockingPost` and `TestMultilineRawHTMLImageIsOmitted` | `PASS` for outside-source raw HTML images, including multiline tags |
+| `QA-21` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; an invalid Markdown file does not affect a valid post or its valid image |
+| `QA-22` | Invalid image download and invalid image bytes tests | `PASS` |
+| `QA-23` | `TestIndependentErrorsDoNotBlockValidContent` | `PASS`; independent Markdown metadata and image-validation failures are both reported while valid content publishes |
+| `QA-24`, `QA-25`, `QA-27` | Valid rendering, malformed and malformed-angle image syntax, Markdown image titles including parentheses, balanced/escaped destinations, multiline raw HTML images, fenced/indented/inline/multiline-inline code with exact delimiter lengths, outside-source images, metadata escaping, and executable-content tests | `PASS` for the implemented validation cases |
+| `QA-26` | `TestInvalidMetadataRevisionsDoNotBlockValidPost`, `TestIndependentErrorsDoNotBlockValidContent`, and last-known-good revision tests | `PASS` for valid-content isolation during invalid revisions |
+| `QA-28` | `TestInvalidMarkdownDoesNotBlockValidPost` | `PASS` |
+| `QA-29` | `TestInvalidLayoutRevisionRetainsLastKnownGoodPost` and `TestUnpublishableRevisionRetainsLastKnownGoodPost` | `PASS` |
+| `QA-30`, `QA-35` | `TestSourceFailureRetainsLastKnownGoodAndMarksStale` and `TestMarkdownDownloadSourceFailureRetainsLastKnownGood` with generic transport failure, plus typed EOF classification | `PASS` for fallback/stale state and generic/typed transport classification; production deployment was not used |
+| `QA-31`, `QA-32`, `QA-33`, `QA-34`, `QA-36` | Production nonblocking, source-initialization nonblocking, failure classification, fallback, and image-isolation unit coverage | `PARTIAL`: production-specific failure/recovery drills remain outstanding |
+| `QA-37` | Keychain credential unit test plus live local Keychain-backed synchronization | `PASS` |
+| `QA-38` | Malformed and service-account credential unit tests | `PARTIAL`: missing-item behavior was not induced live |
+| `QA-39` | Successful hosted PR preview synchronization | `PASS` |
+| `QA-40`, `QA-50` | `TestSynchronizationEventsAreDeduplicatedAndDeletionIsObservable`, `TestAdditiveDeletionRemovesRouteAndPreservesLocalSitemapEntries`, and overwrite restoration sitemap assertions | `PASS` |
+| `QA-42`, `QA-43` | Diagnostics model tests and live protected diagnostics checks | `PASS` |
+| `QA-44` | `TestCorrectedFileEmitsRecoveryEventWithoutDuplicateNotifications` | `PASS` for valid revision publication and recovery event; external alert delivery remains untested |
+| `QA-45`, `QA-46` | Event/issue deduplication behavior | `PARTIAL`: structured log signals are covered, but no external alert destination is configured or tested |
+| `QA-47` | `TestCorrectedFileEmitsRecoveryEventWithoutDuplicateNotifications` | `PARTIAL`: recovery event and notification deduplication are tested, but no external alert destination is configured |
+| `QA-48`, `QA-49` | `TestBuildSitemapPreservesBaseAndAddsProgrammingEntries`, draft/environment tests, `TestDraftAdditiveEntryIsExcludedFromRoutesAndSitemap`, and live sitemap checks | `PASS` for valid-route inclusion and current exclusions |
+| `QA-51` | Unknown metadata rejection prevents unsupported feature behavior | `PARTIAL`: no dedicated homepage snapshot comparison was run |
+| `QA-52`, `QA-53` | Read-only source interfaces, collision tests, invalid-file tests, and code review | `PARTIAL`: no external mutation audit can be proven by a runtime smoke test |
+
+The hardening passes added regression coverage for unsupported root layout items, metadata isolation, JPEG/SVG assets, draft additive entries, code-sample preservation, HTML-safe external metadata, Markdown download source failures, configured non-production timeouts, callback reentrancy, additive deletion/sitemap reconciliation, corrected-file recovery, image-specific 503 isolation, OAuth token-endpoint 5xx classification, standard Markdown image titles with parentheses and balanced/escaped destinations, malformed angle destinations, exact-length inline-code delimiters, multiline raw HTML image removal, independent file-error isolation, images in fenced and multiline inline code, generic transport recovery, source-initialization request isolation, and hosted parser-lint compliance.
+
+### Local manual smoke test
+
+The local server was started with the Keychain-backed OAuth credential and the configured Drive folder. The credential was read from the existing macOS Keychain item; its value was never printed. This smoke test was rerun against commit `28d33ba` after the parser, source-initialization, dynamic-cache, and transport-classification hardening.
+
+Steps:
+
+1. Start the local server with `OBSIDIAN_ENVIRONMENT=local`, the configured Drive folder ID, and `OBSIDIAN_DIAGNOSTICS_TOKEN="$(security find-generic-password -a "$USER" -s "justindfuller.com/obsidian-diagnostics-token" -w)"`; the application receives the token through its environment configuration.
+2. Request `/programming/obsidian-local-keychain-test`.
+3. Extract the generated `/__obsidian/image/<token>` reference from the HTML.
+4. Request that image URL.
+5. Request `/sitemap.xml`.
+6. Request `/__obsidian/diagnostics` with the Keychain diagnostics token.
+7. Request `/__obsidian/diagnostics` without authorization.
+8. Compare the synchronized image hash with the repository source image.
+
+Observed results:
+
+- Post response: HTTP `200`.
+- Sitemap response: HTTP `200`.
+- Image reference: present in the rendered post.
+- Image response: HTTP `200`, MIME type `image/png`, `4762` bytes.
+- Image SHA-256: `6f60d49a6d4e4f3b808d2ceb123499fb6fe2ff45f1c7deaf20cc833d1a6dfaf0`.
+- Sitemap: contained `obsidian-local-keychain-test`.
+- Dynamic programming and sitemap responses returned `Cache-Control: no-store`; synchronized image responses retained the content-addressed long-cache policy.
+- Unknown post response: HTTP `404` with `Cache-Control: no-store`.
+- Unknown synchronized image response: HTTP `404` with `Cache-Control: no-store`.
+- Authorized diagnostics: HTTP `200`; route provenance was `{source: "obsidian", mode: "add"}`.
+- Unauthorized diagnostics: HTTP `404`.
+- Diagnostics reported `Test.md` as valid and `Test-NonProd.md` as invalid with a `markdown_metadata` issue.
+- The invalid test file did not prevent the valid synchronized post, image, or sitemap from being served.
+- The local synchronized image hash matched `image/rain.png` in the repository.
+
+Local manual results: `PASS` for `QA-37`, `QA-42`, `QA-43`, `QA-48`, and the valid-content portions of `QA-01`, `QA-02`, `QA-11`, `QA-17`, `QA-21`, and `QA-23`.
+
+### PR preview manual smoke test
+
+Steps:
+
+1. Request the synchronized post route on `https://pr-390-dot-justindfuller.uc.r.appspot.com`.
+2. Request the preview sitemap.
+3. Extract and request the synchronized image URL.
+4. Compare the preview image hash with the local and repository hashes.
+5. Request diagnostics with the protected token.
+6. Request diagnostics without authorization.
+
+Observed results:
+
+- Post response: HTTP `200`.
+- Sitemap response: HTTP `200` and contained `obsidian-local-keychain-test`.
+- Image response: HTTP `200`, MIME type `image/png`, `4762` bytes.
+- Preview image SHA-256 matched both the local response and repository source image.
+- Authorized diagnostics: HTTP `200`; the route was reported as Obsidian additive content.
+- Unauthorized diagnostics: HTTP `404`.
+- The same invalid `Test-NonProd.md` issue was reported without preventing the valid route from serving.
+
+PR preview manual results: `PASS` for `QA-39`, `QA-42`, `QA-43`, `QA-48`, and the valid-content portions of `QA-01`, `QA-02`, `QA-11`, and `QA-17`.
+
+### Remaining QA gates
+
+The following are intentionally recorded as incomplete rather than treated as passed:
+
+- No production deployment or production `environment: prd` content smoke test has been run.
+- No live source outage, missing production credential, denied folder access, or recovery drill has been run.
+- No actual Cloud Logging/Monitoring notification destination has been configured or tested.
+- No destructive Drive deletion test has been run against the configured source.
+- A dedicated homepage feature-post noninterference comparison remains outstanding.
+
+## 3. GCS and CloudFront migration status (2026-09-26)
+
+**Overall status: LIVE OBSIDIAN S3 PUBLISHING AND GCS MANIFEST SYNC VERIFIED; CDN DELIVERY BLOCKED.** The storage-only CloudFormation stack is live. Obsidian startup reconciliation published all 20 images and Google Sync copied the matching manifest to GCS. CloudFront remains blocked by AWS account verification; app responsiveness and repeated reconciliation remain under investigation.
+
+### Current configuration evidence
+
+- On 2026-09-24, the live Obsidian Google Sync plugin was switched to GCS with `syncFolder: Blog`, `autoSync: true`, a one-minute interval, `driveEnabled: false`, and `gcsEnabled: true`. A manual sync completed. Before switching, all 22 local `Blog/` files had matching names and MD5 checksums at `gs://justindfuller-obsidian-prd/Documents/Blog/`; after switching, the 22 local and 22 GCS names still matched. Only nonsecret settings were inspected. The manifest was subsequently published and synced on 2026-09-26, as verified below.
+- The App Engine default service account `justindfuller@appspot.gserviceaccount.com` currently has project-level `roles/editor` and legacy bucket `projectEditor` grants. This provides GCS read access, but it is not a read-only identity. The sync code performs read operations; reducing the broader IAM grants is a separate, unverified least-privilege change that may affect other application operations.
+- The current checkout targets `gs://justindfuller-obsidian-prd/Documents/Blog/` with `OBSIDIAN_GCS_BUCKET`, `OBSIDIAN_GCS_PREFIX`, and `OBSIDIAN_MEDIA_BASE_URL` in `.appengine/app.yaml` and the Makefile. This target configuration has not been deployed or proven to match the live sync plugin's object mapping.
+- The runtime code lists GCS metadata and uses object generations for revisions. It downloads the manifest only when its generation changes, caches parsed Markdown while its revision and the shared image revision epoch stay unchanged, and defaults to a 60-second reconciliation interval. The Go application does not download image bytes and does not serve `/__obsidian/image/`; it emits immutable URLs under `https://media.justindfuller.com/v1/`.
+- Manifest version 1 is `{"version":1,"images":{...}}`. Each `image/...` entry contains `sha256`, `md5`, `size`, `contentType`, and `key`, where `key` is `v1/<sha256>.<extension>`. The runtime checks source GCS image MD5 and size against the manifest. Missing or malformed manifest is source-wide and retains the last-known-good overlay; an absent or mismatched individual image record omits only that reference.
+- `tools/obsidian-image-publisher/` contains the desktop Obsidian S3 publisher. It validates JPG, PNG, and safe SVG bytes, uploads content-addressed immutable objects, verifies destination metadata, and writes the manifest note to `Blog/asset-manifest.json`. The Google Sync GCS backend must then sync the note into `Documents/Blog/asset-manifest.json` and sync source image objects to the matching paths.
+- During the first rollout on 2026-09-24, the ACM certificate was issued in `us-east-1` after its validation CNAME was added at Squarespace Domains and confirmed at the authoritative nameserver and a public resolver. The reviewed full-stack change set was executed, but CloudFront denied distribution creation with `Your account must be verified before you can add new CloudFront resources`. Rollback completed; the only retained resource was an empty S3 bucket, which was verified to have no objects or versions and removed. The failed stack record was also removed. No media hostname CNAME or live CDN request has been completed.
+- On 2026-09-26, the template was changed to support `EnableDelivery=false`. The reviewed storage-only change set created exactly the S3 bucket, HTTPS-only bucket policy, upload managed policy, and monthly cost budget. The `justindfuller-media` stack reached `CREATE_COMPLETE`; its bucket is `justindfuller-media-mediabucket-5wskocvnc1ob`. All four public-access blocks, AES256 encryption, versioning, and the secure-transport deny were verified. A later unexecuted delivery change set adds the CloudFront resources and modifies the bucket policy without replacing the bucket or upload policy.
+- The dedicated IAM user `obsidian-media-publisher` has only the stack's uploader managed policy. Its access key was created and stored directly in macOS Keychain; no credential file was written and no credential values were printed. The publisher destination is saved as label `media`, the stack bucket, and region `us-east-1`. The corrected settings were loaded after restarting Obsidian, and live startup reconciliation successfully published the images.
+- The publisher's actual S3 transport uploaded and verified `obsidian-sync-test.png` as `v1/6f60d49a6d4e4f3b808d2ceb123499fb6fe2ff45f1c7deaf20cc833d1a6dfaf0.png`, size 4,762 bytes, MIME type `image/png`, using the dedicated Keychain credential. An anonymous HEAD request to its direct S3 URL returned HTTP 403. This verifies the credential and S3 path, not live Obsidian publishing or public CDN delivery.
+- After an app restart, the live publisher settings were loaded with the correct bucket and region. Obsidian became unresponsive when reconciliation reached credential reading. The publisher used synchronous native Keychain calls despite its asynchronous wrapper; these were replaced with awaited `AsyncEntry` operations so a credential permission prompt does not block the Electron UI thread. Packaging verifies the native binding exposes `AsyncEntry`. Packaging, all 10 publisher tests, and TypeScript checking passed; the updated bundle is installed in the live vault. After the next Obsidian restart, the live publisher created a 6,486-byte manifest containing all 20 images. S3 HEAD checks verified size, MIME type, SHA-256/MD5 metadata, and immutable cache headers for every object; the bucket contains exactly 20 objects totaling 4,116,533 bytes. Google Sync copied the identical manifest to GCS (MD5 `LnqnsV6Pl+u/Cv7lTNR6yw==`), and all 23 source objects matched the local two Markdown files, manifest, and 20 image records. No image bytes were downloaded during these destination checks. Computer Use still showed a sparse accessibility tree and a `checking` status; app responsiveness, repeated reconciliation, and the suspected permission prompt remain unconfirmed.
+
+### Migration acceptance gates
+
+| Gate | Required evidence | Status |
+| --- | --- | --- |
+| `MIG-01` | Change the live Obsidian Google Sync backend to GCS, disable Drive, and confirm the `Blog/` vault folder maps to the configured `Documents/Blog/` prefix without divergent dual-backend state. | `PASS`; settings, manual sync, and 22 matching source names/checksums were verified |
+| `MIG-02` | Confirm private GCS contains the current Markdown, each matching `image/...` source object, and exactly one synced version-1 `asset-manifest.json`. | `PASS`; 23 GCS source objects match the local Markdown, manifest, and all 20 image records |
+| `MIG-03` | Verify metadata listing and generation-pinned Markdown/manifest reads in each environment. Separately assess the current project `roles/editor` and bucket `projectEditor` grants before any least-privilege reduction; verify application impact and avoid treating the existing runtime identity as read-only. | GCS read access currently exists through broad grants; end-to-end sync verification and IAM reduction are `NOT RUN` |
+| `MIG-04` | Install and configure the Obsidian Image Publisher, validate a sample image, upload it, verify immutable S3 metadata, and confirm its matching manifest entry reaches GCS. | `PASS`; live startup reconciliation published all 20 images; every S3 object and the synced GCS manifest were verified |
+| `MIG-05` | Provision the reviewed media stack in `us-east-1`, issue/validate the ACM certificate, attach the distribution CNAME at the existing DNS provider, and confirm CloudFront serves the test object over HTTPS. | `PARTIAL/BLOCKED`; storage-only stack deployed and certificate issued; CloudFront remains blocked by AWS account verification |
+| `MIG-06` | Configure the publisher with a dedicated non-root uploader identity restricted to the `v1/*` prefix and the `PutObject` plus `GetObject` permission needed by its upload and `HeadObject` verification path. Store the access key only in macOS Keychain. | `PASS`; scoped dedicated identity and Keychain storage verified; live Obsidian uploaded all 20 images |
+| `MIG-07` | Verify a synced post renders the `media.justindfuller.com` immutable URL, browser requests go directly to CloudFront, and image downloads never hit the Go application. | `NOT RUN` |
+| `MIG-08` | Verify a missing image or stale/mismatched manifest record removes only that image, while invalid/missing manifest preserves the last-known-good overlay and reports the source issue. | `NOT RUN` against the GCS/S3 integration |
+| `MIG-09` | In PR preview, verify post, sitemap, protected diagnostics, direct CDN response, and source freshness within the configured one-minute reconciliation window; repeat on production only after an approved rollout. | `NOT RUN` |
+| `MIG-10` | Confirm media delivery cost controls and alert delivery after rollout; inspect plan eligibility, S3 charges, and actual budget notifications. | `NOT RUN` |
+
+The publisher's 10 unit tests passed on 2026-09-26. AWS `validate-template`, shell syntax validation, and `git diff --check` passed for the staged template/scripts. Local cfn-lint and cfn-guard tools were unavailable, so their schema/security rule suites were not run; the AWS change sets, successful storage deployment, and direct security configuration checks are separate evidence. A complete application test run, live Obsidian/GCS integration check, and public CDN/preview/production smoke remain separate gates.
+
+### Cost and access caveats
+
+The CloudFront subscription in the proposed delivery phase is the `$0/month FREE` plan with baseline allowances of 1 million viewer requests, 100 GB transfer, and 5 GB S3 Standard storage credit per month. No CloudFront subscription is active during the storage-only phase, so ordinary S3 storage and API charges apply without that credit. This is not a guarantee that the overall workflow costs $0. The deployed `$1/month` budget sends alerts and cannot stop spending; alert delivery remains untested. Confirm plan eligibility and budget delivery; allowances are not hard caps. Once delivery is enabled, the image URL is public to anyone who knows it; private Markdown and the S3 origin remain separate and private. See `infra/media/README.md` for resource-retention behavior, budget limitations, and rollout commands.

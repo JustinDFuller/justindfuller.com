@@ -2,6 +2,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -16,6 +17,7 @@ import (
 	"github.com/justindfuller/justindfuller.com/aphorism"
 	grass "github.com/justindfuller/justindfuller.com/make"
 	"github.com/justindfuller/justindfuller.com/nature"
+	"github.com/justindfuller/justindfuller.com/obsidian"
 	"github.com/justindfuller/justindfuller.com/poem"
 	"github.com/justindfuller/justindfuller.com/programming"
 	"github.com/justindfuller/justindfuller.com/review"
@@ -65,6 +67,10 @@ func setOneYearCache(w http.ResponseWriter) {
 	w.Header().Set("Cache-Control", cacheControlOneYear)
 }
 
+func setNoStore(w http.ResponseWriter) {
+	w.Header().Set("Cache-Control", "no-store")
+}
+
 func withOneDayCache(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		setOneDayCache(w)
@@ -75,6 +81,13 @@ func withOneDayCache(handler func(http.ResponseWriter, *http.Request)) func(http
 func withOneYearCache(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		setOneYearCache(w)
+		handler(w, r)
+	}
+}
+
+func withSyncCache(handler func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		setNoStore(w)
 		handler(w, r)
 	}
 }
@@ -171,6 +184,17 @@ func main() {
 				break
 			}
 		}
+	}
+
+	obsidianConfig := obsidian.ConfigFromEnv()
+	if reminderConfig.ObsidianDiagnosticsToken != "" {
+		obsidianConfig.DiagnosticsToken = reminderConfig.ObsidianDiagnosticsToken
+	}
+	obsidianStore := obsidian.NewStore(obsidianConfig)
+	baseSitemap, err := os.ReadFile(".routes/index.xml")
+	if err != nil {
+		logWarning("Error reading base sitemap", err)
+		baseSitemap = nil
 	}
 
 	http.HandleFunc("/aphorism/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
@@ -424,12 +448,13 @@ func main() {
 		}
 	}))
 
-	http.HandleFunc("/programming", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
+	http.HandleFunc("/programming", withSyncCache(func(w http.ResponseWriter, r *http.Request) {
 		entries, err := programming.GetEntries()
 		if err != nil {
 			log.Printf("Error getting programming entries: %s", err)
 			entries = []programming.Entry{} // Use empty slice on error
 		}
+		entries = obsidianStore.Entries(r.Context(), entries)
 		log.Printf("Programming handler - number of entries: %d", len(entries))
 		if err := templates.ExecuteTemplate(w, "/programming/main.template.html", data[programming.Entry]{
 			Title:   "Programming",
@@ -439,7 +464,7 @@ func main() {
 		}
 	}))
 
-	http.HandleFunc("/programming/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/programming/", withSyncCache(func(w http.ResponseWriter, r *http.Request) {
 		// If this is exactly /programming/, redirect to /programming
 		if r.URL.Path == "/programming/" {
 			http.Redirect(w, r, "/programming", http.StatusMovedPermanently)
@@ -449,19 +474,28 @@ func main() {
 		last := len(paths) - 1
 
 		if len(paths) == 0 {
+			setNoStore(w)
 			http.Error(w, "Programming post not found.", http.StatusNotFound)
 			log.Printf("Programming post not found: %s", r.URL.Path)
 
 			return
 		}
 
-		entry, err := programming.GetEntry(paths[last])
+		localEntries, err := programming.GetEntries()
 		if err != nil {
+			localEntries = []programming.Entry{}
+		}
+		resolution := obsidianStore.Resolve(r.Context(), paths[last], localEntries, func() (programming.Entry, error) {
+			return programming.GetEntry(paths[last])
+		})
+		if resolution.Masked || !resolution.Found {
+			setNoStore(w)
 			http.Error(w, "Programming post not found.", http.StatusNotFound)
-			log.Printf("Programming post not found: %s - %s", r.URL.Path, err)
+			log.Printf("Programming post not found: %s", r.URL.Path)
 
 			return
 		}
+		entry := resolution.Entry
 
 		if err := templates.ExecuteTemplate(w, "/programming/entry.template.html", data[programming.Entry]{
 			Title:    entry.Title,
@@ -470,6 +504,42 @@ func main() {
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/programming/entry.template.html")
 		}
+	}))
+
+	http.HandleFunc("/__obsidian/diagnostics", func(w http.ResponseWriter, r *http.Request) {
+		authorized := obsidianConfig.DiagnosticsToken != "" && r.Header.Get("Authorization") == "Bearer "+obsidianConfig.DiagnosticsToken
+		if !authorized {
+			http.NotFound(w, r)
+			return
+		}
+		entries, err := programming.GetEntries()
+		if err != nil {
+			entries = []programming.Entry{}
+		}
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(obsidianStore.Diagnostics(r.Context(), entries)); err != nil {
+			log.Printf("obsidian diagnostics response error=%s", err)
+		}
+	})
+
+	http.HandleFunc("/sitemap.xml", withSyncCache(func(w http.ResponseWriter, r *http.Request) {
+		entries, err := programming.GetEntries()
+		if err != nil {
+			entries = []programming.Entry{}
+		}
+		entries = obsidianStore.Entries(r.Context(), entries)
+		var sitemap []byte
+		if len(baseSitemap) > 0 {
+			sitemap, err = obsidian.BuildSitemap(baseSitemap, entries, obsidianConfig.SiteURL)
+		} else {
+			sitemap, err = obsidian.BuildSitemap(obsidian.FallbackSitemap(), entries, obsidianConfig.SiteURL)
+		}
+		if err != nil {
+			http.Error(w, "Sitemap unavailable", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/xml")
+		_, _ = w.Write(sitemap)
 	}))
 
 	http.HandleFunc("/review", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
