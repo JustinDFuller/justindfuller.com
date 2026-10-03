@@ -19,7 +19,6 @@ func TestStaticExportMatchesServer(t *testing.T) {
 			name = "production"
 		}
 		t.Run(name, func(t *testing.T) {
-
 			directory, err := os.MkdirTemp(".", ".static-test-")
 			if err != nil {
 				t.Fatal(err)
@@ -94,7 +93,6 @@ func TestStaticExportMatchesServer(t *testing.T) {
 			if !bytes.Contains(headers, []byte("/grass/worker.js\n  Cache-Control: no-store\n")) {
 				t.Errorf("missing cleanup cache policy: %s", headers)
 			}
-
 		})
 	}
 }
