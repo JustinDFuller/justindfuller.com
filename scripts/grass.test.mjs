@@ -100,3 +100,15 @@ test("Grass removes only its obsolete subscription and worker", async () => {
   await new Promise((resolve) => setImmediate(resolve));
   assert.deepEqual(removed, ["grass:subscription", "grass:worker"]);
 });
+
+test("Grass unregisters its obsolete worker when push is unavailable", async () => {
+  const removed = [];
+  harness([
+    {
+      active: { scriptURL: "https://example.com/grass/worker.js" },
+      unregister: async () => removed.push("grass"),
+    },
+  ]);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual(removed, ["grass"]);
+});

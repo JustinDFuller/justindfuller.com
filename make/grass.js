@@ -11,7 +11,7 @@ if ("serviceWorker" in navigator) {
           worker &&
           new URL(worker.scriptURL).pathname === "/grass/worker.js"
         ) {
-          const subscription = await registration.pushManager.getSubscription();
+          const subscription = await registration.pushManager?.getSubscription();
           if (subscription) await subscription.unsubscribe();
           await registration.unregister();
         }

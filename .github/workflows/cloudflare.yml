@@ -8,7 +8,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: cloudflare-${{ github.ref }}
+  group: cloudflare-${{ github.event_name == 'pull_request' && github.ref || 'staging' }}
   cancel-in-progress: true
 jobs:
   site:
