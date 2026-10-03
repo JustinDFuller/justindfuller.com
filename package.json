@@ -14,8 +14,9 @@
     "lint:md": "NODE_OPTIONS='--no-deprecation' markdownlint-cli2  **/*.md \"#node_modules\" --config .markdownlint-cli2.jsonc --fix | sed --expression='s/markdownlint-cli2 v0.11.0 (markdownlint v0.32.1)//g'",
     "test": "npm run format && npm run lint:js && npm run lint:css && npm run lint:md",
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
-    "dev:cloudflare": "cf dev --mode staging",
-    "deploy:cloudflare": "cf deploy --prebuilt --mode staging"
+    "dev:cloudflare": "cf dev --mode preview",
+    "deploy:cloudflare": "cf deploy --prebuilt --mode production",
+    "preview:cloudflare": "cf previews deploy --prebuilt --mode preview"
   },
   "repository": {
     "type": "git",

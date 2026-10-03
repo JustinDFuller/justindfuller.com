@@ -1,123 +1,28 @@
 ---
-
-name: Cleanup PR Preview
-
+name: Cleanup Cloudflare PR Preview
 on:
   pull_request:
     types: [closed]
-
+permissions:
+  contents: read
+concurrency:
+  group: cloudflare-refs/pull/${{ github.event.pull_request.number }}/merge
+  cancel-in-progress: false
 jobs:
   cleanup-preview:
-    name: Cleanup Preview Environment
-    runs-on: ubuntu-latest
     if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
-    
-    permissions:
-      contents: read
-      id-token: write
-      pull-requests: write
-
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
-          lfs: true
-
-      - name: Auth
-        id: auth
-        uses: "google-github-actions/auth@v3"
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-node@v7.0.0
         with:
-          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
-          create_credentials_file: true
-
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v3
-        with:
-          install_components: app-engine-python
-
-      - name: Delete Preview Service
-        id: cleanup
+          node-version: "22.x"
+      - name: Delete PR preview
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
-          CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ steps.auth.outputs.credentials_file_path }}
-        run: |
-          set -euo pipefail
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          SERVICE_NAME="pr-${PR_NUMBER}"
-          PROJECT_ID="justindfuller"
-
-          if DESCRIBE_OUTPUT=$(gcloud app services describe "${SERVICE_NAME}" \
-            --project="${PROJECT_ID}" \
-            --format="value(id)" 2>&1); then
-            echo "Cleaning up preview service: ${SERVICE_NAME}"
-            echo "service_found=true" >> "${GITHUB_OUTPUT}"
-
-            echo "Removing dispatch rules referencing ${SERVICE_NAME}"
-            gcloud app deploy .appengine/dispatch.yaml \
-              --project="${PROJECT_ID}" \
-              --quiet
-
-            if gcloud app services delete "${SERVICE_NAME}" --project="${PROJECT_ID}" --quiet; then
-              echo "Preview service ${SERVICE_NAME} deleted"
-            else
-              echo "Direct service deletion failed, attempting to delete versions individually"
-
-              VERSIONS=$(gcloud app versions list --service="${SERVICE_NAME}" --project="${PROJECT_ID}" --format="value(id)")
-
-              if [ -n "${VERSIONS}" ]; then
-                echo "Deleting versions: ${VERSIONS}"
-                while read -r VERSION_ID; do
-                  if [ -n "${VERSION_ID}" ]; then
-                    echo "Deleting version ${VERSION_ID}"
-                    gcloud app versions delete "${VERSION_ID}" \
-                      --service="${SERVICE_NAME}" \
-                      --project="${PROJECT_ID}" \
-                      --quiet || true
-                  fi
-                done <<< "${VERSIONS}"
-              else
-                echo "No versions found for ${SERVICE_NAME}"
-              fi
-
-              echo "Retrying preview service deletion"
-              gcloud app services delete "${SERVICE_NAME}" \
-                --project="${PROJECT_ID}" \
-                --quiet
-            fi
-
-            # Note: App Engine requires at least one version per service
-            # The service will be automatically removed when all versions are deleted
-            # and it's not the default service
-
-            echo "Preview environment cleanup completed"
-          else
-            if echo "${DESCRIBE_OUTPUT}" | grep -qiE "(does not contain service|NOT_FOUND)"; then
-              echo "Preview service ${SERVICE_NAME} not found, skipping cleanup"
-              echo "service_found=false" >> "${GITHUB_OUTPUT}"
-            else
-              echo "Failed to describe preview service ${SERVICE_NAME}:"
-              echo "${DESCRIBE_OUTPUT}"
-              exit 1
-            fi
-          fi
-
-      - name: Comment Cleanup Status
-        if: steps.cleanup.outputs.service_found == 'true'
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const pr_number = context.payload.pull_request.number;
-            const service_name = `pr-${pr_number}`;
-            
-            const comment_body = `## 🧹 Preview Environment Cleaned Up
-
-            The preview environment for PR #${pr_number} has been removed.
-
-            Service \`${service_name}\`, its versions, and preview routing have been removed from Google App Engine.`;
-            
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: pr_number,
-              body: comment_body
-            });
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          PREVIEW_NAME: pr-${{ github.event.pull_request.number }}
+        run: node scripts/delete-cloudflare-preview.mjs --name "$PREVIEW_NAME"

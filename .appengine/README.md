@@ -1,4 +1,8 @@
-# App Engine Deployment Configuration
+# Historical App Engine Configuration
+
+Production and new PR previews now use Cloudflare. The workflows described below have been retired; existing GAE services remain available for rollback and separately reviewed cleanup. See [Cloudflare deployment and rollback](../docs/cloudflare.md).
+
+## App Engine Deployment Configuration
 
 This directory contains the unified deployment configuration for both production and preview environments.
 
