@@ -95,5 +95,5 @@ lint-md-watch:
 
 .PHONY: deploy
 deploy:
-	@echo ${COLOR_GRAY}Begin gcloud app deploy.${COLOR_NC};
-	@gcloud app deploy --appyaml=./.appengine/app.yaml;
+	@npm run build:cloudflare -- --mode production
+	@npm run deploy:cloudflare

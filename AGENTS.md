@@ -13,7 +13,7 @@
 - `make server-fast` skips the expensive preflight steps when you only need a quick rebuild.
 - `make format` applies `go fmt`, then runs `npm run test` to format and lint JS/CSS/Markdown.
 - `npm run test` (invoked above) chains Prettier, ESLint, Stylelint, and Markdown linting with autofix.
-- `make build` produces a race-enabled binary `./justindfuller.com`; use `make deploy` only with valid GAE credentials.
+- `make build` produces a race-enabled binary `./justindfuller.com`; `make deploy` builds and deploys production to Cloudflare and requires an authorized Cloudflare credential.
 
 ## Coding Style & Naming Conventions
 

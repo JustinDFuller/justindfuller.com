@@ -1,9 +1,16 @@
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { parseArgs } from "node:util";
 
-const base = process.argv[2];
-if (!base)
-  throw new Error("Usage: node scripts/verify-cloudflare.mjs <base-url>");
+const { values, positionals } = parseArgs({
+  allowPositionals: true,
+  options: { mode: { type: "string" } },
+});
+const [base] = positionals;
+if (!base || !["production", "preview"].includes(values.mode))
+  throw new Error(
+    "Usage: node scripts/verify-cloudflare.mjs <base-url> --mode production|preview",
+  );
 const manifest = JSON.parse(
   readFileSync(".cloudflare/site-manifest.json", "utf8"),
 );
@@ -43,6 +50,13 @@ const jobs = [
     method: "GET",
     location,
   })),
+  {
+    path: "/about/?cutover=1&value=a%2Fb",
+    status: 301,
+    method: "GET",
+    location: "/about?cutover=1&value=a%2Fb",
+  },
+  { path: "/?cutover=1", status: 200, method: "GET" },
 ];
 let next = 0;
 await Promise.all(
@@ -59,19 +73,28 @@ await Promise.all(
           throw new Error(`status ${response.status}, expected ${job.status}`);
         if (
           job.location &&
-          new URL(response.headers.get("location"), base).pathname !==
-            job.location
+          new URL(response.headers.get("location"), base).href !==
+            new URL(job.location, base).href
         )
           throw new Error("incorrect redirect");
-        if (
-          job.status === 200 &&
-          response.headers.get("x-robots-tag") !== "noindex"
-        )
+        const indexing = response.headers.get("x-robots-tag") ?? "";
+        if (values.mode === "preview" && !/\bnoindex\b/i.test(indexing))
           throw new Error("missing noindex");
+        if (
+          values.mode === "production" &&
+          /\b(noindex|none)\b/i.test(indexing)
+        )
+          throw new Error("production indexing is restricted");
+        if (
+          job.path === "/grass/worker.js" &&
+          response.headers.get("cache-control") !== "no-store"
+        )
+          throw new Error("cleanup service worker must use no-store");
         if (job.method === "GET" && job.status === 200) {
-          const filename = job.path.endsWith("/")
-            ? `${job.path.slice(1)}index.html`
-            : `${job.path.slice(1)}.html`;
+          const pathname = new URL(job.path, base).pathname;
+          const filename = pathname.endsWith("/")
+            ? `${pathname.slice(1)}index.html`
+            : `${pathname.slice(1)}.html`;
           const actual = Buffer.from(await response.arrayBuffer());
           const expected = readFileSync(`dist/${filename}`);
           if (
@@ -79,6 +102,13 @@ await Promise.all(
             createHash("sha256").update(expected).digest("hex")
           )
             throw new Error("HTML differs from artifact");
+          if (
+            values.mode === "production" &&
+            /<meta\b[^>]*(?:noindex|content=["']none["'])/i.test(
+              actual.toString(),
+            )
+          )
+            throw new Error("production HTML restricts indexing");
         } else await response.body?.cancel();
         checked++;
       } catch (error) {

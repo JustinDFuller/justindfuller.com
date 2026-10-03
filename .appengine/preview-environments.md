@@ -1,4 +1,8 @@
-# Preview Environments for Pull Requests
+# Historical App Engine Configuration
+
+Production and new PR previews now use Cloudflare. The workflows described below have been retired; existing GAE services remain available for rollback and separately reviewed cleanup. See [Cloudflare deployment and rollback](../docs/cloudflare.md).
+
+## Preview Environments for Pull Requests
 
 This repository is configured to automatically deploy preview environments for pull requests to Google App Engine.
 

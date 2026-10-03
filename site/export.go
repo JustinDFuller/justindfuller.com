@@ -113,7 +113,7 @@ func outputPath(route string) (string, error) {
 	return strings.TrimPrefix(route, "/") + ".html", nil
 }
 
-func Export(directory string) (Manifest, error) {
+func Export(directory string, indexable bool) (Manifest, error) {
 	manifest := Manifest{}
 	abs, err := filepath.Abs(directory)
 	if err != nil {
@@ -232,7 +232,11 @@ func Export(directory string) (Manifest, error) {
 	if err := write("_redirects", []byte(redirects)); err != nil {
 		return manifest, err
 	}
-	if err := write("_headers", []byte("/*\n  X-Robots-Tag: noindex\n/grass/worker.js\n  Cache-Control: no-store\n")); err != nil {
+	headers := "/grass/worker.js\n  Cache-Control: no-store\n"
+	if !indexable {
+		headers = "/*\n  X-Robots-Tag: noindex\n" + headers
+	}
+	if err := write("_headers", []byte(headers)); err != nil {
 		return manifest, err
 	}
 	sort.Strings(manifest.Assets)
