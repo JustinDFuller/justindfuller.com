@@ -1,2 +1,8 @@
 node_modules
 *.swp
+/dist/
+/.cloudflare/
+/.wrangler/
+/cloudflare-artifact.tar
+/cloudflare-artifact.sha256
+/cloudflare-deployment.log

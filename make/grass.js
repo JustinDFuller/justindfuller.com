@@ -1,5 +1,25 @@
 if ("serviceWorker" in navigator) {
-	navigator.serviceWorker.register("/grass/worker.js");
+  navigator.serviceWorker
+    .getRegistrations()
+    .then(async (registrations) => {
+      for (const registration of registrations) {
+        const worker =
+          registration.active ||
+          registration.waiting ||
+          registration.installing;
+        if (
+          worker &&
+          new URL(worker.scriptURL).pathname === "/grass/worker.js"
+        ) {
+          const subscription = await registration.pushManager.getSubscription();
+          if (subscription) await subscription.unsubscribe();
+          await registration.unregister();
+        }
+      }
+    })
+    .catch((error) =>
+      console.error("Unable to remove old Grass reminders", error),
+    );
 }
 
 const main = document.querySelector("main");
@@ -251,7 +271,6 @@ function handleGrassSelect(target) {
 			.querySelector(".temperature").innerText = `${day.temperatureF}°F`;
 		document.getElementById("week-days").classList.remove("hidden");
 		document.getElementById("weekDayPrompt").classList.remove("hidden");
-		document.getElementById("notifications").classList.remove("hidden");
 	}
 }
 
@@ -267,60 +286,6 @@ function handleWaterLawnCheck(event) {
 	}
 }
 
-async function handleReminderClick() {
-	document.getElementById("notifications").classList.add("hidden");
-
-	const reg = await navigator.serviceWorker.getRegistration("/grass/service-worker.js");
-
-	if (!reg) {
-		alert("Unable to set up notifications.");
-		console.error("Service worker not found");
-
-		return;
-	}
-
-	Notification.requestPermission()
-		.then((permission) => {
-			if (permission !== "granted") {
-				alert("Unable to set up notifications.");
-				console.log("Permission not granted.", permission);
-
-				return;
-			} else {
-				reg.pushManager
-					.subscribe({
-						applicationServerKey:
-              "BMhhlc_OBTiPkzt6sYneuv_kWlgWATUFANJr5x1PBWpT7eMeVHLcW-oIzhOrZiiTGRITeqGVAphu1dGEpT_tYG0",
-						userVisibleOnly: true,
-					})
-					.then((subscription) => {
-						for (const date in forecast.days) {
-							const day = forecast.days[date];
-
-							if (day.willWater === true) {
-								const enc = new TextDecoder("utf-8");
-								const body = {
-									minutes:      forecast.minutesEachDay,
-									subscription: subscription.toJSON(),
-									time:         new Date(date),
-								};
-								const stringified = JSON.stringify(body);
-
-								console.log("Setting reminder for", { body, stringified });
-								fetch("/reminder/set", {
-									body:   stringified,
-									method: "POST",
-								});
-							}
-						}
-					});
-			}
-		})
-		.catch((e) => {
-			alert("Unable to set up notifications.");
-			console.error("Unable to set up notifications", e);
-		});
-}
 
 try {
 	const location = window.localStorage.getItem("location");

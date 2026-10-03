@@ -30,7 +30,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v7.0.0
         with:
-          node-version: '20.x'
+          node-version: '22.x'
 
       - name: Install npm
         run: npm ci
@@ -112,22 +112,6 @@ jobs:
             --project=justindfuller \
             --service="${SERVICE}" \
             --quiet
-
-      - name: Update Dispatch Rules
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          SERVICE_NAME="pr-${PR_NUMBER}"
-          
-          # Create a dispatch.yaml with the preview route
-          cat > dispatch.yaml << EOF
-          ---
-          dispatch:
-            - url: "${SERVICE_NAME}-dot-justindfuller.uc.r.appspot.com/*"
-              service: ${SERVICE_NAME}
-          EOF
-          
-          # Deploy only the dispatch rules for this preview
-          gcloud app deploy dispatch.yaml --project=justindfuller --quiet || true
 
       - name: Comment Preview URL
         uses: actions/github-script@v9

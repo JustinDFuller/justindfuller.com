@@ -22,12 +22,6 @@ handlers:
     secure: always
     expiration: "365d"
 
-  - url: /grass/worker.js
-    static_files: make/grass.worker.js
-    upload: make/grass.worker.js
-    secure: always
-    expiration: "1d"
-
   - url: /grass.webmanifest
     static_files: make/grass.webmanifest
     upload: make/grass.webmanifest
