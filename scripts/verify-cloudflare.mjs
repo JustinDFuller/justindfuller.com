@@ -1,15 +1,28 @@
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { parseArgs } from "node:util";
+import { setTimeout } from "node:timers/promises";
 
 const { values, positionals } = parseArgs({
   allowPositionals: true,
-  options: { mode: { type: "string" } },
+  options: {
+    mode: { type: "string" },
+    attempts: { type: "string", default: "7" },
+    "retry-delay-ms": { type: "string", default: "10000" },
+  },
 });
 const [base] = positionals;
 if (!base || !["production", "preview"].includes(values.mode))
   throw new Error(
     "Usage: node scripts/verify-cloudflare.mjs <base-url> --mode production|preview",
+  );
+const attempts = Number(values.attempts);
+const retryDelay = Number(values["retry-delay-ms"]);
+if (!Number.isInteger(attempts) || attempts < 1 || attempts > 7)
+  throw new Error("Verification attempts must be an integer from 1 to 7");
+if (!Number.isInteger(retryDelay) || retryDelay < 0 || retryDelay > 10000)
+  throw new Error(
+    "Retry delay must be an integer from 0 to 10000 milliseconds",
   );
 const manifest = JSON.parse(
   readFileSync(".cloudflare/site-manifest.json", "utf8"),
@@ -63,62 +76,74 @@ await Promise.all(
   Array.from({ length: 6 }, async () => {
     while (next < jobs.length) {
       const job = jobs[next++];
-      try {
-        const response = await fetch(new URL(job.path, base), {
-          method: job.method,
-          redirect: "manual",
-          signal: AbortSignal.timeout(30000),
-        });
-        if (response.status !== job.status)
-          throw new Error(`status ${response.status}, expected ${job.status}`);
-        if (
-          job.location &&
-          new URL(response.headers.get("location"), base).href !==
-            new URL(job.location, base).href
-        )
-          throw new Error("incorrect redirect");
-        const indexing = response.headers.get("x-robots-tag") ?? "";
-        if (values.mode === "preview" && !/\bnoindex\b/i.test(indexing))
-          throw new Error("missing noindex");
-        if (
-          values.mode === "production" &&
-          /\b(noindex|none)\b/i.test(indexing)
-        )
-          throw new Error("production indexing is restricted");
-        if (
-          job.path === "/grass/worker.js" &&
-          !/\bno-store\b/i.test(response.headers.get("cache-control") ?? "")
-        )
-          throw new Error("cleanup service worker must use no-store");
-        if (job.method === "GET" && job.status === 200) {
+      for (let attempt = 1; attempt <= attempts; attempt++) {
+        let response;
+        try {
+          response = await fetch(new URL(job.path, base), {
+            method: job.method,
+            redirect: "manual",
+            signal: AbortSignal.timeout(30000),
+          });
+          if (response.status !== job.status)
+            throw new Error(
+              `status ${response.status}, expected ${job.status}`,
+            );
           if (
-            !/\bno-transform\b/i.test(
-              response.headers.get("cache-control") ?? "",
-            )
+            job.location &&
+            new URL(response.headers.get("location"), base).href !==
+              new URL(job.location, base).href
           )
-            throw new Error("HTML must prevent edge transformations");
-          const pathname = new URL(job.path, base).pathname;
-          const filename = pathname.endsWith("/")
-            ? `${pathname.slice(1)}index.html`
-            : `${pathname.slice(1)}.html`;
-          const actual = Buffer.from(await response.arrayBuffer());
-          const expected = readFileSync(`dist/${filename}`);
-          if (
-            createHash("sha256").update(actual).digest("hex") !==
-            createHash("sha256").update(expected).digest("hex")
-          )
-            throw new Error("HTML differs from artifact");
+            throw new Error("incorrect redirect");
+          const indexing = response.headers.get("x-robots-tag") ?? "";
+          if (values.mode === "preview" && !/\bnoindex\b/i.test(indexing))
+            throw new Error("missing noindex");
           if (
             values.mode === "production" &&
-            /<meta\b[^>]*(?:noindex|content=["']none["'])/i.test(
-              actual.toString(),
-            )
+            /\b(noindex|none)\b/i.test(indexing)
           )
-            throw new Error("production HTML restricts indexing");
-        } else await response.body?.cancel();
-        checked++;
-      } catch (error) {
-        failures.push({ path: job.path, message: error.message });
+            throw new Error("production indexing is restricted");
+          if (
+            job.path === "/grass/worker.js" &&
+            !/\bno-store\b/i.test(response.headers.get("cache-control") ?? "")
+          )
+            throw new Error("cleanup service worker must use no-store");
+          if (job.method === "GET" && job.status === 200) {
+            if (
+              !/\bno-transform\b/i.test(
+                response.headers.get("cache-control") ?? "",
+              )
+            )
+              throw new Error("HTML must prevent edge transformations");
+            const pathname = new URL(job.path, base).pathname;
+            const filename = pathname.endsWith("/")
+              ? `${pathname.slice(1)}index.html`
+              : `${pathname.slice(1)}.html`;
+            const actual = Buffer.from(await response.arrayBuffer());
+            const expected = readFileSync(`dist/${filename}`);
+            if (
+              createHash("sha256").update(actual).digest("hex") !==
+              createHash("sha256").update(expected).digest("hex")
+            )
+              throw new Error("HTML differs from artifact");
+            if (
+              values.mode === "production" &&
+              /<meta\b[^>]*(?:noindex|content=["']none["'])/i.test(
+                actual.toString(),
+              )
+            )
+              throw new Error("production HTML restricts indexing");
+          } else await response.body?.cancel();
+          checked++;
+          break;
+        } catch (error) {
+          if (response?.body && !response.bodyUsed)
+            await response.body.cancel().catch(() => {});
+          if (attempt < attempts) {
+            await setTimeout(retryDelay);
+            continue;
+          }
+          failures.push({ path: job.path, message: error.message });
+        }
       }
     }
   }),
