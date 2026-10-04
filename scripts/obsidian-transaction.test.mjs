@@ -25,6 +25,7 @@ function setup(namespace = "staging") {
   let live = "prior-version",
     deployments = 0,
     failVerify = false,
+    verifiedPrior,
     failRollback = false;
   const serving = {
     identity: async () => live,
@@ -45,7 +46,7 @@ function setup(namespace = "staging") {
     verify: async (receipt) => {
       if (
         receipt.deployment !== live ||
-        (failVerify && live.startsWith("candidate"))
+        (failVerify && live.startsWith("candidate") && live !== verifiedPrior)
       )
         throw new Error("verification failed");
     },
@@ -59,9 +60,13 @@ function setup(namespace = "staging") {
     deployments: () => deployments,
     failVerification: () => {
       failVerify = true;
+      verifiedPrior = live;
     },
     failRollback: () => {
       failRollback = true;
+    },
+    setLive: (identity) => {
+      live = identity;
     },
   };
 }
@@ -168,5 +173,105 @@ test("production, staging and each PR have isolated accepted state and journals"
       "accepted/pr/2/current.json",
     ),
     /envelope mismatch/,
+  );
+});
+
+test("preview rollback with a new identity restores the exact prior accepted state", async () => {
+  const env = setup("pr/403");
+  const first = await env.transaction.publish(candidate, { bootstrap: true });
+  env.serving.rollback = async (_identity, receipt) => {
+    env.setLive("restored-preview");
+    return { ...receipt, deployment: env.live() };
+  };
+  env.failVerification();
+  await assert.rejects(
+    env.transaction.publish({ ...candidate, digest: "f".repeat(64) }),
+    /restored and verified/,
+  );
+  const accepted = await env.transaction.read(env.transaction.currentKey);
+  assert.equal(accepted.digest, first.accepted.digest);
+  assert.equal(accepted.receipt.deployment, "restored-preview");
+  assert.equal(accepted.artifact, first.accepted.artifact);
+  const journal = await env.transaction.read(env.transaction.journalKey);
+  assert.equal(journal.phase, "rolled_back");
+  assert.ok(await env.transaction.read(journal.prior.accepted));
+});
+
+test("reconciliation never overwrites an unrelated live deployment", async () => {
+  const env = setup();
+  await env.transaction.publish(candidate, { bootstrap: true });
+  const journal = await env.transaction.read(env.transaction.journalKey);
+  journal.phase = "prepared";
+  delete journal.receipt;
+  await env.transaction.write(env.transaction.journalKey, journal);
+  env.setLive("unrelated-version");
+  let rolledBack = false;
+  env.serving.rollback = async () => {
+    rolledBack = true;
+  };
+  await assert.rejects(env.transaction.reconcile(), /operator reconciliation/);
+  assert.equal(rolledBack, false);
+  assert.equal(env.live(), "unrelated-version");
+});
+
+test("lost deployment responses are rolled back only with proven candidate correlation", async () => {
+  for (const matching of [false, true]) {
+    const env = setup();
+    env.serving.deploy = async () => {
+      env.setLive("orphan-version");
+      throw new Error("response lost");
+    };
+    env.serving.matchesCandidate = async (input, identity) =>
+      input.artifact === candidate.artifact &&
+      identity === "orphan-version" &&
+      matching;
+    await assert.rejects(
+      env.transaction.publish(candidate, { bootstrap: true }),
+      matching ? /restored and verified/ : /rollback is unverified/,
+    );
+    assert.equal(env.live(), matching ? "prior-version" : "orphan-version");
+  }
+});
+
+test("lost preview rollback responses can recover a proven prior artifact with its actual new identity", async () => {
+  const env = setup();
+  const first = await env.transaction.publish(candidate, { bootstrap: true });
+  env.failVerification();
+  env.serving.rollback = async () => {
+    env.setLive("restored-preview");
+    throw new Error("rollback response lost");
+  };
+  await assert.rejects(
+    env.transaction.publish({ ...candidate, digest: "f".repeat(64) }),
+    /rollback is unverified/,
+  );
+  env.serving.recoverReceipt = async (receipt, identity) =>
+    identity === "restored-preview"
+      ? { ...receipt, deployment: identity }
+      : undefined;
+  await new PublicationTransaction(
+    env.store,
+    env.serving,
+    "staging",
+  ).reconcile();
+  const accepted = await env.transaction.read(env.transaction.currentKey);
+  assert.equal(accepted.receipt.deployment, "restored-preview");
+  assert.equal(accepted.digest, first.accepted.digest);
+});
+
+test("rollback with different artifact proof remains an incident", async () => {
+  const env = setup();
+  env.failVerification();
+  env.serving.rollback = async (_identity, receipt) => {
+    env.setLive("restored-preview");
+    return { ...receipt, artifact: "0".repeat(64), deployment: env.live() };
+  };
+  await assert.rejects(
+    env.transaction.publish(candidate, { bootstrap: true }),
+    /rollback is unverified/,
+  );
+  assert.equal(
+    await env.transaction.read(env.transaction.currentKey),
+    undefined,
   );
 });

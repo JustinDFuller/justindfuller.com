@@ -155,7 +155,12 @@ test("private state storage verifies metadata and bodies across fresh transactio
   let identity = "prior";
   const serving = {
     identity: async () => identity,
-    capture: async () => ({ deployment: identity }),
+    capture: async () => ({
+      deployment: identity,
+      artifact: "f".repeat(64),
+      archive: "rollback/staging/prior.tar",
+      verification: { pages: [] },
+    }),
     deploy: async () => {
       identity = "candidate";
       return identity;

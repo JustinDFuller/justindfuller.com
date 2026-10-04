@@ -82,6 +82,32 @@ async function main() {
   const images = values.overlay
     ? JSON.parse(readFileSync(values.overlay, "utf8")).images
     : {};
+  if (!images || Object.keys(images).length > 10000)
+    throw new Error("Image verification metadata exceeds limit");
+  for (const [key, record] of Object.entries(images)) {
+    const match = key.match(
+      /^v1\/([a-f0-9]{64})\.(png|jpg|jpeg|gif|webp|svg|avif)$/,
+    );
+    const types = {
+      png: "image/png",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      gif: "image/gif",
+      webp: "image/webp",
+      svg: "image/svg+xml",
+      avif: "image/avif",
+    };
+    if (
+      !match ||
+      record.key !== key ||
+      record.sha256 !== match[1] ||
+      record.contentType !== types[match[2]] ||
+      !Number.isSafeInteger(record.size) ||
+      record.size < 1 ||
+      record.size > 20 * 1024 * 1024
+    )
+      throw new Error("Invalid image verification metadata");
+  }
   if ((manifest.privateImages?.length ?? 0) > 0 && !isPrivate)
     throw new Error("Private images require authenticated verification");
   const failures = [];
@@ -100,6 +126,19 @@ async function main() {
       method: "GET",
       image: true,
     })),
+    ...(values.mode === "production"
+      ? Object.keys(images).map((key) => {
+          if (!/^v1\/[a-f0-9]{64}\.(png|jpg|jpeg|gif|webp|svg|avif)$/.test(key))
+            throw new Error("Invalid public image verification key");
+          return {
+            path: `https://media.justindfuller.com/${key}`,
+            status: 200,
+            method: "GET",
+            image: true,
+            publicImage: true,
+          };
+        })
+      : []),
     ...[
       "/__missing",
       "/story/nothing",
@@ -152,7 +191,9 @@ async function main() {
               await assertAccessDenied(url, credentials, accessConfig.team);
             response = await fetch(new URL(job.path, base), {
               method: job.method,
-              headers,
+              headers: job.publicImage
+                ? { "Accept-Encoding": "identity" }
+                : headers,
               redirect: "manual",
               signal: AbortSignal.timeout(30000),
             });
@@ -191,6 +232,7 @@ async function main() {
               throw new Error("cleanup service worker must use no-store");
             if (job.method === "GET" && job.status === 200) {
               if (
+                !job.publicImage &&
                 !/\bno-transform\b/i.test(
                   response.headers.get("cache-control") ?? "",
                 )
@@ -205,10 +247,20 @@ async function main() {
                     ? `${pathname.slice(1)}index.html`
                     : `${pathname.slice(1)}.html`;
               const image = job.image
-                ? images[pathname.slice("/__obsidian/media/".length)]
+                ? images[
+                    job.publicImage
+                      ? pathname.slice(1)
+                      : pathname.slice("/__obsidian/media/".length)
+                  ]
                 : undefined;
               if (job.image && !image)
                 throw new Error("private image proof missing");
+              if (
+                job.publicImage &&
+                response.headers.get("cache-control") !==
+                  "public, max-age=31536000, immutable"
+              )
+                throw new Error("Public image caching differs");
               if (
                 job.image &&
                 (response.headers.get("content-type") !== image.contentType ||

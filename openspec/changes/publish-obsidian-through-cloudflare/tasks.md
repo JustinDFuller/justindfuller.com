@@ -5,7 +5,7 @@
 - [x] 1.1 Extract PR #390's source-independent metadata, Markdown, image-reference, and merge logic into current main; verify add/overwrite collisions, drafts, unsafe HTML, escaped/balanced image destinations, and code fences without Google or App Engine wiring.
 - [x] 1.2 Implement the strict nonprod/production post enum, separate deployment modes, and explicit legacy metadata migration/check; verify the target eligibility matrix, rejected aliases, draft exclusion, promotion, and demotion before fallback with focused tests.
 - [x] 1.3 Implement the version-1 private R2 source snapshot and metadata-only Go image reader; verify canonical hashes, pinned reads, path/schema limits, explicit image metadata, missing objects, and zero Go image-body requests with transport tests.
-- [ ] 1.4 Implement durable accepted-state serialization, current-code/target revalidation, isolated production/staging/PR/local state, and interruption journals; verify fresh-runner fallback, invalid revisions, removal/rename, ownership changes, collisions, demotion, and ambiguous promotion recovery.
+- [x] 1.4 Implement durable accepted-state serialization, current-code/target revalidation, isolated production/staging/PR/local state, and interruption journals; verify fresh-runner fallback, invalid revisions, removal/rename, ownership changes, collisions, demotion, and ambiguous promotion recovery.
 
 ## 2. Mac publishing and status
 

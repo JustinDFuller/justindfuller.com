@@ -32,7 +32,7 @@ func ValidateImagePromotion(prepared Prepared, local []programming.Entry) error 
 		used := map[string]ImageRecord{}
 		parsed, _ := validateMarkdown(file, raw, buildAssetIndex(files), func(remote RemoteFile) (Asset, error) {
 			record, found := images[remote.Path]
-			if !found {
+			if !found || prepared.Images[record.Key] != record {
 				return Asset{}, imageResolveError{category: "image_not_ready"}
 			}
 			used[record.Key] = record

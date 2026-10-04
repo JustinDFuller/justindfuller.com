@@ -45,9 +45,14 @@ func Prepare(source LoadedSource, previous State, local []programming.Entry, mod
 			files = append(files, RemoteFile{ID: record.Key, Name: path.Base(name), Path: name, Revision: record.SHA256, Size: record.Size, MD5: record.MD5, MimeType: record.ContentType})
 		}
 		used := map[string]ImageRecord{}
+		history := map[string]ImageRecord{}
 		resolve := func(remote RemoteFile) (Asset, error) {
 			record, found := images[remote.Path]
-			if !found || !validImageRecord(remote.Path, record) || !source.Ready[record.Key] {
+			if !found || !validImageRecord(remote.Path, record) {
+				return Asset{}, imageResolveError{category: "image_not_ready"}
+			}
+			history[remote.Path] = record
+			if !source.Ready[record.Key] {
 				return Asset{}, imageResolveError{category: "image_not_ready"}
 			}
 			used[remote.Path] = record
@@ -60,6 +65,7 @@ func Prepare(source LoadedSource, previous State, local []programming.Entry, mod
 		parsed, foundIssues := validateMarkdown(file, raw, buildAssetIndex(files), resolve, now)
 		parsed.Raw = raw
 		parsed.Images = used
+		parsed.ImageHistory = history
 		return parsed, foundIssues
 	}
 	for name, raw := range previous.Files {
@@ -105,7 +111,7 @@ func Prepare(source LoadedSource, previous State, local []programming.Entry, mod
 	replaced := map[string]bool{}
 	accept := func(parsed candidate, visible bool) {
 		result.State.Files[parsed.File.ID] = parsed.Raw
-		result.State.FileImages[parsed.File.ID] = parsed.Images
+		result.State.FileImages[parsed.File.ID] = parsed.ImageHistory
 		replaced[parsed.Entry.Slug] = true
 		if visible {
 			result.Entries = append(result.Entries, parsed.Entry)

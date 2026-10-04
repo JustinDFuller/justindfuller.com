@@ -51,8 +51,9 @@ type metadata struct {
 }
 
 type candidate struct {
-	Raw    []byte
-	Images map[string]ImageRecord
+	ImageHistory map[string]ImageRecord
+	Raw          []byte
+	Images       map[string]ImageRecord
 
 	File        RemoteFile
 	Entry       programming.Entry

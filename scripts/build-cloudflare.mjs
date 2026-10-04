@@ -1,11 +1,13 @@
 import { rmSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { parseArgs } from "node:util";
+import { publicationEnvironment } from "./obsidian-process.mjs";
 
 const { values } = parseArgs({
   options: {
     mode: { type: "string", default: "preview" },
     overlay: { type: "string" },
+    "publication-id": { type: "string" },
   },
 });
 if (!["production", "preview", "staging"].includes(values.mode))
@@ -36,11 +38,26 @@ for (const [command, args] of [
   ],
   ["cf", ["build", "--mode", values.mode]],
 ]) {
+  if (command === "cf" && values["publication-id"]) {
+    if (!/^[a-f0-9]{64}$/.test(values["publication-id"]))
+      throw new Error("Invalid publication identity");
+    writeFileSync(
+      "dist/__publication.json",
+      JSON.stringify({ version: 1, publication: values["publication-id"] }),
+    );
+    const manifest = JSON.parse(
+      readFileSync(".cloudflare/site-manifest.json", "utf8"),
+    );
+    manifest.assets.push("/__publication.json");
+    writeFileSync(".cloudflare/site-manifest.json", JSON.stringify(manifest));
+  }
   const result = spawnSync(command, args, {
     stdio: values.overlay ? "pipe" : "inherit",
     maxBuffer: 32 * 1024 * 1024,
     env: {
-      ...process.env,
+      ...(values.overlay
+        ? publicationEnvironment(process.env, "build")
+        : process.env),
       CLOUDFLARE_PREVIEW_BUILD: String(values.mode === "preview"),
     },
   });

@@ -74,6 +74,14 @@ npm run build:cloudflare -- --mode staging --overlay .obsidian-publish/staging.j
 
 The R2 reader uses `OBSIDIAN_SOURCE_ACCESS_KEY_ID` and `OBSIDIAN_SOURCE_SECRET_ACCESS_KEY` from the environment; supply them through a protected credential source. `--bootstrap` is an explicit initial-state decision and must not replace missing accepted state during ordinary publication. Staging/PR output and complete verification manifests belong in private R2 archives, never public Actions artifacts.
 
+For a code build during a source outage, explicitly revalidate that target's accepted state. Content-only reconciliation instead preserves the deployed site while reporting the source failure. Missing, incompatible, cross-target, or newly conflicting accepted state blocks deployment rather than silently replacing its overlay with Git-only content:
+
+```sh
+go run ./cmd/prepare-obsidian --accepted-only --state .obsidian-publish/accepted-production.json --mode production --out .obsidian-publish/degraded-production.json
+```
+
+Fallback retains each accepted file's own image revisions and draft masks. `--unavailable-images` accepts a private JSON array of unavailable immutable image keys; revalidation omits those references while retaining valid post bodies. Degraded preparation preserves the accepted source revision and produces a protected issue. It cannot be combined with source reads or bootstrap.
+
 ## Public image promotion
 
 Prepare production from a pinned source, authorize its effective image collection, promote with the separate source-read and media-write credentials, and then prepare again from the same pinned source. Missing or corrupt image originals/destinations mark only those references unavailable; credential failures block deployment. The second preparation removes unavailable references without changing the source revision or dropping valid post bodies. Never deploy the preliminary overlay after promotion reports unavailable references.
@@ -101,5 +109,9 @@ For a PR archive use `--target preview --pr <open-pr-number>`. Detailed reports 
 ## Verification and recovery
 
 Publication transactions journal the candidate, captured serving identity, and prior verified artifact before deployment. State is accepted only after exact artifact verification and a serving-identity check. Failed verification restores and verifies the captured prior version. Failed or unverified rollback leaves an incident journal and requires reconciliation; an orphan serving version is never accepted merely because it is live. Production, staging, and each PR use separate state namespaces.
+
+The Cloudflare serving adapter validates account, target, Worker name, domain settings, and production's absence of runtime bindings in a retained checksummed archive before deployment. Its prior artifact must pass live checks before private uploads. Every enabled native PR alias and immutable deployment URL is authenticated and checked independently. Production verification includes exact public image bytes, MIME, length, and immutable cache headers. Subprocesses capture output and receive only credentials for their preparation, build, deployment, or verification purpose.
+
+Production and staging rollback restore the captured Worker version at 100 percent traffic. Native preview rollback redeploys the exact prior archive, then records the new actual deployment ID and restores the matching prior accepted state after live verification. Private accepted-state backups and serving archives live under `rollback/`, outside the 14-day handoff lifecycle. A lost deployment or rollback response is reconciled using an opaque publication marker and full artifact verification; an unrelated live identity requires operator reconciliation. The archive parser rejects traversal, duplicate paths, links, unsupported metadata, malformed checksums, and incomplete data before extraction.
 
 Measure runner duration, deployment frequency, no-op skips, retries, upload-to-verification latency, and Cloudflare operations for both targets. Reassess observed usage after two weeks and after publishing volume changes, considering GitHub Actions and Cloudflare Builds equally. Include private staging serving and build costs in that comparison.

@@ -80,13 +80,57 @@ export class PublicationTransaction {
       await this.promote(journal);
       return;
     }
-    if (live !== journal.prior.identity)
-      await this.serving.rollback(journal.prior.identity);
-    if ((await this.serving.identity()) !== journal.prior.identity)
-      throw new Error(
-        "Interrupted publication rollback identity is unverified",
-      );
-    await this.serving.verify(journal.prior.receipt);
+    await this.restorePrior(journal);
+  }
+
+  async restorePrior(journal) {
+    let receipt = journal.prior.receipt;
+    const live = await this.serving.identity();
+    if (live !== journal.prior.identity) {
+      let restored = await this.serving.recoverReceipt?.(receipt, live);
+      if (!restored) {
+        const ownCandidate =
+          journal.receipt?.deployment === live ||
+          (await this.serving.matchesCandidate?.(journal.candidate, live));
+        if (!ownCandidate)
+          throw new Error(
+            "Unknown serving deployment requires operator reconciliation",
+          );
+        restored = await this.serving.rollback(journal.prior.identity, receipt);
+      }
+      if (restored) {
+        if (
+          !validIdentity(restored.deployment) ||
+          restored.artifact !== receipt.artifact ||
+          restored.archive !== receipt.archive ||
+          JSON.stringify(restored.verification) !==
+            JSON.stringify(receipt.verification)
+        )
+          throw new Error(
+            "Restored artifact proof differs from the prior deployment",
+          );
+        receipt = restored;
+      }
+    }
+    if ((await this.serving.identity()) !== receipt.deployment)
+      throw new Error("Rollback identity is unverified");
+    await this.serving.verify(receipt);
+    journal.prior.identity = receipt.deployment;
+    journal.prior.receipt = receipt;
+    journal.phase = "rollback_verified";
+    await this.write(this.journalKey, journal);
+    if (journal.prior.accepted) {
+      const prior = await this.read(journal.prior.accepted);
+      if (
+        !prior ||
+        prior.receipt?.artifact !== receipt.artifact ||
+        prior.archive !== receipt.archive
+      )
+        throw new Error(
+          "Prior accepted state is unavailable for verified rollback",
+        );
+      await this.write(this.currentKey, { ...prior, receipt });
+    }
     journal.phase = "rolled_back";
     await this.write(this.journalKey, journal);
   }
@@ -128,12 +172,25 @@ export class PublicationTransaction {
     }
     const priorReceipt =
       previous?.receipt ?? (await this.serving.capture(identity));
+    if (
+      priorReceipt?.deployment !== identity ||
+      !priorReceipt.archive ||
+      !priorReceipt.verification ||
+      !/^[a-f0-9]{64}$/.test(priorReceipt.artifact ?? "")
+    )
+      throw new Error("Prior deployment lacks a verified artifact receipt");
+    await this.serving.verify(priorReceipt);
+    let priorAccepted;
+    if (previous) {
+      priorAccepted = `rollback/accepted/${this.namespace}/${sha256(encoded(previous))}.json`;
+      await this.write(priorAccepted, previous);
+    }
     const journal = {
       version: 1,
       namespace: this.namespace,
       phase: "prepared",
       candidate,
-      prior: { identity, receipt: priorReceipt },
+      prior: { identity, receipt: priorReceipt, accepted: priorAccepted },
     };
     await this.write(
       `candidates/${this.namespace}/${sha256(encoded(candidate))}.json`,
@@ -159,13 +216,7 @@ export class PublicationTransaction {
       await this.write(this.journalKey, journal);
     } catch {
       try {
-        if ((await this.serving.identity()) !== identity)
-          await this.serving.rollback(identity);
-        if ((await this.serving.identity()) !== identity)
-          throw new Error("Rollback identity mismatch");
-        await this.serving.verify(priorReceipt);
-        journal.phase = "rolled_back";
-        await this.write(this.journalKey, journal);
+        await this.restorePrior(journal);
       } catch {
         journal.phase = "incident";
         await this.write(this.journalKey, journal).catch(() => {});
