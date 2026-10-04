@@ -67,9 +67,13 @@ export async function privateImage(request, bucket, allowlist) {
 export async function privateSite(request, env, allowlist) {
   const url = new URL(request.url);
   let response;
-  if (url.pathname.startsWith("/__obsidian/"))
-    response = await privateImage(request, env.OBSIDIAN_SOURCE, allowlist);
-  else response = await env.ASSETS.fetch(request);
+  try {
+    if (url.pathname.startsWith("/__obsidian/"))
+      response = await privateImage(request, env.OBSIDIAN_SOURCE, allowlist);
+    else response = await env.ASSETS.fetch(request);
+  } catch {
+    response = new Response(null, { status: 503 });
+  }
   const headers = new Headers(response.headers);
   for (const [key, value] of Object.entries(privateHeaders))
     headers.set(key, value);

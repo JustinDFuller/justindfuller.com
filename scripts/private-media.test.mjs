@@ -100,13 +100,27 @@ test("metadata corruption fails closed and streaming enforces the expected lengt
 test("all private HTML, static assets, redirects, missing routes and sitemaps disable caching", async () => {
   const env = {
     ASSETS: {
-      fetch: async () =>
-        new Response("asset", {
-          headers: { "cache-control": "public, max-age=3600" },
-        }),
+      fetch: async (request) => {
+        const path = new URL(request.url).pathname;
+        if (path === "/failure") throw new Error("private filename failure");
+        return new Response("asset", {
+          status: path === "/missing" ? 404 : path === "/redirect" ? 301 : 200,
+          headers: {
+            "cache-control": "public, max-age=3600",
+            ...(path === "/redirect" ? { location: "/" } : {}),
+          },
+        });
+      },
     },
   };
-  for (const path of ["/", "/asset.js", "/sitemap.xml", "/missing"]) {
+  for (const path of [
+    "/",
+    "/asset.js",
+    "/sitemap.xml",
+    "/missing",
+    "/redirect",
+    "/failure",
+  ]) {
     const response = await privateSite(
       new Request(`https://private.example${path}`),
       env,
@@ -117,5 +131,16 @@ test("all private HTML, static assets, redirects, missing routes and sitemaps di
       /private.*no-store.*no-transform/,
     );
     assert.match(response.headers.get("x-robots-tag"), /noindex/);
+    assert.equal(
+      response.status,
+      path === "/missing"
+        ? 404
+        : path === "/redirect"
+          ? 301
+          : path === "/failure"
+            ? 503
+            : 200,
+    );
+    if (path === "/failure") assert.equal(await response.text(), "");
   }
 });

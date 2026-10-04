@@ -12,6 +12,36 @@ Before uploading any private hosted artifact, activate Cloudflare Access and con
 
 The source uploader requires only source-bucket object read/write. CI source reads, media promotion, state/archive writes, protected report reads, deployment, and Access verification use distinct credentials. R2 object write permissions also permit deletion; the publisher and routine promotion path must never delete. Preserve existing production deployment authority and scope staging authority separately using the narrowest Cloudflare-supported permissions. Do not change zone-wide security settings for this rollout.
 
+## Access provisioning gate
+
+Enable Zero Trust on the site account before configuring the two self-hosted applications. The staging application must contain exactly one `worker` destination for the staging Worker's ID. The preview application must contain exactly one `preview_worker` destination for the production Worker's ID. Worker IDs are platform IDs, not the Worker names. These destinations cover the Worker's alternate domains and native previews; see [Cloudflare's Worker Access documentation](https://developers.cloudflare.com/workers/configuration/cloudflare-access/).
+
+Each application uses exactly two policies: an `allow` policy whose only include rule is the explicitly selected owner's exact `email`, and a `non_identity` Service Auth policy whose only include rule is the dedicated expiring `service_token`. Do not add everyone, email-domain, bypass, or alternate allow rules. Store the service client ID/secret separately from the Access configuration read credential. This implementation conservatively blocks overlapping account-wide, Worker, and matching-hostname applications for operator review.
+
+Save operator configuration privately in `.obsidian-publish/access-staging.json` or the corresponding preview configuration. Populate every enabled alias and immutable hostname from the actual Cloudflare deployment inventory; staging's disabled workers.dev/version URLs do not need enabling. The configuration format is:
+
+```json
+{
+  "account": "Cloudflare account ID",
+  "application": "Access application ID",
+  "worker": "Worker platform ID",
+  "mode": "staging",
+  "owner": "explicitly-selected-owner@example.com",
+  "serviceToken": "Access service token ID",
+  "team": "your-team.cloudflareaccess.com",
+  "hosts": ["staging.justindfuller.com"]
+}
+```
+
+First deploy only nonsensitive sentinel assets. Save the enabled sentinel URLs, exact SHA-256, and byte size as a private array of `{ "url": "https://.../sentinel", "sha256": "...", "size": 42 }` records. Supply `CLOUDFLARE_ACCESS_API_TOKEN`, `CF_ACCESS_CLIENT_ID`, and `CF_ACCESS_CLIENT_SECRET` through protected environment credentials, then run:
+
+```sh
+node scripts/check-obsidian-access.mjs --config .obsidian-publish/access-staging.json --sentinels .obsidian-publish/sentinels.json
+node scripts/verify-cloudflare.mjs https://staging.justindfuller.com --mode staging --access .obsidian-publish/access-staging.json --overlay .obsidian-publish/staging.json
+```
+
+The first command reads all Access application/policy pages and service token metadata, checks the exact destination and identity boundaries, and requires anonymous, spoofed-identity, and invalid-service-token denial before and after an authenticated exact-byte sentinel request. It fails before private upload when any enabled hostname lacks proof. The live verifier repeats configuration checks and denial around authenticated HTML, redirects, assets, sitemap, and allowlisted image requests; private failures are written to ignored local verification data while public output contains counts only. Git-only previews may use the original unauthenticated verifier until the private preview integration is installed; they cannot use a private image manifest without Access credentials.
+
 ## Post metadata
 
 Use `environment: production` for posts eligible everywhere and `environment: nonprod` for local, protected PR, and staging only. `draft: true` is excluded everywhere and can mask an overwritten Git route. Change legacy metadata explicitly, one file at a time:
@@ -43,6 +73,30 @@ npm run build:cloudflare -- --mode staging --overlay .obsidian-publish/staging.j
 ```
 
 The R2 reader uses `OBSIDIAN_SOURCE_ACCESS_KEY_ID` and `OBSIDIAN_SOURCE_SECRET_ACCESS_KEY` from the environment; supply them through a protected credential source. `--bootstrap` is an explicit initial-state decision and must not replace missing accepted state during ordinary publication. Staging/PR output and complete verification manifests belong in private R2 archives, never public Actions artifacts.
+
+## Public image promotion
+
+Prepare production from a pinned source, authorize its effective image collection, promote with the separate source-read and media-write credentials, and then prepare again from the same pinned source. Missing or corrupt image originals/destinations mark only those references unavailable; credential failures block deployment. The second preparation removes unavailable references without changing the source revision or dropping valid post bodies. Never deploy the preliminary overlay after promotion reports unavailable references.
+
+```sh
+go run ./cmd/prepare-obsidian --r2 --state .obsidian-publish/accepted-production.json --mode production --out .obsidian-publish/production-before-promotion.json --source-out .obsidian-publish/pinned-production.json
+node scripts/promote-obsidian-images.mjs --overlay .obsidian-publish/production-before-promotion.json --source .obsidian-publish/pinned-production.json
+go run ./cmd/prepare-obsidian --source .obsidian-publish/pinned-production.json --state .obsidian-publish/accepted-production.json --mode production --out .obsidian-publish/production.json
+```
+
+The promotion command revalidates production authorization in Go before writing public objects. It checks accepted nondraft production content and actual used image references, validates one original at a time outside Go, and verifies SHA-256, MD5, size, MIME, and `public, max-age=31536000, immutable` destination metadata. Unchanged public images need metadata reads only. Configure `OBSIDIAN_MEDIA_ACCESS_KEY_ID` and `OBSIDIAN_MEDIA_SECRET_ACCESS_KEY` independently of the source credential. No routine promotion command deletes objects.
+
+## Private archive and report commands
+
+The private state adapter verifies explicit hashes and sizes on writes and reads, bounds object bodies, isolates state/report/archive key namespaces, and records safe R2 operation/byte counters. Provide state read/write credentials through `OBSIDIAN_STATE_ACCESS_KEY_ID` and `OBSIDIAN_STATE_SECRET_ACCESS_KEY`; the report reader instead uses the separate read-only `OBSIDIAN_REPORT` credential pair. Archive commands accept tested SHA-256 checksums and preserve exactly those archive bytes across job handoff:
+
+```sh
+node scripts/obsidian-private-storage.mjs upload --target staging --run 123-1 --checksum <tested-sha256> --file .obsidian-publish/tested.tar
+node scripts/obsidian-private-storage.mjs download --target staging --run 123-1 --checksum <tested-sha256> --file .obsidian-publish/tested.tar
+node scripts/obsidian-private-storage.mjs report --target production --file .obsidian-publish/production-report.json
+```
+
+For a PR archive use `--target preview --pr <open-pr-number>`. Detailed reports remain in the private output file; command stdout contains operation status and counts. A 14-day lifecycle must target only `artifacts/`; it must exclude accepted state, candidate journals, reports, current verification receipts, and rollback records. Lifecycle provisioning and workflow handoff remain rollout tasks until verified against the account.
 
 ## Verification and recovery
 

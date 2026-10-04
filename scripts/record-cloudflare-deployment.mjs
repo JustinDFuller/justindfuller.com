@@ -29,7 +29,8 @@ export function deploymentRecord(output, mode, deployments = []) {
       previewUrl: preview.preview_urls[0],
     };
   }
-  if (mode !== "production") throw new Error("Unknown deployment mode");
+  if (!["production", "staging"].includes(mode))
+    throw new Error("Unknown deployment mode");
   const version = output.match(/Current Version ID: ([a-f0-9-]+)/)?.[1];
   const deployment = deployments[0];
   if (
@@ -43,8 +44,14 @@ export function deploymentRecord(output, mode, deployments = []) {
     mode,
     deploymentId: deployment.id,
     versionId: version,
-    url: "https://justindfuller.com",
-    urls: ["https://justindfuller.com", "https://www.justindfuller.com"],
+    url:
+      mode === "staging"
+        ? "https://staging.justindfuller.com"
+        : "https://justindfuller.com",
+    urls:
+      mode === "staging"
+        ? ["https://staging.justindfuller.com"]
+        : ["https://justindfuller.com", "https://www.justindfuller.com"],
   };
 }
 
@@ -53,10 +60,10 @@ if (
   fileURLToPath(import.meta.url) === resolve(process.argv[1])
 ) {
   const { values } = parseArgs({ options: { mode: { type: "string" } } });
-  if (!["production", "preview"].includes(values.mode))
-    throw new Error("Deployment mode must be production or preview");
+  if (!["production", "preview", "staging"].includes(values.mode))
+    throw new Error("Deployment mode must be production, preview or staging");
   const deployments =
-    values.mode === "production"
+    values.mode !== "preview"
       ? JSON.parse(
           execFileSync(
             "npx",
@@ -66,9 +73,11 @@ if (
               "deployments",
               "list",
               "--worker",
-              "justindfuller-site",
+              values.mode === "staging"
+                ? "justindfuller-site-staging"
+                : "justindfuller-site",
               "--mode",
-              "production",
+              values.mode,
             ],
             { encoding: "utf8" },
           ),

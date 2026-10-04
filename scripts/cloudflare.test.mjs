@@ -38,6 +38,16 @@ test("production recording rejects an inactive or split version", () => {
   );
 });
 
+test("staging records preserve the separate public routing boundary", () => {
+  const record = deploymentRecord(
+    `Current Version ID: ${version}`,
+    "staging",
+    deployments,
+  );
+  assert.deepEqual(record.urls, ["https://staging.justindfuller.com"]);
+  assert.equal(record.versionId, version);
+});
+
 test("preview records distinguish stable and exact deployment URLs", () => {
   const record = deploymentRecord(
     JSON.stringify({

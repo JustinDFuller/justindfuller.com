@@ -17,6 +17,7 @@ export type S3Target = {
 export type ObjectMetadata = {
   contentLength?: number;
   contentType?: string;
+  cacheControl?: string;
   metadata?: Record<string, string>;
 };
 
@@ -203,6 +204,7 @@ export function metadataFromHead(
   return {
     contentLength: output.ContentLength,
     contentType: output.ContentType,
+    cacheControl: output.CacheControl,
     metadata: output.Metadata,
   };
 }

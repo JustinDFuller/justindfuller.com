@@ -15,12 +15,29 @@ func run() error {
 	sourcePath := flag.String("source", "", "Private pinned source input")
 	statePath := flag.String("state", "", "Private accepted state input")
 	output := flag.String("out", ".obsidian-publish/prepared.json", "Private prepared output")
+	loadedOutput := flag.String("source-out", "", "Optional pinned private loaded source output")
+	validateOverlay := flag.String("validate-promotion", "", "Validate a production overlay before public image promotion")
 	mode := flag.String("mode", "local", "Deployment mode: production, staging, preview, local")
 	bootstrap := flag.Bool("bootstrap", false, "Explicit initial state bootstrap")
 	r2 := flag.Bool("r2", false, "Read a pinned private R2 source with environment credentials")
 	account := flag.String("account", "9dce34804a27754a4ea66a5789827dfa", "Cloudflare account ID")
 	bucket := flag.String("bucket", "justindfuller-obsidian-source", "Private source bucket")
 	flag.Parse()
+	if *validateOverlay != "" {
+		prepared, err := obsidian.LoadPrepared(*validateOverlay, obsidian.ModeProduction)
+		if err != nil {
+			return err
+		}
+		entries, err := site.LoadProgramming()
+		if err != nil {
+			return err
+		}
+		if err := obsidian.ValidateImagePromotion(prepared, entries); err != nil {
+			return err
+		}
+		fmt.Printf("Verified production image authorization: %d images\n", len(prepared.Images))
+		return nil
+	}
 	var source obsidian.LoadedSource
 	var state obsidian.State
 	if *statePath != "" {
@@ -68,6 +85,11 @@ func run() error {
 	}
 	if err := obsidian.WritePrivateJSON(*output, prepared); err != nil {
 		return err
+	}
+	if *loadedOutput != "" {
+		if err := obsidian.WritePrivateJSON(*loadedOutput, source); err != nil {
+			return err
+		}
 	}
 	fmt.Printf("Prepared mode=%s revision=%s digest=%s posts=%d issues=%d\n", prepared.Mode, prepared.Revision, prepared.Digest, len(prepared.Entries), len(prepared.Issues))
 	return nil

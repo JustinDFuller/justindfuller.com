@@ -37,12 +37,15 @@ for (const [command, args] of [
   ["cf", ["build", "--mode", values.mode]],
 ]) {
   const result = spawnSync(command, args, {
-    stdio: "inherit",
+    stdio: values.overlay ? "pipe" : "inherit",
+    maxBuffer: 32 * 1024 * 1024,
     env: {
       ...process.env,
       CLOUDFLARE_PREVIEW_BUILD: String(values.mode === "preview"),
     },
   });
-  if (result.error) throw result.error;
-  if (result.status !== 0) process.exit(result.status ?? 1);
+  if (result.error || result.status !== 0) {
+    console.error("Cloudflare artifact build failed");
+    process.exit(result.status || 1);
+  }
 }
