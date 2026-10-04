@@ -29,8 +29,10 @@ jobs:
         with:
           go-version-file: go.mod
       - run: npm ci
+      - run: npm ci --prefix tools/obsidian-image-publisher
       - run: go test ./...
-      - run: node --test scripts/*.test.mjs
+      - run: node --test scripts/*.test.mjs tools/obsidian-image-publisher/tests/*.test.ts
+      - run: tools/obsidian-image-publisher/node_modules/.bin/tsc -p tools/obsidian-image-publisher --noEmit
       - run: npm run build:cloudflare -- --mode "$BUILD_MODE"
       - name: Validate deployment configuration
         if: env.BUILD_MODE == 'production'

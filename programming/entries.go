@@ -35,7 +35,6 @@ type Entry struct {
 	IsDraft        bool
 }
 
-
 // parseEntryMetadata parses only the metadata from a markdown file without rendering content
 func parseEntryMetadata(name string, file []byte) Entry {
 	// Parse frontmatter
@@ -426,3 +425,13 @@ func init() {
 		Entries = entries
 	}
 }
+
+func RenderMarkdown(file []byte) (template.HTML, error) {
+	entry, err := parseEntry("", file)
+	if err != nil {
+		return "", err
+	}
+	return entry.Content, nil
+}
+
+func ExtractFirstParagraph(markdown string) string { return extractFirstParagraph(markdown) }

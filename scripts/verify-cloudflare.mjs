@@ -115,9 +115,12 @@ await Promise.all(
             )
               throw new Error("HTML must prevent edge transformations");
             const pathname = new URL(job.path, base).pathname;
-            const filename = pathname.endsWith("/")
-              ? `${pathname.slice(1)}index.html`
-              : `${pathname.slice(1)}.html`;
+            const filename =
+              pathname === "/sitemap.xml"
+                ? "sitemap.xml"
+                : pathname.endsWith("/")
+                  ? `${pathname.slice(1)}index.html`
+                  : `${pathname.slice(1)}.html`;
             const actual = Buffer.from(await response.arrayBuffer());
             const expected = readFileSync(`dist/${filename}`);
             if (

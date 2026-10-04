@@ -16,6 +16,7 @@ import (
 	"github.com/justindfuller/justindfuller.com/aphorism"
 	grass "github.com/justindfuller/justindfuller.com/make"
 	"github.com/justindfuller/justindfuller.com/nature"
+	"github.com/justindfuller/justindfuller.com/obsidian"
 	"github.com/justindfuller/justindfuller.com/poem"
 	"github.com/justindfuller/justindfuller.com/programming"
 	"github.com/justindfuller/justindfuller.com/review"
@@ -68,6 +69,37 @@ func withOneYearCache(handler func(http.ResponseWriter, *http.Request)) func(htt
 }
 
 func New() (http.Handler, error) {
+	entries, err := LoadProgramming()
+	if err != nil {
+		return nil, err
+	}
+	return newWithEntries(entries)
+}
+
+func NewWithPrepared(prepared obsidian.Prepared, mode obsidian.Mode) (http.Handler, error) {
+	if err := obsidian.ValidatePrepared(prepared, mode); err != nil {
+		return nil, err
+	}
+	handler, err := newWithEntries(prepared.Entries)
+	if err != nil {
+		return nil, err
+	}
+	if mode == obsidian.ModeProduction {
+		return handler, nil
+	}
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		recorder := &privateResponseWriter{ResponseWriter: w}
+		handler.ServeHTTP(recorder, r)
+	}), nil
+}
+
+func newWithEntries(programmingEntries []programming.Entry) (http.Handler, error) {
+	bySlug := map[string]programming.Entry{}
+	for _, entry := range programmingEntries {
+		if !entry.IsDraft {
+			bySlug[entry.Slug] = entry
+		}
+	}
 	funcs := template.FuncMap{
 		"sub1": func(x int) int { return x - 1 },
 		"dict": func(values ...interface{}) (map[string]interface{}, error) {
@@ -121,6 +153,19 @@ func New() (http.Handler, error) {
 		}
 	}
 	mux := http.NewServeMux()
+	paths, err := pagePathsWithEntries(programmingEntries)
+	if err != nil {
+		return nil, err
+	}
+	sitemap, err := renderSitemap(paths)
+	if err != nil {
+		return nil, err
+	}
+	mux.HandleFunc("/sitemap.xml", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+		setOneDayCache(w)
+		_, _ = w.Write(sitemap)
+	})
 
 	mux.HandleFunc("/aphorism/", withOneDayCache(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
@@ -368,12 +413,7 @@ func New() (http.Handler, error) {
 	}))
 
 	mux.HandleFunc("/programming", withOneDayCache(func(w http.ResponseWriter, _ *http.Request) {
-		entries, err := programming.GetEntries()
-		if err != nil {
-			log.Printf("Error getting programming entries: %s", err)
-			entries = []programming.Entry{}
-		}
-		log.Printf("Programming handler - number of entries: %d", len(entries))
+		entries := programmingEntries
 		if err := renderTemplate(templates, w, "/programming/main.template.html", data[programming.Entry]{
 			Title:   "Programming",
 			Entries: entries,
@@ -397,11 +437,9 @@ func New() (http.Handler, error) {
 			return
 		}
 
-		entry, err := programming.GetEntry(paths[last])
-		if err != nil {
+		entry, found := bySlug[paths[last]]
+		if !found || len(paths) != 3 {
 			http.Error(w, "Programming post not found.", http.StatusNotFound)
-			log.Printf("Programming post not found: %s - %s", r.URL.Path, err)
-
 			return
 		}
 

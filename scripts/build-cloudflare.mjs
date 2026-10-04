@@ -1,19 +1,38 @@
-import { rmSync, mkdirSync } from "node:fs";
+import { rmSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { parseArgs } from "node:util";
 
 const { values } = parseArgs({
-  options: { mode: { type: "string", default: "preview" } },
+  options: {
+    mode: { type: "string", default: "preview" },
+    overlay: { type: "string" },
+  },
 });
-if (!["production", "preview"].includes(values.mode))
-  throw new Error("Build mode must be production or preview");
+if (!["production", "preview", "staging"].includes(values.mode))
+  throw new Error("Build mode must be production, preview or staging");
 
 rmSync("dist", { recursive: true, force: true });
 mkdirSync(".cloudflare", { recursive: true });
+const images = values.overlay
+  ? JSON.parse(readFileSync(values.overlay, "utf8")).images
+  : {};
+writeFileSync(
+  ".cloudflare/private-images.mjs",
+  `export default ${JSON.stringify(values.mode === "production" ? {} : images)};\n`,
+  { mode: 0o600 },
+);
 for (const [command, args] of [
   [
     "go",
-    ["run", "./cmd/export-static", "--out", "dist", "--mode", values.mode],
+    [
+      "run",
+      "./cmd/export-static",
+      "--out",
+      "dist",
+      "--mode",
+      values.mode,
+      ...(values.overlay ? ["--overlay", values.overlay] : []),
+    ],
   ],
   ["cf", ["build", "--mode", values.mode]],
 ]) {

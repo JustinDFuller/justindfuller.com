@@ -35,7 +35,7 @@ linters:
   exclusions:
     paths: [node_modules]
     rules:
-      - path: "^(site|cmd/export-static)/|^main\\.go$"
+      - path: "^(site|obsidian|cmd/export-static|cmd/prepare-obsidian)/|^main\\.go$|^programming/entries\\.go$"
         linters: [revive]
         text: "(should have comment|should have a package comment)"
   settings:
