@@ -22,10 +22,14 @@ import {
 } from "./scheduler.ts";
 import { dispatchContent } from "./dispatch.ts";
 import {
-  publicationNotices,
+  observePublication,
+  queuedPublication,
+  readPublicationReport,
+  publicationStatusSummary,
   type NoticeState,
-  type PublicationReport,
+  type PublicationStatusState,
 } from "./status.ts";
+import { PrivateR2Store } from "./publication.ts";
 
 type Settings = {
   accountId: string;
@@ -40,6 +44,8 @@ type RuntimeState = {
   previous?: PublishResult;
   notices: NoticeState;
   verified?: Record<string, string>;
+  publication?: PublicationStatusState;
+  reportUnavailable?: Partial<Record<"staging" | "production", boolean>>;
 };
 const defaults: Settings = {
   accountId: "9dce34804a27754a4ea66a5789827dfa",
@@ -102,7 +108,20 @@ export default class CloudflarePublisher extends Plugin {
         await this.persist();
       },
       recovered: (revision) => this.recoveredPublication(revision),
-      notice: (status) =>
+      notice: (status) => {
+        if (
+          (status === "uploaded" || status === "queued") &&
+          this.runtime.scheduler.revision
+        ) {
+          this.runtime.publication = queuedPublication(
+            this.runtime.scheduler.revision,
+            status,
+            this.runtime.publication ?? {},
+          );
+          void this.persist().catch(() =>
+            this.notify("Publication status could not be saved"),
+          );
+        }
         this.notify(
           {
             uploaded: "Private source uploaded; deployment pending",
@@ -112,7 +131,8 @@ export default class CloudflarePublisher extends Plugin {
             authentication_required:
               "Replace the dispatch credential, then publish manually",
           }[status],
-        ),
+        );
+      },
     });
     this.addSettingTab(new PublisherSettings(this.app, this));
     this.addCommand({
@@ -130,7 +150,7 @@ export default class CloudflarePublisher extends Plugin {
       id: "check-publication",
       name: "Check publication status",
       callback: () => {
-        void this.readReports();
+        void this.readReports(true);
       },
     });
     const changed = (file: TAbstractFile) => {
@@ -232,8 +252,11 @@ export default class CloudflarePublisher extends Plugin {
       transport.close();
     }
   }
-  private async readReports(): Promise<void> {
-    if (this.statusRunning) return;
+  private async readReports(manual = false): Promise<void> {
+    if (this.statusRunning) {
+      if (manual) new Notice("A publication status check is already running");
+      return;
+    }
     this.statusRunning = true;
     this.statusAt = Date.now() + 60000;
     let transport: SdkS3Transport | undefined;
@@ -241,37 +264,44 @@ export default class CloudflarePublisher extends Plugin {
       const credentials = await this.keychain.read("reports");
       if (!credentials) {
         this.statusAt = Date.now() + 300000;
+        if (manual)
+          new Notice(
+            "Configure the protected report credential to check publication status",
+          );
         return;
       }
       transport = new SdkS3Transport(credentials);
+      const store = new PrivateR2Store(
+        transport,
+        this.target(this.settings.stateBucket),
+      );
       for (const target of ["staging", "production"] as const) {
         try {
-          const raw = await transport.get(
-            this.target(this.settings.stateBucket),
-            `reports/${target}.json`,
-            2 * 1024 * 1024,
+          const report = await readPublicationReport(store, target);
+          const result = observePublication(
+            report,
+            this.runtime.scheduler.revision,
+            this.runtime.publication ?? {},
+            this.runtime.notices,
           );
-          if (!raw) continue;
-          const report = JSON.parse(
-            Buffer.from(raw).toString("utf8"),
-          ) as PublicationReport;
-          if (report.target !== target)
-            throw new Error("Report target mismatch");
-          const result = publicationNotices(report, this.runtime.notices);
-          this.runtime.notices = result.state;
-          const verified =
-            report.source === this.runtime.scheduler.revision &&
-            report.status === "verified" &&
-            this.runtime.verified?.[target] !== report.source;
-          if (verified) {
-            this.runtime.verified ??= {};
-            this.runtime.verified[target] = report.source;
-          }
+          this.runtime.notices = result.issues;
+          this.runtime.publication = result.status;
+          const wasUnavailable = this.runtime.reportUnavailable?.[target];
+          this.runtime.reportUnavailable ??= {};
+          this.runtime.reportUnavailable[target] = false;
           await this.persist();
+          if (wasUnavailable)
+            this.notify(`${target}: protected publication status is available`);
           for (const notice of result.notices) this.notify(notice);
-          if (verified) this.notify(`${target}: publication verified`);
         } catch {
-          this.notify(`${target}: protected publication status is unavailable`);
+          this.runtime.reportUnavailable ??= {};
+          if (!this.runtime.reportUnavailable[target]) {
+            this.runtime.reportUnavailable[target] = true;
+            await this.persist();
+            this.notify(
+              `${target}: protected publication status is unavailable`,
+            );
+          }
         }
       }
     } catch {
@@ -279,6 +309,13 @@ export default class CloudflarePublisher extends Plugin {
     } finally {
       transport?.close();
       this.statusRunning = false;
+      if (manual && transport)
+        new Notice(
+          publicationStatusSummary(
+            this.runtime.publication ?? {},
+            this.runtime.reportUnavailable,
+          ),
+        );
     }
   }
   private async recoveredPublication(revision: string): Promise<boolean> {
@@ -287,17 +324,12 @@ export default class CloudflarePublisher extends Plugin {
       const credentials = await this.keychain.read("reports");
       if (!credentials) return false;
       transport = new SdkS3Transport(credentials);
+      const store = new PrivateR2Store(
+        transport,
+        this.target(this.settings.stateBucket),
+      );
       for (const target of ["staging", "production"] as const) {
-        const raw = await transport.get(
-          this.target(this.settings.stateBucket),
-          `reports/${target}.json`,
-          2 * 1024 * 1024,
-        );
-        if (!raw) return false;
-        const report = JSON.parse(
-          Buffer.from(raw).toString("utf8"),
-        ) as PublicationReport;
-        publicationNotices(report, {});
+        const report = await readPublicationReport(store, target);
         if (
           report.target !== target ||
           report.source !== revision ||

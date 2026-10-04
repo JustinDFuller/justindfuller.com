@@ -16,6 +16,7 @@ func run() error {
 	statePath := flag.String("state", "", "Private accepted state input")
 	output := flag.String("out", ".obsidian-publish/prepared.json", "Private prepared output")
 	loadedOutput := flag.String("source-out", "", "Optional pinned private loaded source output")
+	reportOutput := flag.String("report-out", "", "Optional protected preparation diagnostics without post bodies")
 	validateOverlay := flag.String("validate-promotion", "", "Validate a production overlay before public image promotion")
 	acceptedOnly := flag.Bool("accepted-only", false, "Explicit revalidated accepted-state fallback for source outages")
 	unavailablePath := flag.String("unavailable-images", "", "Optional private unavailable image key array")
@@ -82,6 +83,9 @@ func run() error {
 		if err := obsidian.WritePrivateJSON(*output, prepared); err != nil {
 			return err
 		}
+		if err := writeReport(*reportOutput, prepared); err != nil {
+			return err
+		}
 		fmt.Printf("Prepared degraded mode=%s revision=%s digest=%s posts=%d issues=%d\n", prepared.Mode, prepared.Revision, prepared.Digest, len(prepared.Entries), len(prepared.Issues))
 		return nil
 	}
@@ -123,6 +127,9 @@ func run() error {
 	if err := obsidian.WritePrivateJSON(*output, prepared); err != nil {
 		return err
 	}
+	if err := writeReport(*reportOutput, prepared); err != nil {
+		return err
+	}
 	if *loadedOutput != "" {
 		if err := obsidian.WritePrivateJSON(*loadedOutput, source); err != nil {
 			return err
@@ -130,6 +137,17 @@ func run() error {
 	}
 	fmt.Printf("Prepared mode=%s revision=%s digest=%s posts=%d issues=%d\n", prepared.Mode, prepared.Revision, prepared.Digest, len(prepared.Entries), len(prepared.Issues))
 	return nil
+}
+
+func writeReport(destination string, prepared obsidian.Prepared) error {
+	if destination == "" {
+		return nil
+	}
+	report, err := obsidian.ReportPrepared(prepared)
+	if err != nil {
+		return err
+	}
+	return obsidian.WritePrivateJSON(destination, report)
 }
 
 func main() {
