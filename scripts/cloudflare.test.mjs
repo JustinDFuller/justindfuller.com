@@ -105,6 +105,13 @@ for (const scenario of [
     transformable: true,
   },
   {
+    name: "transient previous-revision HTML converges",
+    mode: "production",
+    noindex: false,
+    success: true,
+    transient: true,
+  },
+  {
     name: "changed HTML rejected",
     mode: "production",
     noindex: false,
@@ -129,6 +136,7 @@ for (const scenario of [
       JSON.stringify({ pages: ["/"], assets: ["/grass/worker.js"] }),
     );
     writeFileSync(join(directory, "dist/index.html"), html);
+    let homeRequests = 0;
     const server = createServer((request, response) => {
       const url = new URL(request.url, "http://localhost");
       if (scenario.noindex) response.setHeader("X-Robots-Tag", "noindex");
@@ -138,13 +146,18 @@ for (const scenario of [
           location: location + (scenario.dropQuery ? "" : url.search),
         });
       } else if (url.pathname === "/") {
+        homeRequests++;
         if (!scenario.transformable)
           response.setHeader(
             "Cache-Control",
             "public, max-age=0, must-revalidate, no-transform",
           );
         response.writeHead(200);
-        response.end(scenario.mismatch ? "different" : html);
+        response.end(
+          scenario.mismatch || (scenario.transient && homeRequests === 1)
+            ? "different"
+            : html,
+        );
         return;
       } else if (url.pathname === "/grass/worker.js") {
         response.writeHead(200, { "Cache-Control": "no-transform, no-store" });
@@ -158,7 +171,16 @@ for (const scenario of [
     try {
       result = await run(
         process.execPath,
-        [verifier, base, "--mode", scenario.mode],
+        [
+          verifier,
+          base,
+          "--mode",
+          scenario.mode,
+          "--attempts",
+          "2",
+          "--retry-delay-ms",
+          "10",
+        ],
         { cwd: directory },
       );
     } catch (error) {
@@ -169,5 +191,6 @@ for (const scenario of [
       scenario.success,
       result.stdout || result.message,
     );
+    if (scenario.transient) assert.ok(homeRequests > 2);
   });
 }

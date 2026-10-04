@@ -24,6 +24,8 @@ The Worker is `justindfuller-site` in account `9dce34804a27754a4ea66a5789827dfa`
 
 Pushes to main and manual dispatches build, test, archive, and deploy the same artifact. The archive contains `dist`, Cloudflare Build Output, and the private manifest. Each run verifies both production hostnames against the built pages and assets, including redirect query strings, real 404 responses, source/draft exclusions, indexing headers, and cleanup-worker caching. Production deployment records contain commit SHA, artifact checksum, deployment ID, version ID, and both URLs.
 
+The verifier retries each failed request up to seven times with ten seconds between attempts while a new revision propagates. It applies the same complete checks on every attempt, including exact HTML hashes; persistent mismatches still fail deployment. For immediate local diagnostics, use `--attempts 1`. The nature gallery's existing image order can vary between builds, making previous-revision responses detectable even when the source commit is unchanged.
+
 Only deployment steps receive `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Keep the routine token scoped to Workers Scripts Write and Account Settings Read in this account. Initial domain attachment and DNS replacement use a separate authorized local credential with the zone-management permissions. Steady deployments must not add, remove, or change domain assignments. Do not broaden the CI token to solve a domain-management error; perform authorized routing changes locally and retry. GitHub workflow results provide the runtime proof that the routine token can redeploy the existing attachments.
 
 ## PR Previews
