@@ -46,18 +46,21 @@ export async function privateImage(request, bucket, allowlist) {
     };
     if (request.method === "HEAD") return new Response(null, { headers });
     let count = 0;
-    const bounded = new TransformStream({
-      transform(chunk, controller) {
-        count += chunk.byteLength;
-        if (count > record.size)
-          throw new Error("Private image length mismatch");
-        controller.enqueue(chunk);
-      },
-      flush() {
-        if (count !== record.size)
-          throw new Error("Private image length mismatch");
-      },
-    });
+    const bounded =
+      typeof globalThis.FixedLengthStream === "function"
+        ? new globalThis.FixedLengthStream(record.size)
+        : new TransformStream({
+            transform(chunk, controller) {
+              count += chunk.byteLength;
+              if (count > record.size)
+                throw new Error("Private image length mismatch");
+              controller.enqueue(chunk);
+            },
+            flush() {
+              if (count !== record.size)
+                throw new Error("Private image length mismatch");
+            },
+          });
     return new Response(object.body.pipeThrough(bounded), { headers });
   } catch {
     return new Response(null, { status: 503, headers: privateHeaders });
