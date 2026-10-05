@@ -17,9 +17,9 @@ import (
 const defaultAccount = "9dce34804a27754a4ea66a5789827dfa"
 const defaultBucket = "justindfuller-obsidian-source"
 
-type sourceReadFailure struct{}
+type sourceReadError struct{}
 
-func (sourceReadFailure) Error() string { return "Private source is unavailable" }
+func (sourceReadError) Error() string { return "Private source is unavailable" }
 
 func privatePath(filename string) (string, error) {
 	if strings.TrimSpace(filename) == "" {
@@ -64,7 +64,7 @@ func pinSource(ctx context.Context, reader obsidian.ObjectReader, previous obsid
 	}
 	source, err := obsidian.ReadSource(ctx, reader)
 	if err != nil {
-		return empty, sourceReadFailure{}
+		return empty, sourceReadError{}
 	}
 	obsidian.VerifyStateImages(ctx, reader, &source, previous)
 	if err := obsidian.WritePrivateJSON(file, source); err != nil {
@@ -92,7 +92,7 @@ func run(arguments []string, environment func(string) string) error {
 		if err != nil {
 			return err
 		}
-		body, err := os.ReadFile(file)
+		body, err := os.ReadFile(filepath.Clean(file))
 		if err != nil {
 			return err
 		}
@@ -118,7 +118,7 @@ func exitCode(err error) int {
 	if err == nil {
 		return 0
 	}
-	var sourceFailure sourceReadFailure
+	var sourceFailure sourceReadError
 	if errors.As(err, &sourceFailure) {
 		return 10
 	}

@@ -59,7 +59,7 @@ func TestPinSourceWritesOnlyPrivateSanitizedSourceOutput(t *testing.T) {
 	if err != nil || info.Mode().Perm() != 0o600 {
 		t.Fatalf("pinned source permissions differ: %v", err)
 	}
-	body, err := os.ReadFile(path)
+	body, err := os.ReadFile(filepath.Clean(path))
 	if err != nil || !strings.Contains(string(body), revision) {
 		t.Fatalf("pinned source output unavailable: %v", err)
 	}
@@ -68,7 +68,7 @@ func TestPinSourceWritesOnlyPrivateSanitizedSourceOutput(t *testing.T) {
 func TestPinSourceClassifiesOnlySourceReadFailuresAsUnavailable(t *testing.T) {
 	t.Chdir(t.TempDir())
 	_, err := pinSource(t.Context(), sourceReader{err: errors.New("transport detail canary")}, obsidian.State{}, ".obsidian-publish/pinned.json")
-	var sourceFailure sourceReadFailure
+	var sourceFailure sourceReadError
 	if !errors.As(err, &sourceFailure) || strings.Contains(err.Error(), "canary") {
 		t.Fatalf("source read failure was not safely classified: %v", err)
 	}
@@ -104,7 +104,7 @@ func TestPrivatePathRejectsOutsideAndSymlinkedPaths(t *testing.T) {
 func TestPinCommandConfigurationFailuresAreNotSourceOutages(t *testing.T) {
 	t.Chdir(t.TempDir())
 	err := run([]string{"--out", ".obsidian-publish/pinned.json"}, func(string) string { return "" })
-	var sourceFailure sourceReadFailure
+	var sourceFailure sourceReadError
 	if err == nil || errors.As(err, &sourceFailure) {
 		t.Fatalf("configuration error was classified as source outage: %v", err)
 	}
