@@ -16,6 +16,10 @@ import { publicationGitHub } from "./plan-obsidian-workflow.mjs";
 import { CloudflareServing } from "./obsidian-cloudflare.mjs";
 import { readPrivatePreparation } from "./prepare-obsidian-target.mjs";
 import { runPublicationCommand } from "./obsidian-process.mjs";
+import {
+  compilePrivateWorker,
+  validatePrivateWorkerArchive,
+} from "./obsidian-worker.mjs";
 
 export async function deployPublicationTarget({
   store,
@@ -31,6 +35,7 @@ export async function deployPublicationTarget({
   github,
   bootstrap = false,
   record = recordPublication,
+  controlWorkspace,
 }) {
   const namespace = targetNamespace(mode, pr);
   testedArtifactKey(mode, pr, run, preparation);
@@ -81,6 +86,23 @@ export async function deployPublicationTarget({
     JSON.stringify(marker) !== JSON.stringify(candidate.verification.marker)
   )
     throw new Error("Tested archive proof differs");
+  if (mode !== "production") {
+    const compiled = await compilePrivateWorker({
+        account,
+        mode,
+        images: candidate.verification.prepared.images,
+        controlWorkspace,
+      }),
+      worker = validatePrivateWorkerArchive(
+        bytes,
+        candidate.artifact,
+        compiled,
+      );
+    if (
+      JSON.stringify(worker) !== JSON.stringify(candidate.verification.worker)
+    )
+      throw new Error("Tested Worker authority proof differs");
+  }
   const prior = await store.get(candidate.archive, 256 * 1024 * 1024);
   if (prior && !Buffer.from(prior).equals(bytes))
     throw new Error("Retained tested archive already differs");
@@ -169,6 +191,7 @@ async function main() {
           codeSha: values["code-sha"],
           preparation: values.preparation,
           account: values.account,
+          controlWorkspace: values["control-workspace"],
           bootstrap: values.bootstrap,
           github:
             values.mode === "preview"

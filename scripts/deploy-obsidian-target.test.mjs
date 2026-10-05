@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, writeFile, rm } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { deployPublicationTarget } from "./deploy-obsidian-target.mjs";
@@ -15,6 +15,7 @@ import {
 import { uploadPreparationBundle } from "./obsidian-pipeline.mjs";
 import { preparationCode } from "./prepare-obsidian-target.mjs";
 import { publicationRepository } from "./obsidian-workflow.mjs";
+import { compilePrivateWorker } from "./obsidian-worker.mjs";
 
 async function fixture(t, mode = "staging") {
   const cwd = await mkdtemp(join(tmpdir(), "obsidian-deploy-"));
@@ -104,6 +105,13 @@ async function fixture(t, mode = "staging") {
             },
           },
   });
+  if (mode !== "production") {
+    const compiled = await compilePrivateWorker({ account, mode, images: {} });
+    await put(`${root}worker.config.json`, compiled.configBytes);
+    await put(`${root}bundle/private.js`, compiled.moduleBytes);
+    await put(".cloudflare/output/v0/config.json", compiled.outputConfigBytes);
+    candidate.verification.worker = compiled.attestation;
+  }
   const bytes = createPublicationArchive(cwd),
     artifact = archiveChecksum(bytes);
   Object.assign(candidate, {
@@ -230,6 +238,12 @@ test("cross-target, corrupt, mismatched, changed-code and closed-preview handoff
     "readback",
     "closed-pr",
     "changed-pr",
+    "worker-proof",
+    "worker-missing",
+    "worker-allowlist",
+    "worker-runtime",
+    "worker-extra",
+    "worker-config",
   ]) {
     const f = await fixture(t, fault.endsWith("pr") ? "preview" : "staging");
     if (fault === "authority") f.serving.mode = "production";
@@ -252,6 +266,55 @@ test("cross-target, corrupt, mismatched, changed-code and closed-preview handoff
       f.bundle.candidate.archive = "rollback/artifacts/production/stolen.tar";
     if (fault === "marker")
       f.bundle.candidate.verification.marker.sha256 = "0".repeat(64);
+    if (fault === "worker-proof")
+      f.bundle.candidate.verification.worker.moduleHash = "0".repeat(64);
+    if (fault === "worker-missing")
+      delete f.bundle.candidate.verification.worker;
+    if (fault === "worker-allowlist")
+      f.bundle.candidate.verification.prepared.images = {
+        [`v1/${"e".repeat(64)}.jpg`]: {
+          key: `v1/${"e".repeat(64)}.jpg`,
+          sha256: "e".repeat(64),
+          md5: "f".repeat(32),
+          size: 12,
+          contentType: "image/jpeg",
+        },
+      };
+    if (["worker-runtime", "worker-extra", "worker-config"].includes(fault)) {
+      const root = join(f.cwd, ".cloudflare/output/v0/workers/default");
+      if (fault === "worker-runtime") {
+        const malicious = Buffer.from(
+          "export default {async fetch(req, env) {return new Response(JSON.stringify(await env.OBSIDIAN_SOURCE.list()));}}",
+        );
+        await writeFile(join(root, "bundle/private.js"), malicious);
+        f.bundle.candidate.verification.worker.moduleHash =
+          archiveChecksum(malicious);
+      } else if (fault === "worker-extra")
+        await writeFile(
+          join(root, "bundle/extra.js"),
+          'export default "untrusted";',
+        );
+      else {
+        const config = JSON.parse(
+          await readFile(join(root, "worker.config.json"), "utf8"),
+        );
+        config.compatibilityDate = "2025-01-01";
+        const bytes = Buffer.from(JSON.stringify(config));
+        await writeFile(join(root, "worker.config.json"), bytes);
+        f.bundle.candidate.verification.worker.configHash =
+          archiveChecksum(bytes);
+      }
+      const bytes = createPublicationArchive(f.cwd),
+        checksum = archiveChecksum(bytes);
+      f.bundle.candidate.artifact = checksum;
+      f.bundle.candidate.archive = `rollback/artifacts/${f.bundle.target}/${checksum}.tar`;
+      f.bundle.testedArtifact = {
+        key: testedArtifactKey(f.mode, f.pr, f.run, checksum),
+        checksum,
+        bytes: bytes.length,
+      };
+      f.objects.set(f.bundle.testedArtifact.key, bytes);
+    }
     if (fault === "bytes")
       f.objects.set(f.bundle.testedArtifact.key, Buffer.from("corrupt"));
     if (fault === "retained")
@@ -278,6 +341,7 @@ test("cross-target, corrupt, mismatched, changed-code and closed-preview handoff
     f.writes.length = 0;
     await assert.rejects(deployPublicationTarget(f), undefined, fault);
     assert.deepEqual(f.trace, [], fault);
+    if (fault.startsWith("worker-")) assert.deepEqual(f.writes, [], fault);
     assert.ok(
       !f.writes.some((write) =>
         ["accepted/", "journals/", "reports/"].some((prefix) =>

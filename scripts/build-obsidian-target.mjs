@@ -14,6 +14,10 @@ import {
 } from "./obsidian-archive.mjs";
 import { validateDeploymentArchive } from "./obsidian-cloudflare.mjs";
 import { archiveTransfer } from "./obsidian-private-storage.mjs";
+import {
+  compilePrivateWorker,
+  repackagePrivateWorkerArchive,
+} from "./obsidian-worker.mjs";
 
 export function testedArtifactKey(mode, pr, run, checksum) {
   const namespace = targetNamespace(mode, pr);
@@ -119,6 +123,7 @@ export async function buildPublicationTarget({
   account = "9dce34804a27754a4ea66a5789827dfa",
   cwd = process.cwd(),
   execute = runPublicationCommand,
+  controlWorkspace,
 }) {
   const target = { mode, pr, run, codeSha },
     namespace = targetNamespace(mode, pr);
@@ -164,9 +169,34 @@ export async function buildPublicationTarget({
   });
   if (after.stdout.trim() !== codeSha)
     throw new Error("Build code changed before artifact handoff");
-  const bytes = createPublicationArchive(cwd),
-    checksum = archiveChecksum(bytes),
-    marker = validateBuiltArtifact(bytes, checksum, {
+  let bytes = createPublicationArchive(cwd),
+    checksum = archiveChecksum(bytes);
+  validateBuiltArtifact(bytes, checksum, {
+    account,
+    mode,
+    publication,
+  });
+  let worker;
+  if (mode !== "production") {
+    const compiled = await compilePrivateWorker({
+        account,
+        mode,
+        images: bundle.candidate.verification.prepared.images,
+        controlWorkspace,
+      }),
+      packaged = await repackagePrivateWorkerArchive(
+        bytes,
+        checksum,
+        compiled,
+        {
+          controlWorkspace,
+        },
+      );
+    bytes = packaged.bytes;
+    checksum = packaged.checksum;
+    worker = packaged.attestation;
+  }
+  const marker = validateBuiltArtifact(bytes, checksum, {
       account,
       mode,
       publication,
@@ -177,7 +207,11 @@ export async function buildPublicationTarget({
       ...bundle.candidate,
       artifact: checksum,
       archive: `rollback/artifacts/${namespace}/${checksum}.tar`,
-      verification: { ...bundle.candidate.verification, marker },
+      verification: {
+        ...bundle.candidate.verification,
+        marker,
+        ...(worker ? { worker } : {}),
+      },
     },
     tested = {
       ...bundle,

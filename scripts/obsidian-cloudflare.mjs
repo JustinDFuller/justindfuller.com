@@ -6,6 +6,7 @@ import {
   restorePublicationArchive,
 } from "./obsidian-archive.mjs";
 import { runPublicationCommand } from "./obsidian-process.mjs";
+import { validateRetainedPrivateWorkerArchive } from "./obsidian-worker.mjs";
 import {
   AccessClient,
   verifyAccessConfiguration,
@@ -246,6 +247,17 @@ export class CloudflareServing {
       receipt.artifact,
       this,
     );
+    if (receipt.verification.worker)
+      validateRetainedPrivateWorkerArchive(
+        Buffer.from(bytes),
+        receipt.artifact,
+        {
+          account: this.account,
+          mode: this.mode,
+          images: receipt.verification.prepared?.images,
+          attestation: receipt.verification.worker,
+        },
+      );
     const marker = receipt.verification.marker;
     if (marker) {
       for (const name of [

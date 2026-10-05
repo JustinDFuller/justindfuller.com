@@ -12,6 +12,19 @@ import {
   downloadPreparationBundle,
 } from "./obsidian-pipeline.mjs";
 import { preparationCode } from "./prepare-obsidian-target.mjs";
+import {
+  createPublicationArchive,
+  archiveChecksum,
+  inspectPublicationArchive,
+} from "./obsidian-archive.mjs";
+import {
+  compilePrivateWorker,
+  validatePrivateWorkerArchive,
+} from "./obsidian-worker.mjs";
+import { downloadPrivateBuildInput } from "./download-obsidian-build.mjs";
+import { uploadPrivateBuild } from "./upload-obsidian-build.mjs";
+import { saveProtectedReport } from "./obsidian-reports.mjs";
+import { validateBuiltArtifact } from "./build-obsidian-target.mjs";
 
 const sha = "a".repeat(40),
   source = "b".repeat(64),
@@ -159,6 +172,13 @@ async function fixture(t, mode = "staging", fault) {
               },
       }),
     );
+    if (mode !== "production") {
+      await put(
+        `${root}bundle/private.js`,
+        "export default {async fetch(req, env) { const page = await env.OBSIDIAN_SOURCE.list(); return new Response(await (await env.OBSIDIAN_SOURCE.get(page.objects[0].key)).text()); }}",
+      );
+      await put(`${root}bundle/extra.js`, 'export default "untrusted";');
+    }
     return { stdout: "private build output" };
   };
   return {
@@ -214,6 +234,24 @@ test("build job reads an exact preparation and hands off only the validated chec
     assert.equal(f.writes.length, 2);
     assert.ok(f.writes.every((write) => write.immutable));
     assert.ok(!JSON.stringify(result).includes("canary"));
+    if (mode !== "production") {
+      const compiled = await compilePrivateWorker({
+          account,
+          mode,
+          images: {},
+        }),
+        archive = f.objects.get(tested.testedArtifact.key);
+      assert.deepEqual(
+        validatePrivateWorkerArchive(archive, result.artifact, compiled),
+        tested.candidate.verification.worker,
+      );
+      assert.equal(
+        inspectPublicationArchive(archive, result.artifact).some((entry) =>
+          entry.bytes.toString().includes("OBSIDIAN_SOURCE.list()"),
+        ),
+        false,
+      );
+    } else assert.equal(tested.candidate.verification.worker, undefined);
     assert.ok(
       !f.writes.some(
         (write) =>
@@ -222,6 +260,60 @@ test("build job reads an exact preparation and hands off only the validated chec
       ),
     );
   }
+});
+
+test("credentialed uploader replaces hostile rendered runtime with independently compiled control code", async (t) => {
+  const f = await fixture(t, "preview");
+  await buildPublicationTarget(f);
+  const input = await downloadPrivateBuildInput(f),
+    bytes = createPublicationArchive(f.cwd),
+    checksum = archiveChecksum(bytes),
+    marker = validateBuiltArtifact(bytes, checksum, {
+      account,
+      mode: f.mode,
+      publication: input.publication,
+    }),
+    rendered = {
+      version: 1,
+      target: "pr/403",
+      run: f.run,
+      codeSha: f.codeSha,
+      preparation: f.preparation,
+      publication: input.publication,
+      checksum,
+      bytes: bytes.length,
+      marker,
+    };
+  await saveProtectedReport(
+    ".obsidian-publish/hosted/pr/403/rendered.json",
+    rendered,
+    f.cwd,
+  );
+  await saveProtectedReport(
+    ".obsidian-publish/hosted/pr/403/rendered.tar",
+    { bytes: bytes.toString("base64") },
+    f.cwd,
+  );
+  const uploaded = await uploadPrivateBuild(f),
+    tested = await downloadPreparationBundle(
+      f.store,
+      uploaded.handoff.checksum,
+      f.target,
+    ),
+    compiled = await compilePrivateWorker({
+      account,
+      mode: f.mode,
+      images: {},
+    });
+  assert.notEqual(uploaded.checksum, checksum);
+  assert.deepEqual(
+    validatePrivateWorkerArchive(
+      f.objects.get(tested.testedArtifact.key),
+      uploaded.checksum,
+      compiled,
+    ),
+    tested.candidate.verification.worker,
+  );
 });
 
 test("wrong checkout, render/dry-run failures, marker/config/asset mismatch never create tested handoffs", async (t) => {

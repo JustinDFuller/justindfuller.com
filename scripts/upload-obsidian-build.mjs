@@ -16,6 +16,10 @@ import { archiveChecksum } from "./obsidian-archive.mjs";
 import { saveProtectedReport } from "./obsidian-reports.mjs";
 import { targetNamespace } from "./obsidian-transaction.mjs";
 import {
+  compilePrivateWorker,
+  repackagePrivateWorkerArchive,
+} from "./obsidian-worker.mjs";
+import {
   PrivateR2Store,
   environmentTransport,
   r2Target,
@@ -50,6 +54,7 @@ export async function uploadPrivateBuild({
   preparation,
   account = accountDefault,
   cwd = process.cwd(),
+  controlWorkspace,
 }) {
   const namespace = targetNamespace(mode, pr),
     target = { mode, pr, run, codeSha },
@@ -90,7 +95,8 @@ export async function uploadPrivateBuild({
         Math.ceil((maxArchiveBytes * 4) / 3) + 1024,
       ),
     ),
-    bytes = Buffer.from(archive.bytes ?? "", "base64"),
+    renderedBytes = Buffer.from(archive.bytes ?? "", "base64");
+  let bytes = renderedBytes,
     checksum = archiveChecksum(bytes);
   if (
     bytes.length > maxArchiveBytes ||
@@ -100,22 +106,51 @@ export async function uploadPrivateBuild({
   )
     throw new Error("Rendered archive bytes differ from the tested identity");
   const marker = validateBuiltArtifact(bytes, checksum, {
-      account,
-      mode,
-      publication: input.publication,
-    }),
-    key = testedArtifactKey(mode, pr, run, checksum);
+    account,
+    mode,
+    publication: input.publication,
+  });
   if (
     JSON.stringify(marker) !== JSON.stringify(rendered.marker) ||
     !bundle.candidate.verification.prepared
   )
     throw new Error("Rendered archive proof differs from its preparation");
+  let worker;
+  if (mode !== "production") {
+    const compiled = await compilePrivateWorker({
+        account,
+        mode,
+        images: bundle.candidate.verification.prepared.images,
+        controlWorkspace,
+      }),
+      packaged = await repackagePrivateWorkerArchive(
+        bytes,
+        checksum,
+        compiled,
+        {
+          controlWorkspace,
+        },
+      );
+    bytes = packaged.bytes;
+    checksum = packaged.checksum;
+    worker = packaged.attestation;
+    validateBuiltArtifact(bytes, checksum, {
+      account,
+      mode,
+      publication: input.publication,
+    });
+  }
+  const key = testedArtifactKey(mode, pr, run, checksum);
   await archiveTransfer(store, "upload", key, bytes, checksum);
   const candidate = {
       ...bundle.candidate,
       artifact: checksum,
       archive: `rollback/artifacts/${namespace}/${checksum}.tar`,
-      verification: { ...bundle.candidate.verification, marker },
+      verification: {
+        ...bundle.candidate.verification,
+        marker,
+        ...(worker ? { worker } : {}),
+      },
     },
     tested = {
       ...bundle,
