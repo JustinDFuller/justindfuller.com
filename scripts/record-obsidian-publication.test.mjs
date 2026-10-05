@@ -263,6 +263,82 @@ test("report status follows the transaction and successful staging never clears 
   }
 });
 
+test("the portable recorder verifies unchanged preparation without a new archive and leaves changed output queued for a build", async () => {
+  const accepted = {
+      ...candidate,
+      version: 1,
+      namespace: "staging",
+      artifact: result.accepted.receipt.artifact,
+      archive: "rollback/prior.tar",
+      verification: { retainedArtifact: true },
+      receipt: { ...result.accepted.receipt, archive: "rollback/prior.tar" },
+    },
+    initial = Buffer.from(JSON.stringify(accepted)),
+    objects = new Map([["accepted/staging/current.json", initial]]),
+    statuses = [];
+  const store = {
+    counters: {},
+    get: async (key) => objects.get(key),
+    put: async (key, bytes) => {
+      objects.set(key, bytes);
+      if (key === "reports/staging.json")
+        statuses.push(JSON.parse(bytes).status);
+    },
+  };
+  const serving = {
+    counters: {},
+    identity: async () => accepted.receipt.deployment,
+    verify: async (receipt) => assert.deepEqual(receipt, accepted.receipt),
+    deploy: async () =>
+      assert.fail("No deployment during preparation reconciliation"),
+    capture: async () => assert.fail("Use the retained verified artifact"),
+  };
+  const fresh = { ...candidate, source: "1".repeat(64) },
+    report = { ...diagnostics, source: fresh.source };
+  const receipt = await recordPublication(fresh, report, {
+    store,
+    serving,
+    namespace: "staging",
+    unchangedOnly: true,
+  });
+  assert.equal(receipt.skipped, true);
+  assert.equal(receipt.source, fresh.source);
+  assert.equal(receipt.artifact, accepted.artifact);
+  assert.equal(receipt.deployment, accepted.receipt.deployment);
+  assert.deepEqual(statuses, ["queued", "degraded"]);
+  assert.equal(JSON.stringify(receipt).includes("canary"), false);
+  const state = objects.get("accepted/staging/current.json");
+  const changed = { ...fresh, digest: "2".repeat(64) };
+  const needed = await recordPublication(
+    changed,
+    { ...report, digest: changed.digest },
+    {
+      store,
+      serving,
+      namespace: "staging",
+      unchangedOnly: true,
+    },
+  );
+  assert.deepEqual(needed, {
+    version: 1,
+    target: "staging",
+    status: "build-required",
+  });
+  assert.equal(objects.get("accepted/staging/current.json"), state);
+  assert.deepEqual(statuses, ["queued", "degraded", "queued"]);
+  await assert.rejects(
+    recordPublication(fresh, report, {
+      store,
+      serving,
+      namespace: "staging",
+      unchangedOnly: true,
+      bootstrap: true,
+    }),
+    /Bootstrap requires/,
+  );
+  assert.deepEqual(statuses, ["queued", "degraded", "queued"]);
+});
+
 test("a full issue report still records deployment failure without losing existing diagnostics", async () => {
   const full = {
     ...diagnostics,

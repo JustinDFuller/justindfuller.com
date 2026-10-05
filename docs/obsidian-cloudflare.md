@@ -125,6 +125,18 @@ Compatible code-check receipts live privately at `receipts/code/<commit>/<policy
 
 Before frontend installation or full rendering, call the target transaction's `reconcileUnchanged` with its prepared state, code fingerprint, source revision, and effective-output digest. Matching code/output verifies the retained active artifact, rechecks its serving identity, and advances only that target's accepted reconciliation metadata while retaining the original artifact/archive/receipt. Changed output returns no skip result and follows the build path. Missing accepted state, cross-target preparation, failed verification, or changed live identity blocks acceptance. First-install bootstrap remains a separate explicit operation.
 
+The portable recorder exposes this pre-build path with `--unchanged-only`. Its private candidate contains the prepared overlay under `verification.prepared`, accepted state, source revision, code SHA/fingerprint, and effective digest; a new artifact/archive is not required. It returns a sanitized verified skip receipt for unchanged output or `{ "version": 1, "target": "...", "status": "build-required" }` for changed output. Changed output remains queued in the protected report until the caller completes the tested-artifact build/publication path. Bootstrap cannot use this option.
+
+```sh
+node scripts/record-obsidian-publication.mjs --mode production --candidate .obsidian-publish/candidate.json --diagnostics .obsidian-publish/diagnostics.json --unchanged-only
+```
+
+## Private archive retention
+
+The planned state-bucket lifecycle uses one rule named `obsidian-artifacts-14-days`, enabled only for the `artifacts/` prefix, with an age-based object deletion transition after 1,209,600 seconds. This is irreversible deletion of expired job handoff archives. Current state, accepted candidates, reports, receipts, journals, and retained rollback archives use other prefixes and must remain outside this rule. Source and media bucket lifecycle policies are separate. See [Cloudflare's lifecycle API](https://developers.cloudflare.com/api/resources/r2/subresources/buckets/subresources/lifecycle/methods/update/).
+
+The reusable `configureArchiveLifecycle` operation is read-only by default. It preserves existing multipart-abort rules, rejects deletion policies that can affect retained publication state or expire archives sooner, requires review for a modified managed rule, and verifies the complete resulting configuration after an explicit apply. Live readback found only the default multipart-abort rule on all three buckets. Installing the archive rule is awaiting explicit approval; no object-expiration rule is active from this setup.
+
 ## Bucket-scoped credential setup
 
 The current CLI OAuth session can provision Workers and Access but received HTTP 403 from the account API-token permission-group endpoint on 2026-10-04. An account owner must create the R2 credentials in the Cloudflare dashboard. Use [R2 API token management](https://developers.cloudflare.com/r2/api/tokens/) and select only the specified bucket for each credential. Give each token an explicit expiry, initially one year; preserve its expiry for rotation planning. Do not paste token values or S3 credentials into chat, repository files, Actions logs, or shell command arguments.

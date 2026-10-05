@@ -178,8 +178,17 @@ export function protectedPublicationReport(
 export async function recordPublication(
   candidate,
   diagnostics,
-  { store, serving, namespace, bootstrap = false, started = performance.now() },
+  {
+    store,
+    serving,
+    namespace,
+    bootstrap = false,
+    unchangedOnly = false,
+    started = performance.now(),
+  },
 ) {
+  if (bootstrap && unchangedOnly)
+    throw new Error("Bootstrap requires a tested artifact publication");
   const reportKey = `reports/${namespace}.json`,
     writeReport = async (status, receipt) =>
       store.put(
@@ -199,17 +208,21 @@ export async function recordPublication(
   await writeReport("queued");
   let result;
   try {
-    result = await new PublicationTransaction(
-      store,
-      serving,
-      namespace,
-    ).publish(candidate, { bootstrap: bootstrap });
+    const transaction = new PublicationTransaction(store, serving, namespace);
+    result = unchangedOnly
+      ? await transaction.reconcileUnchanged(candidate)
+      : await transaction.publish(candidate, { bootstrap: bootstrap });
+    if (!result)
+      return { version: 1, target: namespace, status: "build-required" };
   } catch {
     const failed = {
       ...diagnostics,
       issues: [
         ...diagnostics.issues,
-        { key: candidate.artifact, category: "deployment_failed" },
+        {
+          key: candidate.artifact ?? candidate.digest,
+          category: "deployment_failed",
+        },
       ],
     };
     let report;
@@ -278,6 +291,7 @@ async function main() {
       access: { type: "string" },
       "bootstrap-receipt": { type: "string" },
       bootstrap: { type: "boolean", default: false },
+      "unchanged-only": { type: "boolean", default: false },
       account: { type: "string", default: "9dce34804a27754a4ea66a5789827dfa" },
     },
   });
@@ -287,6 +301,8 @@ async function main() {
   );
   if (namespace === "local")
     throw new Error("Hosted publication mode required");
+  if (values.bootstrap && values["unchanged-only"])
+    throw new Error("Bootstrap requires a tested artifact publication");
   const candidate = privateInput(values.candidate),
     diagnostics = privateInput(values.diagnostics);
   const prepared = candidate.verification?.prepared;
@@ -337,6 +353,7 @@ async function main() {
           serving,
           namespace,
           bootstrap: values.bootstrap,
+          unchangedOnly: values["unchanged-only"],
           started,
         }),
       ),
