@@ -32,10 +32,10 @@
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
     "cf": "1.0.0-beta.12",
-    "chalk": "^6.0.0",
+    "chalk": "^6.0.1",
     "chalk-cli": "^6.0.0",
     "eslint": "^10.11.0",
-    "globals": "17.4.0",
+    "globals": "17.12.0",
     "markdownlint-cli2": "^0.23.3",
     "prettier": "^3.9.9",
     "stylelint": "^17.15.0",
