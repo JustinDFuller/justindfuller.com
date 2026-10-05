@@ -135,6 +135,47 @@ export class PublicationTransaction {
     await this.write(this.journalKey, journal);
   }
 
+  async acceptUnchanged(candidate, previous, identity) {
+    if (
+      previous?.code !== candidate.code ||
+      previous.digest !== candidate.digest
+    )
+      return undefined;
+    await this.serving.verify(previous.receipt);
+    if ((await this.serving.identity()) !== identity)
+      throw new Error("Serving identity changed during no-op verification");
+    const accepted = {
+      version: 1,
+      namespace: this.namespace,
+      ...candidate,
+      artifact: previous.artifact,
+      archive: previous.archive,
+      verification: previous.verification,
+      receipt: previous.receipt,
+    };
+    await this.write(this.currentKey, accepted);
+    return { accepted, skipped: true };
+  }
+
+  async reconcileUnchanged(candidate) {
+    for (const key of ["source", "code", "digest"])
+      if (!/^[a-f0-9]{64}$/.test(candidate[key] ?? ""))
+        throw new Error("Invalid preparation fingerprint");
+    const mode = this.namespace.startsWith("pr/") ? "preview" : this.namespace;
+    if (candidate.state?.mode !== mode)
+      throw new Error("Preparation target differs from accepted state");
+    await this.reconcile();
+    const previous = await this.read(this.currentKey);
+    const identity = await this.serving.identity();
+    if (
+      !previous ||
+      !validIdentity(identity) ||
+      previous.receipt?.deployment !== identity
+    )
+      throw new Error("Accepted state and serving identity differ");
+    return this.acceptUnchanged(candidate, previous, identity);
+  }
+
   async publish(candidate, { bootstrap = false } = {}) {
     for (const key of ["source", "code", "digest", "artifact"])
       if (!/^[a-f0-9]{64}$/.test(candidate[key] ?? ""))
@@ -153,23 +194,8 @@ export class PublicationTransaction {
       (previous && previous.receipt?.deployment !== identity)
     )
       throw new Error("Accepted state and serving identity differ");
-    if (
-      previous?.code === candidate.code &&
-      previous.digest === candidate.digest
-    ) {
-      await this.serving.verify(previous.receipt);
-      const accepted = {
-        version: 1,
-        namespace: this.namespace,
-        ...candidate,
-        artifact: previous.artifact,
-        archive: previous.archive,
-        verification: previous.verification,
-        receipt: previous.receipt,
-      };
-      await this.write(this.currentKey, accepted);
-      return { accepted, skipped: true };
-    }
+    const unchanged = await this.acceptUnchanged(candidate, previous, identity);
+    if (unchanged) return unchanged;
     const priorReceipt =
       previous?.receipt ?? (await this.serving.capture(identity));
     if (

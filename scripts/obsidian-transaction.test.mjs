@@ -84,6 +84,97 @@ test("state promotion follows live verification, survives fresh runners and skip
   assert.equal((await fresh.read(fresh.journalKey)).phase, "promoted");
 });
 
+test("unchanged preparation retains the tested artifact without requiring a build and updates only its own accepted state", async () => {
+  const env = setup();
+  const initial = await env.transaction.publish(candidate, { bootstrap: true });
+  const production = Buffer.from(
+    JSON.stringify({
+      version: 1,
+      namespace: "production",
+      source: "production state canary",
+    }),
+  );
+  env.objects.set("accepted/production/current.json", production);
+  const prepared = {
+    source: "f".repeat(64),
+    code: candidate.code,
+    digest: candidate.digest,
+    state: { mode: "staging", updatedMetadata: true },
+  };
+  const result = await new PublicationTransaction(
+    env.store,
+    env.serving,
+    "staging",
+  ).reconcileUnchanged(prepared);
+  assert.equal(result.skipped, true);
+  assert.equal(result.accepted.source, prepared.source);
+  assert.equal(result.accepted.state.updatedMetadata, true);
+  assert.equal(result.accepted.artifact, initial.accepted.artifact);
+  assert.equal(result.accepted.archive, initial.accepted.archive);
+  assert.deepEqual(result.accepted.verification, initial.accepted.verification);
+  assert.deepEqual(result.accepted.receipt, initial.accepted.receipt);
+  assert.equal(env.deployments(), 1);
+  assert.equal(env.objects.get("accepted/production/current.json"), production);
+});
+
+test("changed output or code requires a build while missing state and target mismatches block no-op acceptance", async () => {
+  const env = setup();
+  const prepared = {
+    source: candidate.source,
+    code: candidate.code,
+    digest: candidate.digest,
+    state: candidate.state,
+  };
+  await assert.rejects(env.transaction.reconcileUnchanged(prepared), /differ/);
+  await env.transaction.publish(candidate, { bootstrap: true });
+  const before = env.objects.get(env.transaction.currentKey);
+  for (const change of [{ code: "e".repeat(64) }, { digest: "e".repeat(64) }])
+    assert.equal(
+      await env.transaction.reconcileUnchanged({ ...prepared, ...change }),
+      undefined,
+    );
+  assert.equal(env.objects.get(env.transaction.currentKey), before);
+  await assert.rejects(
+    env.transaction.reconcileUnchanged({
+      ...prepared,
+      state: { mode: "production" },
+    }),
+    /target/,
+  );
+  await assert.rejects(
+    env.transaction.reconcileUnchanged({ ...prepared, source: "bad" }),
+    /fingerprint/,
+  );
+  assert.equal(env.deployments(), 1);
+});
+
+test("a serving identity change during no-op verification cannot advance reconciliation metadata", async () => {
+  const env = setup();
+  await env.transaction.publish(candidate, { bootstrap: true });
+  const before = env.objects.get(env.transaction.currentKey),
+    verify = env.serving.verify;
+  env.serving.verify = async (receipt) => {
+    await verify(receipt);
+    env.setLive("unrelated-deployment");
+  };
+  await assert.rejects(
+    env.transaction.reconcileUnchanged({
+      source: "f".repeat(64),
+      code: candidate.code,
+      digest: candidate.digest,
+      state: candidate.state,
+    }),
+    /changed during no-op/,
+  );
+  assert.equal(env.objects.get(env.transaction.currentKey), before);
+  env.setLive("candidate-1");
+  await assert.rejects(
+    env.transaction.publish({ ...candidate, source: "f".repeat(64) }),
+    /changed during no-op/,
+  );
+  assert.equal(env.objects.get(env.transaction.currentKey), before);
+});
+
 test("failed verification restores the captured version without promoting candidate state", async () => {
   const env = setup();
   env.failVerification();
