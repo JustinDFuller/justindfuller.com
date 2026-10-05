@@ -2,7 +2,7 @@ import { readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
-import { randomBytes } from "node:crypto";
+import { randomBytes, createHash } from "node:crypto";
 import { performance } from "node:perf_hooks";
 import { CloudflareServing } from "./obsidian-cloudflare.mjs";
 import {
@@ -24,6 +24,7 @@ export function publicPublicationReceipt(
   durationMs,
   counters,
   run,
+  verifiedAt = new Date().toISOString(),
 ) {
   if (
     !/^(production|staging|pr\/[1-9][0-9]*)$/.test(target) ||
@@ -38,6 +39,9 @@ export function publicPublicationReceipt(
     !/^[a-f0-9-]{32,36}$/.test(result.accepted?.receipt?.deployment ?? "") ||
     !Number.isSafeInteger(durationMs) ||
     durationMs < 0 ||
+    typeof verifiedAt !== "string" ||
+    !Number.isFinite(Date.parse(verifiedAt)) ||
+    new Date(verifiedAt).toISOString() !== verifiedAt ||
     !/^[a-z0-9-]{1,100}$/.test(run)
   )
     throw new Error("Publication receipt correlation invalid");
@@ -74,7 +78,7 @@ export function publicPublicationReceipt(
     artifact: result.accepted.receipt.artifact,
     deployment: result.accepted.receipt.deployment,
     skipped: result.skipped === true,
-    verifiedAt: new Date().toISOString(),
+    verifiedAt,
     durationMs,
     run,
     counters: usage,
@@ -88,6 +92,8 @@ export function protectedPublicationReport(
   diagnostics,
   receipt,
 ) {
+  if (receipt && typeof receipt.verifiedAt !== "string")
+    throw new Error("Original verification timestamp required");
   if (
     !/^(production|staging|pr\/[1-9][0-9]*)$/.test(target) ||
     candidate.state?.mode !== (target.startsWith("pr/") ? "preview" : target) ||
@@ -116,6 +122,7 @@ export function protectedPublicationReport(
         receipt.durationMs,
         receipt.counters,
         receipt.run,
+        receipt.verifiedAt,
       )
     : undefined;
   const report = {
@@ -138,18 +145,29 @@ export function protectedPublicationReport(
       ]),
     ),
     masks: diagnostics.masks,
-    issues: diagnostics.issues.map((item) =>
-      select(item, [
-        "key",
-        "category",
-        "file_id",
-        "path",
-        "revision",
-        "route",
-        "fallback",
-        "observed_at",
-      ]),
-    ),
+    issues: diagnostics.issues.map((item) => {
+      if (
+        typeof item?.key !== "string" ||
+        !item.key ||
+        !/^[a-z_]+$/.test(item.category ?? "")
+      )
+        throw new Error("Invalid protected issue identity");
+      return {
+        ...select(item, [
+          "key",
+          "category",
+          "file_id",
+          "path",
+          "revision",
+          "route",
+          "fallback",
+          "observed_at",
+        ]),
+        key: fingerprint.test(item.key)
+          ? item.key
+          : createHash("sha256").update(item.key).digest("hex"),
+      };
+    }),
     receipt: safeReceipt,
   };
   if (Buffer.byteLength(JSON.stringify(report)) > 2 * 1024 * 1024)

@@ -14,7 +14,7 @@ The source uploader requires only source-bucket object read/write. CI source rea
 
 ## Access provisioning gate
 
-Enable Zero Trust on the site account before configuring the two self-hosted applications. The staging application must contain exactly one `worker` destination for the staging Worker's ID. The preview application must contain exactly one `preview_worker` destination for the production Worker's ID. Worker IDs are platform IDs, not the Worker names. These destinations cover the Worker's alternate domains and native previews; see [Cloudflare's Worker Access documentation](https://developers.cloudflare.com/workers/configuration/cloudflare-access/).
+Zero Trust onboarding was verified on 2026-10-04. Staging now has a sentinel-only Worker, custom domain, exact owner policy, and expiring Service Auth credential; its live denial and authenticated sentinel checks passed. Production-Worker preview protection remains a separate rollout step. Enable Zero Trust on the site account before configuring the two self-hosted applications. The staging application must contain exactly one `worker` destination for the staging Worker's ID. The preview application must contain exactly one `preview_worker` destination for the production Worker's ID. Worker IDs are platform IDs, not the Worker names. These destinations cover the Worker's alternate domains and native previews; see [Cloudflare's Worker Access documentation](https://developers.cloudflare.com/workers/configuration/cloudflare-access/).
 
 Each application uses exactly two policies: an `allow` policy whose only include rule is the explicitly selected owner's exact `email`, and a `non_identity` Service Auth policy whose only include rule is the dedicated expiring `service_token`. Do not add everyone, email-domain, bypass, or alternate allow rules. Store the service client ID/secret separately from the Access configuration read credential. This implementation conservatively blocks overlapping account-wide, Worker, and matching-hostname applications for operator review.
 
@@ -102,6 +102,7 @@ The private state adapter verifies explicit hashes and sizes on writes and reads
 node scripts/obsidian-private-storage.mjs upload --target staging --run 123-1 --checksum <tested-sha256> --file .obsidian-publish/tested.tar
 node scripts/obsidian-private-storage.mjs download --target staging --run 123-1 --checksum <tested-sha256> --file .obsidian-publish/tested.tar
 node scripts/obsidian-private-storage.mjs report --target production --file .obsidian-publish/production-report.json
+node scripts/obsidian-private-storage.mjs report --target preview --pr 403 --file .obsidian-publish/pr-report.json
 ```
 
 For a PR archive use `--target preview --pr <open-pr-number>`. Detailed reports remain in the private output file; command stdout contains operation status and counts. A 14-day lifecycle must target only `artifacts/`; it must exclude accepted state, candidate journals, reports, current verification receipts, and rollback records. Lifecycle provisioning and workflow handoff remain rollout tasks until verified against the account.
@@ -115,3 +116,21 @@ The Cloudflare serving adapter validates account, target, Worker name, domain se
 Production and staging rollback restore the captured Worker version at 100 percent traffic. Native preview rollback redeploys the exact prior archive, then records the new actual deployment ID and restores the matching prior accepted state after live verification. Private accepted-state backups and serving archives live under `rollback/`, outside the 14-day handoff lifecycle. A lost deployment or rollback response is reconciled using an opaque publication marker and full artifact verification; an unrelated live identity requires operator reconciliation. The archive parser rejects traversal, duplicate paths, links, unsupported metadata, malformed checksums, and incomplete data before extraction.
 
 Measure runner duration, deployment frequency, no-op skips, retries, upload-to-verification latency, and Cloudflare operations for both targets. Reassess observed usage after two weeks and after publishing volume changes, considering GitHub Actions and Cloudflare Builds equally. Include private staging serving and build costs in that comparison.
+
+## Bucket-scoped credential setup
+
+The current CLI OAuth session can provision Workers and Access but received HTTP 403 from the account API-token permission-group endpoint on 2026-10-04. An account owner must create the R2 credentials in the Cloudflare dashboard. Use [R2 API token management](https://developers.cloudflare.com/r2/api/tokens/) and select only the specified bucket for each credential. Give each token an explicit expiry, initially one year; preserve its expiry for rotation planning. Do not paste token values or S3 credentials into chat, repository files, Actions logs, or shell command arguments.
+
+| Purpose / local setup kind | Bucket | R2 object permission | Consumer |
+| --- | --- | --- | --- |
+| `upload` | `justindfuller-obsidian-source` | Read and Write | Mac publisher only |
+| `source-read` | `justindfuller-obsidian-source` | Read only | CI preparation and production image promotion reads |
+| `media-write` | `justindfuller-obsidian-media` | Read and Write | Production image promotion only |
+| `state-write` | `justindfuller-obsidian-state` | Read and Write | CI state, reports, journals, and private archives |
+| `reports` | `justindfuller-obsidian-state` | Read only | Mac publisher and operator report reads |
+
+In an interactive macOS terminal in the repository, run `node scripts/configure-obsidian-credential.mjs --kind <purpose>` separately for each row. The command prompts for the R2 Access Key ID and Secret Access Key with terminal echo disabled and stores the pair in macOS Keychain. It prints only the purpose and storage result. `upload` and `reports` use the publisher’s existing Cloudflare Keychain service; the three CI pairs use a separate operator service. This does not enable automatic dispatch or install the plugin. CI secret distribution and bucket-scope negative tests remain rollout steps.
+
+Staging verification service credentials are already retained in a separate Keychain service, expire on 2027-10-04, and permit only their Service Auth policy. The staging human policy allows only the privately configured owner email, with email one-time PIN as the selected login method. New Zero Trust organizations do not automatically configure OTP; see [Cloudflare’s OTP setup](https://developers.cloudflare.com/cloudflare-one/integrations/identity-providers/one-time-pin/). The owner confirmed a successful browser OTP login and the exact staging sentinel on 2026-10-04.
+
+Protected report reads verify target correlation, fingerprints, bounds, and receipt shape before saving diagnostics in ignored storage. Reads preserve the original report and verification timestamps. Output files are restricted to owner read/write and linked output paths are rejected. Go composite issue identities are converted to stable SHA-256 fingerprints at the protected-report boundary, preserving per-target notification deduplication without putting private paths in notice keys.

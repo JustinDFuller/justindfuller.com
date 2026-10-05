@@ -9,6 +9,10 @@ import {
   environmentTransport,
 } from "../tools/obsidian-image-publisher/src/publication.ts";
 import { targetNamespace } from "./obsidian-transaction.mjs";
+import {
+  readProtectedReport,
+  saveProtectedReport,
+} from "./obsidian-reports.mjs";
 
 export function archiveKey(target, pr, run, checksum) {
   const namespace = targetNamespace(target, pr);
@@ -58,10 +62,7 @@ async function main() {
     },
   });
   const [operation] = positionals;
-  const namespace = targetNamespace(
-    values.target,
-    values.pr ? Number(values.pr) : undefined,
-  );
+  targetNamespace(values.target, values.pr ? Number(values.pr) : undefined);
   if (
     !values.file ||
     !resolve(values.file).startsWith(`${resolve(".obsidian-publish")}/`)
@@ -76,11 +77,15 @@ async function main() {
   );
   try {
     let bytes;
+    let report;
     if (operation === "report") {
-      if (!["staging", "production"].includes(namespace))
-        throw new Error("Invalid report target");
-      bytes = await store.get(`reports/${namespace}.json`, 2 * 1024 * 1024);
-      if (!bytes) throw new Error("Protected report unavailable");
+      report = await readProtectedReport(
+        store,
+        values.target,
+        values.pr ? Number(values.pr) : undefined,
+      );
+      bytes = Buffer.from(JSON.stringify(report));
+      await saveProtectedReport(values.file, report);
     } else {
       const key = archiveKey(
         values.target,
@@ -96,13 +101,16 @@ async function main() {
         values.checksum,
       );
     }
-    mkdirSync(dirname(values.file), { recursive: true, mode: 0o700 });
-    writeFileSync(values.file, bytes, { mode: 0o600 });
+    if (!report) {
+      mkdirSync(dirname(values.file), { recursive: true, mode: 0o700 });
+      writeFileSync(values.file, bytes, { mode: 0o600 });
+    }
     console.log(
       JSON.stringify({
         status: "verified",
         operation,
         target: values.target,
+        publicationStatus: report?.status,
         bytes: bytes.length,
         ...store.counters,
       }),

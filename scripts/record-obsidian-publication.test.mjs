@@ -1,5 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { publicationNotices } from "../tools/obsidian-image-publisher/src/status.ts";
 import {
   publicPublicationReceipt,
   protectedPublicationReport,
@@ -135,6 +137,18 @@ test("protected reports preserve ownership and issues while omitting post bodies
   assert.equal(report.files[0].path, "private-canary.md");
   assert.equal(report.files[0].environment, "nonprod");
   assert.equal(report.issues[0].category, "invalid_metadata");
+  assert.equal(report.receipt.verifiedAt, receipt.verifiedAt);
+  assert.throws(
+    () =>
+      protectedPublicationReport(
+        candidate,
+        "staging",
+        "verified",
+        diagnostics,
+        { ...receipt, verifiedAt: undefined },
+      ),
+    /timestamp/,
+  );
   for (const privateValue of [
     "raw state body canary",
     "credential canary",
@@ -253,7 +267,7 @@ test("a full issue report still records deployment failure without losing existi
   const full = {
     ...diagnostics,
     issues: Array.from({ length: 10000 }, (_, index) => ({
-      key: String(index),
+      key: createHash("sha256").update(String(index)).digest("hex"),
       category: "invalid_metadata",
     })),
   };
@@ -281,4 +295,20 @@ test("a full issue report still records deployment failure without losing existi
     ["queued", "failed"],
   );
   assert.deepEqual(statuses[1].issues, full.issues);
+});
+
+test("Go composite issue identities become stable opaque fingerprints accepted by the publisher", () => {
+  const key = `private-canary.md:${"a".repeat(64)}:invalid_metadata`;
+  const report = protectedPublicationReport(candidate, "staging", "degraded", {
+    ...diagnostics,
+    issues: [{ key, category: "invalid_metadata" }],
+  });
+  assert.equal(
+    report.issues[0].key,
+    createHash("sha256").update(key).digest("hex"),
+  );
+  assert.equal(report.issues[0].key.includes("private-canary"), false);
+  const first = publicationNotices(report, {});
+  assert.deepEqual(first.notices, ["staging: invalid_metadata"]);
+  assert.deepEqual(publicationNotices(report, first.state).notices, []);
 });
