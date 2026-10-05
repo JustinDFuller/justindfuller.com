@@ -114,8 +114,8 @@ export const codeValidationChecks = Object.freeze([
   "publisher-types",
   "script-lint",
   "production-export",
-  "staging-export",
   "production-dry-run",
+  "staging-export",
   "staging-dry-run",
 ]);
 export const codeValidationPolicy = createHash("sha256")
@@ -202,9 +202,28 @@ export async function validatePublicationCode(
     new Date(receipt.completedAt).toISOString() !== receipt.completedAt
   )
     throw new Error("Validation completion timestamp invalid");
-  await store.put(key, Buffer.from(JSON.stringify(receipt)));
-  const verified = await readCodeValidation(store, codeSha);
-  if (JSON.stringify(verified) !== JSON.stringify(receipt))
-    throw new Error("Code validation receipt write is unverified");
-  return { skipped: false, receipt: verified };
+  const writeSucceeded = await store
+    .put(key, Buffer.from(JSON.stringify(receipt)), true)
+    .then(
+      () => true,
+      () => false,
+    );
+  let winner;
+  try {
+    winner = await readCodeValidation(store, codeSha);
+  } catch {
+    throw new Error("Code validation receipt winner is unreadable");
+  }
+  if (!winner) throw new Error("Code validation receipt write is unverified");
+  const matchesAttempt = JSON.stringify(winner) === JSON.stringify(receipt);
+  return {
+    skipped: false,
+    receipt: winner,
+    receiptWinner: {
+      run: winner.run,
+      completedAt: winner.completedAt,
+      matchesAttempt,
+      writeSucceeded,
+    },
+  };
 }

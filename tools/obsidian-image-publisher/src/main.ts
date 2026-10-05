@@ -25,6 +25,7 @@ import {
   observePublication,
   queuedPublication,
   readPublicationReport,
+  readPublicationReports,
   publicationStatusSummary,
   type NoticeState,
   type PublicationStatusState,
@@ -275,9 +276,9 @@ export default class CloudflarePublisher extends Plugin {
         transport,
         this.target(this.settings.stateBucket),
       );
-      for (const target of ["staging", "production"] as const) {
-        try {
-          const report = await readPublicationReport(store, target);
+      await readPublicationReports(
+        store,
+        async (target, report) => {
           const result = observePublication(
             report,
             this.runtime.scheduler.revision,
@@ -293,7 +294,8 @@ export default class CloudflarePublisher extends Plugin {
           if (wasUnavailable)
             this.notify(`${target}: protected publication status is available`);
           for (const notice of result.notices) this.notify(notice);
-        } catch {
+        },
+        async (target) => {
           this.runtime.reportUnavailable ??= {};
           if (!this.runtime.reportUnavailable[target]) {
             this.runtime.reportUnavailable[target] = true;
@@ -302,8 +304,8 @@ export default class CloudflarePublisher extends Plugin {
               `${target}: protected publication status is unavailable`,
             );
           }
-        }
-      }
+        },
+      );
     } catch {
       this.notify("Protected publication status is unavailable");
     } finally {

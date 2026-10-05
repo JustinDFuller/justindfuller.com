@@ -36,19 +36,24 @@ export function publicationNotices(
       return `${issue.key}:${issue.category}`;
     })
     .sort();
+  const uniqueIssues = [...new Set(issues)];
   const previous = state[report.target] ?? [];
-  const notices = issues
+  const notices = uniqueIssues
     .filter((issue) => !previous.includes(issue))
     .map((issue) => `${report.target}: ${issue.split(":")[1]}`);
-  if (previous.length && issues.length === 0 && report.status === "verified")
+  if (
+    previous.length &&
+    uniqueIssues.length === 0 &&
+    report.status === "verified"
+  )
     notices.push(`${report.target}: publication recovered`);
   const next = { ...state };
   if (
     report.status === "verified" ||
     ((report.status === "degraded" || report.status === "failed") &&
-      issues.length > 0)
+      uniqueIssues.length > 0)
   )
-    next[report.target] = issues;
+    next[report.target] = uniqueIssues;
   return { state: next, notices };
 }
 
@@ -103,6 +108,25 @@ export async function readPublicationReport(
   if (report.target !== target) throw new Error("Report target mismatch");
   publicationNotices(report, {});
   return report;
+}
+
+export async function readPublicationReports(
+  store: { get(key: string, limit: number): Promise<Uint8Array | undefined> },
+  onReport: (
+    target: PublicationTarget,
+    report: PublicationReport,
+  ) => Promise<void>,
+  onUnavailable: (target: PublicationTarget) => Promise<void>,
+): Promise<void> {
+  await Promise.all(
+    (["staging", "production"] as const).map(async (target) => {
+      try {
+        await onReport(target, await readPublicationReport(store, target));
+      } catch {
+        await onUnavailable(target);
+      }
+    }),
+  );
 }
 
 export function publicationStatusSummary(

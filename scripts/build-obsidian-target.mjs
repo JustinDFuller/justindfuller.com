@@ -26,6 +26,21 @@ export function testedArtifactKey(mode, pr, run, checksum) {
   return `artifacts/${namespace}/${run}/${checksum}.tar`;
 }
 
+export function artifactPublication(namespace, run, candidate) {
+  return archiveChecksum(
+    Buffer.from(
+      JSON.stringify({
+        version: 1,
+        target: namespace,
+        run,
+        codeSha: candidate.codeSha,
+        source: candidate.source,
+        digest: candidate.digest,
+      }),
+    ),
+  );
+}
+
 export function validateBuiltArtifact(
   bytes,
   checksum,
@@ -116,18 +131,7 @@ export async function buildPublicationTarget({
     throw new Error("Build checkout differs from prepared code");
   const bundle = await downloadPreparationBundle(store, preparation, target),
     overlay = `.obsidian-publish/hosted/${namespace}/build-prepared.json`,
-    publication = archiveChecksum(
-      Buffer.from(
-        JSON.stringify({
-          version: 1,
-          target: namespace,
-          run,
-          codeSha,
-          source: bundle.candidate.source,
-          digest: bundle.candidate.digest,
-        }),
-      ),
-    );
+    publication = artifactPublication(namespace, run, bundle.candidate);
   await saveProtectedReport(
     overlay,
     bundle.candidate.verification.prepared,

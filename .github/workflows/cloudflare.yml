@@ -1,7 +1,8 @@
----
 name: Build and Deploy to Cloudflare
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_target:
     types: [opened, synchronize, reopened]
   push:
     branches: [main]
@@ -20,13 +21,54 @@ on:
         description: Open same-repository PR number for preview refresh
         type: string
         required: false
+      bootstrap:
+        description: Explicitly initialize a target using its verified prior receipt
+        type: boolean
+        default: false
 permissions:
   contents: read
-concurrency:
-  group: cloudflare-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
-  cancel-in-progress: false
+  pull-requests: read
 jobs:
+  admission:
+    if: github.event_name != 'pull_request_target' || vars.OBSIDIAN_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      kind: ${{ steps.plan.outputs.kind }}
+      targets: ${{ steps.plan.outputs.targets }}
+      validation_only: ${{ steps.plan.outputs.validation_only }}
+      preview_pr: ${{ steps.plan.outputs.preview_pr }}
+      preview_sha: ${{ steps.plan.outputs.preview_sha }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        if: github.event_name != 'pull_request_target'
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        if: github.event_name == 'pull_request_target'
+        with:
+          ref: refs/heads/main
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22.x"
+      - name: Validate publication request
+        id: plan
+        env:
+          GITHUB_TOKEN: ${{ github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.full_name == github.repository) && github.token || '' }}
+        run: node ${{ github.event_name == 'pull_request_target' && 'control/scripts/plan-obsidian-workflow.mjs' || 'scripts/plan-obsidian-workflow.mjs' }}
+      - name: Preserve legacy request guard while private publishing is disabled
+        if: vars.OBSIDIAN_PUBLISH_ENABLED != 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' && github.event_name != 'pull_request_target' || github.event.pull_request.head.repo.full_name == github.repository) && github.token || '' }}
+        run: node ${{ github.event_name == 'pull_request_target' && 'control/scripts/plan-obsidian-workflow.mjs' || 'scripts/plan-obsidian-workflow.mjs' }} --legacy-guard
   site:
+    needs: admission
+    if: (needs.admission.outputs.validation_only == 'true' && github.event_name == 'pull_request') || (vars.OBSIDIAN_PUBLISH_ENABLED != 'true' && (needs.admission.outputs.kind == 'site' || github.event_name == 'pull_request'))
+    concurrency:
+      group: ${{ github.event_name == 'pull_request' && format('cloudflare-refs/pull/{0}/merge', github.event.number) || 'cloudflare-production' }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -35,10 +77,12 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           lfs: true
-      - name: Validate publication request
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: node scripts/plan-obsidian-workflow.mjs --legacy-guard
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: refs/heads/main
+          path: control
+          persist-credentials: false
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: "22.x"
@@ -88,8 +132,11 @@ jobs:
           name: cloudflare-deployment-${{ github.sha }}
           path: .cloudflare/deployment.json
   preview:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
-    needs: site
+    if: needs.admission.outputs.validation_only != 'true' && vars.OBSIDIAN_PUBLISH_ENABLED != 'true' && vars.OBSIDIAN_PREVIEW_ACCESS_ENABLED != 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    needs: [admission, site]
+    concurrency:
+      group: ${{ format('cloudflare-refs/pull/{0}/merge', github.event.number) }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -97,6 +144,13 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: refs/heads/main
+          path: control
+          persist-credentials: false
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: "22.x"
@@ -137,3 +191,33 @@ jobs:
             const body = `<!-- cloudflare-preview -->\nCloudflare preview: ${record.previewUrl}\n\nTested deployment: ${record.url}\n\nCommit: \`${context.payload.pull_request.head.sha}\` (tested merge: \`${record.commit}\`).\n\nThis preview updates with the PR and is deleted when the PR closes.`;
             if (existing) await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body });
             else await github.rest.issues.createComment({ ...params, body });
+  production:
+    needs: admission
+    if: vars.OBSIDIAN_PUBLISH_ENABLED == 'true' && needs.admission.outputs.validation_only != 'true' && needs.admission.outputs.kind != 'preview'
+    uses: ./.github/workflows/obsidian-target.yml
+    with:
+      mode: production
+      kind: ${{ needs.admission.outputs.kind }}
+      bootstrap: ${{ github.event.inputs.bootstrap == 'true' }}
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  staging:
+    needs: admission
+    if: vars.OBSIDIAN_PUBLISH_ENABLED == 'true' && needs.admission.outputs.validation_only != 'true' && needs.admission.outputs.kind != 'preview'
+    uses: ./.github/workflows/obsidian-target.yml
+    with:
+      mode: staging
+      kind: ${{ needs.admission.outputs.kind }}
+      bootstrap: ${{ github.event.inputs.bootstrap == 'true' }}
+  private-preview:
+    needs: admission
+    if: (github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch') && vars.OBSIDIAN_PUBLISH_ENABLED == 'true' && needs.admission.outputs.validation_only != 'true' && needs.admission.outputs.kind == 'preview'
+    uses: ./.github/workflows/obsidian-target.yml
+    with:
+      mode: preview
+      kind: preview
+      pr: ${{ needs.admission.outputs.preview_pr }}
+      expected_code_sha: ${{ needs.admission.outputs.preview_sha }}
+      bootstrap: ${{ github.event.inputs.bootstrap == 'true' }}
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

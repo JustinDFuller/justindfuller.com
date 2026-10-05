@@ -237,6 +237,92 @@ test("only a complete compatible main-code receipt skips code checks and its rea
   }
 });
 
+test("concurrent validations accept the immutable compatible receipt winner", async () => {
+  const objects = new Map();
+  let initialReads = 0,
+    releaseInitialReads;
+  const initialReadBarrier = new Promise((resolve) => {
+    releaseInitialReads = resolve;
+  });
+  const store = {
+    get: async (key) => {
+      if (initialReads < 2) {
+        initialReads++;
+        if (initialReads === 2) releaseInitialReads();
+        await initialReadBarrier;
+        return undefined;
+      }
+      return objects.get(key);
+    },
+    put: async (key, bytes, immutable) => {
+      assert.equal(immutable, true);
+      if (objects.has(key)) {
+        const error = new Error("Conditional write lost");
+        error.name = "PreconditionFailed";
+        throw error;
+      }
+      objects.set(key, Buffer.from(bytes));
+    },
+  };
+  const checks = [[], []];
+  const outcomes = await Promise.all(
+    [
+      { run: "123-1", completedAt: time },
+      { run: "124-1", completedAt: "2026-10-05T12:35:00.000Z" },
+    ].map(({ run, completedAt }, index) =>
+      validatePublicationCode(
+        store,
+        { codeSha: freshSha, run, completedAt: () => completedAt },
+        async (check) => {
+          checks[index].push(check);
+          return true;
+        },
+      ),
+    ),
+  );
+  assert.deepEqual(checks, [codeValidationChecks, codeValidationChecks]);
+  assert.equal(outcomes[0].skipped, false);
+  assert.equal(outcomes[1].skipped, false);
+  assert.deepEqual(outcomes[0].receipt, outcomes[1].receipt);
+  assert.equal(outcomes[0].receiptWinner.run, outcomes[1].receiptWinner.run);
+  assert.equal(
+    outcomes[0].receiptWinner.completedAt,
+    outcomes[1].receiptWinner.completedAt,
+  );
+  assert.ok(["123-1", "124-1"].includes(outcomes[0].receipt.run));
+  assert.equal(
+    [outcomes[0], outcomes[1]].filter(
+      (outcome) => outcome.receiptWinner.matchesAttempt,
+    ).length,
+    1,
+  );
+  assert.equal(
+    [outcomes[0], outcomes[1]].filter(
+      (outcome) => outcome.receiptWinner.writeSucceeded,
+    ).length,
+    1,
+  );
+});
+
+test("an ambiguous immutable write accepts its verified winner", async () => {
+  const store = memoryStore();
+  const result = await validatePublicationCode(
+    {
+      get: store.get,
+      put: async (key, bytes, immutable) => {
+        assert.equal(immutable, true);
+        store.objects.set(key, Buffer.from(bytes));
+        throw new Error("Write response was lost");
+      },
+    },
+    { codeSha: freshSha, run: "123-1", completedAt: () => time },
+    async () => true,
+  );
+  assert.equal(result.receiptWinner.run, "123-1");
+  assert.equal(result.receiptWinner.matchesAttempt, true);
+  assert.equal(result.receiptWinner.writeSucceeded, false);
+});
+
 test("a failed code check, unavailable state, or ambiguous receipt write cannot authorize content publication", async () => {
   const store = memoryStore();
   let checked = 0;
@@ -268,8 +354,49 @@ test("a failed code check, unavailable state, or ambiguous receipt write cannot 
   );
   await assert.rejects(
     validatePublicationCode(
-      { ...store, put: async () => {} },
+      {
+        ...store,
+        put: async (_key, _bytes, immutable) => {
+          assert.equal(immutable, true);
+        },
+      },
       { codeSha: freshSha, run: "123", completedAt: () => time },
+      async () => true,
+    ),
+    /unverified/,
+  );
+  let reads = 0;
+  await assert.rejects(
+    validatePublicationCode(
+      {
+        get: async () => {
+          reads++;
+          if (reads === 1) return undefined;
+          throw new Error("State became unavailable");
+        },
+        put: async (_key, _bytes, immutable) => {
+          assert.equal(immutable, true);
+          throw new Error("Ambiguous write");
+        },
+      },
+      { codeSha: freshSha, run: "124-2", completedAt: () => time },
+      async () => true,
+    ),
+    /winner is unreadable/,
+  );
+  await assert.rejects(
+    validatePublicationCode(
+      {
+        get: async (key) =>
+          key === codeValidationKey(freshSha)
+            ? Buffer.from(JSON.stringify({ version: 1, result: "passed" }))
+            : undefined,
+        put: async (_key, _bytes, immutable) => {
+          assert.equal(immutable, true);
+          throw new Error("Conditional write lost");
+        },
+      },
+      { codeSha: freshSha, run: "124-1", completedAt: () => time },
       async () => true,
     ),
     /unverified/,

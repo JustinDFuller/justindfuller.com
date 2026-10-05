@@ -5,6 +5,7 @@ import {
   queuedPublication,
   publicationNotices,
   readPublicationReport,
+  readPublicationReports,
   publicationStatusSummary,
   type PublicationReport,
 } from "../src/status.ts";
@@ -115,6 +116,19 @@ test("failed or queued reports cannot clear issue state without verified recover
   assert.deepEqual(blocked.notices, ["production: deployment_failed"]);
 });
 
+test("duplicate issue fingerprints in one report produce one notice", () => {
+  const duplicate = report("production", "failed");
+  duplicate.issues = [
+    { key: issue, category: "deployment_failed" },
+    { key: issue, category: "deployment_failed" },
+  ];
+  const observed = publicationNotices(duplicate, {});
+  assert.deepEqual(observed.notices, ["production: deployment_failed"]);
+  assert.deepEqual(observed.state.production, [
+    "b".repeat(64) + ":deployment_failed",
+  ]);
+});
+
 test("protected status reads validate target, limits and issue fingerprints", async () => {
   let requested = "";
   const store = {
@@ -171,25 +185,45 @@ test("protected status reads validate target, limits and issue fingerprints", as
   );
 });
 
-test("pending protected reads yield control while provider credentials or responses are unavailable", async () => {
+test("pending protected reads yield control without delaying the other target", async () => {
   let finish: (value: Uint8Array) => void = () => {
     throw new Error("Read not started");
   };
-  const pending = readPublicationReport(
+  let stagingRead = false,
+    productionRead = false,
+    stagingComplete = false,
+    productionComplete = false;
+  const store = {
+    get: async (_key: string, _limit: number) =>
+      new Promise<Uint8Array>((resolve) => {
+        finish = resolve;
+      }),
+  };
+  const pending = readPublicationReports(
     {
-      get: async () =>
-        new Promise<Uint8Array>((resolve) => {
-          finish = resolve;
-        }),
+      get: async (key, limit) => {
+        assert.equal(limit, 2 * 1024 * 1024);
+        if (key === "reports/production.json") {
+          productionRead = true;
+          return store.get(key, limit);
+        }
+        stagingRead = true;
+        return Buffer.from(JSON.stringify(report("staging", "verified")));
+      },
     },
-    "staging",
+    async (target, value) => {
+      assert.equal(value.target, target);
+      if (target === "staging") stagingComplete = true;
+      else productionComplete = true;
+    },
+    async () => assert.fail("Both target reports should resolve"),
   );
-  let finished = false;
-  void pending.then(() => {
-    finished = true;
-  });
   await new Promise<void>((resolve) => setImmediate(resolve));
-  assert.equal(finished, false);
-  finish(Buffer.from(JSON.stringify(report("staging", "verified"))));
-  assert.equal((await pending).target, "staging");
+  assert.equal(stagingRead, true);
+  assert.equal(productionRead, true);
+  assert.equal(stagingComplete, true);
+  assert.equal(productionComplete, false);
+  finish(Buffer.from(JSON.stringify(report("production", "verified"))));
+  await pending;
+  assert.equal(productionComplete, true);
 });

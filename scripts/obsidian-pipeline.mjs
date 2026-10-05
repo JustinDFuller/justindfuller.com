@@ -3,6 +3,7 @@ import {
   prepareHostedTarget,
   readPrivatePreparation,
   preparationCode,
+  runPreparationCommand,
 } from "./prepare-obsidian-target.mjs";
 import { promotePreparedImages } from "./promote-obsidian-images.mjs";
 import { recordPublication } from "./record-obsidian-publication.mjs";
@@ -103,9 +104,20 @@ export async function preparePublicationTarget(options) {
       run,
       cwd = process.cwd(),
       execute = runPublicationCommand,
+      controlWorkspace = cwd,
       promote,
     } = options,
     namespace = targetNamespace(mode, pr);
+  const executePreparation = (command, args, commandOptions = {}) =>
+    command === "go"
+      ? runPreparationCommand(
+          execute,
+          args,
+          commandOptions.cwd ?? cwd,
+          process.env,
+          controlWorkspace,
+        )
+      : execute(command, args, commandOptions);
   preparationBundleKey(mode, pr, run, "0".repeat(64));
   const initial = await prepareHostedTarget({ ...options, cwd, execute });
   if (initial.decision === "retain-serving") return initial;
@@ -120,10 +132,10 @@ export async function preparePublicationTarget(options) {
       out: file("promotion"),
       unavailableOut: file("unavailable"),
       cwd,
-      execute,
+      execute: executePreparation,
       promote,
     });
-    await execute(
+    await executePreparation(
       "go",
       [
         "run",

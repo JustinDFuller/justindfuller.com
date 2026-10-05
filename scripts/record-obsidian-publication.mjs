@@ -185,6 +185,9 @@ export async function recordPublication(
     bootstrap = false,
     unchangedOnly = false,
     started = performance.now(),
+    run = process.env.GITHUB_RUN_ID
+      ? `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT ?? "1"}`
+      : `manual-${randomBytes(12).toString("hex")}`,
   },
 ) {
   if (bootstrap && unchangedOnly)
@@ -248,9 +251,6 @@ export async function recordPublication(
       "Publication failed; inspect the protected target report and journal",
     );
   }
-  const run = process.env.GITHUB_RUN_ID
-    ? `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT ?? "1"}`
-    : `manual-${randomBytes(12).toString("hex")}`;
   const receipt = publicPublicationReceipt(
     candidate,
     result,

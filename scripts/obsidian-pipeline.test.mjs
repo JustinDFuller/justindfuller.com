@@ -74,7 +74,8 @@ async function fixture(t, mode = "staging", options = {}) {
   t.after(() => rm(cwd, { recursive: true, force: true }));
   const store = memoryStore(),
     previous = values(mode, old),
-    trace = [];
+    trace = [],
+    pinnedSource = `.obsidian-publish/hosted/${mode}/pinned.json`;
   store.objects.set(
     `accepted/${mode}/current.json`,
     Buffer.from(
@@ -99,7 +100,6 @@ async function fixture(t, mode = "staging", options = {}) {
         trace.push("authorize");
         return { stdout: "private canary" };
       }
-      if (options.outage && args.includes("--r2")) throw Error("private error");
       preparations++;
       const fallback = args.includes("--accepted-only"),
         revision = fallback ? old : source,
@@ -124,12 +124,9 @@ async function fixture(t, mode = "staging", options = {}) {
         cwd,
       );
       await saveProtectedReport(flag("--report-out"), current.diagnostics, cwd);
-      if (args.includes("--source-out"))
-        await saveProtectedReport(
-          flag("--source-out"),
-          { revision, ready: {} },
-          cwd,
-        );
+      assert.equal(args.includes("--r2"), false);
+      assert.equal(args.includes("--source-out"), false);
+      assert.equal(args.includes("--source"), !fallback);
       return { stdout: "private output" };
     },
     serving = {
@@ -142,7 +139,28 @@ async function fixture(t, mode = "staging", options = {}) {
       trace.push("promotion");
       return { verified: [], unavailable: [], copied: 0, bytes: 0 };
     };
-  return { cwd, store, serving, mode, run: "123-1", execute, promote, trace };
+  await saveProtectedReport(
+    pinnedSource,
+    {
+      revision: source,
+      snapshot: { version: 1, files: {}, images: {} },
+      bodies: {},
+      ready: {},
+    },
+    cwd,
+  );
+  return {
+    cwd,
+    store,
+    serving,
+    mode,
+    run: "123-1",
+    execute,
+    promote,
+    trace,
+    pinnedSource: options.outage ? undefined : pinnedSource,
+    sourceUnavailable: Boolean(options.outage),
+  };
 }
 
 test("final production digest is computed after authorized image verification and before private build handoff", async (t) => {

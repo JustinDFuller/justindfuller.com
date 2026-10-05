@@ -1,4 +1,5 @@
 import { readFile, realpath, stat } from "node:fs/promises";
+import { userInfo } from "node:os";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
@@ -14,6 +15,99 @@ import { protectedPublicationReport } from "./record-obsidian-publication.mjs";
 import { preparePublicationTarget } from "./obsidian-pipeline.mjs";
 
 const fingerprint = /^[a-f0-9]{64}$/;
+const prepareImage = "golang:1.26.0-bookworm";
+
+export function isolatedPreparationCommand({
+  workspace,
+  controlWorkspace,
+  moduleCache,
+  uid,
+  gid,
+  args,
+}) {
+  return [
+    "run",
+    "--pull=never",
+    "--rm",
+    "--network=none",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--pids-limit=256",
+    "--read-only",
+    "--tmpfs",
+    "/tmp:rw,nosuid,nodev,size=1g",
+    "--user",
+    `${uid}:${gid}`,
+    "--mount",
+    `type=bind,source=${workspace},target=/workspace`,
+    "--mount",
+    `type=bind,source=${moduleCache},target=/go/pkg/mod,readonly`,
+    "--mount",
+    `type=bind,source=${controlWorkspace},target=/workspace/${controlWorkspace.slice(workspace.length + 1)},readonly`,
+    "--tmpfs",
+    `/go-cache:rw,nosuid,nodev,uid=${uid},gid=${gid},size=2g`,
+    "--workdir",
+    "/workspace",
+    "--env",
+    "GOMODCACHE=/go/pkg/mod",
+    "--env",
+    "GOCACHE=/go-cache",
+    prepareImage,
+    "go",
+    ...args,
+  ];
+}
+
+export async function runPreparationCommand(
+  execute,
+  args,
+  cwd,
+  env = process.env,
+  controlWorkspace,
+) {
+  if (env.OBSIDIAN_PREPARE_CONTAINER === undefined)
+    return execute("go", args, { cwd, purpose: "build" });
+  if (env.OBSIDIAN_PREPARE_CONTAINER !== "true")
+    throw new Error("Isolated preparation container is required");
+  const workspace = await realpath(cwd),
+    moduleCacheInput = env.OBSIDIAN_PREPARE_GOMODCACHE;
+  if (!moduleCacheInput || !moduleCacheInput.startsWith("/"))
+    throw new Error("Isolated preparation module cache is unavailable");
+  const moduleCache = await realpath(moduleCacheInput),
+    moduleStat = await stat(moduleCache);
+  if (
+    !moduleStat.isDirectory() ||
+    moduleCache.startsWith(`${workspace}/`) ||
+    workspace.startsWith(`${moduleCache}/`)
+  )
+    throw new Error("Isolated preparation module cache path is invalid");
+  if (
+    env.OBSIDIAN_PREPARE_IMAGE !== undefined &&
+    env.OBSIDIAN_PREPARE_IMAGE !== prepareImage
+  )
+    throw new Error("Isolated preparation image differs from policy");
+  if (!controlWorkspace)
+    throw new Error("Isolated preparation control checkout is unavailable");
+  const control = await realpath(resolve(cwd, controlWorkspace)),
+    relativeControl = control.slice(workspace.length + 1);
+  if (
+    control === workspace ||
+    !control.startsWith(`${workspace}/`) ||
+    !relativeControl ||
+    [workspace, control, moduleCache].some((path) => path.includes(","))
+  )
+    throw new Error("Isolated preparation control checkout path is invalid");
+  const identity = userInfo(),
+    argsForDocker = isolatedPreparationCommand({
+      workspace,
+      controlWorkspace: control,
+      moduleCache,
+      uid: identity.uid,
+      gid: identity.gid,
+      args,
+    });
+  return execute("docker", argsForDocker, { cwd, purpose: "build" });
+}
 
 export async function readPrivatePreparation(path, cwd = process.cwd()) {
   const root = resolve(await realpath(cwd), ".obsidian-publish"),
@@ -44,9 +138,12 @@ export async function prepareHostedTarget({
   pr,
   kind = "site",
   bootstrap = false,
+  pinnedSource,
+  sourceUnavailable = false,
   codeSha,
   account = "9dce34804a27754a4ea66a5789827dfa",
   cwd = process.cwd(),
+  controlWorkspace = cwd,
   execute = runPublicationCommand,
 }) {
   const namespace = targetNamespace(mode, pr);
@@ -56,9 +153,12 @@ export async function prepareHostedTarget({
     (mode === "preview" && kind === "content") ||
     (mode !== "preview" && kind === "preview") ||
     (bootstrap && kind === "content") ||
+    (pinnedSource !== undefined && sourceUnavailable) ||
+    (pinnedSource !== undefined && typeof pinnedSource !== "string") ||
+    (pinnedSource === undefined && !sourceUnavailable) ||
     !/^[a-f0-9]{32}$/.test(account)
   )
-    throw new Error("Explicit hosted target preparation required");
+    throw new Error("Explicit pinned source or source outage required");
   const checkedOut = (
     await execute("git", ["rev-parse", "HEAD"], {
       cwd,
@@ -79,6 +179,8 @@ export async function prepareHostedTarget({
       (previous.state?.version !== 1 || previous.state.mode !== mode))
   )
     throw new Error("Installed accepted state is unavailable or mismatched");
+  if (sourceUnavailable && !previous)
+    throw new Error("Source outage requires accepted state");
   const identity = await serving.identity();
   if (
     typeof identity !== "string" ||
@@ -86,6 +188,21 @@ export async function prepareHostedTarget({
     (previous && previous.receipt?.deployment !== identity)
   )
     throw new Error("Accepted state differs from the serving deployment");
+  let pinnedInput;
+  if (pinnedSource !== undefined) {
+    pinnedInput = await readPrivatePreparation(pinnedSource, cwd);
+    if (
+      !fingerprint.test(pinnedInput?.revision ?? "") ||
+      pinnedInput?.snapshot?.version !== 1 ||
+      !pinnedInput.bodies ||
+      typeof pinnedInput.bodies !== "object" ||
+      Array.isArray(pinnedInput.bodies) ||
+      !pinnedInput.ready ||
+      typeof pinnedInput.ready !== "object" ||
+      Array.isArray(pinnedInput.ready)
+    )
+      throw new Error("Private pinned source input is invalid");
+  }
   const directory = `.obsidian-publish/hosted/${namespace}`,
     files = Object.fromEntries(
       ["state", "prepared", "diagnostics", "pinned", "candidate"].map(
@@ -107,19 +224,24 @@ export async function prepareHostedTarget({
     ...(previous ? ["--state", files.state] : ["--bootstrap"]),
   ];
   let sourceAvailable = true;
-  try {
-    await execute(
-      "go",
-      [...common, "--r2", "--account", account, "--source-out", files.pinned],
-      { cwd, purpose: "prepare" },
-    );
-  } catch {
-    if (!previous) throw new Error("Initial private source preparation failed");
-    sourceAvailable = false;
-    await execute("go", [...common, "--accepted-only"], {
+  if (pinnedSource !== undefined) {
+    await saveProtectedReport(files.pinned, pinnedInput, cwd);
+    await runPreparationCommand(
+      execute,
+      [...common, "--source", files.pinned],
       cwd,
-      purpose: "build",
-    });
+      process.env,
+      controlWorkspace,
+    );
+  } else if (sourceUnavailable) {
+    sourceAvailable = false;
+    await runPreparationCommand(
+      execute,
+      [...common, "--accepted-only"],
+      cwd,
+      process.env,
+      controlWorkspace,
+    );
   }
   const prepared = await readPrivatePreparation(files.prepared, cwd),
     diagnostics = await readPrivatePreparation(files.diagnostics, cwd);
@@ -199,6 +321,9 @@ async function main() {
       run: { type: "string" },
       bootstrap: { type: "boolean", default: false },
       access: { type: "string" },
+      "pinned-source": { type: "string" },
+      "source-unavailable": { type: "boolean", default: false },
+      "control-workspace": { type: "string", default: process.cwd() },
       account: { type: "string", default: "9dce34804a27754a4ea66a5789827dfa" },
     },
   });
@@ -232,6 +357,7 @@ async function main() {
           clientSecret: process.env.CF_ACCESS_CLIENT_SECRET,
         },
         store,
+        workspace: values["control-workspace"],
       });
     console.log(
       JSON.stringify(
@@ -268,6 +394,9 @@ async function main() {
             );
           },
           bootstrap: values.bootstrap,
+          pinnedSource: values["pinned-source"],
+          sourceUnavailable: values["source-unavailable"],
+          controlWorkspace: values["control-workspace"],
           account: values.account,
         }),
       ),

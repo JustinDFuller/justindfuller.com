@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import {
   publicationRepository,
   publicationTargets,
+  resolveTargetCode,
 } from "./obsidian-workflow.mjs";
 
 export function workflowRequest(event, env) {
@@ -11,7 +12,10 @@ export function workflowRequest(event, env) {
     throw new Error("Publication repository differs");
   return {
     repository: env.GITHUB_REPOSITORY,
-    event: env.GITHUB_EVENT_NAME,
+    event:
+      env.GITHUB_EVENT_NAME === "pull_request_target"
+        ? "pull_request"
+        : env.GITHUB_EVENT_NAME,
     ref: env.GITHUB_REF,
     actor: env.GITHUB_ACTOR,
     pr: event.pull_request?.number,
@@ -72,7 +76,8 @@ export async function planWorkflow(event, env, github) {
 
 export function legacyWorkflowAllowed(plan, event, env) {
   if (plan.validationOnly) return true;
-  if (env.GITHUB_EVENT_NAME === "pull_request") return true;
+  if (["pull_request", "pull_request_target"].includes(env.GITHUB_EVENT_NAME))
+    return true;
   return (
     plan.kind === "site" &&
     env.GITHUB_REF === "refs/heads/main" &&
@@ -83,6 +88,45 @@ export function legacyWorkflowAllowed(plan, event, env) {
 }
 
 async function main() {
+  if (process.argv.includes("--resolve-target")) {
+    const [mode, prValue, expectedSha] = process.argv.slice(
+      process.argv.indexOf("--resolve-target") + 1,
+    );
+    const pr = prValue && prValue !== "-" ? Number(prValue) : undefined;
+    const target =
+      mode === "preview"
+        ? {
+            mode,
+            pr,
+            namespace: `pr/${pr}`,
+            concurrency: `cloudflare-refs/pull/${pr}/merge`,
+          }
+        : {
+            mode,
+            namespace: mode,
+            concurrency: `cloudflare-${mode}`,
+            checkoutRef: "refs/heads/main",
+          };
+    const resolved = await resolveTargetCode(
+      target,
+      publicationGitHub(process.env.GITHUB_TOKEN),
+    );
+    const controlSha =
+      mode === "preview"
+        ? await publicationGitHub(process.env.GITHUB_TOKEN).main()
+        : resolved.codeSha;
+    if (!/^[a-f0-9]{40}$/.test(controlSha ?? ""))
+      throw new Error("Trusted control commit is unavailable");
+    if (expectedSha && resolved.codeSha !== expectedSha)
+      throw new Error("Target code changed after admission");
+    console.log(JSON.stringify(resolved));
+    if (process.env.GITHUB_OUTPUT)
+      await appendFile(
+        process.env.GITHUB_OUTPUT,
+        `mode=${resolved.mode}\ncode_sha=${resolved.codeSha}\ncontrol_sha=${controlSha}\npr=${resolved.pr ?? ""}\nnamespace=${resolved.namespace}\nconcurrency=${resolved.concurrency}\n`,
+      );
+    return;
+  }
   const eventPath = process.env.GITHUB_EVENT_PATH;
   if (!eventPath || (await stat(eventPath)).size > 2 * 1024 * 1024)
     throw new Error("Bounded workflow event required");
@@ -99,7 +143,7 @@ async function main() {
   if (process.env.GITHUB_OUTPUT)
     await appendFile(
       process.env.GITHUB_OUTPUT,
-      `targets=${JSON.stringify(plan.targets)}\nvalidation_only=${plan.validationOnly}\nkind=${plan.kind}\n`,
+      `targets=${JSON.stringify(plan.targets)}\nvalidation_only=${plan.validationOnly}\nkind=${plan.kind}\npreview_pr=${plan.targets[0]?.pr ?? ""}\npreview_sha=${plan.targets[0]?.codeSha ?? ""}\n`,
     );
   console.log(JSON.stringify(plan));
 }
