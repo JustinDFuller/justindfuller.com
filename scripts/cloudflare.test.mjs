@@ -85,6 +85,13 @@ const redirects = {
 
 for (const scenario of [
   {
+    name: "asset filenames with spaces and unicode retain their filesystem spelling",
+    mode: "production",
+    noindex: false,
+    success: true,
+    encodedAssets: true,
+  },
+  {
     name: "indexable production",
     mode: "production",
     noindex: false,
@@ -175,9 +182,22 @@ for (const scenario of [
     mkdirSync(join(directory, "dist"));
     writeFileSync(
       join(directory, ".cloudflare/site-manifest.json"),
-      JSON.stringify({ pages: ["/"], assets: ["/grass/worker.js"] }),
+      JSON.stringify({
+        pages: ["/"],
+        assets: [
+          "/grass/worker.js",
+          ...(scenario.encodedAssets ? ["/image/Weeks Remaining-é.svg"] : []),
+        ],
+      }),
     );
     writeFileSync(join(directory, "dist/index.html"), html);
+    if (scenario.encodedAssets) {
+      mkdirSync(join(directory, "dist/image"));
+      writeFileSync(
+        join(directory, "dist/image/Weeks Remaining-é.svg"),
+        "verified encoded asset",
+      );
+    }
     const mediaArgs = [];
     if (scenario.media) {
       const bytes = "verified image bytes",
@@ -220,6 +240,13 @@ for (const scenario of [
             ? "different"
             : html,
         );
+        return;
+      } else if (
+        scenario.encodedAssets &&
+        decodeURIComponent(url.pathname) === "/image/Weeks Remaining-é.svg"
+      ) {
+        response.writeHead(200, { "Cache-Control": "no-transform" });
+        response.end("verified encoded asset");
         return;
       } else if (url.pathname === "/grass/worker.js") {
         response.writeHead(200, { "Cache-Control": "no-transform, no-store" });

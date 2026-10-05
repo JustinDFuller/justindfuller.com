@@ -240,7 +240,7 @@ async function main() {
                 throw new Error("HTML must prevent edge transformations");
               const pathname = new URL(job.path, base).pathname;
               const filename = job.asset
-                ? pathname.slice(1)
+                ? job.path.slice(1)
                 : pathname === "/sitemap.xml"
                   ? "sitemap.xml"
                   : pathname.endsWith("/")
