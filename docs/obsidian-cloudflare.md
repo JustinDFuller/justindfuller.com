@@ -119,6 +119,16 @@ Measure runner duration, deployment frequency, no-op skips, retries, upload-to-v
 
 ## Workflow request validation and no-op preparation
 
+`scripts/prepare-obsidian-target.mjs` connects private accepted state to the Go preparer. Run it after the target's job concurrency boundary and current-code checkout. It reconciles an interrupted journal, rejects unavailable/mismatched installed state or a serving-identity mismatch, then pins the current complete R2 source. It writes bounded owner-only inputs under `.obsidian-publish/hosted/<target>/` and emits only hashes, target, counts, and a preparation decision. Install required dependencies and complete any required full code-validation path before supplying credentials or preparing private content.
+
+```sh
+node scripts/prepare-obsidian-target.mjs --mode production --kind content
+node scripts/prepare-obsidian-target.mjs --mode staging --kind site --access .obsidian-publish/access-staging.json
+node scripts/prepare-obsidian-target.mjs --mode preview --pr 403 --kind preview --access .obsidian-publish/access-preview.json
+```
+
+Source-wide failure in a content-only run returns `retain-serving` and writes a protected degraded report without advancing accepted state or deploying. A code/PR build can instead return a revalidated accepted-only candidate. Explicit bootstrap is allowed only before accepted state exists and still requires a usable source; initial Git-only Worker/artifact bootstrap remains a separate operation. The `candidate` preparation decision permits subsequent validation, not deployment. Production preparation is preliminary until eligible-image promotion and any unavailable-image re-preparation finish; private Access gates, tested-archive checks, and publication verification still apply afterward. The Actions integration is pending.
+
 The reusable workflow controls in `scripts/obsidian-workflow.mjs` validate site/content requests on main, resolve current main separately inside each target job, and validate an open same-repository PR's current head for manual refresh. Recheck that PR immediately before deployment; a closed PR, changed head, foreign repository, or Dependabot author cannot retain a private deployment grant. The production and staging plans use independent job concurrency groups, while PR refresh uses the existing preview/cleanup group. An informational requested source revision never becomes the publication source authority. These controls are not yet connected to the Actions workflow.
 
 Compatible code-check receipts live privately at `receipts/code/<commit>/<policy>.json`. The policy fingerprint covers the required ordered check set; a receipt must match the exact main commit, repository, policy, successful checks, workflow run, and original completion timestamp. Missing or incompatible receipts require all checks again. Unreadable private state stops the operation. The writer requires explicit success from every check and verifies the stored receipt before allowing reuse. Only trusted main workflow control code may execute these operations; the callback must run each actual check and propagate its failure.
