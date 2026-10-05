@@ -1,65 +1,140 @@
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { dirname } from "node:path";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
-import { spawnSync } from "node:child_process";
-import {
-  promoteProductionImages,
-  r2Target,
-  environmentTransport,
-} from "../tools/obsidian-image-publisher/src/publication.ts";
+import { readPrivatePreparation } from "./prepare-obsidian-target.mjs";
+import { saveProtectedReport } from "./obsidian-reports.mjs";
+import { runPublicationCommand } from "./obsidian-process.mjs";
 
-const { values } = parseArgs({
-  options: {
-    overlay: { type: "string" },
-    source: { type: "string" },
-    account: { type: "string", default: "9dce34804a27754a4ea66a5789827dfa" },
-    out: { type: "string", default: ".obsidian-publish/promotion.json" },
-  },
-});
-let sourceTransport, mediaTransport;
-try {
-  if (!values.overlay || !values.source)
-    throw new Error("Pinned preparation inputs required");
-  const validation = spawnSync(
+export async function promotePreparedImages({
+  overlay,
+  source,
+  acceptedOnly = false,
+  out = ".obsidian-publish/promotion.json",
+  unavailableOut = ".obsidian-publish/unavailable-images.json",
+  cwd = process.cwd(),
+  execute = runPublicationCommand,
+  promote,
+}) {
+  if (
+    !overlay ||
+    Boolean(source) === acceptedOnly ||
+    typeof promote !== "function"
+  )
+    throw new Error(
+      "Pinned source or explicit accepted-state promotion required",
+    );
+  const paths = [overlay, source, out, unavailableOut]
+    .filter(Boolean)
+    .map((path) => resolve(cwd, path));
+  if (new Set(paths).size !== paths.length)
+    throw new Error("Distinct private promotion files required");
+  const prepared = await readPrivatePreparation(overlay, cwd),
+    pinned = source ? await readPrivatePreparation(source, cwd) : undefined;
+  if (
+    prepared?.mode !== "production" ||
+    !/^[a-f0-9]{64}$/.test(prepared.revision ?? "") ||
+    (pinned &&
+      (pinned.revision !== prepared.revision ||
+        !pinned.ready ||
+        typeof pinned.ready !== "object" ||
+        Array.isArray(pinned.ready)))
+  )
+    throw new Error("Production source correlation differs");
+  await execute(
     "go",
-    ["run", "./cmd/prepare-obsidian", "--validate-promotion", values.overlay],
-    { stdio: "pipe", maxBuffer: 1024 * 1024 },
+    ["run", "./cmd/prepare-obsidian", "--validate-promotion", overlay],
+    { cwd, purpose: "build" },
   );
-  if (validation.error || validation.status !== 0)
-    throw new Error("Production image authorization failed");
-  const prepared = JSON.parse(readFileSync(values.overlay, "utf8"));
-  const pinned = JSON.parse(readFileSync(values.source, "utf8"));
-  if (prepared.revision !== pinned.revision)
-    throw new Error("Source revision mismatch");
-  sourceTransport = environmentTransport("OBSIDIAN_SOURCE");
-  mediaTransport = environmentTransport("OBSIDIAN_MEDIA");
-  const result = await promoteProductionImages(
-    prepared,
-    {
-      transport: sourceTransport,
-      target: r2Target(values.account, "justindfuller-obsidian-source"),
-    },
-    {
-      transport: mediaTransport,
-      target: r2Target(values.account, "justindfuller-obsidian-media"),
-    },
-  );
-  for (const key of result.unavailable) pinned.ready[key] = false;
-  writeFileSync(values.source, JSON.stringify(pinned), { mode: 0o600 });
-  mkdirSync(dirname(values.out), { recursive: true, mode: 0o700 });
-  writeFileSync(values.out, JSON.stringify(result), { mode: 0o600 });
-  console.log(
-    JSON.stringify({
-      verified: result.verified.length,
-      unavailable: result.unavailable.length,
-      copied: result.copied,
-      bytes: result.bytes,
-    }),
-  );
-} catch {
-  console.error("Production image promotion failed; public deployment blocked");
-  process.exitCode = 1;
-} finally {
-  sourceTransport?.close();
-  mediaTransport?.close();
+  await saveProtectedReport(out, {}, cwd);
+  await saveProtectedReport(unavailableOut, [], cwd);
+  if (pinned) await saveProtectedReport(source, pinned, cwd);
+  const result = await promote(prepared),
+    eligible = new Set(Object.keys(prepared.images ?? {}));
+  if (
+    !result ||
+    !Array.isArray(result.verified) ||
+    !Array.isArray(result.unavailable) ||
+    [...result.verified, ...result.unavailable].some(
+      (key) => !eligible.has(key),
+    ) ||
+    new Set([...result.verified, ...result.unavailable]).size !==
+      eligible.size ||
+    result.verified.length + result.unavailable.length !== eligible.size ||
+    !Number.isSafeInteger(result.copied) ||
+    result.copied < 0 ||
+    result.copied > result.verified.length ||
+    !Number.isSafeInteger(result.bytes) ||
+    result.bytes < 0
+  )
+    throw new Error("Production destination verification is incomplete");
+  if (pinned) {
+    for (const key of result.unavailable) pinned.ready[key] = false;
+    await saveProtectedReport(source, pinned, cwd);
+  }
+  await saveProtectedReport(unavailableOut, result.unavailable, cwd);
+  await saveProtectedReport(out, result, cwd);
+  return {
+    verified: result.verified.length,
+    unavailable: result.unavailable.length,
+    copied: result.copied,
+    bytes: result.bytes,
+  };
 }
+
+async function main() {
+  const { values } = parseArgs({
+    options: {
+      overlay: { type: "string" },
+      source: { type: "string" },
+      "accepted-only": { type: "boolean", default: false },
+      account: { type: "string", default: "9dce34804a27754a4ea66a5789827dfa" },
+      out: { type: "string", default: ".obsidian-publish/promotion.json" },
+      "unavailable-out": {
+        type: "string",
+        default: ".obsidian-publish/unavailable-images.json",
+      },
+    },
+  });
+  const { promoteProductionImages, r2Target, environmentTransport } =
+    await import("../tools/obsidian-image-publisher/src/publication.ts");
+  let sourceTransport, mediaTransport;
+  try {
+    const result = await promotePreparedImages({
+      overlay: values.overlay,
+      source: values.source,
+      acceptedOnly: values["accepted-only"],
+      out: values.out,
+      unavailableOut: values["unavailable-out"],
+      promote: async (prepared) => {
+        sourceTransport = environmentTransport("OBSIDIAN_SOURCE");
+        mediaTransport = environmentTransport("OBSIDIAN_MEDIA");
+        return promoteProductionImages(
+          prepared,
+          {
+            transport: sourceTransport,
+            target: r2Target(values.account, "justindfuller-obsidian-source"),
+          },
+          {
+            transport: mediaTransport,
+            target: r2Target(values.account, "justindfuller-obsidian-media"),
+          },
+        );
+      },
+    });
+    console.log(JSON.stringify(result));
+  } finally {
+    sourceTransport?.close();
+    mediaTransport?.close();
+  }
+}
+
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+)
+  await main().catch(() => {
+    console.error(
+      "Production image promotion failed; public deployment blocked",
+    );
+    process.exitCode = 1;
+  });

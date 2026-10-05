@@ -84,6 +84,15 @@ Fallback retains each accepted file's own image revisions and draft masks. `--un
 
 ## Public image promotion
 
+For accepted-state production fallback, verify the same effective image authorization and public destinations without requiring a fresh pinned source. The command still uses source-read and media-write credentials: an existing valid public object needs only destination metadata; an absent object can be recovered from its immutable private original. Authentication failures block the operation. Failed individual destinations are written as a private array and must be removed by a second accepted-state preparation before computing the final digest or building:
+
+```sh
+node scripts/promote-obsidian-images.mjs --overlay .obsidian-publish/degraded-production.json --accepted-only --unavailable-out .obsidian-publish/unavailable-images.json
+go run ./cmd/prepare-obsidian --accepted-only --state .obsidian-publish/accepted-production.json --mode production --unavailable-images .obsidian-publish/unavailable-images.json --out .obsidian-publish/production.json
+```
+
+Choose exactly one of `--source` and `--accepted-only`. Promotion inputs and outputs must be distinct bounded files below the ignored `.obsidian-publish/` directory; results and unavailable keys remain owner-only. Public command output contains only counts and byte totals. A content-only source outage retains the current deployment rather than entering this code-build fallback path.
+
 Prepare production from a pinned source, authorize its effective image collection, promote with the separate source-read and media-write credentials, and then prepare again from the same pinned source. Missing or corrupt image originals/destinations mark only those references unavailable; credential failures block deployment. The second preparation removes unavailable references without changing the source revision or dropping valid post bodies. Never deploy the preliminary overlay after promotion reports unavailable references.
 
 ```sh
