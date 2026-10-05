@@ -11,6 +11,7 @@ import { CloudflareServing } from "./obsidian-cloudflare.mjs";
 import { runPublicationCommand } from "./obsidian-process.mjs";
 import { saveProtectedReport } from "./obsidian-reports.mjs";
 import { protectedPublicationReport } from "./record-obsidian-publication.mjs";
+import { preparePublicationTarget } from "./obsidian-pipeline.mjs";
 
 const fingerprint = /^[a-f0-9]{64}$/;
 
@@ -195,14 +196,20 @@ async function main() {
       mode: { type: "string" },
       pr: { type: "string" },
       kind: { type: "string", default: "site" },
+      run: { type: "string" },
       bootstrap: { type: "boolean", default: false },
       access: { type: "string" },
       account: { type: "string", default: "9dce34804a27754a4ea66a5789827dfa" },
     },
   });
-  const { environmentTransport, PrivateR2Store, r2Target } =
-    await import("../tools/obsidian-image-publisher/src/publication.ts");
+  const {
+    environmentTransport,
+    PrivateR2Store,
+    r2Target,
+    promoteProductionImages,
+  } = await import("../tools/obsidian-image-publisher/src/publication.ts");
   const transport = environmentTransport("OBSIDIAN_STATE");
+  let sourceTransport, mediaTransport;
   try {
     const store = new PrivateR2Store(
         transport,
@@ -228,12 +235,38 @@ async function main() {
       });
     console.log(
       JSON.stringify(
-        await prepareHostedTarget({
+        await preparePublicationTarget({
           store,
           serving,
           mode: values.mode,
           pr: values.pr ? Number(values.pr) : undefined,
           kind: values.kind,
+          run:
+            values.run ??
+            (process.env.GITHUB_RUN_ID
+              ? `${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT ?? "1"}`
+              : undefined),
+          promote: async (prepared) => {
+            sourceTransport = environmentTransport("OBSIDIAN_SOURCE");
+            mediaTransport = environmentTransport("OBSIDIAN_MEDIA");
+            return promoteProductionImages(
+              prepared,
+              {
+                transport: sourceTransport,
+                target: r2Target(
+                  values.account,
+                  "justindfuller-obsidian-source",
+                ),
+              },
+              {
+                transport: mediaTransport,
+                target: r2Target(
+                  values.account,
+                  "justindfuller-obsidian-media",
+                ),
+              },
+            );
+          },
           bootstrap: values.bootstrap,
           account: values.account,
         }),
@@ -241,6 +274,8 @@ async function main() {
     );
   } finally {
     transport.close();
+    sourceTransport?.close();
+    mediaTransport?.close();
   }
 }
 
