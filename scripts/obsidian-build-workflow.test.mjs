@@ -93,6 +93,12 @@ test("renderer container has no network and mounts trusted inputs read only", as
     const args = isolatedRenderer(cwd, "/opt/go", "/home/runner/go/pkg/mod");
     assert.ok(args.includes("--network=none"));
     assert.ok(args.includes("--pull=never"));
+    assert.ok(args.includes("GOTMPDIR=/go-run"));
+    assert.ok(
+      args.includes(
+        `/go-run:rw,exec,nosuid,nodev,uid=${process.getuid()},gid=${process.getgid()},size=1g`,
+      ),
+    );
     assert.ok(args.includes("/opt/go:/opt/go:ro"));
     assert.ok(args.includes("/home/runner/go/pkg/mod:/go/pkg/mod:ro"));
     assert.ok(args.includes(join(cwd, "control") + ":/workspace/control:ro"));
