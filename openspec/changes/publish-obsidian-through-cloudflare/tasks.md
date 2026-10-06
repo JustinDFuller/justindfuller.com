@@ -26,8 +26,8 @@
 
 - [x] 4.1 Add a separate staging Worker configuration and documented `staging.justindfuller.com` deployment target with workers.dev/version URLs disabled; verify production routing remains public and staging survives PR cleanup independently.
 - [ ] 4.2 Add provisioning/configuration documentation for whole-staging-Worker Access and production-Worker preview Access, exact owner identity, and separate expiring CI Service Auth credentials; verify sentinel-only destinations deny anonymous/disallowed access across all enabled aliases and immutable URLs before private uploads, without a public bypass policy.
-- [ ] 4.3 Add deployment gates checking required Access applications/policies/destinations and extend verification for authenticated requests plus anonymous/invalid-token denial; verify missing protection blocks private uploads, spoofed identity headers do not authorize access, and authorized cache warmup does not expose bodies to denied clients.
-- [ ] 4.4 Apply private no-store/noindex behavior to staging/PR HTML, assets, sitemap/feed output, and private image responses; verify response headers and denied-body behavior for each resource type while production cache behavior remains unchanged.
+- [x] 4.3 Add deployment gates checking required Access applications/policies/destinations and extend verification for authenticated requests plus anonymous/invalid-token denial; verify missing protection blocks private uploads, spoofed identity headers do not authorize access, and authorized cache warmup does not expose bodies to denied clients.
+- [x] 4.4 Apply private no-store/noindex behavior to staging/PR HTML, assets, sitemap/feed output, and private image responses; verify response headers and denied-body behavior for each resource type while production cache behavior remains unchanged.
 
 ## 5. GitHub Actions integration
 
