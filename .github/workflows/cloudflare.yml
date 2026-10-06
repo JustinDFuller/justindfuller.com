@@ -201,6 +201,13 @@ jobs:
       bootstrap: ${{ github.event.inputs.bootstrap == 'true' }}
     secrets:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+      OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+      OBSIDIAN_SOURCE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_SOURCE_ACCESS_KEY_ID }}
+      OBSIDIAN_SOURCE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_SOURCE_SECRET_ACCESS_KEY }}
+      OBSIDIAN_MEDIA_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_MEDIA_ACCESS_KEY_ID }}
+      OBSIDIAN_MEDIA_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_MEDIA_SECRET_ACCESS_KEY }}
+      OBSIDIAN_BOOTSTRAP_RECEIPT_PRODUCTION_JSON: ${{ secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_PRODUCTION_JSON }}
   staging:
     needs: admission
     if: vars.OBSIDIAN_PUBLISH_ENABLED == 'true' && needs.admission.outputs.validation_only != 'true' && needs.admission.outputs.kind != 'preview'
@@ -209,6 +216,17 @@ jobs:
       mode: staging
       kind: ${{ needs.admission.outputs.kind }}
       bootstrap: ${{ github.event.inputs.bootstrap == 'true' }}
+    secrets:
+      OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+      OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+      OBSIDIAN_SOURCE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_SOURCE_ACCESS_KEY_ID }}
+      OBSIDIAN_SOURCE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_SOURCE_SECRET_ACCESS_KEY }}
+      CLOUDFLARE_STAGING_API_TOKEN: ${{ secrets.CLOUDFLARE_STAGING_API_TOKEN }}
+      CLOUDFLARE_ACCESS_API_TOKEN: ${{ secrets.CLOUDFLARE_ACCESS_API_TOKEN }}
+      CF_ACCESS_STAGING_CLIENT_ID: ${{ secrets.CF_ACCESS_STAGING_CLIENT_ID }}
+      CF_ACCESS_STAGING_CLIENT_SECRET: ${{ secrets.CF_ACCESS_STAGING_CLIENT_SECRET }}
+      OBSIDIAN_ACCESS_STAGING_JSON: ${{ secrets.OBSIDIAN_ACCESS_STAGING_JSON }}
+      OBSIDIAN_BOOTSTRAP_RECEIPT_STAGING_JSON: ${{ secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_STAGING_JSON }}
   private-preview:
     needs: admission
     if: (github.event_name == 'pull_request_target' || github.event_name == 'workflow_dispatch') && vars.OBSIDIAN_PUBLISH_ENABLED == 'true' && needs.admission.outputs.validation_only != 'true' && needs.admission.outputs.kind == 'preview'
@@ -221,3 +239,12 @@ jobs:
       bootstrap: ${{ github.event.inputs.bootstrap == 'true' }}
     secrets:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+      OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+      OBSIDIAN_SOURCE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_SOURCE_ACCESS_KEY_ID }}
+      OBSIDIAN_SOURCE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_SOURCE_SECRET_ACCESS_KEY }}
+      CLOUDFLARE_ACCESS_API_TOKEN: ${{ secrets.CLOUDFLARE_ACCESS_API_TOKEN }}
+      CF_ACCESS_PREVIEW_CLIENT_ID: ${{ secrets.CF_ACCESS_PREVIEW_CLIENT_ID }}
+      CF_ACCESS_PREVIEW_CLIENT_SECRET: ${{ secrets.CF_ACCESS_PREVIEW_CLIENT_SECRET }}
+      OBSIDIAN_ACCESS_PREVIEW_JSON: ${{ secrets.OBSIDIAN_ACCESS_PREVIEW_JSON }}
+      OBSIDIAN_BOOTSTRAP_RECEIPT_PREVIEW_JSON: ${{ secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_PREVIEW_JSON }}
