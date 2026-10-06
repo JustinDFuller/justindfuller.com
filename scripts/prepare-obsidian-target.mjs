@@ -1,5 +1,4 @@
 import { readFile, realpath, stat } from "node:fs/promises";
-import { userInfo } from "node:os";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
@@ -104,15 +103,19 @@ export async function runPreparationCommand(
     [workspace, control, moduleCache].some((path) => path.includes(","))
   )
     throw new Error("Isolated preparation control checkout path is invalid");
-  const identity = userInfo(),
-    argsForDocker = isolatedPreparationCommand({
-      workspace,
-      controlWorkspace: control,
-      moduleCache,
-      uid: identity.uid,
-      gid: identity.gid,
-      args,
-    });
+  if (
+    typeof process.getuid !== "function" ||
+    typeof process.getgid !== "function"
+  )
+    throw new Error("Isolated Linux preparation runner required");
+  const argsForDocker = isolatedPreparationCommand({
+    workspace,
+    controlWorkspace: control,
+    moduleCache,
+    uid: process.getuid(),
+    gid: process.getgid(),
+    args,
+  });
   return execute("docker", argsForDocker, { cwd, purpose: "build" });
 }
 
