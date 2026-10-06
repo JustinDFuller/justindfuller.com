@@ -21,6 +21,40 @@ on:
     secrets:
       CLOUDFLARE_API_TOKEN:
         required: false
+      CF_ACCESS_PREVIEW_CLIENT_ID:
+        required: false
+      CF_ACCESS_PREVIEW_CLIENT_SECRET:
+        required: false
+      CF_ACCESS_STAGING_CLIENT_ID:
+        required: false
+      CF_ACCESS_STAGING_CLIENT_SECRET:
+        required: false
+      CLOUDFLARE_ACCESS_API_TOKEN:
+        required: false
+      CLOUDFLARE_STAGING_API_TOKEN:
+        required: false
+      OBSIDIAN_ACCESS_PREVIEW_JSON:
+        required: false
+      OBSIDIAN_ACCESS_STAGING_JSON:
+        required: false
+      OBSIDIAN_BOOTSTRAP_RECEIPT_PREVIEW_JSON:
+        required: false
+      OBSIDIAN_BOOTSTRAP_RECEIPT_PRODUCTION_JSON:
+        required: false
+      OBSIDIAN_BOOTSTRAP_RECEIPT_STAGING_JSON:
+        required: false
+      OBSIDIAN_MEDIA_ACCESS_KEY_ID:
+        required: false
+      OBSIDIAN_MEDIA_SECRET_ACCESS_KEY:
+        required: false
+      OBSIDIAN_SOURCE_ACCESS_KEY_ID:
+        required: false
+      OBSIDIAN_SOURCE_SECRET_ACCESS_KEY:
+        required: false
+      OBSIDIAN_STATE_ACCESS_KEY_ID:
+        required: false
+      OBSIDIAN_STATE_SECRET_ACCESS_KEY:
+        required: false
 concurrency:
   group: ${{ inputs.mode == 'preview' && format('cloudflare-refs/pull/{0}/merge', inputs.pr) || format('cloudflare-{0}', inputs.mode) }}
   cancel-in-progress: false
