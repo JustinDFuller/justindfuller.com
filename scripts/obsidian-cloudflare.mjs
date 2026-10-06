@@ -18,6 +18,20 @@ import {
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 const fingerprint = /^[a-f0-9]{64}$/;
 
+function uploadedVersionId(stdout) {
+  if (typeof stdout !== "string")
+    throw new Error("Uploaded staging version identity invalid");
+  const plain = stdout.replace(/\u001b\[[0-9;]*m/g, "");
+  const labels = plain.match(/Worker Version ID:/g) ?? [];
+  const match =
+    /(?:^|\r?\n)Worker Version ID: ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})(?=\r?\n|$)/.exec(
+      plain,
+    );
+  if (labels.length !== 1 || !match || !uuid.test(match[1]))
+    throw new Error("Uploaded staging version identity invalid");
+  return match[1];
+}
+
 export function validateDeploymentArchive(bytes, checksum, { account, mode }) {
   const entries = inspectPublicationArchive(bytes, checksum);
   const object = (name) => {
@@ -368,23 +382,48 @@ export class CloudflareServing {
             "--mode",
             "preview",
           ]
-        : [
-            "cf",
-            "deploy",
-            "--prebuilt",
-            "--mode",
-            this.mode,
-            "--message",
-            candidate.artifact,
-          ];
+        : this.mode === "staging"
+          ? [
+              "cf",
+              "workers",
+              "versions",
+              "create",
+              "--prebuilt",
+              "--mode",
+              "staging",
+              "--message",
+              candidate.artifact,
+            ]
+          : [
+              "cf",
+              "deploy",
+              "--prebuilt",
+              "--mode",
+              this.mode,
+              "--message",
+              candidate.artifact,
+            ];
     this.counters.deploymentAttempts++;
-    await this.execute("npx", args, {
+    const result = await this.execute("npx", args, {
       cwd: this.workspace,
       purpose: "deploy",
       token: this.token,
     });
+    let uploadedId;
+    if (this.mode === "staging") {
+      uploadedId = uploadedVersionId(result?.stdout);
+      await this.api(
+        `/accounts/${this.account}/workers/scripts/${this.worker}/deployments`,
+        {
+          strategy: "percentage",
+          versions: [{ version_id: uploadedId, percentage: 100 }],
+        },
+      );
+    }
     this.counters.deployments++;
     const after = await this.metadata();
+    if (this.mode === "staging" && after.identity !== uploadedId)
+      throw new Error("Serving identity differs from uploaded staging version");
     if (after.identity === before.identity)
       throw new Error("Deployment did not establish a new serving identity");
     return after.identity;

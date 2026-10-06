@@ -87,7 +87,10 @@ function archive(directory, mode, nonce) {
   };
 }
 
-function fixture(mode = "production") {
+function fixture(
+  mode = "production",
+  uploadStdout = `\u001b[32mWorker Version ID:\u001b[39m \u001b[36m${candidateId}\u001b[39m\n`,
+) {
   const directory = mkdtempSync(join(tmpdir(), "obsidian-cloudflare-"));
   const prior = archive(directory, mode, "e"),
     next = archive(directory, mode, "f"),
@@ -99,6 +102,8 @@ function fixture(mode = "production") {
     marker = prior.bytes,
     badPolicy = false,
     badHost = false,
+    keepStagingIdentity = false,
+    stagingServingOverride,
     lostDeploy = false,
     failedVerification = false,
     lostRollback = false;
@@ -129,7 +134,10 @@ function fixture(mode = "production") {
       if (options.method === "POST") {
         const body = JSON.parse(options.body);
         writes.push(body);
-        live = body.versions[0].version_id;
+        if (mode === "staging" && stagingServingOverride)
+          live = stagingServingOverride;
+        else if (!keepStagingIdentity || mode !== "staging")
+          live = body.versions[0].version_id;
         marker = prior.bytes;
         return json({ id: restoredId });
       }
@@ -205,9 +213,10 @@ function fixture(mode = "production") {
       assert.equal(options.token, "deployment-token");
       marker = readFileSync(join(directory, "dist/__publication.json"));
       const restoring = marker.equals(prior.bytes);
-      live = restoring ? restoredId : candidateId;
+      if (mode !== "staging") live = restoring ? restoredId : candidateId;
       if ((restoring && lostRollback) || (!restoring && lostDeploy))
         throw new Error("private stdout canary");
+      if (mode === "staging") return { stdout: uploadStdout };
     } else {
       assert.deepEqual(
         readFileSync(join(directory, "dist/__publication.json")),
@@ -252,6 +261,12 @@ function fixture(mode = "production") {
     badHost: () => {
       badHost = true;
     },
+    keepStagingIdentity: () => {
+      keepStagingIdentity = true;
+    },
+    serveStagingIdentity: (identity) => {
+      stagingServingOverride = identity;
+    },
     loseDeploy: () => {
       lostDeploy = true;
     },
@@ -280,6 +295,107 @@ test("Cloudflare production deploys the retained tested archive and restores the
       },
     ]);
     assert.equal(f.commands.filter((c) => c.purpose === "verify").length, 6);
+  } finally {
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+test("Cloudflare staging uploads a version before assigning 100 percent traffic", async () => {
+  const f = fixture("staging");
+  try {
+    await f.serving.verify(f.prior.receipt);
+    const identity = await f.serving.deploy(f.next.receipt);
+    assert.equal(identity, candidateId);
+    assert.deepEqual(
+      f.commands.find((command) => command.purpose === "deploy").args,
+      [
+        "cf",
+        "workers",
+        "versions",
+        "create",
+        "--prebuilt",
+        "--mode",
+        "staging",
+        "--message",
+        f.next.receipt.artifact,
+      ],
+    );
+    assert.deepEqual(f.writes, [
+      {
+        strategy: "percentage",
+        versions: [{ version_id: candidateId, percentage: 100 }],
+      },
+    ]);
+    assert.equal(f.serving.counters.deploymentAttempts, 1);
+    assert.equal(f.serving.counters.deployments, 1);
+    assert.equal(f.serving.counters.apiWrites, 1);
+  } finally {
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+test("Cloudflare staging blocks traffic writes when upload output has invalid or ambiguous version IDs", async () => {
+  for (const stdout of [
+    "",
+    "Worker Version ID: unknown\n",
+    `Worker Version ID: ${candidateId}\nWorker Version ID: ${restoredId}\n`,
+    `Worker Version ID: ${candidateId} extra\n`,
+  ]) {
+    const f = fixture("staging", stdout);
+    try {
+      await f.serving.verify(f.prior.receipt);
+      await assert.rejects(
+        f.serving.deploy(f.next.receipt),
+        /staging version identity invalid/,
+      );
+      assert.equal(f.writes.length, 0);
+      assert.equal(f.serving.counters.apiWrites, 0);
+      assert.equal(f.live(), priorId);
+    } finally {
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  }
+});
+
+test("Cloudflare staging reports an identity mismatch after traffic assignment", async () => {
+  const f = fixture("staging");
+  try {
+    await f.serving.verify(f.prior.receipt);
+    f.keepStagingIdentity();
+    await assert.rejects(
+      f.serving.deploy(f.next.receipt),
+      /differs from uploaded staging version/,
+    );
+    assert.deepEqual(f.writes, [
+      {
+        strategy: "percentage",
+        versions: [{ version_id: candidateId, percentage: 100 }],
+      },
+    ]);
+    assert.equal(f.serving.counters.deploymentAttempts, 1);
+    assert.equal(f.serving.counters.deployments, 1);
+    assert.equal(f.live(), priorId);
+  } finally {
+    rmSync(f.directory, { recursive: true, force: true });
+  }
+});
+
+test("Cloudflare staging rejects a serving version that differs from the uploaded version", async () => {
+  const f = fixture("staging");
+  try {
+    await f.serving.verify(f.prior.receipt);
+    f.serveStagingIdentity(restoredId);
+    await assert.rejects(
+      f.serving.deploy(f.next.receipt),
+      /differs from uploaded staging version/,
+    );
+    assert.deepEqual(f.writes, [
+      {
+        strategy: "percentage",
+        versions: [{ version_id: candidateId, percentage: 100 }],
+      },
+    ]);
+    assert.equal(f.live(), restoredId);
   } finally {
     rmSync(f.directory, { recursive: true, force: true });
   }
