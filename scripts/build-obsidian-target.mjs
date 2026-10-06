@@ -27,7 +27,7 @@ export function testedArtifactKey(mode, pr, run, checksum) {
     !/^[a-f0-9]{64}$/.test(checksum ?? "")
   )
     throw new Error("Exact tested artifact identity required");
-  return `artifacts/${namespace}/${run}/${checksum}.tar`;
+  return `rollback/artifacts/${namespace}/${checksum}.tar`;
 }
 
 export function artifactPublication(namespace, run, candidate) {

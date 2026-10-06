@@ -139,6 +139,18 @@ export class PrivateR2Store {
       throw new Error("Private object write unverified");
     this.counters.bytesWritten += bytes.byteLength;
   }
+
+  async listArchives(namespace: string) {
+    if (!(this.transport instanceof SdkS3Transport))
+      throw new Error("Archive maintenance transport unavailable");
+    return this.transport.listArchives(this.target, namespace);
+  }
+
+  async deleteArchive(key: string): Promise<void> {
+    if (!(this.transport instanceof SdkS3Transport))
+      throw new Error("Archive maintenance transport unavailable");
+    await this.transport.deleteArchive(this.target, key);
+  }
 }
 
 export async function promoteProductionImages(

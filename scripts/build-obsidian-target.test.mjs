@@ -338,7 +338,7 @@ test("failed tested-archive readback cannot provide a deployment handoff", async
   const f = await fixture(t),
     get = f.store.get;
   f.store.get = async (key) =>
-    key.startsWith("artifacts/") && f.writes.length
+    key.startsWith("rollback/artifacts/") && f.writes.length
       ? Buffer.from("corrupt")
       : get(key);
   await assert.rejects(buildPublicationTarget(f), /checksum/);

@@ -28,7 +28,12 @@ export function archiveKey(target, pr, run, checksum) {
 export async function archiveTransfer(store, operation, key, bytes, checksum) {
   if (
     !["upload", "download"].includes(operation) ||
-    !key.startsWith("artifacts/") ||
+    !(
+      key.startsWith("artifacts/") ||
+      /^rollback\/artifacts\/(production|staging|pr\/[1-9][0-9]*)\/[a-f0-9]{64}\.tar$/.test(
+        key,
+      )
+    ) ||
     !/^[a-f0-9]{64}$/.test(checksum)
   )
     throw new Error("Invalid private archive operation");

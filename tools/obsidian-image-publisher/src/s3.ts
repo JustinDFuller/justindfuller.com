@@ -2,6 +2,8 @@ import {
   HeadObjectCommand,
   GetObjectCommand,
   PutObjectCommand,
+  DeleteObjectCommand,
+  paginateListObjectsV2,
   S3Client,
   type HeadObjectCommandOutput,
 } from "@aws-sdk/client-s3";
@@ -123,6 +125,53 @@ export class SdkS3Transport implements S3Transport {
   close(): void {
     for (const client of this.clients.values()) client.destroy();
     this.clients.clear();
+  }
+
+  async listArchives(target: S3Target, namespace: string) {
+    if (
+      target.bucket !== "justindfuller-obsidian-state" ||
+      !/^(production|staging|pr\/[1-9][0-9]*)$/.test(namespace)
+    )
+      throw new Error("Invalid archive maintenance target");
+    const objects = [];
+    const tokens = new Set<string>();
+    let pages = 0;
+    for await (const page of paginateListObjectsV2(
+      { client: this.client(target), pageSize: 1000, stopOnSameToken: true },
+      { Bucket: target.bucket, Prefix: `rollback/artifacts/${namespace}/` },
+    )) {
+      if (++pages > 20)
+        throw new Error("Archive inventory exceeds maintenance limit");
+      for (const object of page.Contents ?? [])
+        objects.push({
+          key: object.Key,
+          size: object.Size,
+          lastModified: object.LastModified?.toISOString(),
+        });
+      if (page.IsTruncated && (!page.NextContinuationToken || pages === 20))
+        throw new Error("Incomplete archive inventory");
+      if (page.IsTruncated && page.NextContinuationToken) {
+        if (tokens.has(page.NextContinuationToken))
+          throw new Error("Repeated archive inventory cursor");
+        tokens.add(page.NextContinuationToken);
+      }
+    }
+    return objects;
+  }
+
+  async deleteArchive(target: S3Target, key: string): Promise<void> {
+    if (
+      target.bucket !== "justindfuller-obsidian-state" ||
+      !/^rollback\/artifacts\/(production|staging|pr\/[1-9][0-9]*)\/[a-f0-9]{64}\.tar$/.test(
+        key,
+      )
+    )
+      throw new Error("Invalid archive deletion target");
+    await this.client(target).send(
+      new DeleteObjectCommand({ Bucket: target.bucket, Key: key }),
+    );
+    if (await this.head(target, key))
+      throw new Error("Archive deletion unverified");
   }
 
   private client(target: S3Target): S3Client {

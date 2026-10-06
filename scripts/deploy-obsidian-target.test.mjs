@@ -206,8 +206,10 @@ test("exact tested archives are retained before publication and accepted only af
     assert.equal(receipt.artifact, f.bundle.candidate.artifact);
     assert.equal(receipt.target, f.bundle.target);
     assert.deepEqual(f.objects.get(f.bundle.candidate.archive), f.bytes);
-    assert.equal(f.writes[0].key, f.bundle.candidate.archive);
-    assert.equal(f.writes[0].immutable, true);
+    assert.equal(
+      f.writes.some((write) => write.key === f.bundle.candidate.archive),
+      false,
+    );
     const accepted = JSON.parse(
       f.objects.get(`accepted/${f.bundle.target}/current.json`),
     );
@@ -321,8 +323,9 @@ test("cross-target, corrupt, mismatched, changed-code and closed-preview handoff
       f.objects.set(f.bundle.candidate.archive, Buffer.from("corrupt"));
     if (fault === "readback") {
       const get = f.store.get;
+      let reads = 0;
       f.store.get = async (key) =>
-        key === f.bundle.candidate.archive && f.writes.length
+        key === f.bundle.testedArtifact.key && ++reads === 2
           ? Buffer.from("corrupt")
           : get(key);
     }
@@ -399,7 +402,46 @@ test("the explicit run reaches the recorder only after archive retention and pre
   assert.equal(result.run, f.run);
   assert.equal(recorded.options.run, f.run);
   assert.deepEqual(f.trace, []);
-  assert.deepEqual(f.writes, [
-    { key: f.bundle.candidate.archive, immutable: true },
-  ]);
+  assert.deepEqual(f.writes, []);
+});
+
+test("post-publication maintenance removes only stale archives and emits counts without private keys", async (t) => {
+  const f = await fixture(t, "production"),
+    stale = `rollback/artifacts/production/${"e".repeat(64)}.tar`,
+    prior = `rollback/artifacts/production/${"f".repeat(64)}.tar`,
+    capture = f.serving.capture,
+    deleted = [];
+  f.serving.capture = async (identity) => ({
+    ...(await capture(identity)),
+    archive: prior,
+  });
+  f.store.listArchives = async () => [
+    { key: stale, size: 123, lastModified: "2020-01-01T00:00:00.000Z" },
+    { key: prior, size: 456, lastModified: "2020-01-01T00:00:00.000Z" },
+    {
+      key: f.bundle.candidate.archive,
+      size: f.bytes.length,
+      lastModified: "2020-01-01T00:00:00.000Z",
+    },
+  ];
+  f.store.deleteArchive = async (key) => deleted.push(key);
+  const receipt = await deployPublicationTarget(f);
+  assert.deepEqual(deleted, [stale]);
+  assert.equal(receipt.archiveMaintenance.status, "verified");
+  assert.equal(receipt.archiveMaintenance.deleteCount, 1);
+  assert.equal(receipt.archiveMaintenance.deleteBytes, 123);
+  assert.equal(JSON.stringify(receipt).includes("rollback/"), false);
+});
+
+test("archive cleanup failure preserves verified publication and requests maintenance separately", async (t) => {
+  const f = await fixture(t, "production");
+  f.store.listArchives = async () => {
+    throw new Error("private credential canary");
+  };
+  f.store.deleteArchive = async () => assert.fail("must not delete");
+  const receipt = await deployPublicationTarget(f);
+  assert.equal(receipt.archiveMaintenance.status, "cleanup-required");
+  assert.equal(receipt.deployment, "22222222-2222-2222-2222-222222222222");
+  assert.equal(JSON.stringify(receipt).includes("canary"), false);
+  assert.ok(f.objects.has("accepted/production/current.json"));
 });

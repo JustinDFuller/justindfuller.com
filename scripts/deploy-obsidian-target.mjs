@@ -9,6 +9,7 @@ import {
 } from "./build-obsidian-target.mjs";
 import { archiveTransfer } from "./obsidian-private-storage.mjs";
 import { archiveChecksum } from "./obsidian-archive.mjs";
+import { prunePublicationArchives } from "./obsidian-retention.mjs";
 import { recordPublication } from "./record-obsidian-publication.mjs";
 import { targetNamespace } from "./obsidian-transaction.mjs";
 import { currentPreview } from "./obsidian-workflow.mjs";
@@ -125,13 +126,28 @@ export async function deployPublicationTarget({
     currentPreview(await github.pull(pr), pr).codeSha !== codeSha
   )
     throw new Error("Preview changed before tested artifact deployment");
-  return record(candidate, bundle.diagnostics, {
+  const result = await record(candidate, bundle.diagnostics, {
     store,
     serving,
     namespace,
     bootstrap,
     run,
   });
+  if (
+    typeof store.listArchives !== "function" ||
+    typeof store.deleteArchive !== "function"
+  )
+    return result;
+  let archiveMaintenance;
+  try {
+    const maintenance = await prunePublicationArchives(store, namespace, {
+      apply: true,
+    });
+    archiveMaintenance = { status: "verified", ...maintenance.summary };
+  } catch {
+    archiveMaintenance = { status: "cleanup-required" };
+  }
+  return { ...result, archiveMaintenance };
 }
 
 async function main() {

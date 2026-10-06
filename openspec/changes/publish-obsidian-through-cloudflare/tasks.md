@@ -44,3 +44,9 @@
 - [ ] 6.3 Exercise hosted persistent staging and a protected same-repository PR with valid/invalid posts, both targets, draft masks, promotion/demotion, deletions, missing images, fresh-runner fallback, and controlled rollback faults; verify owner/service access, anonymous denial, private artifact/media exclusion, target isolation, and zero Go image-body requests.
 - [ ] 6.4 Reconcile local/retained-provider content and migrate metadata, then manually reconcile staging and production after main's workflow is available; verify both public hostnames, private staging without a PR/local server, and target receipts before enabling automatic Mac dispatch, retaining legacy resources for separately reviewed retirement.
 - [ ] 6.5 Record usage/latency baselines and a two-week reassessment procedure; verify the report includes staging builds and private-serving costs, current account billing/Access plan eligibility, and an equal comparison of GitHub Actions versus Cloudflare Builds without preselecting a future provider.
+
+## 7. Bounded archive storage
+
+- [x] 7.1 Add deterministic compressed content-deduplicated archives with legacy restoration, checksum-before-decompression, path safety, and bounded expanded size; measure current full-site archive reduction.
+- [x] 7.2 Share a canonical archive between tested handoff and rollback; verify corrupt handoffs fail and deployment requires the same tested bytes.
+- [x] 7.3 Add per-target post-publication pruning retaining current/journal references and at most three extra archives for 14 days; verify state changes, malformed state, target isolation, dry runs, and cleanup failures. Record local checks separately from live cleanup and hosted validation.

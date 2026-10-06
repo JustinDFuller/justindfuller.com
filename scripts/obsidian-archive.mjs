@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { gunzipSync, gzipSync } from "node:zlib";
 import {
   lstatSync,
   readdirSync,
@@ -10,6 +11,7 @@ import {
 import { resolve, dirname } from "node:path";
 
 const limit = 256 * 1024 * 1024;
+const archiveMagic = Buffer.from("OBSARC2\n");
 const roots = ["dist", ".cloudflare/output", ".cloudflare/site-manifest.json"];
 export const archiveChecksum = (bytes) =>
   createHash("sha256").update(bytes).digest("hex");
@@ -89,17 +91,82 @@ export function createPublicationArchive(directory = ".") {
       for (const child of readdirSync(file).sort()) visit(`${name}/${child}`);
   }
   for (const root of roots) visit(root);
-  return Buffer.concat([...records, Buffer.alloc(1024)], bytes);
+  const tar = Buffer.concat([...records, Buffer.alloc(1024)], bytes);
+  const entries = inspectPublicationArchive(tar, archiveChecksum(tar));
+  const blobs = [],
+    blobOffsets = new Map(),
+    manifest = [];
+  let blobSize = 0;
+  for (const entry of entries) {
+    if (entry.directory) {
+      manifest.push({ name: entry.name, directory: true });
+      continue;
+    }
+    const digest = archiveChecksum(entry.bytes);
+    let blob = blobOffsets.get(digest);
+    if (!blob) {
+      blob = {
+        offset: blobSize,
+        length: entry.bytes.length,
+        bytes: entry.bytes,
+      };
+      blobOffsets.set(digest, blob);
+      blobs.push(entry.bytes);
+      blobSize += entry.bytes.length;
+    } else if (!entry.bytes.equals(blob.bytes)) {
+      throw new Error("Artifact content hash collision");
+    }
+    manifest.push({
+      name: entry.name,
+      offset: blob.offset,
+      length: blob.length,
+    });
+  }
+  const encodedManifest = Buffer.from(JSON.stringify(manifest));
+  const envelope = Buffer.concat([
+    archiveMagic,
+    Buffer.from([
+      encodedManifest.length >>> 24,
+      encodedManifest.length >>> 16,
+      encodedManifest.length >>> 8,
+      encodedManifest.length,
+    ]),
+    encodedManifest,
+    ...blobs,
+  ]);
+  return gzipSync(envelope, {
+    level: 9,
+    mtime: 0,
+  });
 }
 
 export function inspectPublicationArchive(bytes, checksum) {
   if (
     !Buffer.isBuffer(bytes) ||
     bytes.length > limit ||
-    bytes.length % 512 ||
     archiveChecksum(bytes) !== checksum
   )
     throw new Error("Artifact checksum or size differs");
+  let archive = bytes;
+  if (
+    Buffer.isBuffer(bytes) &&
+    bytes.length >= 2 &&
+    bytes[0] === 0x1f &&
+    bytes[1] === 0x8b
+  ) {
+    try {
+      archive = gunzipSync(bytes, { maxOutputLength: limit });
+    } catch {
+      throw new Error("Invalid or oversized compressed artifact archive");
+    }
+  }
+  if (!Buffer.isBuffer(archive))
+    throw new Error("Artifact archive exceeds limit");
+  if (archive.subarray(0, archiveMagic.length).equals(archiveMagic))
+    return inspectPublicationEnvelope(archive);
+  if (archive.length > limit || archive.length % 512)
+    throw new Error("Artifact archive exceeds limit");
+  bytes = archive;
   const entries = [],
     names = new Map();
   let offset = 0;
@@ -148,7 +215,77 @@ export function inspectPublicationArchive(bytes, checksum) {
   if (
     bytes.length - offset < 1024 ||
     !bytes.subarray(offset).every((value) => value === 0) ||
-    roots.some((root) => !names.has(root))
+    roots.some((root) => !names.has(root)) ||
+    names.get("dist") !== "5" ||
+    names.get(".cloudflare/output") !== "5" ||
+    names.get(".cloudflare/site-manifest.json") !== "0"
+  )
+    throw new Error("Incomplete artifact archive");
+  for (const { name } of entries) {
+    for (let parent = dirname(name); parent !== "."; parent = dirname(parent))
+      if (names.has(parent) && names.get(parent) !== "5")
+        throw new Error("Archive file is used as a directory");
+  }
+  return entries;
+}
+
+function inspectPublicationEnvelope(archive) {
+  if (archive.length < archiveMagic.length + 4)
+    throw new Error("Incomplete artifact archive");
+  const manifestLength = archive.readUInt32BE(archiveMagic.length),
+    blobStart = archiveMagic.length + 4 + manifestLength;
+  if (blobStart > archive.length)
+    throw new Error("Incomplete artifact archive");
+  let manifest;
+  try {
+    manifest = JSON.parse(archive.subarray(archiveMagic.length + 4, blobStart));
+  } catch {
+    throw new Error("Invalid artifact archive manifest");
+  }
+  if (!Array.isArray(manifest) || manifest.length > 20000)
+    throw new Error("Archive entry limit exceeded");
+  const entries = [],
+    names = new Map();
+  let expandedSize = 0;
+  for (const item of manifest) {
+    if (
+      !item ||
+      typeof item.name !== "string" ||
+      !allowed(item.name) ||
+      names.has(item.name)
+    )
+      throw new Error("Unsafe archive entry");
+    let entry;
+    if (item.directory === true && Object.keys(item).length === 2) {
+      entry = { name: item.name, directory: true, bytes: Buffer.alloc(0) };
+      names.set(item.name, "5");
+    } else if (
+      item.directory !== true &&
+      Number.isSafeInteger(item.offset) &&
+      Number.isSafeInteger(item.length) &&
+      item.offset >= 0 &&
+      item.length >= 0 &&
+      (expandedSize += item.length) <= limit &&
+      Object.keys(item).length === 3 &&
+      blobStart + item.offset + item.length <= archive.length
+    ) {
+      entry = {
+        name: item.name,
+        directory: false,
+        bytes: archive.subarray(
+          blobStart + item.offset,
+          blobStart + item.offset + item.length,
+        ),
+      };
+      names.set(item.name, "0");
+    } else throw new Error("Unsafe archive entry");
+    entries.push(entry);
+  }
+  if (
+    roots.some((root) => !names.has(root)) ||
+    names.get("dist") !== "5" ||
+    names.get(".cloudflare/output") !== "5" ||
+    names.get(".cloudflare/site-manifest.json") !== "0"
   )
     throw new Error("Incomplete artifact archive");
   for (const { name } of entries) {

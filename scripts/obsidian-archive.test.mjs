@@ -11,6 +11,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { gunzipSync, gzipSync } from "node:zlib";
 import {
   createPublicationArchive,
   inspectPublicationArchive,
@@ -36,6 +37,47 @@ function fixture() {
   return dir;
 }
 
+function legacyTar() {
+  const records = [];
+  for (const [name, content] of [
+    ["dist/", Buffer.alloc(0)],
+    ["dist/private-canary-post/", Buffer.alloc(0)],
+    ["dist/private-canary-post/index.html", Buffer.from("private canary HTML")],
+    [".cloudflare/output/", Buffer.alloc(0)],
+    [".cloudflare/output/config.json", Buffer.from("{}")],
+    [".cloudflare/site-manifest.json", Buffer.from("{}")],
+  ]) {
+    const directory = name.endsWith("/"),
+      value = directory ? Buffer.alloc(0) : content,
+      header = Buffer.alloc(512);
+    header.write(name.replace(/\/$/, ""), 0, 100);
+    for (const [offset, size, number] of [
+      [100, 8, directory ? 0o700 : 0o600],
+      [108, 8, 0],
+      [116, 8, 0],
+      [124, 12, value.length],
+      [136, 12, 0],
+    ])
+      header.write(
+        `${number.toString(8).padStart(size - 1, "0")}\0`,
+        offset,
+        size,
+      );
+    header.fill(32, 148, 156);
+    header.write(directory ? "5" : "0", 156);
+    header.write("ustar\0", 257, 6);
+    header.write("00", 263, 2);
+    const sum = header.reduce((total, byte) => total + byte, 0);
+    header.write(`${sum.toString(8).padStart(6, "0")}\0 `, 148, 8);
+    records.push(
+      header,
+      value,
+      Buffer.alloc((512 - (value.length % 512)) % 512),
+    );
+  }
+  return Buffer.concat([...records, Buffer.alloc(1024)]);
+}
+
 test("deterministic tested archives preserve private HTML without including raw state or credentials", () => {
   const dir = fixture(),
     restored = mkdtempSync(join(tmpdir(), "obsidian-restored-"));
@@ -43,9 +85,12 @@ test("deterministic tested archives preserve private HTML without including raw 
     const bytes = createPublicationArchive(dir),
       hash = archiveChecksum(bytes);
     assert.deepEqual(createPublicationArchive(dir), bytes);
-    assert.equal(bytes.includes(Buffer.from("private canary HTML")), true);
     assert.equal(
-      bytes.includes(Buffer.from("secret credential canary")),
+      gunzipSync(bytes).includes(Buffer.from("private canary HTML")),
+      true,
+    );
+    assert.equal(
+      gunzipSync(bytes).includes(Buffer.from("secret credential canary")),
       false,
     );
     restorePublicationArchive(bytes, hash, restored);
@@ -61,10 +106,10 @@ test("deterministic tested archives preserve private HTML without including raw 
       false,
     );
     const corrupt = Buffer.from(bytes);
-    corrupt[600] ^= 1;
+    corrupt[20] ^= 1;
     assert.throws(
       () => restorePublicationArchive(corrupt, hash, restored),
-      /checksum/,
+      /checksum|compressed/,
     );
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -75,7 +120,7 @@ test("deterministic tested archives preserve private HTML without including raw 
 test("checksummed archive traversal, links and unsupported metadata are rejected before extraction", () => {
   const dir = fixture();
   try {
-    const bytes = createPublicationArchive(dir);
+    const bytes = legacyTar();
     for (const change of [
       (header) => {
         header.fill(0, 0, 100);
@@ -128,4 +173,73 @@ test("archive restore refuses a linked Cloudflare destination", () => {
     rmSync(dir, { recursive: true, force: true });
     rmSync(restored, { recursive: true, force: true });
   }
+});
+
+test("compressed archives are deterministic, checksummed as stored, and bounded", () => {
+  const dir = fixture();
+  try {
+    const bytes = createPublicationArchive(dir);
+    assert.deepEqual(createPublicationArchive(dir), bytes);
+    assert.equal(bytes[0], 0x1f);
+    assert.equal(
+      inspectPublicationArchive(bytes, archiveChecksum(bytes)).some(
+        (entry) => entry.name === "dist/private-canary-post/index.html",
+      ),
+      true,
+    );
+    assert.throws(
+      () =>
+        inspectPublicationArchive(
+          bytes.subarray(0, bytes.length - 1),
+          archiveChecksum(bytes.subarray(0, bytes.length - 1)),
+        ),
+      /compressed|Incomplete|Invalid/,
+    );
+    const shared = Buffer.alloc(14_000),
+      entries = [
+        { name: "dist", directory: true },
+        { name: ".cloudflare/output", directory: true },
+        { name: ".cloudflare/site-manifest.json", offset: 0, length: 0 },
+        ...Array.from({ length: 19_500 }, (_, index) => ({
+          name: `dist/file-${index}`,
+          offset: 0,
+          length: shared.length,
+        })),
+      ],
+      manifest = Buffer.from(JSON.stringify(entries)),
+      envelope = Buffer.concat([
+        Buffer.from("OBSARC2\n"),
+        Buffer.from([
+          manifest.length >>> 24,
+          manifest.length >>> 16,
+          manifest.length >>> 8,
+          manifest.length,
+        ]),
+        manifest,
+        shared,
+      ]),
+      repeated = gzipSync(envelope);
+    assert.throws(
+      () => inspectPublicationArchive(repeated, archiveChecksum(repeated)),
+      /Unsafe archive entry/,
+    );
+    const oversized = gzipSync(Buffer.alloc(256 * 1024 * 1024 + 1));
+    assert.throws(
+      () => inspectPublicationArchive(oversized, archiveChecksum(oversized)),
+      /compressed|limit/,
+    );
+    assert.ok(gunzipSync(bytes).length < 1024 * 1024);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("legacy uncompressed tar archives remain readable", () => {
+  const bytes = legacyTar();
+  assert.equal(
+    inspectPublicationArchive(bytes, archiveChecksum(bytes)).some(
+      (entry) => entry.name === "dist/private-canary-post/index.html",
+    ),
+    true,
+  );
 });
