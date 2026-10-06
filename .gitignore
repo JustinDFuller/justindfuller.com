@@ -6,3 +6,4 @@ node_modules
 /cloudflare-artifact.tar
 /cloudflare-artifact.sha256
 /cloudflare-deployment.log
+/.obsidian-publish/

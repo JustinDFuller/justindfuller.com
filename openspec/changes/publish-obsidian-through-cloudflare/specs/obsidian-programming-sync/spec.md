@@ -197,3 +197,22 @@ The system SHALL record publishing batch counts, per-target runner durations, bu
 
 - **WHEN** publishing has operated for a representative period
 - **THEN** recorded run frequency, durations, latency, and provider usage SHALL support comparing GitHub Actions with Cloudflare Builds without changing content semantics
+
+### Requirement: Bounded publication archive storage
+
+The system SHALL store one canonical compressed tested archive per build, shared by authenticated job handoff and retained rollback. Identical payloads within a build SHALL be stored once, and restoration SHALL preserve exact file bytes with bounded decompression and legacy archive compatibility. After a successful publish in the target concurrency boundary, maintenance SHALL preserve all current accepted-state and active-journal archive references regardless of age, retain at most three additional unreferenced archives per target for at most 14 days, and delete only canonical archive objects for that target. Missing, malformed, or changing state SHALL block cleanup. Source, media, reports, accepted-state backups, and other state SHALL remain untouched. Cleanup failure SHALL be reported separately and SHALL not invalidate publication.
+
+#### Scenario: Many successive publishes do not retain every historical build
+
+- **WHEN** a target publishes repeatedly and maintenance runs after verified acceptance
+- **THEN** current and journal-referenced archives remain available and at most three additional recent unreferenced archives remain
+
+#### Scenario: Old current deployment remains recoverable
+
+- **WHEN** an accepted deployment or its journal rollback archive is older than 14 days
+- **THEN** maintenance SHALL preserve its archive and delete only unreferenced archives eligible under the policy
+
+#### Scenario: State changes during cleanup
+
+- **WHEN** accepted state or the active journal changes between planning and deletion
+- **THEN** cleanup SHALL stop before further deletion and SHALL not mark the verified publication failed

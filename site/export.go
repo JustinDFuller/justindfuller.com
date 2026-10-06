@@ -18,6 +18,7 @@ import (
 
 	"github.com/justindfuller/justindfuller.com/aphorism"
 	"github.com/justindfuller/justindfuller.com/nature"
+	"github.com/justindfuller/justindfuller.com/obsidian"
 	"github.com/justindfuller/justindfuller.com/programming"
 	"github.com/justindfuller/justindfuller.com/review"
 	"github.com/justindfuller/justindfuller.com/story"
@@ -26,16 +27,21 @@ import (
 )
 
 type Manifest struct {
-	Pages  []string `json:"pages"`
-	Assets []string `json:"assets"`
+	PrivateImages []string `json:"privateImages,omitempty"`
+	Pages         []string `json:"pages"`
+	Assets        []string `json:"assets"`
 }
 
 func PagePaths() ([]string, error) {
-	paths := []string{"/", "/about", "/aphorism/", "/word", "/poem/", "/story", "/thought", "/programming", "/review", "/make", "/nature", "/grass", "/kit", "/weeks-remaining"}
 	posts, err := programming.GetEntries()
 	if err != nil {
 		return nil, err
 	}
+	return pagePathsWithEntries(posts)
+}
+
+func pagePathsWithEntries(posts []programming.Entry) ([]string, error) {
+	paths := []string{"/", "/about", "/aphorism/", "/word", "/poem/", "/story", "/thought", "/programming", "/review", "/make", "/nature", "/grass", "/kit", "/weeks-remaining", "/sitemap.xml"}
 	for _, entry := range posts {
 		paths = append(paths, "/programming/"+entry.Slug)
 	}
@@ -104,6 +110,9 @@ func PagePaths() ([]string, error) {
 }
 
 func outputPath(route string) (string, error) {
+	if route == "/sitemap.xml" {
+		return "sitemap.xml", nil
+	}
 	if !strings.HasPrefix(route, "/") || path.Clean(route) != strings.TrimSuffix(route, "/") && route != "/" {
 		return "", fmt.Errorf("invalid route %q", route)
 	}
@@ -114,6 +123,10 @@ func outputPath(route string) (string, error) {
 }
 
 func Export(directory string, indexable bool) (Manifest, error) {
+	return ExportWithPrepared(directory, indexable, nil)
+}
+
+func ExportWithPrepared(directory string, indexable bool, prepared *obsidian.Prepared) (Manifest, error) {
 	manifest := Manifest{}
 	abs, err := filepath.Abs(directory)
 	if err != nil {
@@ -131,11 +144,30 @@ func Export(directory string, indexable bool) (Manifest, error) {
 	} else if !os.IsNotExist(err) {
 		return manifest, err
 	}
-	handler, err := New()
+	entries, err := LoadProgramming()
 	if err != nil {
 		return manifest, err
 	}
-	pages, err := PagePaths()
+	if prepared != nil {
+		if err := obsidian.ValidatePrepared(*prepared, prepared.Mode); err != nil {
+			return manifest, err
+		}
+		if indexable != (prepared.Mode == obsidian.ModeProduction) {
+			return manifest, errors.New("overlay indexing mode mismatch")
+		}
+		entries = prepared.Entries
+		if !indexable {
+			for key := range prepared.Images {
+				manifest.PrivateImages = append(manifest.PrivateImages, "/__obsidian/media/"+key)
+			}
+			sort.Strings(manifest.PrivateImages)
+		}
+	}
+	handler, err := newWithEntries(entries)
+	if err != nil {
+		return manifest, err
+	}
+	pages, err := pagePathsWithEntries(entries)
 	if err != nil {
 		return manifest, err
 	}
@@ -234,7 +266,7 @@ func Export(directory string, indexable bool) (Manifest, error) {
 	}
 	headers := "/*\n  Cache-Control: public, max-age=0, must-revalidate, no-transform\n"
 	if !indexable {
-		headers += "  X-Robots-Tag: noindex\n"
+		headers = "/*\n  Cache-Control: private, no-store, no-transform\n  X-Robots-Tag: noindex\n"
 	}
 	headers += "/grass/worker.js\n  Cache-Control: no-store\n"
 	if err := write("_headers", []byte(headers)); err != nil {
@@ -250,7 +282,7 @@ func Export(directory string, indexable bool) (Manifest, error) {
 func validateLinks(root *os.Root, manifest Manifest) error {
 	var failures []error
 	known := map[string]bool{"/poem": true, "/aphorism": true, "/about/": true, "/make/": true, "/word/": true, "/programming/": true}
-	for _, route := range append(append([]string{}, manifest.Pages...), manifest.Assets...) {
+	for _, route := range append(append([]string{}, manifest.Pages...), append(append([]string{}, manifest.Assets...), manifest.PrivateImages...)...) {
 		known[route] = true
 	}
 	cssURL := regexp.MustCompile(`url\(\s*["']?([^"'\s)]+)["']?\s*\)`)

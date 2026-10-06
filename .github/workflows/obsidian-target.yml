@@ -1,0 +1,363 @@
+name: Obsidian private target
+on:
+  workflow_call:
+    inputs:
+      mode:
+        required: true
+        type: string
+      kind:
+        required: true
+        type: string
+      pr:
+        required: false
+        type: string
+      expected_code_sha:
+        required: false
+        type: string
+      bootstrap:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: false
+concurrency:
+  group: ${{ inputs.mode == 'preview' && format('cloudflare-refs/pull/{0}/merge', inputs.pr) || format('cloudflare-{0}', inputs.mode) }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      code_sha: ${{ steps.target.outputs.code_sha }}
+      control_sha: ${{ steps.target.outputs.control_sha }}
+      namespace: ${{ steps.target.outputs.namespace }}
+      pr: ${{ steps.target.outputs.pr }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: refs/heads/main
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22.x"
+      - name: Resolve the current locked target
+        id: target
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node control/scripts/plan-obsidian-workflow.mjs --resolve-target "${{ inputs.mode }}" "${{ inputs.pr || '-' }}" "${{ inputs.expected_code_sha }}"
+  validate:
+    needs: resolve
+    concurrency:
+      group: ${{ format('obsidian-code-{0}', needs.resolve.outputs.code_sha) }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    environment: obsidian-publish
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.code_sha }}
+          persist-credentials: false
+      - name: Reject source entries in reserved private and control paths
+        run: |
+          if [[ -n "$(git ls-tree --name-only HEAD -- control .obsidian-publish)" ]]; then
+            echo "Source uses a reserved publication path" >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.control_sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22.x"
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version-file: control/go.mod
+          cache-dependency-path: go.sum
+      - name: Install trusted publisher dependencies without retaining install processes
+        run: docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/control" --workdir /control node:22-bookworm npm ci --prefix tools/obsidian-image-publisher
+      - name: Download trusted Go modules before credentials
+        working-directory: control
+        run: go mod download
+      - name: Probe exact main-code validation receipt
+        if: inputs.mode != 'preview'
+        id: receipt
+        env:
+          OBSIDIAN_CODE_SHA: ${{ needs.resolve.outputs.code_sha }}
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+        run: node control/scripts/validate-obsidian-code.mjs --probe
+      - name: Install frontend dependencies when validation is required
+        if: inputs.mode != 'preview' && steps.receipt.outputs.reusable != 'true'
+        run: docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/workspace/control,readonly" --workdir /workspace node:22-bookworm npm ci
+      - name: Install main publisher test dependencies when validation is required
+        if: inputs.mode != 'preview' && steps.receipt.outputs.reusable != 'true'
+        run: docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/workspace/control,readonly" --workdir /workspace node:22-bookworm npm ci --prefix tools/obsidian-image-publisher
+      - name: Validate current main code and record compatible receipt
+        if: inputs.mode != 'preview' && steps.receipt.outputs.reusable != 'true'
+        env:
+          OBSIDIAN_CODE_SHA: ${{ needs.resolve.outputs.code_sha }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+        run: node control/scripts/validate-obsidian-code.mjs
+  prepare:
+    needs: [resolve, validate]
+    runs-on: ubuntu-latest
+    environment: obsidian-publish
+    timeout-minutes: 40
+    outputs:
+      decision: ${{ steps.prepare.outputs.decision }}
+      handoff: ${{ steps.prepare.outputs.handoff }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.code_sha }}
+          persist-credentials: false
+      - name: Reject source entries in reserved private and control paths
+        run: |
+          if [[ -n "$(git ls-tree --name-only HEAD -- control .obsidian-publish)" ]]; then
+            echo "Source uses a reserved publication path" >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.control_sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22.x"
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version-file: control/go.mod
+          cache-dependency-path: control/go.sum
+      - name: Install trusted publisher dependencies before private inputs
+        run: docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/control" --workdir /control node:22-bookworm npm ci --prefix tools/obsidian-image-publisher
+      - name: Download source and target Go modules before private inputs
+        run: |
+          cd control && go mod download
+          cd .. && go mod download
+      - name: Prepare a trusted source-pinning binary
+        run: |
+          mkdir -p .obsidian-publish/bin
+          cd control && go build -o ../.obsidian-publish/bin/pin-obsidian-source ./cmd/pin-obsidian-source
+      - name: Record read-only Go module cache location
+        id: go-cache
+        run: echo "path=$(go env GOMODCACHE)" >> "$GITHUB_OUTPUT"
+      - name: Pull the exact preparation container before private credentials
+        run: docker pull golang:1.26.0-bookworm
+      - name: Save protected Access and explicit bootstrap receipt after dependency setup
+        env:
+          OBSIDIAN_WORKFLOW_TARGET: ${{ inputs.mode }}
+          OBSIDIAN_BOOTSTRAP_REQUIRED: ${{ inputs.bootstrap }}
+          OBSIDIAN_ACCESS_CONFIG: ${{ inputs.mode == 'staging' && secrets.OBSIDIAN_ACCESS_STAGING_JSON || inputs.mode == 'preview' && secrets.OBSIDIAN_ACCESS_PREVIEW_JSON || '' }}
+          OBSIDIAN_BOOTSTRAP_RECEIPT: ${{ inputs.bootstrap == true && (inputs.mode == 'production' && secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_PRODUCTION_JSON || inputs.mode == 'staging' && secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_STAGING_JSON || inputs.mode == 'preview' && secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_PREVIEW_JSON) || '' }}
+        run: node control/scripts/write-obsidian-workflow-secrets.mjs
+      - name: Probe whether interrupted recovery needs deployment tools
+        id: recovery
+        env:
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ inputs.mode != 'staging' && secrets.CLOUDFLARE_API_TOKEN || '' }}
+          CLOUDFLARE_STAGING_API_TOKEN: ${{ inputs.mode == 'staging' && secrets.CLOUDFLARE_STAGING_API_TOKEN || '' }}
+          CLOUDFLARE_ACCESS_API_TOKEN: ${{ inputs.mode != 'production' && secrets.CLOUDFLARE_ACCESS_API_TOKEN || '' }}
+          CF_ACCESS_CLIENT_ID: ${{ inputs.mode == 'staging' && secrets.CF_ACCESS_STAGING_CLIENT_ID || inputs.mode == 'preview' && secrets.CF_ACCESS_PREVIEW_CLIENT_ID || '' }}
+          CF_ACCESS_CLIENT_SECRET: ${{ inputs.mode == 'staging' && secrets.CF_ACCESS_STAGING_CLIENT_SECRET || inputs.mode == 'preview' && secrets.CF_ACCESS_PREVIEW_CLIENT_SECRET || '' }}
+        run: |
+          args=(--mode "${{ inputs.mode }}" --account 9dce34804a27754a4ea66a5789827dfa)
+          if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
+          if [[ "${{ inputs.mode }}" != production ]]; then args+=(--access ".obsidian-publish/workflow/${{ inputs.mode }}/access.json"); fi
+          node control/scripts/probe-obsidian-recovery.mjs "${args[@]}"
+      - name: Install trusted deployment tools only for pending recovery
+        if: steps.recovery.outputs.requires_frontend == 'true'
+        run: docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/control" --workdir /control node:22-bookworm npm ci
+      - name: Pin the current private source with trusted main code
+        id: source
+        env:
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+          OBSIDIAN_SOURCE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_SOURCE_ACCESS_KEY_ID }}
+          OBSIDIAN_SOURCE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_SOURCE_SECRET_ACCESS_KEY }}
+        run: |
+          args=(--mode "${{ inputs.mode }}" --account 9dce34804a27754a4ea66a5789827dfa)
+          if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
+          if [[ "${{ inputs.bootstrap }}" == true ]]; then args+=(--bootstrap); fi
+          node control/scripts/pin-obsidian-workflow-source.mjs "${args[@]}"
+      - name: Prepare the target with pinned input and trusted verification code
+        id: prepare
+        env:
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+          OBSIDIAN_SOURCE_ACCESS_KEY_ID: ${{ inputs.mode == 'production' && secrets.OBSIDIAN_SOURCE_ACCESS_KEY_ID || '' }}
+          OBSIDIAN_SOURCE_SECRET_ACCESS_KEY: ${{ inputs.mode == 'production' && secrets.OBSIDIAN_SOURCE_SECRET_ACCESS_KEY || '' }}
+          OBSIDIAN_MEDIA_ACCESS_KEY_ID: ${{ inputs.mode == 'production' && secrets.OBSIDIAN_MEDIA_ACCESS_KEY_ID || '' }}
+          OBSIDIAN_MEDIA_SECRET_ACCESS_KEY: ${{ inputs.mode == 'production' && secrets.OBSIDIAN_MEDIA_SECRET_ACCESS_KEY || '' }}
+          CLOUDFLARE_API_TOKEN: ${{ inputs.mode != 'staging' && secrets.CLOUDFLARE_API_TOKEN || '' }}
+          CLOUDFLARE_STAGING_API_TOKEN: ${{ inputs.mode == 'staging' && secrets.CLOUDFLARE_STAGING_API_TOKEN || '' }}
+          CLOUDFLARE_ACCESS_API_TOKEN: ${{ inputs.mode != 'production' && secrets.CLOUDFLARE_ACCESS_API_TOKEN || '' }}
+          CF_ACCESS_CLIENT_ID: ${{ inputs.mode == 'staging' && secrets.CF_ACCESS_STAGING_CLIENT_ID || inputs.mode == 'preview' && secrets.CF_ACCESS_PREVIEW_CLIENT_ID || '' }}
+          CF_ACCESS_CLIENT_SECRET: ${{ inputs.mode == 'staging' && secrets.CF_ACCESS_STAGING_CLIENT_SECRET || inputs.mode == 'preview' && secrets.CF_ACCESS_PREVIEW_CLIENT_SECRET || '' }}
+          GITHUB_TOKEN: ${{ inputs.mode == 'preview' && github.token || '' }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          OBSIDIAN_PREPARE_CONTAINER: "true"
+          OBSIDIAN_PREPARE_IMAGE: golang:1.26.0-bookworm
+          OBSIDIAN_PREPARE_GOMODCACHE: ${{ steps.go-cache.outputs.path }}
+        run: |
+          args=(--mode "${{ inputs.mode }}" --kind "${{ inputs.kind }}" --run "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" --account 9dce34804a27754a4ea66a5789827dfa --control-workspace control)
+          if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
+          if [[ "${{ inputs.bootstrap }}" == true ]]; then args+=(--bootstrap); fi
+          if [[ "${{ steps.source.outputs.source_unavailable }}" == true ]]; then args+=(--source-unavailable); else args+=(--pinned-source "${{ steps.source.outputs.pinned_source }}"); fi
+          if [[ "${{ inputs.mode }}" != production ]]; then args+=(--access ".obsidian-publish/workflow/${{ inputs.mode }}/access.json"); fi
+          node control/scripts/prepare-obsidian-target.mjs "${args[@]}" > "$RUNNER_TEMP/obsidian-prepare-result.json"
+          node --input-type=module -e 'import fs from "node:fs"; const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); fs.appendFileSync(process.env.GITHUB_OUTPUT, `decision=${value.decision}\nhandoff=${value.handoff?.checksum ?? ""}\n`);' "$RUNNER_TEMP/obsidian-prepare-result.json"
+  build:
+    needs: [resolve, prepare]
+    if: needs.prepare.outputs.decision == 'build-required'
+    runs-on: ubuntu-latest
+    environment: obsidian-publish
+    timeout-minutes: 40
+    outputs:
+      handoff: ${{ steps.build.outputs.handoff }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.code_sha }}
+          persist-credentials: false
+      - name: Reject source entries in reserved private and control paths
+        run: |
+          if [[ -n "$(git ls-tree --name-only HEAD -- control .obsidian-publish)" ]]; then
+            echo "Source uses a reserved publication path" >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.control_sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22.x"
+      - uses: actions/setup-go@v7.0.0
+        with:
+          go-version-file: control/go.mod
+          cache-dependency-path: go.sum
+      - name: Install renderer and trusted publisher dependencies in disposable containers
+        run: |
+          docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/workspace/control,readonly" --workdir /workspace node:22-bookworm npm ci
+          docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/control" --workdir /control node:22-bookworm npm ci --prefix tools/obsidian-image-publisher
+      - name: Install preview test dependencies only for changed output
+        if: inputs.mode == 'preview'
+        run: docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/workspace" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/workspace/control,readonly" --workdir /workspace node:22-bookworm npm ci --prefix tools/obsidian-image-publisher
+      - name: Download root Go modules and record toolchain paths before private handoff
+        id: go-paths
+        run: |
+          go mod download
+          echo "root=$(go env GOROOT)" >> "$GITHUB_OUTPUT"
+          echo "modules=$(go env GOMODCACHE)" >> "$GITHUB_OUTPUT"
+      - name: Validate changed preview code in disposable offline containers
+        if: inputs.mode == 'preview'
+        run: node control/scripts/validate-obsidian-preview.mjs --go-root "${{ steps.go-paths.outputs.root }}" --go-mod-cache "${{ steps.go-paths.outputs.modules }}"
+      - name: Download and verify private preparation after dependency setup
+        env:
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          args=(--mode "${{ inputs.mode }}" --run "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" --code-sha "${{ needs.resolve.outputs.code_sha }}" --preparation "${{ needs.prepare.outputs.handoff }}" --account 9dce34804a27754a4ea66a5789827dfa)
+          if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
+          node control/scripts/download-obsidian-build.mjs "${args[@]}"
+      - name: Move trusted control code outside the untrusted build mount
+        run: mv control "$RUNNER_TEMP/obsidian-control"
+      - name: Render and archive in a network-isolated container without credentials
+        id: render
+        run: |
+          args=(--mode "${{ inputs.mode }}" --run "${{ github.run_id }}-${{ github.run_attempt }}" --code-sha "${{ needs.resolve.outputs.code_sha }}" --account 9dce34804a27754a4ea66a5789827dfa --go-root "${{ steps.go-paths.outputs.root }}" --go-mod-cache "${{ steps.go-paths.outputs.modules }}")
+          if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
+          node "$RUNNER_TEMP/obsidian-control/scripts/render-obsidian-build.mjs" "${args[@]}" > "$RUNNER_TEMP/obsidian-render-result.json"
+      - name: Remove any control entry created by the isolated renderer
+        run: rm -rf -- "$GITHUB_WORKSPACE/control"
+      - name: Restore trusted control code at the locked main revision
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.control_sha }}
+          path: control
+          persist-credentials: false
+      - name: Install trusted uploader dependency in a disposable container
+        run: docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/control" --workdir /control node:22-bookworm npm ci --prefix tools/obsidian-image-publisher
+      - name: Upload exact verified bytes to private R2
+        id: build
+        env:
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          args=(--mode "${{ inputs.mode }}" --run "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" --code-sha "${{ needs.resolve.outputs.code_sha }}" --preparation "${{ needs.prepare.outputs.handoff }}" --account 9dce34804a27754a4ea66a5789827dfa)
+          if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
+          node control/scripts/upload-obsidian-build.mjs "${args[@]}" > "$RUNNER_TEMP/obsidian-upload-result.json"
+          node --input-type=module -e 'import fs from "node:fs"; const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); fs.appendFileSync(process.env.GITHUB_OUTPUT, `handoff=${value.handoff.checksum}\n`);' "$RUNNER_TEMP/obsidian-upload-result.json"
+  deploy:
+    needs: [resolve, prepare, build]
+    if: needs.prepare.outputs.decision == 'build-required'
+    runs-on: ubuntu-latest
+    environment: obsidian-publish
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.code_sha }}
+          persist-credentials: false
+      - name: Reject source entries in reserved private and control paths
+        run: |
+          if [[ -n "$(git ls-tree --name-only HEAD -- control .obsidian-publish)" ]]; then
+            echo "Source uses a reserved publication path" >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ needs.resolve.outputs.control_sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22.x"
+      - name: Install trusted deployment dependencies before private handoff
+        run: |
+          docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/control" --workdir /control node:22-bookworm npm ci
+          docker run --rm --network=bridge --cap-drop=ALL --security-opt=no-new-privileges --pids-limit=256 --read-only --tmpfs /tmp:rw,nosuid,nodev,size=1g --env HOME=/tmp/home --env npm_config_cache=/tmp/npm-cache --user "$(id -u):$(id -g)" --mount "type=bind,src=$GITHUB_WORKSPACE/control,dst=/control" --workdir /control node:22-bookworm npm ci --prefix tools/obsidian-image-publisher
+      - name: Save private Access config and verified bootstrap receipt after dependency setup
+        env:
+          OBSIDIAN_WORKFLOW_TARGET: ${{ inputs.mode }}
+          OBSIDIAN_BOOTSTRAP_REQUIRED: ${{ inputs.bootstrap }}
+          OBSIDIAN_ACCESS_CONFIG: ${{ inputs.mode == 'staging' && secrets.OBSIDIAN_ACCESS_STAGING_JSON || inputs.mode == 'preview' && secrets.OBSIDIAN_ACCESS_PREVIEW_JSON || '' }}
+          OBSIDIAN_BOOTSTRAP_RECEIPT: ${{ inputs.bootstrap == true && (inputs.mode == 'production' && secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_PRODUCTION_JSON || inputs.mode == 'staging' && secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_STAGING_JSON || inputs.mode == 'preview' && secrets.OBSIDIAN_BOOTSTRAP_RECEIPT_PREVIEW_JSON) || '' }}
+        run: node control/scripts/write-obsidian-workflow-secrets.mjs
+      - name: Deploy the exact private tested handoff
+        env:
+          OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
+          OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
+          CLOUDFLARE_API_TOKEN: ${{ inputs.mode != 'staging' && secrets.CLOUDFLARE_API_TOKEN || '' }}
+          CLOUDFLARE_STAGING_API_TOKEN: ${{ inputs.mode == 'staging' && secrets.CLOUDFLARE_STAGING_API_TOKEN || '' }}
+          CLOUDFLARE_ACCESS_API_TOKEN: ${{ inputs.mode != 'production' && secrets.CLOUDFLARE_ACCESS_API_TOKEN || '' }}
+          CF_ACCESS_CLIENT_ID: ${{ inputs.mode == 'staging' && secrets.CF_ACCESS_STAGING_CLIENT_ID || inputs.mode == 'preview' && secrets.CF_ACCESS_PREVIEW_CLIENT_ID || '' }}
+          CF_ACCESS_CLIENT_SECRET: ${{ inputs.mode == 'staging' && secrets.CF_ACCESS_STAGING_CLIENT_SECRET || inputs.mode == 'preview' && secrets.CF_ACCESS_PREVIEW_CLIENT_SECRET || '' }}
+          GITHUB_TOKEN: ${{ inputs.mode == 'preview' && github.token || '' }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          args=(--mode "${{ inputs.mode }}" --run "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" --code-sha "${{ needs.resolve.outputs.code_sha }}" --preparation "${{ needs.build.outputs.handoff }}" --account 9dce34804a27754a4ea66a5789827dfa --control-workspace control)
+          if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
+          if [[ "${{ inputs.bootstrap }}" == true ]]; then args+=(--bootstrap --bootstrap-receipt ".obsidian-publish/workflow/${{ inputs.mode }}/bootstrap-receipt.json"); fi
+          if [[ "${{ inputs.mode }}" != production ]]; then args+=(--access ".obsidian-publish/workflow/${{ inputs.mode }}/access.json"); fi
+          node control/scripts/deploy-obsidian-target.mjs "${args[@]}"

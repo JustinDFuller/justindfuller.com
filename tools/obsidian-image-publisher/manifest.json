@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-image-publisher",
+  "name": "Obsidian Cloudflare Publisher",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Uploads private content snapshots and tracks verified staging and production publication.",
+  "author": "Justin Fuller",
+  "isDesktopOnly": true
+}

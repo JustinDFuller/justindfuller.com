@@ -8,6 +8,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 
 const version = "12345678-1234-1234-1234-123456789abc";
 const deployments = [
@@ -36,6 +37,16 @@ test("production recording rejects an inactive or split version", () => {
       { id: "deployment", versions: [{ version_id: version, percentage: 50 }] },
     ]),
   );
+});
+
+test("staging records preserve the separate public routing boundary", () => {
+  const record = deploymentRecord(
+    `Current Version ID: ${version}`,
+    "staging",
+    deployments,
+  );
+  assert.deepEqual(record.urls, ["https://staging.justindfuller.com"]);
+  assert.equal(record.versionId, version);
 });
 
 test("preview records distinguish stable and exact deployment URLs", () => {
@@ -73,6 +84,13 @@ const redirects = {
 };
 
 for (const scenario of [
+  {
+    name: "asset filenames with spaces and unicode retain their filesystem spelling",
+    mode: "production",
+    noindex: false,
+    success: true,
+    encodedAssets: true,
+  },
   {
     name: "indexable production",
     mode: "production",
@@ -125,6 +143,37 @@ for (const scenario of [
     success: false,
     dropQuery: true,
   },
+  {
+    name: "public images are verified by exact bytes and immutable caching",
+    mode: "production",
+    noindex: false,
+    success: true,
+    media: true,
+  },
+  {
+    name: "public image byte mismatch rejected",
+    mode: "production",
+    noindex: false,
+    success: false,
+    media: true,
+    mediaBody: "changed",
+  },
+  {
+    name: "public image caching mismatch rejected",
+    mode: "production",
+    noindex: false,
+    success: false,
+    media: true,
+    mediaCache: "private, no-store",
+  },
+  {
+    name: "public image MIME mismatch rejected",
+    mode: "production",
+    noindex: false,
+    success: false,
+    media: true,
+    mediaType: "text/html",
+  },
 ]) {
   test(scenario.name, async (t) => {
     const directory = mkdtempSync(join(tmpdir(), "cloudflare-verifier-"));
@@ -133,9 +182,42 @@ for (const scenario of [
     mkdirSync(join(directory, "dist"));
     writeFileSync(
       join(directory, ".cloudflare/site-manifest.json"),
-      JSON.stringify({ pages: ["/"], assets: ["/grass/worker.js"] }),
+      JSON.stringify({
+        pages: ["/"],
+        assets: [
+          "/grass/worker.js",
+          ...(scenario.encodedAssets ? ["/image/Weeks Remaining-é.svg"] : []),
+        ],
+      }),
     );
     writeFileSync(join(directory, "dist/index.html"), html);
+    if (scenario.encodedAssets) {
+      mkdirSync(join(directory, "dist/image"));
+      writeFileSync(
+        join(directory, "dist/image/Weeks Remaining-é.svg"),
+        "verified encoded asset",
+      );
+    }
+    const mediaArgs = [];
+    if (scenario.media) {
+      const bytes = "verified image bytes",
+        sha256 = createHash("sha256").update(bytes).digest("hex"),
+        key = `v1/${sha256}.png`;
+      const record = {
+        key,
+        sha256,
+        size: Buffer.byteLength(bytes),
+        contentType: "image/png",
+      };
+      const overlayPath = join(directory, "prepared.json"),
+        hookPath = join(directory, "fixture-fetch.mjs");
+      writeFileSync(overlayPath, JSON.stringify({ images: { [key]: record } }));
+      writeFileSync(
+        hookPath,
+        `const original = globalThis.fetch; globalThis.fetch = async (input, options) => { const url = new URL(input); if (url.hostname !== "media.justindfuller.com") return original(input, options); if (url.pathname !== ${JSON.stringify(`/${key}`)} || options.headers["Accept-Encoding"] !== "identity") throw new Error("Unexpected media verification request"); return new Response(${JSON.stringify(scenario.mediaBody ?? bytes)}, { headers: { "Content-Type": ${JSON.stringify(scenario.mediaType ?? record.contentType)}, "Content-Length": ${JSON.stringify(String(record.size))}, "Cache-Control": ${JSON.stringify(scenario.mediaCache ?? "public, max-age=31536000, immutable")} } }); };`,
+      );
+      mediaArgs.push("--import", hookPath);
+    }
     let homeRequests = 0;
     const server = createServer((request, response) => {
       const url = new URL(request.url, "http://localhost");
@@ -159,6 +241,13 @@ for (const scenario of [
             : html,
         );
         return;
+      } else if (
+        scenario.encodedAssets &&
+        decodeURIComponent(url.pathname) === "/image/Weeks Remaining-é.svg"
+      ) {
+        response.writeHead(200, { "Cache-Control": "no-transform" });
+        response.end("verified encoded asset");
+        return;
       } else if (url.pathname === "/grass/worker.js") {
         response.writeHead(200, { "Cache-Control": "no-transform, no-store" });
       } else response.writeHead(404);
@@ -172,6 +261,7 @@ for (const scenario of [
       result = await run(
         process.execPath,
         [
+          ...(scenario.media ? mediaArgs.slice(0, 2) : []),
           verifier,
           base,
           "--mode",
@@ -180,6 +270,9 @@ for (const scenario of [
           "2",
           "--retry-delay-ms",
           "10",
+          ...(scenario.media
+            ? ["--overlay", join(directory, "prepared.json")]
+            : []),
         ],
         { cwd: directory },
       );

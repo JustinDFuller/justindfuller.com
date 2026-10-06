@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/justindfuller/justindfuller.com/obsidian"
 	"log"
 	"net/http"
 	"os"
@@ -11,7 +12,17 @@ import (
 )
 
 func main() {
-	handler, err := site.New()
+	var handler http.Handler
+	var err error
+	if overlay := os.Getenv("OBSIDIAN_OVERLAY"); overlay != "" {
+		prepared, loadErr := obsidian.LoadPrepared(overlay, obsidian.ModeLocal)
+		if loadErr != nil {
+			log.Fatal("Invalid private local overlay")
+		}
+		handler, err = site.NewWithPrepared(prepared, obsidian.ModeLocal)
+	} else {
+		handler, err = site.New()
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -23,7 +34,7 @@ func main() {
 		port = ":" + port
 	}
 	server := http.Server{
-		Addr:              port,
+		Addr:              "127.0.0.1" + port,
 		Handler:           handler,
 		ReadTimeout:       10 * time.Second,
 		ReadHeaderTimeout: 5 * time.Second,
