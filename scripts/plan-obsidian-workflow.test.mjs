@@ -265,7 +265,7 @@ test("workflow secret files validate target identity and create private ignored 
         accessJson: JSON.stringify({
           account: "a".repeat(32),
           application: "11111111-1111-1111-1111-111111111111",
-          worker: "22222222-2222-2222-2222-222222222222",
+          worker: "b".repeat(32),
           mode: "staging",
           owner: "owner@example.com",
           serviceToken: "33333333-3333-3333-3333-333333333333",
@@ -279,6 +279,25 @@ test("workflow secret files validate target identity and create private ignored 
       "staging.example.com",
     ]);
     assert.equal((await stat(output.access)).mode & 0o777, 0o600);
+    await assert.rejects(
+      writeWorkflowSecrets(
+        {
+          target: "staging",
+          accessJson: JSON.stringify({
+            account: "a".repeat(32),
+            application: "11111111-1111-1111-1111-111111111111",
+            worker: "22222222-2222-2222-2222-222222222222",
+            mode: "staging",
+            owner: "owner@example.com",
+            serviceToken: "33333333-3333-3333-3333-333333333333",
+            team: "example.cloudflareaccess.com",
+            hosts: ["staging.example.com"],
+          }),
+        },
+        directory,
+      ),
+      /Access configuration is invalid/,
+    );
     await assert.rejects(
       writeWorkflowSecrets(
         { target: "preview", accessJson: JSON.stringify({ mode: "staging" }) },

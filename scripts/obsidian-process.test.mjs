@@ -1,7 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  PublicationSubprocessError,
   publicationEnvironment,
+  publicationFailureSummary,
   runPublicationCommand,
 } from "./obsidian-process.mjs";
 
@@ -44,16 +46,94 @@ test("publication subprocesses receive only purpose-specific credentials", () =>
   assert.throws(() => publicationEnvironment(env, "deploy"));
 });
 
-test("captured subprocess failures never expose private output or exception payloads", async () => {
+test("captured subprocess failures expose only sanitized diagnostic fields", async () => {
+  const canary = "private-post-slug-canary-9321";
+  let caught;
   await assert.rejects(
     runPublicationCommand(
       process.execPath,
-      ["-e", "console.error('private-post-slug canary'); process.exit(1)"],
-      { purpose: "build" },
+      [
+        "-e",
+        `console.log(${JSON.stringify(canary)}); console.error('permission denied ${canary}'); process.exit(7)`,
+        canary,
+      ],
+      {
+        purpose: "build",
+        env: { ...process.env, PRIVATE_TEST_CANARY: canary },
+      },
     ),
-    (error) =>
-      !error.message.includes("canary") &&
-      !error.message.includes("private-post-slug") &&
-      error.stderr === undefined,
+    (error) => {
+      caught = error;
+      return error instanceof PublicationSubprocessError;
+    },
+  );
+  assert.equal(
+    caught.message,
+    "Publication subprocess failed; inspect protected publication state",
+  );
+  assert.deepEqual(Object.keys(caught).sort(), [
+    "commandKind",
+    "exitCode",
+    "failureCategory",
+    "name",
+    "signaled",
+    "spawnCode",
+    "timedOut",
+  ]);
+  assert.deepEqual(
+    {
+      commandKind: caught.commandKind,
+      exitCode: caught.exitCode,
+      spawnCode: caught.spawnCode,
+      timedOut: caught.timedOut,
+      signaled: caught.signaled,
+      failureCategory: caught.failureCategory,
+    },
+    {
+      commandKind: "node",
+      exitCode: 7,
+      spawnCode: "unknown",
+      timedOut: false,
+      signaled: false,
+      failureCategory: "filesystem-denied",
+    },
+  );
+  const serialized = `${caught.message} ${JSON.stringify(caught)} ${caught.stack}`;
+  assert.equal(serialized.includes(canary), false);
+  assert.equal(serialized.includes("permission denied"), false);
+  assert.equal("cause" in caught, false);
+  assert.equal("stdout" in caught, false);
+  assert.equal("stderr" in caught, false);
+  assert.deepEqual(publicationFailureSummary(caught), {
+    commandKind: "node",
+    exitCode: 7,
+    spawnCode: "unknown",
+    timedOut: false,
+    signaled: false,
+    category: "filesystem-denied",
+  });
+  assert.deepEqual(publicationFailureSummary(new Error(canary)), {
+    category: "unknown",
+  });
+});
+
+test("spawn failures expose only allowlisted command and spawn classes", async () => {
+  let caught;
+  await assert.rejects(
+    runPublicationCommand("private-command-canary", [], { purpose: "build" }),
+    (error) => {
+      caught = error;
+      return error instanceof PublicationSubprocessError;
+    },
+  );
+  assert.equal(caught.commandKind, "other");
+  assert.equal(caught.exitCode, -1);
+  assert.equal(caught.spawnCode, "ENOENT");
+  assert.equal(caught.failureCategory, "unknown");
+  assert.equal(caught.timedOut, false);
+  assert.equal(caught.signaled, false);
+  assert.equal(
+    JSON.stringify(caught).includes("private-command-canary"),
+    false,
   );
 });

@@ -9,7 +9,10 @@ import {
   targetNamespace,
 } from "./obsidian-transaction.mjs";
 import { CloudflareServing } from "./obsidian-cloudflare.mjs";
-import { runPublicationCommand } from "./obsidian-process.mjs";
+import {
+  publicationFailureSummary,
+  runPublicationCommand,
+} from "./obsidian-process.mjs";
 import { saveProtectedReport } from "./obsidian-reports.mjs";
 import { protectedPublicationReport } from "./record-obsidian-publication.mjs";
 import { preparePublicationTarget } from "./obsidian-pipeline.mjs";
@@ -412,9 +415,10 @@ if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 )
-  await main().catch(() => {
+  await main().catch((error) => {
     console.error(
       "Hosted preparation failed; inspect private target state and source credentials",
     );
+    console.error(JSON.stringify(publicationFailureSummary(error)));
     process.exitCode = 1;
   });

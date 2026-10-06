@@ -2,6 +2,83 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
 const execute = promisify(execFile);
+const commandKinds = new Set(["go", "docker", "git", "node", "npm"]);
+const spawnCodes = new Set([
+  "EACCES",
+  "EAGAIN",
+  "E2BIG",
+  "EISDIR",
+  "EMFILE",
+  "ENFILE",
+  "ENOENT",
+  "ENOMEM",
+  "ENOTDIR",
+  "EPERM",
+  "ETIMEDOUT",
+]);
+
+function commandKind(command) {
+  const name = String(command).split(/[\\/]/).at(-1);
+  return commandKinds.has(name) ? name : "other";
+}
+
+function failureCategory(stderr) {
+  const text = String(stderr ?? "").toLowerCase();
+  if (/no space left|disk quota exceeded|storage exhausted/.test(text))
+    return "storage-exhausted";
+  if (
+    /too many processes|resource temporarily unavailable|pids limit|process limit/.test(
+      text,
+    )
+  )
+    return "process-limit";
+  if (
+    /permission denied|read-only file system|operation not permitted|access is denied/.test(
+      text,
+    )
+  )
+    return "filesystem-denied";
+  if (
+    /module not found|cannot find package|no required module|dependency unavailable|module lookup disabled|missing go\.sum entry|updates to go\.mod needed|package .* is not in std|requires go >=/.test(
+      text,
+    )
+  )
+    return "dependency-unavailable";
+  if (
+    /invalid (private )?(input|source|state)|source integrity|input rejected|accepted state/.test(
+      text,
+    )
+  )
+    return "private-input-rejected";
+  return "unknown";
+}
+
+export class PublicationSubprocessError extends Error {
+  constructor(command, error) {
+    super("Publication subprocess failed; inspect protected publication state");
+    this.name = "PublicationSubprocessError";
+    this.commandKind = commandKind(command);
+    this.exitCode = Number.isInteger(error?.code) ? error.code : -1;
+    this.spawnCode = spawnCodes.has(error?.code) ? error.code : "unknown";
+    this.timedOut = error?.killed === true && error?.signal === "SIGTERM";
+    this.signaled =
+      typeof error?.signal === "string" && error.signal.length > 0;
+    this.failureCategory = failureCategory(error?.stderr);
+  }
+}
+
+export function publicationFailureSummary(error) {
+  if (!(error instanceof PublicationSubprocessError))
+    return { category: "unknown" };
+  return {
+    commandKind: error.commandKind,
+    exitCode: error.exitCode,
+    spawnCode: error.spawnCode,
+    timedOut: error.timedOut,
+    signaled: error.signaled,
+    category: error.failureCategory,
+  };
+}
 
 export function publicationEnvironment(
   input = process.env,
@@ -67,9 +144,7 @@ export async function runPublicationCommand(command, args, options = {}) {
       maxBuffer: 32 * 1024 * 1024,
       timeout: 15 * 60 * 1000,
     });
-  } catch {
-    throw new Error(
-      "Publication subprocess failed; inspect protected publication state",
-    );
+  } catch (error) {
+    throw new PublicationSubprocessError(command, error);
   }
 }

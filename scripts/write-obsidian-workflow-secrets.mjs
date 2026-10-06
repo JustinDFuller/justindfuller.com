@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+const workerId = /^[a-f0-9]{32}$/;
 
 export async function writeWorkflowSecrets(
   { target, accessJson, bootstrapReceiptJson, bootstrapRequired = false },
@@ -29,7 +30,7 @@ export async function writeWorkflowSecrets(
       config?.mode !== target ||
       !/^[a-f0-9]{32}$/.test(config.account ?? "") ||
       !uuid.test(config.application ?? "") ||
-      !uuid.test(config.worker ?? "") ||
+      !workerId.test(config.worker ?? "") ||
       !uuid.test(config.serviceToken ?? "") ||
       !/^[a-z0-9-]+\.cloudflareaccess\.com$/.test(config.team ?? "") ||
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.owner ?? "") ||
