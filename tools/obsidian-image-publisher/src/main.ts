@@ -266,6 +266,7 @@ export default class CloudflarePublisher extends Plugin {
       const credentials = await this.keychain.read("reports");
       if (!credentials) {
         this.statusAt = Date.now() + 300000;
+        await this.markReportsUnavailable();
         if (manual)
           new Notice(
             "Configure the protected report credential to check publication status",
@@ -297,18 +298,11 @@ export default class CloudflarePublisher extends Plugin {
           for (const notice of result.notices) this.notify(notice);
         },
         async (target) => {
-          this.runtime.reportUnavailable ??= {};
-          if (!this.runtime.reportUnavailable[target]) {
-            this.runtime.reportUnavailable[target] = true;
-            await this.persist();
-            this.notify(
-              `${target}: protected publication status is unavailable`,
-            );
-          }
+          await this.markReportUnavailable(target);
         },
       );
     } catch {
-      this.notify("Protected publication status is unavailable");
+      await this.markReportsUnavailable();
     } finally {
       transport?.close();
       this.statusRunning = false;
@@ -320,6 +314,23 @@ export default class CloudflarePublisher extends Plugin {
           ),
         );
     }
+  }
+  private async markReportsUnavailable(): Promise<void> {
+    await this.markReportUnavailable("staging");
+    await this.markReportUnavailable("production");
+  }
+  private async markReportUnavailable(
+    target: "staging" | "production",
+  ): Promise<void> {
+    this.runtime.reportUnavailable ??= {};
+    if (this.runtime.reportUnavailable[target]) return;
+    this.runtime.reportUnavailable[target] = true;
+    try {
+      await this.persist();
+    } catch {
+      this.notify("Publication status could not be saved");
+    }
+    this.notify(`${target}: protected publication status is unavailable`);
   }
   private async recoveredPublication(revision: string): Promise<boolean> {
     let transport: SdkS3Transport | undefined;

@@ -12,7 +12,7 @@
 - [x] 2.1 Extend the plugin to upload Markdown and all validated image originals to private source storage and activate complete snapshots; verify partial uploads never change the active pointer, invalid Markdown remains represented, invalid images are isolated, the Mac never writes public media, and unchanged scans perform no writes.
 - [x] 2.2 Add R2 destination settings and separate asynchronous Keychain entries for upload, GitHub dispatch, and protected-report read credentials; verify packaging, native binding load, plugin identity compatibility, and absence of secrets in settings, logs, and manifests.
 - [x] 2.3 Add the 60-second debounce, maximum batch age, five-minute reconciliation, manual publish, persisted dispatch retries, and fixed main-workflow target; verify batching, restart recovery, provider backoff, authentication failures, and no periodic unchanged dispatches using fake clocks and transports.
-- [ ] 2.4 Add target-specific protected publication-status reads and deduplicated issue/recovery notices; verify uploaded/queued/verified/degraded states remain distinct, staging success does not clear production failure or vice versa, and Obsidian remains responsive during credential prompts and retries.
+- [x] 2.4 Add target-specific protected publication-status reads and deduplicated issue/recovery notices; verify uploaded/queued/verified/degraded states remain distinct, staging success does not clear production failure or vice versa, and Obsidian remains responsive during credential prompts and retries.
 
 ## 3. Static rendering and portable commands
 
