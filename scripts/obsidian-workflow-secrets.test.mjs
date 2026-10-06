@@ -84,3 +84,14 @@ test("the called workflow declares environment names and retains its protected j
     4,
   );
 });
+
+test("every pull request retains credential-free site validation", () => {
+  const site = caller.split("\n  site:\n")[1].split("\n  preview:\n")[0];
+  assert.match(site, /if: github.event_name == 'pull_request' \|\|/);
+  assert.doesNotMatch(site, /environment:|OBSIDIAN_STATE_ACCESS_KEY_ID/);
+  assert.match(site, /node --test scripts\/\*\.test\.mjs/);
+  assert.match(
+    site,
+    /name: Deploy tested production artifact\n\s+if: github.event_name == 'push' \|\| github.event_name == 'workflow_dispatch'/,
+  );
+});

@@ -65,7 +65,7 @@ jobs:
         run: node ${{ github.event_name == 'pull_request_target' && 'control/scripts/plan-obsidian-workflow.mjs' || 'scripts/plan-obsidian-workflow.mjs' }} --legacy-guard
   site:
     needs: admission
-    if: (needs.admission.outputs.validation_only == 'true' && github.event_name == 'pull_request') || (vars.OBSIDIAN_PUBLISH_ENABLED != 'true' && (needs.admission.outputs.kind == 'site' || github.event_name == 'pull_request'))
+    if: github.event_name == 'pull_request' || (vars.OBSIDIAN_PUBLISH_ENABLED != 'true' && needs.admission.outputs.kind == 'site')
     concurrency:
       group: ${{ github.event_name == 'pull_request' && format('cloudflare-refs/pull/{0}/merge', github.event.number) || 'cloudflare-production' }}
       cancel-in-progress: false

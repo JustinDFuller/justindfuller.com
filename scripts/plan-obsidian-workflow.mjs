@@ -87,38 +87,49 @@ export function legacyWorkflowAllowed(plan, event, env) {
   );
 }
 
+export async function resolveWorkflowTarget(
+  mode,
+  prValue,
+  expectedSha,
+  github,
+) {
+  const pr = prValue && prValue !== "-" ? Number(prValue) : undefined;
+  const target =
+    mode === "preview"
+      ? {
+          mode,
+          pr,
+          codeSha: expectedSha,
+          namespace: `pr/${pr}`,
+          concurrency: `cloudflare-refs/pull/${pr}/merge`,
+        }
+      : {
+          mode,
+          namespace: mode,
+          concurrency: `cloudflare-${mode}`,
+          checkoutRef: "refs/heads/main",
+        };
+  const resolved = await resolveTargetCode(target, github);
+  const controlSha =
+    mode === "preview" ? await github.main() : resolved.codeSha;
+  if (!/^[a-f0-9]{40}$/.test(controlSha ?? ""))
+    throw new Error("Trusted control commit is unavailable");
+  if (expectedSha && resolved.codeSha !== expectedSha)
+    throw new Error("Target code changed after admission");
+  return { resolved, controlSha };
+}
+
 async function main() {
   if (process.argv.includes("--resolve-target")) {
     const [mode, prValue, expectedSha] = process.argv.slice(
       process.argv.indexOf("--resolve-target") + 1,
     );
-    const pr = prValue && prValue !== "-" ? Number(prValue) : undefined;
-    const target =
-      mode === "preview"
-        ? {
-            mode,
-            pr,
-            namespace: `pr/${pr}`,
-            concurrency: `cloudflare-refs/pull/${pr}/merge`,
-          }
-        : {
-            mode,
-            namespace: mode,
-            concurrency: `cloudflare-${mode}`,
-            checkoutRef: "refs/heads/main",
-          };
-    const resolved = await resolveTargetCode(
-      target,
+    const { resolved, controlSha } = await resolveWorkflowTarget(
+      mode,
+      prValue,
+      expectedSha,
       publicationGitHub(process.env.GITHUB_TOKEN),
     );
-    const controlSha =
-      mode === "preview"
-        ? await publicationGitHub(process.env.GITHUB_TOKEN).main()
-        : resolved.codeSha;
-    if (!/^[a-f0-9]{40}$/.test(controlSha ?? ""))
-      throw new Error("Trusted control commit is unavailable");
-    if (expectedSha && resolved.codeSha !== expectedSha)
-      throw new Error("Target code changed after admission");
     console.log(JSON.stringify(resolved));
     if (process.env.GITHUB_OUTPUT)
       await appendFile(

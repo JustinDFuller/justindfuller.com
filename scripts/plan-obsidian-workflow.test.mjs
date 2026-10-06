@@ -6,6 +6,7 @@ import {
   planWorkflow,
   publicationGitHub,
   legacyWorkflowAllowed,
+  resolveWorkflowTarget,
 } from "./plan-obsidian-workflow.mjs";
 
 const repository = "JustinDFuller/justindfuller.com",
@@ -23,6 +24,35 @@ const pr = {
   head: { sha, repo: { full_name: repository } },
   base: { repo: { full_name: repository } },
 };
+
+test("workflow target construction locks preview head separately from trusted main", async () => {
+  const control = "b".repeat(40);
+  const github = { pull: async () => pr, main: async () => control };
+  const preview = await resolveWorkflowTarget("preview", "403", sha, github);
+  assert.equal(preview.resolved.codeSha, sha);
+  assert.equal(preview.resolved.pr, 403);
+  assert.equal(preview.controlSha, control);
+  for (const expected of [undefined, "c".repeat(40)])
+    await assert.rejects(
+      resolveWorkflowTarget("preview", "403", expected, github),
+    );
+  for (const changed of [
+    { ...pr, state: "closed" },
+    { ...pr, head: { ...pr.head, sha: control } },
+    { ...pr, head: { ...pr.head, repo: { full_name: "other/repo" } } },
+  ])
+    await assert.rejects(
+      resolveWorkflowTarget("preview", "403", sha, {
+        ...github,
+        pull: async () => changed,
+      }),
+    );
+  for (const mode of ["production", "staging"]) {
+    const result = await resolveWorkflowTarget(mode, "-", "", github);
+    assert.equal(result.resolved.codeSha, control);
+    assert.equal(result.controlSha, control);
+  }
+});
 
 test("workflow admission emits independent targets while keeping content dispatch away from legacy production", async () => {
   for (const kind of ["site", "content"]) {
