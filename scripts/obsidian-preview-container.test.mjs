@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { realpath } from "node:fs/promises";
+import { readdir, realpath } from "node:fs/promises";
 import { isolatedRenderer } from "./render-obsidian-build.mjs";
 import {
   publicationEnvironment,
@@ -54,6 +54,18 @@ test(
     });
 
     const runner = isolatedRenderer(cwd, goRoot, goModCache);
+    const testPaths = new Set(
+      (
+        await Promise.all(
+          ["scripts", "tools/obsidian-image-publisher/tests"].map(
+            async (directory) =>
+              (await readdir(directory))
+                .filter((name) => /\.test\.(mjs|ts)$/.test(name))
+                .map((name) => `${directory}/${name}`),
+          ),
+        )
+      ).flat(),
+    );
     assert.ok(runner.includes("--network=none"));
     assert.ok(runner.includes("--read-only"));
     assert.ok(runner.includes("--cap-drop=ALL"));
@@ -72,7 +84,18 @@ test(
           maxBuffer: 32 * 1024 * 1024,
         });
       } catch (error) {
-        throw new PublicationSubprocessError(command, error);
+        const failure = new PublicationSubprocessError(command, error);
+        failure.testLocations = [
+          ...String(error.stdout ?? "").matchAll(
+            /location: ['"]\/workspace\/([^'"\n]+):(\d+):(\d+)['"]/g,
+          ),
+        ]
+          .filter((match) => testPaths.has(match[1]))
+          .map((match) => ({
+            file: match[1],
+            line: Number(match[2]),
+          }));
+        throw failure;
       }
     };
     let result;
@@ -85,7 +108,7 @@ test(
       });
     } catch (error) {
       assert.fail(
-        `Preview source validation failed: ${JSON.stringify(previewValidationFailure(error))}`,
+        `Preview source validation failed: ${JSON.stringify({ ...previewValidationFailure(error), testLocations: error.testLocations })}`,
       );
     }
     assert.deepEqual(result, { version: 1, checks: 4, validated: true });
