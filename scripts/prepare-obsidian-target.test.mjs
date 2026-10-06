@@ -509,6 +509,11 @@ test("container preparation has only a read-only module cache and offline worksp
       `/go-cache:rw,nosuid,nodev,uid=${process.getuid()},gid=${process.getgid()},size=2g`,
     ),
   );
+  assert.ok(
+    call[1].includes(
+      `/go-run:rw,exec,nosuid,nodev,uid=${process.getuid()},gid=${process.getgid()},size=1g`,
+    ),
+  );
   const containerEnvironment = call[1]
     .flatMap((argument, index) =>
       argument === "--env" ? [call[1][index + 1]] : [],
@@ -517,6 +522,7 @@ test("container preparation has only a read-only module cache and offline worksp
   assert.deepEqual(containerEnvironment, [
     "GOCACHE=/go-cache",
     "GOMODCACHE=/go/pkg/mod",
+    "GOTMPDIR=/go-run",
   ]);
   assert.equal(call[1].includes("/var/run/docker.sock"), false);
   assert.ok(call[1].includes("GOCACHE=/go-cache"));
