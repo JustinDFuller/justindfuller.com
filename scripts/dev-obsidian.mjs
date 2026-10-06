@@ -54,6 +54,7 @@ const bucket = {
   get: (key) => localObject(key, true),
 };
 const go = spawn("go", ["run", "."], {
+  detached: process.platform !== "win32",
   env: {
     ...process.env,
     PORT: String(goPort),
@@ -101,8 +102,19 @@ server.listen(port, "127.0.0.1", () =>
 );
 const stop = () => {
   server.close();
-  go.kill("SIGTERM");
+  if (!go.pid) return;
+  try {
+    if (process.platform === "win32") go.kill("SIGTERM");
+    else process.kill(-go.pid, "SIGTERM");
+  } catch (error) {
+    if (error.code !== "ESRCH") throw error;
+  }
 };
+server.on("error", () => {
+  stop();
+  console.error("Local preview listener could not start");
+  process.exitCode = 1;
+});
 process.on("SIGINT", stop);
 process.on("SIGTERM", stop);
 go.on("exit", () => {
