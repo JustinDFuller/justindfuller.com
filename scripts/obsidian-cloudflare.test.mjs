@@ -340,6 +340,9 @@ test("Cloudflare staging blocks traffic writes when upload output has invalid or
     "Worker Version ID: unknown\n",
     `Worker Version ID: ${candidateId}\nWorker Version ID: ${restoredId}\n`,
     `Worker Version ID: ${candidateId} extra\n`,
+    `│  Worker Version ID: ${candidateId} extra\n`,
+    `│  Worker Version ID: ${candidateId}\n│  Worker Version ID: ${restoredId}\n`,
+    `prefix Worker Version ID: ${candidateId}\n`,
   ]) {
     const f = fixture("staging", stdout);
     try {
@@ -351,6 +354,22 @@ test("Cloudflare staging blocks traffic writes when upload output has invalid or
       assert.equal(f.writes.length, 0);
       assert.equal(f.serving.counters.apiWrites, 0);
       assert.equal(f.live(), priorId);
+    } finally {
+      rmSync(f.directory, { recursive: true, force: true });
+    }
+  }
+});
+
+test("Cloudflare staging accepts the installed CLI box-framed version identity", async () => {
+  for (const stdout of [
+    `│  Worker Version ID: ${candidateId}\n`,
+    `\u001b[32m│  Worker Version ID: ${candidateId} │\u001b[0m\r\n`,
+  ]) {
+    const f = fixture("staging", stdout);
+    try {
+      await f.serving.verify(f.prior.receipt);
+      assert.equal(await f.serving.deploy(f.next.receipt), candidateId);
+      assert.equal(f.writes.length, 1);
     } finally {
       rmSync(f.directory, { recursive: true, force: true });
     }

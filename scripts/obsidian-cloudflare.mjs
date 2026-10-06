@@ -23,9 +23,13 @@ function uploadedVersionId(stdout) {
     throw new Error("Uploaded staging version identity invalid");
   const plain = stdout.replace(/\u001b\[[0-9;]*m/g, "");
   const labels = plain.match(/Worker Version ID:/g) ?? [];
+  const line = plain
+    .split(/\r?\n/)
+    .find((item) => item.includes("Worker Version ID:"));
+  const unframed = line?.replace(/^│ +/, "").replace(/ +│$/, "");
   const match =
-    /(?:^|\r?\n)Worker Version ID: ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})(?=\r?\n|$)/.exec(
-      plain,
+    /^Worker Version ID: ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/.exec(
+      unframed ?? "",
     );
   if (labels.length !== 1 || !match || !uuid.test(match[1]))
     throw new Error("Uploaded staging version identity invalid");
