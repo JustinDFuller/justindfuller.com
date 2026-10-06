@@ -9,7 +9,10 @@ import {
   targetNamespace,
 } from "./obsidian-transaction.mjs";
 import { CloudflareServing } from "./obsidian-cloudflare.mjs";
-import { runPublicationCommand } from "./obsidian-process.mjs";
+import {
+  publicationFailureSummary,
+  runPublicationCommand,
+} from "./obsidian-process.mjs";
 import { saveProtectedReport } from "./obsidian-reports.mjs";
 import { protectedPublicationReport } from "./record-obsidian-publication.mjs";
 import { preparePublicationTarget } from "./obsidian-pipeline.mjs";
@@ -46,12 +49,16 @@ export function isolatedPreparationCommand({
     `type=bind,source=${controlWorkspace},target=/workspace/${controlWorkspace.slice(workspace.length + 1)},readonly`,
     "--tmpfs",
     `/go-cache:rw,nosuid,nodev,uid=${uid},gid=${gid},size=2g`,
+    "--tmpfs",
+    `/go-run:rw,exec,nosuid,nodev,uid=${uid},gid=${gid},size=1g`,
     "--workdir",
     "/workspace",
     "--env",
     "GOMODCACHE=/go/pkg/mod",
     "--env",
     "GOCACHE=/go-cache",
+    "--env",
+    "GOTMPDIR=/go-run",
     prepareImage,
     "go",
     ...args,
@@ -412,9 +419,10 @@ if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 )
-  await main().catch(() => {
+  await main().catch((error) => {
     console.error(
       "Hosted preparation failed; inspect private target state and source credentials",
     );
+    console.error(JSON.stringify(publicationFailureSummary(error)));
     process.exitCode = 1;
   });
