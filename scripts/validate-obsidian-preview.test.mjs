@@ -3,7 +3,11 @@ import { mkdtemp, mkdir, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
-import { validatePreviewCode } from "./validate-obsidian-preview.mjs";
+import {
+  previewValidationFailure,
+  validatePreviewCode,
+} from "./validate-obsidian-preview.mjs";
+import { PublicationSubprocessError } from "./obsidian-process.mjs";
 
 test("preview checks run offline with trusted control and Go inputs read-only", async () => {
   const cwd = await mkdtemp(join(tmpdir(), "obsidian-preview-checks-"));
@@ -53,6 +57,40 @@ test("failed preview checks stop before later checks", async () => {
     /fixture failure/,
   );
   assert.equal(calls, 1);
+});
+
+test("preview failure diagnostics identify only the fixed check and safe subprocess fields", async () => {
+  const canary = "private-preview-diagnostic-canary";
+  let calls = 0;
+  let caught;
+  await assert.rejects(
+    validatePreviewCode({
+      goRoot: "/trusted/go",
+      goModCache: "/trusted/modules",
+      execute: async () => {
+        if (++calls === 2)
+          throw new PublicationSubprocessError("docker", {
+            code: 1,
+            stderr: `${canary}: resource temporarily unavailable`,
+          });
+        return { stdout: "", stderr: "" };
+      },
+    }),
+    (error) => {
+      caught = error;
+      return true;
+    },
+  );
+  const summary = previewValidationFailure(caught);
+  assert.equal(summary.check, "go-tests");
+  assert.equal(summary.category, "process-limit");
+  assert.equal(summary.exitCode, 1);
+  assert.equal(calls, 2);
+  assert.ok(!JSON.stringify(summary).includes(canary));
+  assert.deepEqual(previewValidationFailure(new Error(canary)), {
+    check: "unknown",
+    category: "unknown",
+  });
 });
 
 test("unchanged previews skip frontend checks and changed previews validate before private input", async () => {
