@@ -2,7 +2,21 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { isolatedRenderer } from "./render-obsidian-build.mjs";
-import { runPublicationCommand } from "./obsidian-process.mjs";
+import {
+  publicationFailureSummary,
+  runPublicationCommand,
+} from "./obsidian-process.mjs";
+
+const checkNames = ["script-lint", "go-tests", "node-tests", "publisher-types"];
+
+export function previewValidationFailure(error) {
+  return {
+    check: checkNames.includes(error?.previewCheck)
+      ? error.previewCheck
+      : "unknown",
+    ...publicationFailureSummary(error),
+  };
+}
 
 export async function validatePreviewCode({
   cwd = process.cwd(),
@@ -32,12 +46,18 @@ export async function validatePreviewCode({
       "--noEmit",
     ],
   ];
-  for (const command of checks)
-    await execute(
-      "docker",
-      [...isolatedRenderer(cwd, goRoot, goModCache), ...command],
-      { cwd, purpose: "build" },
-    );
+  for (const [index, command] of checks.entries()) {
+    try {
+      await execute(
+        "docker",
+        [...isolatedRenderer(cwd, goRoot, goModCache), ...command],
+        { cwd, purpose: "build" },
+      );
+    } catch (error) {
+      error.previewCheck = checkNames[index];
+      throw error;
+    }
+  }
   return { version: 1, checks: checks.length, validated: true };
 }
 
@@ -62,7 +82,8 @@ if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 )
-  await main().catch(() => {
+  await main().catch((error) => {
     console.error("Preview code validation failed before private build input");
+    console.error(JSON.stringify(previewValidationFailure(error)));
     process.exitCode = 1;
   });
