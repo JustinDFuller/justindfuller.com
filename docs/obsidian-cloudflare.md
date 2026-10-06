@@ -132,13 +132,13 @@ Start the observation window when the main-ref Actions pipeline is available and
 
 For each changed publication, no-op, retry, and code-only run, retain a sanitized row containing target, source/code hashes, run ID, queue delay, job durations, rounded billable minutes, build/deploy decision, transaction duration, and verification result. Include staging and PR work as well as production, and count failed attempts. Record GitHub's actual billing/usage view separately from total runner minutes: included or zero-priced runs still consume finite runtime/concurrency and may delay other work.
 
-| Measure | Evidence to collect during the window |
-| --- | --- |
-| GitHub Actions | Per-job durations and billing rounding, account allowance, concurrency/queue delay, retries, artifact storage, changed/unchanged frontend installation |
-| Cloudflare Builds | Account entitlement, included/charged minutes, concurrency/queue delay, equivalent trusted orchestration and private-artifact support |
-| R2 | Account-wide GB-month storage, Class A/B operations, shared remaining allowance, archive expiry, rollback growth, promotion and report reads |
-| Private serving | Staging/PR requests, Worker CPU and billed usage, Access seats/plan eligibility, authenticated traffic versus rejected traffic |
-| Publishing latency | Source activation to verified production/staging separately, median and slowest observed timings, failure recovery time |
+| Measure            | Evidence to collect during the window                                                                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GitHub Actions     | Per-job durations and billing rounding, account allowance, concurrency/queue delay, retries, artifact storage, changed/unchanged frontend installation |
+| Cloudflare Builds  | Account entitlement, included/charged minutes, concurrency/queue delay, equivalent trusted orchestration and private-artifact support                  |
+| R2                 | Account-wide GB-month storage, Class A/B operations, shared remaining allowance, archive expiry, rollback growth, promotion and report reads           |
+| Private serving    | Staging/PR requests, Worker CPU and billed usage, Access seats/plan eligibility, authenticated traffic versus rejected traffic                         |
+| Publishing latency | Source activation to verified production/staging separately, median and slowest observed timings, failure recovery time                                |
 
 At days seven and fourteen, aggregate changed/skipped/retried counts by target and review queue delays and storage growth. Compare GitHub Actions and Cloudflare Builds using the same number of publications, target matrix, security boundaries, retained artifacts, and retry rate. Add the cost of keeping private staging available in both cases. Use current official prices and the account's actual entitlements; do not treat an unused allowance as exclusive to this repository. Choose a change only when observed cost, latency, reliability, or maintenance effort justifies it, with neither provider preselected for the reassessment.
 
@@ -266,7 +266,7 @@ A fresh metadata-only sample at 2026-10-06T11:53:58.925Z measured 1,871,362,614 
 
 Implementation `3cb6b33` passed local tests and hosted CI, then served the authorized post successfully through localhost, private staging, protected PR 403, and production on 2026-10-06. Each hosted target completed exact-byte verification with zero failures; staging used only the approved Worker-scoped deployment token and read-only Access token, and production used the existing operator authority. These are live operator deployments of the tested implementation, not proof of GitHub Actions private publication. Automatic publishing remains disabled.
 
-The actual vault post now uses `environment: production`, with its original body SHA-256 unchanged. Localhost checked the post, all 11 image GET/HEAD responses, private headers, and three disallowed source paths, then both loopback listeners were stopped. Staging and PR separately denied anonymous, spoofed-identity, and invalid-token requests after authorized warmup. Production verified both public hostnames and all 11 already promoted images without copying new media. Native plugin installation/enablement, the full hosted fault matrix, main-workflow availability, and final stack/archive work remain pending.
+The actual vault post now uses `environment: production`, with its original body SHA-256 unchanged. Localhost checked the post, all 11 image GET/HEAD responses, private headers, and three disallowed source paths, then both loopback listeners were stopped. Staging and PR separately denied anonymous, spoofed-identity, and invalid-token requests after authorized warmup. Production verified both public hostnames and all 11 already promoted images without copying new media. The native plugin is now installed and enabled with automatic publishing off; repeated native protected-status checks and persisted staging/production results passed after correcting atomic state replacement. Native retry/recovery responsiveness, the full hosted fault matrix, main-workflow availability, and final stack/archive work remain pending.
 
 ## Current account plan snapshot
 

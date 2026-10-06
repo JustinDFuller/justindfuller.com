@@ -4,11 +4,13 @@ import {
   Setting,
   Modal,
   Notice,
+  FileSystemAdapter,
   type App,
   type TAbstractFile,
 } from "obsidian";
 import { join } from "node:path";
 import { MacKeychain, type CredentialKind } from "./keychain.ts";
+import { writeRuntimeState } from "./runtime.ts";
 import { SdkS3Transport, type S3Target } from "./s3.ts";
 import {
   publishSnapshot,
@@ -186,14 +188,13 @@ export default class CloudflarePublisher extends Plugin {
     );
   }
   private async persist(): Promise<void> {
-    const path = this.runtimePath();
+    if (!(this.app.vault.adapter instanceof FileSystemAdapter))
+      throw new Error("Publishing state requires a local vault");
+    const path = join(this.app.vault.adapter.getBasePath(), this.runtimePath());
     const body = JSON.stringify(this.runtime);
     const operation = this.persistQueue
       .catch(() => {})
-      .then(async () => {
-        await this.app.vault.adapter.write(`${path}.pending`, body);
-        await this.app.vault.adapter.rename(`${path}.pending`, path);
-      });
+      .then(() => writeRuntimeState(path, body));
     this.persistQueue = operation;
     await operation;
   }
