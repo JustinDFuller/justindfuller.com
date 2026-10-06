@@ -12,6 +12,7 @@ test("publication subprocesses receive only purpose-specific credentials", () =>
     PATH: process.env.PATH,
     HOME: process.env.HOME,
     GOCACHE: "/tmp/test-cache",
+    GOTMPDIR: "/go-run",
     GITHUB_SHA: "commit",
     GITHUB_TOKEN: "github-secret",
     CLOUDFLARE_API_TOKEN: "production-secret",
@@ -31,6 +32,7 @@ test("publication subprocesses receive only purpose-specific credentials", () =>
   assert.deepEqual(Object.keys(build).sort(), [
     "GITHUB_SHA",
     "GOCACHE",
+    "GOTMPDIR",
     "HOME",
     "PATH",
   ]);

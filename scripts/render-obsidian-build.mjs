@@ -13,7 +13,10 @@ import {
 } from "./obsidian-archive.mjs";
 import { saveProtectedReport } from "./obsidian-reports.mjs";
 import { targetNamespace } from "./obsidian-transaction.mjs";
-import { runPublicationCommand } from "./obsidian-process.mjs";
+import {
+  publicationFailureSummary,
+  runPublicationCommand,
+} from "./obsidian-process.mjs";
 
 const accountDefault = "9dce34804a27754a4ea66a5789827dfa";
 
@@ -180,6 +183,10 @@ export function isolatedRenderer(cwd, goRoot, goModCache) {
     "--read-only",
     "--tmpfs",
     "/tmp:rw,nosuid,nodev,size=1g",
+    "--tmpfs",
+    `/go-run:rw,exec,nosuid,nodev,uid=${process.getuid()},gid=${process.getgid()},size=1g`,
+    "--env",
+    "GOTMPDIR=/go-run",
     "--env",
     "HOME=/tmp/home",
     "--env",
@@ -213,7 +220,8 @@ if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 )
-  await main().catch(() => {
+  await main().catch((error) => {
     console.error("Private artifact rendering failed");
+    console.error(JSON.stringify(publicationFailureSummary(error)));
     process.exitCode = 1;
   });

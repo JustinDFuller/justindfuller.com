@@ -99,6 +99,7 @@ export function publicationEnvironment(
     "TZ",
     "CI",
     "GOCACHE",
+    "GOTMPDIR",
     "GOMODCACHE",
     "GOPATH",
     "GOFLAGS",
