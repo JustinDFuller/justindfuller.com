@@ -20,7 +20,7 @@
 - [x] 3.2 Add portable prepare, export, diagnostics-read, and publication-record commands plus explicit local modes; verify fixture-based local rendering, Git-only operation, ignored private local state, loopback-only listeners, and the existing Cloudflare verifier against generated output.
 - [x] 3.3 Implement production-only image promotion and destination verification; verify only effective accepted nondraft production references authorize copying, unique nonprod/draft images stay out of public storage, missing images remain isolated, and no Go image bodies are read.
 - [x] 3.4 Implement the same-origin private preview image handler and loopback dev gateway with deployment-specific image allowlists; verify bounded streaming, GET/HEAD behavior, unsupported methods, hash/path traversal rejection, inability to fetch Markdown/manifests, and absence of private runtime bindings/routes in production.
-- [ ] 3.5 Add public-output/log/artifact privacy checks and private preview archive storage; verify canary nonprod/draft text, private filenames/slugs, source snapshots, overlays, state, reports, and secrets are absent from public exports, logs, summaries, comments, and Actions archives while private preview HTML is preserved in authenticated storage.
+- [x] 3.5 Add public-output/log/artifact privacy checks and private preview archive storage; verify canary nonprod/draft text, private filenames/slugs, source snapshots, overlays, state, reports, and secrets are absent from public exports, logs, summaries, comments, and Actions archives while private preview HTML is preserved in authenticated storage.
 
 ## 4. Staging and Access boundaries
 
