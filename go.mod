@@ -4,7 +4,7 @@ go 1.26.0
 
 require github.com/pkg/errors v0.9.1
 
-require golang.org/x/sync v0.23.0
+require golang.org/x/sync v0.24.0
 
 require (
 	github.com/alecthomas/chroma/v2 v2.27.0
@@ -17,7 +17,8 @@ require (
 	github.com/yuin/goldmark-meta v1.1.0
 	golang.org/x/net v0.59.0
 	golang.org/x/text v0.42.0
-	golang.org/x/tools v0.50.0
+	golang.org/x/tools v0.51.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -212,7 +213,6 @@ require (
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.6.1 // indirect
 	mvdan.cc/gofumpt v0.7.0 // indirect
 	mvdan.cc/unparam v0.0.0-20240528143540-8a5130ca722f // indirect
