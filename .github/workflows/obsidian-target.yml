@@ -76,7 +76,7 @@ jobs:
           ref: refs/heads/main
           path: control
           persist-credentials: false
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
       - name: Resolve the current locked target
@@ -108,7 +108,7 @@ jobs:
           ref: ${{ needs.resolve.outputs.control_sha }}
           path: control
           persist-credentials: false
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
       - uses: actions/setup-go@v7.0.0
@@ -167,7 +167,7 @@ jobs:
           ref: ${{ needs.resolve.outputs.control_sha }}
           path: control
           persist-credentials: false
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
       - uses: actions/setup-go@v7.0.0
@@ -278,7 +278,7 @@ jobs:
           ref: ${{ needs.resolve.outputs.control_sha }}
           path: control
           persist-credentials: false
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
       - uses: actions/setup-go@v7.0.0
@@ -363,7 +363,7 @@ jobs:
           ref: ${{ needs.resolve.outputs.control_sha }}
           path: control
           persist-credentials: false
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
       - name: Install trusted deployment dependencies before private handoff
