@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -26,8 +26,12 @@ const acceptedState = {
   receipt: { deployment: "deployment" },
 };
 
+let closed = 0;
+
 const transportFor = (bytes, failure) => ({
-  close() {},
+  close() {
+    closed++;
+  },
   async head() {
     if (failure) throw new Error(privateText);
     if (!bytes) return undefined;
@@ -51,11 +55,16 @@ const pinnedSource = {
   ready: {},
 };
 
+let lastOutput = "";
+
 async function run(options) {
   const cwd = await mkdtemp(join(tmpdir(), "pin-test-"));
   await mkdir(join(cwd, ".obsidian-publish"), { recursive: true });
-  const original = process.cwd();
+  const original = process.cwd(),
+    outputFile = join(cwd, "github-output");
   process.chdir(cwd);
+  const previousOutput = process.env.GITHUB_OUTPUT;
+  process.env.GITHUB_OUTPUT = outputFile;
   try {
     return await pinWorkflowSource({
       mode: "staging",
@@ -74,7 +83,10 @@ async function run(options) {
         }),
     });
   } finally {
+    lastOutput = await readFile(outputFile, "utf8").catch(() => "");
     process.chdir(original);
+    if (previousOutput === undefined) delete process.env.GITHUB_OUTPUT;
+    else process.env.GITHUB_OUTPUT = previousOutput;
     await rm(cwd, { recursive: true, force: true });
   }
 }
@@ -217,12 +229,54 @@ test("an unavailable source is not a failure", async () => {
     target: "staging",
     sourceUnavailable: true,
   });
+  assert.equal(lastOutput, "source_unavailable=true\n");
 });
 
 test("a valid source is pinned", async () => {
   const result = await run({ transportFactory: () => transportFor(accepted) });
   assert.equal(result.sourceUnavailable, false);
   assert.equal(result.source, revision);
+  assert.equal(
+    lastOutput,
+    `source_unavailable=false\npinned_source=.obsidian-publish/hosted/staging/pinned.json\nrevision=${revision}\n`,
+  );
+});
+
+test("a missing accepted state is allowed when bootstrapping", async () => {
+  let pinArguments;
+  const result = await run({
+    bootstrap: true,
+    transportFactory: () => transportFor(undefined),
+    execute: async (_binary, args) => {
+      pinArguments = args;
+      await writeFile(
+        join(process.cwd(), args[args.indexOf("--out") + 1]),
+        JSON.stringify(pinnedSource),
+      );
+    },
+  });
+  assert.equal(result.sourceUnavailable, false);
+  assert.ok(!pinArguments.includes("--state"));
+});
+
+test("the state store connection is closed after success and failure", async () => {
+  const before = closed;
+  await run({ transportFactory: () => transportFor(accepted) });
+  await failure({ transportFactory: () => transportFor(accepted, true) });
+  assert.equal(closed, before + 2);
+});
+
+test("a pinned source that is not JSON is reported as invalid", async () => {
+  const error = await failure({
+    transportFactory: () => transportFor(accepted),
+    execute: async (_binary, args) => {
+      await writeFile(
+        join(process.cwd(), args[args.indexOf("--out") + 1]),
+        "{not json",
+      );
+    },
+  });
+  assert.equal(pinFailureSummary(error).reason, "pinned_source_invalid");
 });
 
 test("an unclassified error is reported as unknown", () => {

@@ -38,7 +38,7 @@ export class PinFailure extends Error {
 
 export function pinFailureSummary(error) {
   if (!(error instanceof PinFailure)) return { reason: "unknown" };
-  return { reason: error.reason, ...error.details };
+  return { ...error.details, reason: error.reason };
 }
 
 function pinProcessDetails(error) {
@@ -161,11 +161,17 @@ export async function pinWorkflowSource({
       }
       throw new PinFailure("source_pin_failed", pinProcessDetails(error));
     }
-    let pinned;
+    let pinnedText;
     try {
-      pinned = JSON.parse(await readFile(sourceFile, "utf8"));
+      pinnedText = await readFile(sourceFile, "utf8");
     } catch {
       throw new PinFailure("pinned_source_unreadable");
+    }
+    let pinned;
+    try {
+      pinned = JSON.parse(pinnedText);
+    } catch {
+      throw new PinFailure("pinned_source_invalid");
     }
     if (!validPinnedSource(pinned))
       throw new PinFailure("pinned_source_invalid");
@@ -186,7 +192,7 @@ export async function pinWorkflowSource({
       pinnedSource: targetPath,
     };
   } finally {
-    transport?.close();
+    transport.close();
   }
 }
 
