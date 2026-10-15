@@ -151,6 +151,8 @@ jobs:
     outputs:
       decision: ${{ steps.prepare.outputs.decision }}
       handoff: ${{ steps.prepare.outputs.handoff }}
+      blocking: ${{ steps.prepare.outputs.blocking }}
+      categories: ${{ steps.prepare.outputs.categories }}
     steps:
       - uses: actions/checkout@v7.0.1
         with:
@@ -253,7 +255,7 @@ jobs:
           if [[ "${{ steps.source.outputs.source_unavailable }}" == true ]]; then args+=(--source-unavailable); else args+=(--pinned-source "${{ steps.source.outputs.pinned_source }}"); fi
           if [[ "${{ inputs.mode }}" != production ]]; then args+=(--access ".obsidian-publish/workflow/${{ inputs.mode }}/access.json"); fi
           node control/scripts/prepare-obsidian-target.mjs "${args[@]}" > "$RUNNER_TEMP/obsidian-prepare-result.json"
-          node --input-type=module -e 'import fs from "node:fs"; const value = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); fs.appendFileSync(process.env.GITHUB_OUTPUT, `decision=${value.decision}\nhandoff=${value.handoff?.checksum ?? ""}\n`);' "$RUNNER_TEMP/obsidian-prepare-result.json"
+          node control/scripts/report-obsidian-issues.mjs --result "$RUNNER_TEMP/obsidian-prepare-result.json"
   build:
     needs: [resolve, prepare]
     if: needs.prepare.outputs.decision == 'build-required'

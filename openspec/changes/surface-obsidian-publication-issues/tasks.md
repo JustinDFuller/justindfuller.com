@@ -8,8 +8,8 @@
 
 ## 2. Sanitized public run output
 
-- [ ] 2.1 Classify issue categories as blocking or warning-only in `scripts/prepare-obsidian-target.mjs` and emit sanitized per-category counts and a blocking total as job outputs; verify with a test in `scripts/prepare-obsidian-target.test.mjs` covering metadata failures, last-known-good fallbacks, route collisions, overwrite-target conflicts, and image-not-ready
-- [ ] 2.2 Emit a warning annotation and a step summary line stating target, count and category only; verify with a test that output for a fixture with a private path, slug, title and reason contains none of them and that a clean fixture emits no warning
+- [x] 2.1 Classify issue categories as blocking or warning-only in `scripts/prepare-obsidian-target.mjs` and emit sanitized per-category counts and a blocking total as job outputs; verify with a test in `scripts/prepare-obsidian-target.test.mjs` covering metadata failures, last-known-good fallbacks, route collisions, overwrite-target conflicts, and image-not-ready
+- [x] 2.2 Emit a warning annotation and a step summary line stating target, count and category only; verify with a test that output for a fixture with a private path, slug, title and reason contains none of them and that a clean fixture emits no warning
 
 ## 3. Fail the run after publishing
 
