@@ -13,8 +13,8 @@
 
 ## 3. Fail the run after publishing
 
-- [ ] 3.1 Add a final job to `.github/workflows/obsidian-target.yml` that needs prepare, build and deploy, runs even when build and deploy are skipped, and fails with an error annotation when the blocking total is above zero; verify with `scripts/obsidian-workflow.test.mjs` that the job ignores build outcomes, does not gate deploy, and applies only to staging and production
-- [ ] 3.2 Verify in `scripts/obsidian-workflow.test.mjs` that preview and pull request paths do not include the job, and that an image-not-ready-only run passes
+- [x] 3.1 Add a final job to `.github/workflows/obsidian-target.yml` that needs prepare, build and deploy, runs even when build and deploy are skipped, and fails with an error annotation when the blocking total is above zero; verify with `scripts/obsidian-workflow.test.mjs` that the job ignores build outcomes, does not gate deploy, and applies only to staging and production
+- [x] 3.2 Verify in `scripts/obsidian-workflow.test.mjs` that preview and pull request paths do not include the job, and that an image-not-ready-only run passes
 
 ## 4. Persistent notices in the Obsidian publisher
 

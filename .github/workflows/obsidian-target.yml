@@ -397,3 +397,21 @@ jobs:
           if [[ "${{ inputs.bootstrap }}" == true ]]; then args+=(--bootstrap --bootstrap-receipt ".obsidian-publish/workflow/${{ inputs.mode }}/bootstrap-receipt.json"); fi
           if [[ "${{ inputs.mode }}" != production ]]; then args+=(--access ".obsidian-publish/workflow/${{ inputs.mode }}/access.json"); fi
           node control/scripts/deploy-obsidian-target.mjs "${args[@]}"
+  conclude:
+    needs: [prepare, build, deploy]
+    if: ${{ always() && inputs.mode != 'preview' && needs.prepare.result == 'success' && needs.prepare.outputs.blocking != '' && needs.prepare.outputs.blocking != '0' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fail the run because content was rejected
+        env:
+          OBSIDIAN_TARGET: ${{ inputs.mode }}
+          OBSIDIAN_BLOCKING: ${{ needs.prepare.outputs.blocking }}
+          OBSIDIAN_CATEGORIES: ${{ needs.prepare.outputs.categories }}
+        run: |
+          if [[ ! "$OBSIDIAN_BLOCKING" =~ ^[1-9][0-9]*$ ]]; then
+            echo "::error title=Obsidian content rejected::${OBSIDIAN_TARGET}: rejected content count is unavailable"
+            exit 1
+          fi
+          echo "::error title=Obsidian content rejected::${OBSIDIAN_TARGET}: ${OBSIDIAN_BLOCKING} rejected file(s) are still serving a previous version or are unpublished. Valid content was published first. Categories: ${OBSIDIAN_CATEGORIES}"
+          exit 1
