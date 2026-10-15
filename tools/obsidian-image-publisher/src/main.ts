@@ -24,11 +24,17 @@ import {
 } from "./scheduler.ts";
 import { dispatchContent } from "./dispatch.ts";
 import {
+  dismissIssue,
+  issueSummary,
+  mergedIssues,
   observePublication,
+  readStoredIssues,
   queuedPublication,
   readPublicationReport,
   readPublicationReports,
   publicationStatusSummary,
+  type IssueState,
+  type MergedIssue,
   type NoticeState,
   type PublicationStatusState,
 } from "./status.ts";
@@ -46,6 +52,7 @@ type RuntimeState = {
   scheduler: SchedulerState;
   previous?: PublishResult;
   notices: NoticeState;
+  unresolved?: IssueState;
   verified?: Record<string, string>;
   publication?: PublicationStatusState;
   reportUnavailable?: Partial<Record<"staging" | "production", boolean>>;
@@ -66,6 +73,8 @@ export default class CloudflarePublisher extends Plugin {
   private statusRunning = false;
   private statusAt = 0;
   private previousNotice = "";
+  private statusItem?: HTMLElement;
+  private issueNotices = new Map<string, { notice: Notice; shown: string }>();
   private persistQueue: Promise<void> = Promise.resolve();
 
   async onload(): Promise<void> {
@@ -90,6 +99,7 @@ export default class CloudflarePublisher extends Plugin {
         ) as RuntimeState;
         if (state.version !== 1 || !state.scheduler || !state.notices)
           throw new Error("Invalid local state");
+        state.unresolved = readStoredIssues(state.unresolved);
         this.runtime = state;
       }
     } catch {
@@ -137,6 +147,9 @@ export default class CloudflarePublisher extends Plugin {
         );
       },
     });
+    this.statusItem = this.addStatusBarItem();
+    this.statusItem.onclick = () => this.showIssues();
+    this.renderIssues();
     this.addSettingTab(new PublisherSettings(this.app, this));
     this.addCommand({
       id: "publish-content",
@@ -177,6 +190,11 @@ export default class CloudflarePublisher extends Plugin {
         if (Date.now() >= this.statusAt) void this.readReports();
       }, 1000),
     );
+  }
+
+  onunload(): void {
+    for (const shown of this.issueNotices.values()) shown.notice.hide();
+    this.issueNotices.clear();
   }
 
   private runtimePath(): string {
@@ -286,8 +304,11 @@ export default class CloudflarePublisher extends Plugin {
             this.runtime.scheduler.revision,
             this.runtime.publication ?? {},
             this.runtime.notices,
+            this.runtime.unresolved ?? {},
           );
           this.runtime.notices = result.issues;
+          this.runtime.unresolved = result.unresolved;
+          this.renderIssues();
           this.runtime.publication = result.status;
           const wasUnavailable = this.runtime.reportUnavailable?.[target];
           this.runtime.reportUnavailable ??= {};
@@ -358,6 +379,50 @@ export default class CloudflarePublisher extends Plugin {
       transport?.close();
     }
   }
+  private renderIssues(): void {
+    const issues = mergedIssues(this.runtime.unresolved ?? {}),
+      current = new Set(
+        issues.filter((issue) => !issue.dismissed).map((issue) => issue.id),
+      );
+    for (const [id, shown] of this.issueNotices)
+      if (!current.has(id)) {
+        shown.notice.hide();
+        this.issueNotices.delete(id);
+      }
+    for (const issue of issues) {
+      if (issue.dismissed) continue;
+      const message = issueSummary(issue),
+        shown = this.issueNotices.get(issue.id);
+      if (shown?.shown === message) continue;
+      shown?.notice.hide();
+      const notice = new Notice(`Publication issue: ${message}`, 0);
+      notice.containerEl.addEventListener("click", () =>
+        this.dismissIssue(issue.id),
+      );
+      this.issueNotices.set(issue.id, { notice, shown: message });
+    }
+    if (this.statusItem) {
+      this.statusItem.setText(
+        issues.length === 1
+          ? "1 publication issue"
+          : `${issues.length} publication issues`,
+      );
+      this.statusItem.style.display = issues.length ? "" : "none";
+    }
+  }
+  private dismissIssue(id: string): void {
+    this.runtime.unresolved = dismissIssue(this.runtime.unresolved ?? {}, id);
+    this.renderIssues();
+    void this.persist().catch(() =>
+      this.notify("Publication status could not be saved"),
+    );
+  }
+  private showIssues(): void {
+    new PublicationIssuesModal(
+      this.app,
+      mergedIssues(this.runtime.unresolved ?? {}),
+    ).open();
+  }
   private notify(message: string): void {
     if (message !== this.previousNotice) {
       new Notice(message);
@@ -418,6 +483,26 @@ class PublisherSettings extends PluginSettingTab {
               .catch(() => new Notice("Keychain credential removal failed"));
           }),
         );
+  }
+}
+
+class PublicationIssuesModal extends Modal {
+  private issues: MergedIssue[];
+  constructor(app: App, issues: MergedIssue[]) {
+    super(app);
+    this.issues = issues;
+  }
+  onOpen(): void {
+    this.contentEl.createEl("h3", { text: "Publication issues" });
+    if (this.issues.length === 0)
+      this.contentEl.createEl("p", {
+        text: "No unresolved publication issues.",
+      });
+    for (const issue of this.issues)
+      this.contentEl.createEl("p", { text: issueSummary(issue) });
+  }
+  onClose(): void {
+    this.contentEl.empty();
   }
 }
 

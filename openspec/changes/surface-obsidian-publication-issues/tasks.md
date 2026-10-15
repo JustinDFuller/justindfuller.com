@@ -18,9 +18,9 @@
 
 ## 4. Persistent notices in the Obsidian publisher
 
-- [ ] 4.1 Extend the status state in `tools/obsidian-image-publisher/src/status.ts` to hold unresolved issues per target with path, reason, fingerprint and dismissed flag, merging identical issues across targets; verify with tests in `tools/obsidian-image-publisher/tests/status.test.ts` for creation, merge, dismissal by fingerprint, recovery, and old reports without a reason
-- [ ] 4.2 Show a non-expiring notice for each undismissed issue naming the note, reason and affected targets, and a status bar item with the count that reopens the details, in `tools/obsidian-image-publisher/src/main.ts`; verify with tests in `tools/obsidian-image-publisher/tests/main.test.ts` that notices persist across polls without repeating, clear on recovery, and the status bar count updates
-- [ ] 4.3 Update the plugin's user documentation for the notices and status bar item and verify the documented behavior matches the tests
+- [x] 4.1 Extend the status state in `tools/obsidian-image-publisher/src/status.ts` to hold unresolved issues per target with path, reason, fingerprint and dismissed flag, merging identical issues across targets; verify with tests in `tools/obsidian-image-publisher/tests/status.test.ts` for creation, merge, dismissal by fingerprint, recovery, and old reports without a reason
+- [x] 4.2 Show a non-expiring notice for each undismissed issue naming the note, reason and affected targets, and a status bar item with the count that reopens the details, in `tools/obsidian-image-publisher/src/main.ts`; verify with tests in `tools/obsidian-image-publisher/tests/main.test.ts` that notices persist across polls without repeating, clear on recovery, and the status bar count updates
+- [x] 4.3 Update the plugin's user documentation for the notices and status bar item and verify the documented behavior matches the tests
 
 ## 5. End-to-end proof
 

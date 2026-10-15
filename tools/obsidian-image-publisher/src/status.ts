@@ -3,15 +3,53 @@ export type PublicationReport = {
   target: "production" | "staging";
   source: string;
   status: "verified" | "degraded" | "failed" | "queued";
-  issues: { key: string; category: string }[];
+  issues: { key: string; category: string; path?: string; reason?: string }[];
   verifiedAt?: string;
 };
 export type NoticeState = Record<string, string[]>;
 export type PublicationTarget = "staging" | "production";
+export type UnresolvedIssue = {
+  key: string;
+  category: string;
+  path: string;
+  reason: string;
+  dismissed: boolean;
+};
+export type IssueState = Partial<Record<PublicationTarget, UnresolvedIssue[]>>;
+export type MergedIssue = {
+  id: string;
+  path: string;
+  reason: string;
+  targets: PublicationTarget[];
+  dismissed: boolean;
+};
+const targets = ["staging", "production"] as const;
+const maxReason = 500;
+const maxPath = 1024;
+const controlCharacters = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u;
+const blockingCategories = [
+  "last_known_good",
+  "route_collision",
+  "overwrite_target",
+];
 export type PublicationStatus = PublicationReport["status"] | "uploaded";
 export type PublicationStatusState = Partial<
   Record<PublicationTarget, { source: string; status: PublicationStatus }>
 >;
+
+export const isBlockingCategory = (category: string): boolean =>
+  category.startsWith("markdown_") || blockingCategories.includes(category);
+
+const validText = (value: unknown, limit: number): value is string =>
+  typeof value === "string" &&
+  value.length > 0 &&
+  value.length <= limit &&
+  !controlCharacters.test(value);
+
+const replacesIssues = (report: PublicationReport): boolean =>
+  report.status === "verified" ||
+  ((report.status === "degraded" || report.status === "failed") &&
+    report.issues.length > 0);
 
 export function publicationNotices(
   report: PublicationReport,
@@ -30,7 +68,9 @@ export function publicationNotices(
     .map((issue) => {
       if (
         !/^[a-f0-9]{64}$/.test(issue.key) ||
-        !/^[a-z_]+$/.test(issue.category)
+        !/^[a-z_]+$/.test(issue.category) ||
+        (issue.path !== undefined && !validText(issue.path, maxPath)) ||
+        (issue.reason !== undefined && !validText(issue.reason, maxReason))
       )
         throw new Error("Invalid protected issue");
       return `${issue.key}:${issue.category}`;
@@ -39,7 +79,10 @@ export function publicationNotices(
   const uniqueIssues = [...new Set(issues)];
   const previous = state[report.target] ?? [];
   const notices = uniqueIssues
-    .filter((issue) => !previous.includes(issue))
+    .filter(
+      (issue) =>
+        !previous.includes(issue) && !isBlockingCategory(issue.split(":")[1]),
+    )
     .map((issue) => `${report.target}: ${issue.split(":")[1]}`);
   if (
     previous.length &&
@@ -48,14 +91,92 @@ export function publicationNotices(
   )
     notices.push(`${report.target}: publication recovered`);
   const next = { ...state };
-  if (
-    report.status === "verified" ||
-    ((report.status === "degraded" || report.status === "failed") &&
-      uniqueIssues.length > 0)
-  )
-    next[report.target] = uniqueIssues;
+  if (replacesIssues(report)) next[report.target] = uniqueIssues;
   return { state: next, notices };
 }
+
+export function trackUnresolved(
+  report: PublicationReport,
+  previous: IssueState,
+): IssueState {
+  if (!replacesIssues(report)) return previous;
+  const prior = new Map(
+      (previous[report.target] ?? []).map((issue) => [issue.key, issue]),
+    ),
+    entries = new Map<string, UnresolvedIssue>();
+  for (const issue of report.issues) {
+    if (!isBlockingCategory(issue.category) || entries.has(issue.key)) continue;
+    const reason = issue.reason ?? issue.category.replaceAll("_", " "),
+      before = prior.get(issue.key);
+    entries.set(issue.key, {
+      key: issue.key,
+      category: issue.category,
+      path: issue.path ?? "an unknown note",
+      reason,
+      dismissed: before?.dismissed === true && before.reason === reason,
+    });
+  }
+  return { ...previous, [report.target]: [...entries.values()] };
+}
+
+export function mergedIssues(state: IssueState): MergedIssue[] {
+  const merged = new Map<string, MergedIssue & { all: boolean }>();
+  for (const target of targets)
+    for (const issue of state[target] ?? []) {
+      const id = JSON.stringify([issue.path, issue.reason]),
+        found = merged.get(id);
+      if (found) {
+        found.targets.push(target);
+        found.all &&= issue.dismissed;
+      } else
+        merged.set(id, {
+          id,
+          path: issue.path,
+          reason: issue.reason,
+          targets: [target],
+          dismissed: issue.dismissed,
+          all: issue.dismissed,
+        });
+    }
+  return [...merged.values()]
+    .map(({ all, ...issue }) => ({ ...issue, dismissed: all }))
+    .sort((a, b) => a.id.localeCompare(b.id));
+}
+
+export function dismissIssue(state: IssueState, id: string): IssueState {
+  const next: IssueState = {};
+  for (const target of targets)
+    if (state[target])
+      next[target] = state[target].map((issue) =>
+        JSON.stringify([issue.path, issue.reason]) === id
+          ? { ...issue, dismissed: true }
+          : issue,
+      );
+  return next;
+}
+
+export function readStoredIssues(value: unknown): IssueState {
+  const state: IssueState = {};
+  if (typeof value !== "object" || value === null) return state;
+  for (const target of targets) {
+    const list = (value as Record<string, unknown>)[target];
+    if (!Array.isArray(list)) continue;
+    state[target] = list.filter(
+      (issue): issue is UnresolvedIssue =>
+        typeof issue === "object" &&
+        issue !== null &&
+        /^[a-f0-9]{64}$/.test(issue.key) &&
+        /^[a-z_]+$/.test(issue.category) &&
+        validText(issue.path, maxPath) &&
+        validText(issue.reason, maxReason) &&
+        typeof issue.dismissed === "boolean",
+    );
+  }
+  return state;
+}
+
+export const issueSummary = (issue: MergedIssue): string =>
+  `${issue.path}: ${issue.reason}. Still serving the previous version on ${issue.targets.join(" and ")}.`;
 
 export function queuedPublication(
   revision: string,
@@ -75,13 +196,25 @@ export function observePublication(
   revision: string | undefined,
   previous: PublicationStatusState,
   issues: NoticeState,
-): { status: PublicationStatusState; issues: NoticeState; notices: string[] } {
-  const observed = publicationNotices(report, issues);
+  unresolved: IssueState = {},
+): {
+  status: PublicationStatusState;
+  issues: NoticeState;
+  unresolved: IssueState;
+  notices: string[];
+} {
+  const observed = publicationNotices(report, issues),
+    tracked = trackUnresolved(report, unresolved);
   if (revision && report.source !== revision)
     return (report.status === "failed" || report.status === "degraded") &&
       report.issues.length > 0
-      ? { status: previous, issues: observed.state, notices: observed.notices }
-      : { status: previous, issues, notices: [] };
+      ? {
+          status: previous,
+          issues: observed.state,
+          unresolved: tracked,
+          notices: observed.notices,
+        }
+      : { status: previous, issues, unresolved, notices: [] };
   const old = previous[report.target],
     status = {
       ...previous,
@@ -90,7 +223,7 @@ export function observePublication(
   const notices = [...observed.notices];
   if (old?.source !== report.source || old?.status !== report.status)
     notices.push(`${report.target}: publication ${report.status}`);
-  return { status, issues: observed.state, notices };
+  return { status, issues: observed.state, unresolved: tracked, notices };
 }
 
 export async function readPublicationReport(
