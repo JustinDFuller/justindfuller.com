@@ -16,7 +16,9 @@ import {
   prepareHostedTarget,
   preparationCode,
   readPrivatePreparation,
+  isBlockingCategory,
   runPreparationCommand,
+  summarizeIssues,
 } from "./prepare-obsidian-target.mjs";
 import { saveProtectedReport } from "./obsidian-reports.mjs";
 import { publicationEnvironment } from "./obsidian-process.mjs";
@@ -27,7 +29,7 @@ const sha = "a".repeat(40),
   digest = "d".repeat(64),
   identity = "11111111-1111-1111-1111-111111111111";
 
-async function fixture(t, mode = "staging", pr) {
+async function fixture(t, mode = "staging", pr, issues = []) {
   const cwd = await mkdtemp(join(tmpdir(), "obsidian-preparation-"));
   t.after(() => rm(cwd, { recursive: true, force: true }));
   const target = pr ? `pr/${pr}` : mode,
@@ -100,7 +102,7 @@ async function fixture(t, mode = "staging", pr) {
         masks: [],
         issues: fallback
           ? [{ key: `${source}:source_degraded`, category: "source_degraded" }]
-          : [],
+          : issues,
       };
     assert.equal(
       options.purpose,
@@ -565,4 +567,149 @@ test("container preparation fails closed without a detached module cache", async
     /container is required/,
   );
   assert.equal(calls, 0);
+});
+
+const issue = (category, file, extra = {}) => ({
+  key: `${file}|${category}`.padEnd(64, "0"),
+  file_id: file,
+  path: `${file}-private-path-canary.md`,
+  category,
+  message: "private reason canary",
+  ...extra,
+});
+
+test("issue categories are classified as blocking or warning-only", () => {
+  for (const category of [
+    "markdown_metadata",
+    "markdown_front_matter",
+    "markdown_encoding",
+    "markdown_body",
+    "markdown_syntax",
+    "markdown_image_syntax",
+    "markdown_render",
+    "markdown_safety",
+    "last_known_good",
+    "route_collision",
+    "overwrite_target",
+  ])
+    assert.equal(isBlockingCategory(category), true, category);
+  for (const category of [
+    "image_not_ready",
+    "image_not_found",
+    "image_ambiguous",
+    "image_validation",
+    "image_reference_outside_source",
+    "source_degraded",
+    "deployment_failed",
+    "other",
+  ])
+    assert.equal(isBlockingCategory(category), false, category);
+});
+
+test("issue summaries count affected files per category and blocking files once", () => {
+  assert.deepEqual(summarizeIssues([]), {
+    files: 0,
+    blocking: 0,
+    categories: {},
+  });
+  assert.deepEqual(
+    summarizeIssues([
+      issue("markdown_metadata", "one"),
+      issue("last_known_good", "one"),
+      issue("route_collision", "two"),
+      issue("route_collision", "three"),
+      issue("overwrite_target", "four"),
+      issue("image_not_ready", "five"),
+    ]),
+    {
+      files: 5,
+      blocking: 4,
+      categories: {
+        image_not_ready: 1,
+        last_known_good: 1,
+        markdown_metadata: 1,
+        overwrite_target: 1,
+        route_collision: 2,
+      },
+    },
+  );
+  assert.deepEqual(summarizeIssues([issue("image_not_ready", "five")]), {
+    files: 1,
+    blocking: 0,
+    categories: { image_not_ready: 1 },
+  });
+});
+
+test("issue summaries count one file once across several issues and fall back to path or key identity", () => {
+  assert.deepEqual(
+    summarizeIssues([
+      issue("markdown_metadata", "one"),
+      issue("markdown_syntax", "one", { key: "x".repeat(64) }),
+      { key: "k1", category: "markdown_body", path: "same.md" },
+      { key: "k2", category: "markdown_body", path: "same.md" },
+      { key: "k3", category: "markdown_body" },
+    ]),
+    {
+      files: 3,
+      blocking: 3,
+      categories: {
+        markdown_body: 2,
+        markdown_metadata: 1,
+        markdown_syntax: 1,
+      },
+    },
+  );
+});
+
+test("unsafe or missing categories are summarized as other and never echoed", () => {
+  const summary = summarizeIssues([
+    { key: "a", category: "Private Title Canary" },
+    { key: "b", category: undefined },
+    { key: "c", category: "../etc/passwd" },
+  ]);
+  assert.deepEqual(summary, {
+    files: 3,
+    blocking: 0,
+    categories: { other: 3 },
+  });
+  assert.throws(() => summarizeIssues(undefined), /issues required/);
+});
+
+test("hosted preparation exposes issue counts by category and no private issue details", async (t) => {
+  const env = await fixture(t, "staging", undefined, [
+      issue("markdown_metadata", "one"),
+      issue("last_known_good", "one"),
+      issue("image_not_ready", "two"),
+    ]),
+    result = await prepareHostedTarget({
+      ...env,
+      codeSha: sha,
+      pinnedSource: env.pinnedSource,
+    });
+  assert.deepEqual(result.issueSummary, {
+    files: 2,
+    blocking: 1,
+    categories: {
+      image_not_ready: 1,
+      last_known_good: 1,
+      markdown_metadata: 1,
+    },
+  });
+  assert.equal(result.issues, 3);
+  assert.equal(JSON.stringify(result).includes("private-path-canary"), false);
+  assert.equal(JSON.stringify(result).includes("private reason canary"), false);
+});
+
+test("a clean preparation reports an empty issue summary", async (t) => {
+  const env = await fixture(t),
+    result = await prepareHostedTarget({
+      ...env,
+      codeSha: sha,
+      pinnedSource: env.pinnedSource,
+    });
+  assert.deepEqual(result.issueSummary, {
+    files: 0,
+    blocking: 0,
+    categories: {},
+  });
 });

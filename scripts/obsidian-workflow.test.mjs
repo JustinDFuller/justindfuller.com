@@ -1,5 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { publicIssueOutput } from "./report-obsidian-issues.mjs";
 import {
   publicationRepository,
   publicationTargets,
@@ -411,4 +414,248 @@ test("a failed code check, unavailable state, or ambiguous receipt write cannot 
   );
   assert.equal(store.objects.size, 0);
   assert.throws(() => codeValidationKey("bad"));
+});
+
+const targetWorkflow = readFileSync(
+    new URL("../.github/workflows/obsidian-target.yml", import.meta.url),
+    "utf8",
+  ),
+  callerWorkflow = readFileSync(
+    new URL("../.github/workflows/cloudflare.yml", import.meta.url),
+    "utf8",
+  );
+
+function jobs(text) {
+  const lines = text.split("\n"),
+    start = lines.indexOf("jobs:");
+  assert.notEqual(start, -1);
+  const found = {};
+  let name;
+  for (const line of lines.slice(start + 1)) {
+    const header = /^ {2}([a-z][a-z0-9_-]*):\s*$/.exec(line);
+    if (header) {
+      name = header[1];
+      found[name] = [];
+    } else if (name) found[name].push(line);
+  }
+  return Object.fromEntries(
+    Object.entries(found).map(([key, body]) => [key, body.join("\n")]),
+  );
+}
+
+const field = (block, key) =>
+  new RegExp(`^ {4}${key}:\\s*(.*)$`, "m").exec(block)?.[1];
+
+function stepScript(block, name) {
+  const lines = block.split("\n"),
+    start = lines.findIndex((line) => line.trim() === `- name: ${name}`);
+  assert.notEqual(start, -1);
+  const run = lines.findIndex(
+    (line, index) => index > start && line === "        run: |",
+  );
+  assert.notEqual(run, -1);
+  const body = [];
+  for (const line of lines.slice(run + 1)) {
+    if (line && !line.startsWith("          ")) break;
+    body.push(line.slice(10));
+  }
+  return body.join("\n");
+}
+
+function concludes(block, context) {
+  const condition = field(block, "if"),
+    match = /^\$\{\{ (.*) \}\}$/.exec(condition);
+  assert.ok(match, "conclude condition must be a single expression");
+  const source = match[1]
+    .replace(/!cancelled\(\)/g, "true")
+    .replace(/!=/g, "!==")
+    .replace(/(?<![!=])==(?!=)/g, "===")
+    .replace(/inputs\.mode/g, "context.mode")
+    .replace(/needs\.prepare\.result/g, "context.prepare")
+    .replace(/needs\.prepare\.outputs\.blocking/g, "context.blocking");
+  assert.equal(/needs\.|inputs\.|github\.|secrets\./.test(source), false);
+  return new Function("context", `return (${source});`)(context);
+}
+
+test("the final job needs prepare, build and deploy and runs even when build and deploy are skipped or fail", () => {
+  const block = jobs(targetWorkflow).conclude;
+  assert.ok(block);
+  assert.equal(field(block, "needs"), "[prepare, build, deploy]");
+  const condition = field(block, "if");
+  assert.match(condition, /^\$\{\{ !cancelled\(\) && /);
+  assert.ok(condition.includes("needs.prepare.result == 'success'"));
+  assert.ok(condition.includes("needs.prepare.outputs.blocking != '0'"));
+  assert.equal(condition.includes("needs.build.result"), false);
+  assert.equal(condition.includes("needs.deploy.result"), false);
+  assert.equal(condition.includes("needs.build.outputs"), false);
+  assert.equal(block.includes("secrets."), false);
+  assert.equal(block.includes("environment:"), false);
+});
+
+test("no job waits for the final job, so valid content publishes before the run fails", () => {
+  const all = jobs(targetWorkflow);
+  for (const [name, block] of Object.entries(all)) {
+    if (name === "conclude") continue;
+    assert.equal(
+      /conclude/.test(field(block, "needs") ?? ""),
+      false,
+      `${name} must not depend on conclude`,
+    );
+    assert.equal(block.includes("needs.conclude"), false);
+  }
+  assert.equal(
+    field(all.build, "if"),
+    "needs.prepare.outputs.decision == 'build-required'",
+  );
+  assert.equal(
+    field(all.deploy, "if"),
+    "needs.prepare.outputs.decision == 'build-required'",
+  );
+  assert.equal(field(all.deploy, "needs"), "[resolve, prepare, build]");
+  assert.equal(
+    /needs\.prepare\.outputs\.(blocking|categories)/.test(
+      all.build + all.deploy,
+    ),
+    false,
+  );
+  const callers = jobs(callerWorkflow);
+  for (const [name, block] of Object.entries(callers))
+    for (const target of ["production", "staging", "private-preview"])
+      assert.equal(
+        new RegExp(`needs:.*\\b${target}\\b`).test(block),
+        false,
+        `${name} must not wait for ${target}`,
+      );
+});
+
+test("the final job applies only to staging and production target runs", () => {
+  const block = jobs(targetWorkflow).conclude,
+    condition = field(block, "if");
+  assert.ok(condition.includes("inputs.mode != 'preview'"));
+  assert.equal(
+    concludes(block, {
+      mode: "preview",
+      prepare: "success",
+      blocking: "2",
+    }),
+    false,
+  );
+  for (const mode of ["staging", "production"])
+    assert.equal(
+      concludes(block, { mode, prepare: "success", blocking: "1" }),
+      true,
+    );
+  const callers = jobs(callerWorkflow);
+  assert.match(callers.production, /^ {6}mode: production$/m);
+  assert.match(callers.staging, /^ {6}mode: staging$/m);
+  assert.match(callers["private-preview"], /^ {6}mode: preview$/m);
+  assert.equal(
+    Object.entries(callers)
+      .filter(([, body]) => body.includes("obsidian-target.yml"))
+      .map(([name]) => name)
+      .sort()
+      .join(),
+    "private-preview,production,staging",
+  );
+});
+
+test("pull request checks do not include the final job and no PR path can fail on vault content", () => {
+  const callers = jobs(callerWorkflow);
+  assert.match(
+    field(callers["private-preview"], "if"),
+    /needs\.admission\.outputs\.kind == 'preview'/,
+  );
+  for (const target of ["production", "staging"])
+    assert.match(
+      field(callers[target], "if"),
+      /needs\.admission\.outputs\.kind != 'preview'/,
+    );
+  assert.equal(
+    concludes(jobs(targetWorkflow).conclude, {
+      mode: "preview",
+      prepare: "success",
+      blocking: "5",
+    }),
+    false,
+  );
+});
+
+test("a run whose only issue is an image that is not ready passes", () => {
+  const block = jobs(targetWorkflow).conclude,
+    output = publicIssueOutput({
+      target: "staging",
+      decision: "build-required",
+      handoff: { checksum: "a".repeat(64) },
+      issueSummary: {
+        files: 1,
+        blocking: 0,
+        categories: { image_not_ready: 1 },
+      },
+    });
+  assert.equal(output.outputs.blocking, "0");
+  assert.match(output.annotation, /^::warning /);
+  assert.equal(
+    concludes(block, {
+      mode: "staging",
+      prepare: "success",
+      blocking: output.outputs.blocking,
+    }),
+    false,
+  );
+  assert.equal(
+    concludes(block, { mode: "staging", prepare: "success", blocking: "" }),
+    false,
+  );
+  assert.equal(
+    concludes(block, { mode: "staging", prepare: "success", blocking: "3" }),
+    true,
+  );
+  assert.equal(
+    concludes(block, {
+      mode: "production",
+      prepare: "success",
+      blocking: "3",
+    }),
+    true,
+  );
+  assert.equal(
+    concludes(block, { mode: "staging", prepare: "failure", blocking: "1" }),
+    false,
+  );
+});
+
+test("the final job script fails with a sanitized error annotation naming only counts and categories", () => {
+  const script = stepScript(
+      jobs(targetWorkflow).conclude,
+      "Fail the run because content was rejected",
+    ),
+    run = (env) =>
+      spawnSync("bash", ["-c", script], {
+        encoding: "utf8",
+        env: { PATH: process.env.PATH, ...env },
+      });
+  const failed = run({
+    OBSIDIAN_TARGET: "staging",
+    OBSIDIAN_BLOCKING: "2",
+    OBSIDIAN_CATEGORIES: '{"markdown_metadata":1,"last_known_good":1}',
+  });
+  assert.equal(failed.status, 1);
+  assert.match(
+    failed.stdout,
+    /^::error title=Obsidian content rejected::staging: 2 rejected file\(s\)/,
+  );
+  assert.ok(
+    failed.stdout.includes('{"markdown_metadata":1,"last_known_good":1}'),
+  );
+  assert.equal(failed.stdout.trim().split("\n").length, 1);
+  for (const blocking of ["", "0", "-1", "x", "1; echo injected"]) {
+    const bad = run({
+      OBSIDIAN_TARGET: "staging",
+      OBSIDIAN_BLOCKING: blocking,
+      OBSIDIAN_CATEGORIES: "{}",
+    });
+    assert.equal(bad.status, 1);
+    assert.ok(bad.stdout.includes("count is unavailable"));
+    assert.equal(bad.stdout.includes("injected"), false);
+  }
 });

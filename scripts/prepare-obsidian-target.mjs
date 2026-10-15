@@ -17,7 +17,43 @@ import { protectedPublicationReport } from "./record-obsidian-publication.mjs";
 import { preparePublicationTarget } from "./obsidian-pipeline.mjs";
 
 const fingerprint = /^[a-f0-9]{64}$/;
+const safeCategory = /^[a-z][a-z_]{0,63}$/;
+const blockingCategories = new Set([
+  "last_known_good",
+  "route_collision",
+  "overwrite_target",
+]);
 const prepareImage = "golang:1.26.0-bookworm";
+
+export function isBlockingCategory(category) {
+  return category.startsWith("markdown_") || blockingCategories.has(category);
+}
+
+export function summarizeIssues(issues) {
+  if (!Array.isArray(issues)) throw new Error("Preparation issues required");
+  const affected = new Map(),
+    blocking = new Set(),
+    files = new Set();
+  for (const issue of issues) {
+    const category = safeCategory.test(issue?.category ?? "")
+        ? issue.category
+        : "other",
+      identity = String(issue?.file_id || issue?.path || issue?.key || "");
+    if (!affected.has(category)) affected.set(category, new Set());
+    affected.get(category).add(identity);
+    files.add(identity);
+    if (isBlockingCategory(category)) blocking.add(identity);
+  }
+  return {
+    files: files.size,
+    blocking: blocking.size,
+    categories: Object.fromEntries(
+      [...affected]
+        .sort(([left], [right]) => (left < right ? -1 : left > right ? 1 : 0))
+        .map(([category, identities]) => [category, identities.size]),
+    ),
+  };
+}
 
 export function isolatedPreparationCommand({
   workspace,
@@ -319,6 +355,7 @@ export async function prepareHostedTarget({
     posts: prepared.entries.length,
     images: Object.keys(prepared.images).length,
     issues: diagnostics.issues.length,
+    issueSummary: summarizeIssues(diagnostics.issues),
   };
 }
 

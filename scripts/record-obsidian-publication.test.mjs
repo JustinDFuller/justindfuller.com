@@ -3,9 +3,11 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { publicationNotices } from "../tools/obsidian-image-publisher/src/status.ts";
 import {
+  maxIssueReason,
   publicPublicationReceipt,
   protectedPublicationReport,
   recordPublication,
+  validIssueReason,
 } from "./record-obsidian-publication.mjs";
 
 const candidate = {
@@ -52,7 +54,7 @@ const diagnostics = {
       key: "f".repeat(64),
       category: "invalid_metadata",
       path: "private-canary.md",
-      message: "raw state body canary",
+      message: "environment must be production or nonprod",
       reference: "credential canary",
     },
   ],
@@ -137,6 +139,11 @@ test("protected reports preserve ownership and issues while omitting post bodies
   assert.equal(report.files[0].path, "private-canary.md");
   assert.equal(report.files[0].environment, "nonprod");
   assert.equal(report.issues[0].category, "invalid_metadata");
+  assert.equal(
+    report.issues[0].reason,
+    "environment must be production or nonprod",
+  );
+  assert.equal("message" in report.issues[0], false);
   assert.equal(report.receipt.verifiedAt, receipt.verifiedAt);
   assert.throws(
     () =>
@@ -177,6 +184,41 @@ test("protected reports preserve ownership and issues while omitting post bodies
       protectedPublicationReport(candidate, "staging", "unknown", diagnostics),
     /correlation/,
   );
+});
+
+test("protected reports bound and normalize issue reasons and stay under the size limit", () => {
+  const issue = (message, key = "f".repeat(64)) => ({
+      key,
+      category: "markdown_metadata",
+      message,
+    }),
+    report = (issues) =>
+      protectedPublicationReport(candidate, "staging", "degraded", {
+        ...diagnostics,
+        issues,
+      });
+  const long = report([issue("x".repeat(5000))]).issues[0].reason;
+  assert.equal(long.length, maxIssueReason);
+  assert.equal(validIssueReason(long), true);
+  const cleaned = report([issue("  bad\u0000\u202e\nvalue\t here  ")]).issues[0]
+    .reason;
+  assert.equal(cleaned, "bad value here");
+  assert.equal(validIssueReason(cleaned), true);
+  for (const message of [undefined, "", "   ", "\u0000\u0007", 42, {}])
+    assert.equal("reason" in report([issue(message)]).issues[0], false);
+  const many = Array.from({ length: 2000 }, (_, index) =>
+    issue(
+      "y".repeat(5000),
+      createHash("sha256").update(`${index}`).digest("hex"),
+    ),
+  );
+  const bounded = report(many);
+  assert.equal(bounded.issues.length, 2000);
+  assert.ok(Buffer.byteLength(JSON.stringify(bounded)) < 2 * 1024 * 1024);
+  assert.equal(validIssueReason("a".repeat(maxIssueReason + 1)), false);
+  assert.equal(validIssueReason("line\nbreak"), false);
+  assert.equal(validIssueReason(""), false);
+  assert.equal(validIssueReason(7), false);
 });
 
 test("report status follows the transaction and successful staging never clears a failed production report", async () => {

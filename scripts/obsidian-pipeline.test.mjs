@@ -111,6 +111,7 @@ async function fixture(t, mode = "staging", options = {}) {
           key: old,
           category: "source_degraded",
         });
+      current.diagnostics.issues.push(...(options.issues ?? []));
       if (preparations > 1) {
         assert.equal(args.includes("--r2"), false);
         assert.ok(
@@ -318,4 +319,41 @@ test("handoff readback failure and oversized reads fail before providing build i
     ),
     /checksum/,
   );
+});
+
+test("run results carry the sanitized issue summary when the build is skipped and when it is required", async (t) => {
+  const issues = [
+    {
+      key: "g".repeat(64),
+      file_id: "one",
+      path: "private-canary.md",
+      category: "markdown_metadata",
+      message: "private reason",
+    },
+  ];
+  const skipped = await preparePublicationTarget(
+    await fixture(t, "staging", { issues }),
+  );
+  assert.equal(skipped.decision, "skip-build");
+  assert.deepEqual(skipped.issueSummary, {
+    files: 1,
+    blocking: 1,
+    categories: { markdown_metadata: 1 },
+  });
+  const clean = await preparePublicationTarget(await fixture(t, "staging"));
+  assert.equal(clean.decision, "skip-build");
+  assert.deepEqual(clean.issueSummary, {
+    files: 0,
+    blocking: 0,
+    categories: {},
+  });
+  const rebuilt = await preparePublicationTarget(
+    await fixture(t, "production", { issues, finalChanged: true }),
+  );
+  assert.equal(rebuilt.decision, "build-required");
+  assert.equal(rebuilt.issueSummary.blocking, 1);
+  for (const result of [skipped, clean, rebuilt]) {
+    assert.equal(JSON.stringify(result).includes("private"), false);
+    assert.equal(JSON.stringify(result).includes('"one"'), false);
+  }
 });

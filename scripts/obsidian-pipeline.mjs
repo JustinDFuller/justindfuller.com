@@ -4,6 +4,7 @@ import {
   readPrivatePreparation,
   preparationCode,
   runPreparationCommand,
+  summarizeIssues,
 } from "./prepare-obsidian-target.mjs";
 import { promotePreparedImages } from "./promote-obsidian-images.mjs";
 import { recordPublication } from "./record-obsidian-publication.mjs";
@@ -204,6 +205,7 @@ export async function preparePublicationTarget(options) {
       posts: prepared.entries.length,
       images: Object.keys(prepared.images).length,
       issues: diagnostics.issues.length,
+      issueSummary: summarizeIssues(diagnostics.issues),
       receipt,
       promotion,
     };
@@ -216,6 +218,7 @@ export async function preparePublicationTarget(options) {
     posts: prepared.entries.length,
     images: Object.keys(prepared.images).length,
     issues: diagnostics.issues.length,
+    issueSummary: summarizeIssues(diagnostics.issues),
     handoff,
     promotion,
   };

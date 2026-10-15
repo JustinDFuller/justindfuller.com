@@ -168,6 +168,7 @@ test("real preparation and static export keep nonprod and draft canaries out of 
       "overlay-state-canary",
       "private-report-canary",
       "credential-secret-canary",
+      "issue-reason-canary",
     ];
   assert.ok(nonprodPreview.includes("nonprod-title-canary"));
   assert.ok(nonprodPreview.includes("nonprod-body-canary"));
@@ -223,7 +224,15 @@ test("real preparation and static export keep nonprod and draft canaries out of 
       draft: index === 1,
     })),
     masks: ["private-draft-canary"],
-    issues: [],
+    issues: [
+      {
+        key: "9".repeat(64),
+        category: "markdown_metadata",
+        path: "private-filename-nonprod-canary.md",
+        message: "issue-reason-canary: environment prod is not allowed",
+        observed_at: "2026-10-06T12:00:00Z",
+      },
+    ],
   };
   const report = protectedPublicationReport(
     candidate,
@@ -280,6 +289,7 @@ test("real preparation and static export keep nonprod and draft canaries out of 
     "source-snapshot-canary",
     "overlay-state-canary",
     "private-report-canary",
+    "issue-reason-canary",
   ]) {
     assert.equal(previewContents.includes(Buffer.from(canary)), false);
     assert.equal(productionContents.includes(Buffer.from(canary)), false);
@@ -320,4 +330,9 @@ test("real preparation and static export keep nonprod and draft canaries out of 
       (file) => file.path === "private-filename-draft-canary.md",
     ),
   );
+  assert.equal(
+    savedReport.issues[0].reason,
+    "issue-reason-canary: environment prod is not allowed",
+  );
+  assert.equal(JSON.stringify(publicReceipt).includes("issue-reason"), false);
 });

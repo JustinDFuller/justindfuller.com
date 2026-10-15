@@ -2,7 +2,10 @@ import { lstat, mkdir, open } from "node:fs/promises";
 import { constants } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import { targetNamespace } from "./obsidian-transaction.mjs";
-import { protectedPublicationReport } from "./record-obsidian-publication.mjs";
+import {
+  protectedPublicationReport,
+  validIssueReason,
+} from "./record-obsidian-publication.mjs";
 
 export async function readProtectedReport(store, mode, pr) {
   const target = targetNamespace(mode, pr);
@@ -25,16 +28,22 @@ export async function readProtectedReport(store, mode, pr) {
     report.issues.some(
       (issue) =>
         !/^[a-f0-9]{64}$/.test(issue?.key ?? "") ||
-        !/^[a-z_]+$/.test(issue?.category ?? ""),
+        !/^[a-z_]+$/.test(issue?.category ?? "") ||
+        (issue.reason !== undefined && !validIssueReason(issue.reason)),
     )
   )
     throw new Error("Invalid protected report");
   const candidate = { ...report, state: { mode } };
+  const stored = {
+    ...report,
+    mode,
+    issues: report.issues.map(({ message: _message, ...issue }) => issue),
+  };
   const sanitized = protectedPublicationReport(
     candidate,
     target,
     report.status,
-    { ...report, mode },
+    stored,
     report.receipt,
   );
   sanitized.reportedAt = report.reportedAt;

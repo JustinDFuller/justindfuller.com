@@ -7,6 +7,13 @@ import {
   readPublicationReport,
   readPublicationReports,
   publicationStatusSummary,
+  trackUnresolved,
+  mergedIssues,
+  dismissIssue,
+  readStoredIssues,
+  issueSummary,
+  isBlockingCategory,
+  type IssueState,
   type PublicationReport,
 } from "../src/status.ts";
 
@@ -226,4 +233,488 @@ test("pending protected reads yield control without delaying the other target", 
   finish(Buffer.from(JSON.stringify(report("production", "verified"))));
   await pending;
   assert.equal(productionComplete, true);
+});
+
+const fingerprint = (letter: string) => letter.repeat(64);
+const rejected = (
+  target: "staging" | "production",
+  issues: PublicationReport["issues"],
+  status: PublicationReport["status"] = "degraded",
+): PublicationReport => ({ version: 1, target, source, status, issues });
+const metadata = (key: string, path: string, reason?: string) => ({
+  key: fingerprint(key),
+  category: "markdown_metadata",
+  path,
+  ...(reason ? { reason } : {}),
+});
+const invalid = "environment must be one of nonprod, staging, production";
+
+test("blocking categories are Markdown failures, last-known-good fallbacks, route collisions and overwrite conflicts", () => {
+  for (const category of [
+    "markdown_metadata",
+    "markdown_link",
+    "last_known_good",
+    "route_collision",
+    "overwrite_target",
+  ])
+    assert.equal(isBlockingCategory(category), true, category);
+  for (const category of [
+    "image_not_ready",
+    "source_degraded",
+    "deployment_failed",
+    "image_missing",
+  ])
+    assert.equal(isBlockingCategory(category), false, category);
+});
+
+test("a blocking issue creates an unresolved entry with path, reason and fingerprint and no transient notice", () => {
+  const observed = observePublication(
+    rejected("staging", [metadata("c", "Blog/draft.md", invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  assert.deepEqual(observed.unresolved.staging, [
+    {
+      key: fingerprint("c"),
+      category: "markdown_metadata",
+      path: "Blog/draft.md",
+      reason: invalid,
+      dismissed: false,
+    },
+  ]);
+  assert.deepEqual(observed.notices, ["staging: publication degraded"]);
+  assert.deepEqual(mergedIssues(observed.unresolved), [
+    {
+      id: JSON.stringify(["Blog/draft.md", invalid]),
+      path: "Blog/draft.md",
+      reason: invalid,
+      targets: ["staging"],
+      dismissed: false,
+    },
+  ]);
+});
+
+test("non-blocking issues keep their transient notice and create no unresolved entry", () => {
+  const observed = observePublication(
+    rejected("staging", [
+      { key: fingerprint("d"), category: "image_not_ready", path: "Blog/a.md" },
+    ]),
+    source,
+    {},
+    {},
+    {},
+  );
+  assert.deepEqual(mergedIssues(observed.unresolved), []);
+  assert.ok(observed.notices.includes("staging: image_not_ready"));
+});
+
+test("reports without a reason fall back to the category text", () => {
+  const observed = trackUnresolved(
+    rejected("production", [metadata("e", "Blog/old.md")]),
+    {},
+  );
+  assert.equal(observed.production?.[0].reason, "markdown metadata");
+  const noPath = trackUnresolved(
+    rejected("production", [
+      { key: fingerprint("f"), category: "route_collision" },
+    ]),
+    {},
+  );
+  assert.equal(noPath.production?.[0].path, "an unknown note");
+  assert.equal(noPath.production?.[0].reason, "route collision");
+});
+
+test("identical issues in staging and production merge into one issue naming both targets", () => {
+  let state: IssueState = {};
+  state = trackUnresolved(
+    rejected("production", [metadata("1", "Blog/draft.md", invalid)]),
+    state,
+  );
+  state = trackUnresolved(
+    rejected("staging", [metadata("2", "Blog/draft.md", invalid)]),
+    state,
+  );
+  const merged = mergedIssues(state);
+  assert.equal(merged.length, 1);
+  assert.deepEqual(merged[0].targets, ["staging", "production"]);
+  assert.equal(
+    issueSummary(merged[0]),
+    `Blog/draft.md: ${invalid}. Still serving the previous version on staging and production.`,
+  );
+  state = trackUnresolved(
+    rejected("staging", [metadata("3", "Blog/draft.md", "different reason")]),
+    state,
+  );
+  assert.equal(mergedIssues(state).length, 2);
+});
+
+test("duplicate fingerprints in one report produce one unresolved entry", () => {
+  const state = trackUnresolved(
+    rejected("staging", [
+      metadata("4", "Blog/draft.md", invalid),
+      metadata("4", "Blog/draft.md", invalid),
+    ]),
+    {},
+  );
+  assert.equal(state.staging?.length, 1);
+});
+
+test("dismissal holds while the fingerprint is unchanged and ends when the issue changes or recurs after recovery", () => {
+  const first = rejected("staging", [metadata("5", "Blog/draft.md", invalid)]);
+  let state = trackUnresolved(first, {});
+  state = dismissIssue(state, mergedIssues(state)[0].id);
+  assert.equal(mergedIssues(state)[0].dismissed, true);
+  state = trackUnresolved(first, state);
+  assert.equal(mergedIssues(state)[0].dismissed, true);
+  const changed = trackUnresolved(
+    rejected("staging", [
+      metadata("5", "Blog/draft.md", "environment must not be blank"),
+    ]),
+    state,
+  );
+  assert.equal(mergedIssues(changed)[0].dismissed, false);
+  const otherKey = trackUnresolved(
+    rejected("staging", [metadata("6", "Blog/draft.md", invalid)]),
+    state,
+  );
+  assert.equal(mergedIssues(otherKey)[0].dismissed, false);
+  const recovered = trackUnresolved(rejected("staging", [], "verified"), state);
+  assert.deepEqual(mergedIssues(recovered), []);
+  const recurred = trackUnresolved(first, recovered);
+  assert.equal(mergedIssues(recurred)[0].dismissed, false);
+});
+
+test("a merged issue is dismissed only when every target dismissed it, and dismissing clears both", () => {
+  let state: IssueState = {};
+  state = trackUnresolved(
+    rejected("production", [metadata("1", "Blog/draft.md", invalid)]),
+    state,
+  );
+  state = trackUnresolved(
+    rejected("staging", [metadata("2", "Blog/draft.md", invalid)]),
+    state,
+  );
+  state = dismissIssue(state, mergedIssues(state)[0].id);
+  assert.equal(mergedIssues(state)[0].dismissed, true);
+  assert.equal(state.staging?.[0].dismissed, true);
+  assert.equal(state.production?.[0].dismissed, true);
+  state = trackUnresolved(
+    rejected("staging", [metadata("7", "Blog/draft.md", invalid)]),
+    state,
+  );
+  assert.equal(mergedIssues(state)[0].dismissed, false);
+});
+
+test("recovery removes the entry only on a verified report and reports publication recovered", () => {
+  const observed = observePublication(
+    rejected("staging", [metadata("8", "Blog/draft.md", invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  const queued = observePublication(
+    rejected("staging", [], "queued"),
+    source,
+    observed.status,
+    observed.issues,
+    observed.unresolved,
+  );
+  assert.equal(mergedIssues(queued.unresolved).length, 1);
+  const failed = observePublication(
+    rejected("staging", [], "failed"),
+    source,
+    queued.status,
+    queued.issues,
+    queued.unresolved,
+  );
+  assert.equal(mergedIssues(failed.unresolved).length, 1);
+  const recovered = observePublication(
+    rejected("staging", [], "verified"),
+    source,
+    failed.status,
+    failed.issues,
+    failed.unresolved,
+  );
+  assert.deepEqual(mergedIssues(recovered.unresolved), []);
+  assert.ok(recovered.notices.includes("staging: publication recovered"));
+});
+
+test("fixing one note while another stays rejected removes only the fixed note", () => {
+  const both = trackUnresolved(
+    rejected("staging", [
+      metadata("1", "Blog/a.md", invalid),
+      metadata("2", "Blog/b.md", invalid),
+    ]),
+    {},
+  );
+  const one = trackUnresolved(
+    rejected("staging", [metadata("2", "Blog/b.md", invalid)]),
+    both,
+  );
+  assert.deepEqual(
+    mergedIssues(one).map((issue) => issue.path),
+    ["Blog/b.md"],
+  );
+});
+
+test("a recovery in one target leaves the other target's issue untouched", () => {
+  let state: IssueState = {};
+  state = trackUnresolved(
+    rejected("production", [metadata("1", "Blog/draft.md", invalid)]),
+    state,
+  );
+  state = trackUnresolved(
+    rejected("staging", [metadata("2", "Blog/draft.md", invalid)]),
+    state,
+  );
+  state = trackUnresolved(rejected("staging", [], "verified"), state);
+  assert.deepEqual(mergedIssues(state)[0].targets, ["production"]);
+});
+
+test("stale revision reports update unresolved issues only when they carry issues", () => {
+  const stale = (issues: PublicationReport["issues"], status = "degraded") =>
+    ({
+      ...rejected("staging", issues, status as PublicationReport["status"]),
+      source: fingerprint("9"),
+    }) as PublicationReport;
+  const seeded = trackUnresolved(
+    rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+    {},
+  );
+  const withIssues = observePublication(
+    stale([metadata("2", "Blog/b.md", invalid)]),
+    source,
+    {},
+    {},
+    seeded,
+  );
+  assert.equal(withIssues.unresolved.staging?.[0].path, "Blog/b.md");
+  const without = observePublication(
+    stale([], "verified"),
+    source,
+    {},
+    {},
+    seeded,
+  );
+  assert.deepEqual(without.unresolved, seeded);
+});
+
+test("stored issues are restored when valid and dropped when malformed", () => {
+  const good = {
+    key: fingerprint("a"),
+    category: "markdown_metadata",
+    path: "Blog/a.md",
+    reason: invalid,
+    dismissed: false,
+  };
+  assert.deepEqual(
+    readStoredIssues({
+      staging: [good, { ...good, key: "private" }, { ...good, reason: "a\nb" }],
+      production: "bad",
+    }),
+    { staging: [good] },
+  );
+  assert.deepEqual(readStoredIssues(undefined), {});
+  assert.deepEqual(readStoredIssues(null), {});
+});
+
+test("report reads reject unbounded or control-character reasons and paths", () => {
+  for (const issue of [
+    { ...metadata("1", "Blog/a.md"), reason: "x".repeat(501) },
+    { ...metadata("1", "Blog/a.md"), reason: "line\nbreak" },
+    { ...metadata("1", "Blog/a.md"), reason: "" },
+    { ...metadata("1", "Blog/a.md"), path: "x".repeat(1025) },
+  ])
+    assert.throws(
+      () => publicationNotices(rejected("staging", [issue]), {}),
+      /protected issue/,
+    );
+  assert.doesNotThrow(() =>
+    publicationNotices(
+      rejected("staging", [metadata("1", "Blog/a.md", "x".repeat(500))]),
+      {},
+    ),
+  );
+});
+
+test("a source outage report leaves unresolved issues and dismissals in place", () => {
+  let state = trackUnresolved(
+    rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+    {},
+  );
+  state = dismissIssue(state, mergedIssues(state)[0].id);
+  for (const category of ["source_degraded"]) {
+    const outage = observePublication(
+      rejected("staging", [{ key: fingerprint("9"), category }]),
+      source,
+      {},
+      {},
+      state,
+    );
+    assert.deepEqual(outage.unresolved, state);
+    assert.equal(
+      outage.notices.includes("staging: publication recovered"),
+      false,
+    );
+  }
+  const back = trackUnresolved(
+    rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+    state,
+  );
+  assert.equal(mergedIssues(back)[0].dismissed, true);
+});
+
+test("publication recovered is reported when the last blocking issue clears even if other issues remain", () => {
+  const rejectedNote = observePublication(
+    rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  const fixed = observePublication(
+    rejected("staging", [
+      { key: fingerprint("2"), category: "image_not_ready", path: "Blog/b.md" },
+    ]),
+    source,
+    rejectedNote.status,
+    rejectedNote.issues,
+    rejectedNote.unresolved,
+  );
+  assert.deepEqual(mergedIssues(fixed.unresolved), []);
+  assert.equal(
+    fixed.notices.filter(
+      (notice) => notice === "staging: publication recovered",
+    ).length,
+    1,
+  );
+});
+
+test("a rejected note with a retained previous version is one issue, but a lone fallback still counts", () => {
+  const both = trackUnresolved(
+    rejected("staging", [
+      metadata("1", "Blog/a.md", invalid),
+      {
+        key: fingerprint("2"),
+        category: "last_known_good",
+        path: "Blog/a.md",
+        reason: "retaining eligible accepted revision",
+      },
+      {
+        key: fingerprint("3"),
+        category: "last_known_good",
+        path: "Blog/b.md",
+        reason: "retaining eligible accepted revision",
+      },
+    ]),
+    {},
+  );
+  assert.deepEqual(
+    both.staging?.map((issue) => [issue.path, issue.category]),
+    [
+      ["Blog/a.md", "markdown_metadata"],
+      ["Blog/b.md", "last_known_good"],
+    ],
+  );
+});
+
+test("notes whose names contain invisible formatting characters still report status", () => {
+  const path = "Blog/\u{1F468}\u200D\u{1F4BB} notes\u00AD.md";
+  const observed = observePublication(
+    rejected("staging", [metadata("1", path, invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  assert.equal(observed.unresolved.staging?.[0].path, path);
+  assert.deepEqual(
+    readStoredIssues({ staging: observed.unresolved.staging }).staging?.map(
+      (issue) => issue.path,
+    ),
+    [path],
+  );
+  const odd = observePublication(
+    rejected("staging", [metadata("1", "Blog/a\tb\nc.md", invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  assert.equal(odd.unresolved.staging?.[0].path, "Blog/a b c.md");
+  assert.equal(odd.status.staging?.status, "degraded");
+});
+
+test("a dismissal carries to another target that reports the same issue later", () => {
+  const first = observePublication(
+      rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+      source,
+      {},
+      {},
+      {},
+    ),
+    dismissed = dismissIssue(
+      first.unresolved,
+      mergedIssues(first.unresolved)[0].id,
+    ),
+    second = observePublication(
+      rejected("production", [metadata("1", "Blog/a.md", invalid)]),
+      source,
+      first.status,
+      first.issues,
+      dismissed,
+    ),
+    merged = mergedIssues(second.unresolved);
+  assert.equal(merged.length, 1);
+  assert.deepEqual(merged[0].targets, ["staging", "production"]);
+  assert.equal(merged[0].dismissed, true);
+});
+
+test("a failed report keeps earlier notices and never announces recovery", () => {
+  const first = observePublication(
+      rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+      source,
+      {},
+      {},
+      {},
+    ),
+    failed = observePublication(
+      {
+        version: 1,
+        target: "staging",
+        source,
+        status: "failed",
+        issues: [{ key: fingerprint("d"), category: "deployment_failed" }],
+      },
+      source,
+      first.status,
+      first.issues,
+      first.unresolved,
+    );
+  assert.equal(failed.unresolved.staging?.length, 1);
+  assert.equal(
+    failed.notices.includes("staging: publication recovered"),
+    false,
+  );
+  const again = observePublication(
+    {
+      version: 1,
+      target: "staging",
+      source,
+      status: "failed",
+      issues: [
+        { ...metadata("9", "Blog/a.md", invalid) },
+        { key: fingerprint("d"), category: "deployment_failed" },
+      ],
+    },
+    source,
+    failed.status,
+    failed.issues,
+    failed.unresolved,
+  );
+  assert.equal(again.unresolved.staging?.length, 1);
+  assert.deepEqual(mergedIssues(again.unresolved)[0].targets, ["staging"]);
 });

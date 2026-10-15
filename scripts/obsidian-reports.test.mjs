@@ -66,6 +66,91 @@ test("read-only diagnostics use the exact target key and omit raw content and cr
   }
 });
 
+test("stored reasons round trip while stray messages and reportless reasons are dropped", async () => {
+  const read = async (issues) =>
+    readProtectedReport(
+      {
+        get: async () => Buffer.from(JSON.stringify({ ...report, issues })),
+      },
+      "staging",
+    );
+  const key = "f".repeat(64),
+    category = "markdown_metadata";
+  const withReason = await read([
+    {
+      key,
+      category,
+      reason: "environment must be production or nonprod",
+      message: "raw post canary",
+    },
+  ]);
+  assert.equal(
+    withReason.issues[0].reason,
+    "environment must be production or nonprod",
+  );
+  assert.equal(JSON.stringify(withReason).includes("raw post canary"), false);
+  const legacy = await read([{ key, category }]);
+  assert.equal(legacy.issues.length, 1);
+  assert.equal("reason" in legacy.issues[0], false);
+  const stray = await read([{ key, category, message: "raw post canary" }]);
+  assert.equal("reason" in stray.issues[0], false);
+  assert.equal(JSON.stringify(stray).includes("raw post canary"), false);
+});
+
+test("oversize, empty, non-string and control-character reasons are rejected", async () => {
+  for (const reason of [
+    "a".repeat(501),
+    "",
+    "bad\u0000value",
+    "line\nbreak",
+    "bidi\u202eoverride",
+    "separator\u2028here",
+    42,
+    null,
+    {},
+  ])
+    await assert.rejects(
+      readProtectedReport(
+        {
+          get: async () =>
+            Buffer.from(
+              JSON.stringify({
+                ...report,
+                issues: [
+                  {
+                    key: "f".repeat(64),
+                    category: "markdown_metadata",
+                    reason,
+                  },
+                ],
+              }),
+            ),
+        },
+        "staging",
+      ),
+      /Invalid protected report/,
+    );
+  const longest = await readProtectedReport(
+    {
+      get: async () =>
+        Buffer.from(
+          JSON.stringify({
+            ...report,
+            issues: [
+              {
+                key: "f".repeat(64),
+                category: "markdown_metadata",
+                reason: "a".repeat(500),
+              },
+            ],
+          }),
+        ),
+    },
+    "staging",
+  );
+  assert.equal(longest.issues[0].reason.length, 500);
+});
+
 test("unavailable, oversized, cross-target and malformed protected reports fail", async () => {
   for (const raw of [
     undefined,
