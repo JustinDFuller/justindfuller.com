@@ -16,10 +16,43 @@ import {
 const execFile = promisify(execFileCallback);
 const accountDefault = "9dce34804a27754a4ea66a5789827dfa";
 
+export const pinFailureReasons = [
+  "invalid_target",
+  "state_store_unreachable",
+  "accepted_state_unavailable",
+  "accepted_state_invalid",
+  "accepted_state_incompatible",
+  "source_pin_failed",
+  "pinned_source_unreadable",
+  "pinned_source_invalid",
+];
+
+export class PinFailure extends Error {
+  constructor(reason, details = {}) {
+    super("Trusted private source pin failed");
+    this.name = "PinFailure";
+    this.reason = pinFailureReasons.includes(reason) ? reason : "unknown";
+    this.details = details;
+  }
+}
+
+export function pinFailureSummary(error) {
+  if (!(error instanceof PinFailure)) return { reason: "unknown" };
+  return { reason: error.reason, ...error.details };
+}
+
+function pinProcessDetails(error) {
+  return {
+    exitCode: Number.isInteger(error?.code) ? error.code : -1,
+    timedOut: error?.killed === true && error?.signal === "SIGTERM",
+    signaled: typeof error?.signal === "string" && error.signal.length > 0,
+  };
+}
+
 export function acceptedStateForPin(value, namespace, mode, bootstrap) {
   if (!value) {
     if (bootstrap) return undefined;
-    throw new Error("Accepted target state is unavailable");
+    throw new PinFailure("accepted_state_unavailable");
   }
   if (
     value.version !== 1 ||
@@ -30,7 +63,7 @@ export function acceptedStateForPin(value, namespace, mode, bootstrap) {
     value.state.revision !== value.source ||
     value.receipt?.deployment === undefined
   )
-    throw new Error("Accepted target state is incompatible");
+    throw new PinFailure("accepted_state_incompatible");
   return value.state;
 }
 
@@ -59,23 +92,43 @@ export async function pinWorkflowSource({
   execute = execFile,
   transportFactory = environmentTransport,
 }) {
-  const namespace = targetNamespace(mode, pr);
+  let namespace;
+  try {
+    namespace = targetNamespace(mode, pr);
+  } catch {
+    throw new PinFailure("invalid_target");
+  }
   if (namespace === "local" || !/^[a-f0-9]{32}$/.test(account))
-    throw new Error("Explicit hosted source target required");
-  const transport = transportFactory("OBSIDIAN_STATE");
+    throw new PinFailure("invalid_target");
+  let transport;
+  try {
+    transport = transportFactory("OBSIDIAN_STATE");
+  } catch {
+    throw new PinFailure("state_store_unreachable");
+  }
   try {
     const store = new PrivateR2Store(
-        transport,
-        r2Target(account, "justindfuller-obsidian-state"),
-      ),
+      transport,
+      r2Target(account, "justindfuller-obsidian-state"),
+    );
+    let acceptedBytes;
+    try {
       acceptedBytes = await store.get(
         `accepted/${namespace}/current.json`,
         64 * 1024 * 1024,
-      ),
+      );
+    } catch {
+      throw new PinFailure("state_store_unreachable");
+    }
+    let accepted;
+    try {
       accepted = acceptedBytes
         ? JSON.parse(Buffer.from(acceptedBytes).toString("utf8"))
-        : undefined,
-      state = acceptedStateForPin(accepted, namespace, mode, bootstrap),
+        : undefined;
+    } catch {
+      throw new PinFailure("accepted_state_invalid");
+    }
+    const state = acceptedStateForPin(accepted, namespace, mode, bootstrap),
       directory = `.obsidian-publish/hosted/${namespace}`,
       stateFile = `${directory}/state.json`,
       sourceFile = `${directory}/source.json`;
@@ -106,11 +159,16 @@ export async function pinWorkflowSource({
           );
         return { version: 1, target: namespace, sourceUnavailable: true };
       }
-      throw new Error("Trusted source pin failed");
+      throw new PinFailure("source_pin_failed", pinProcessDetails(error));
     }
-    const pinned = JSON.parse(await readFile(sourceFile, "utf8"));
+    let pinned;
+    try {
+      pinned = JSON.parse(await readFile(sourceFile, "utf8"));
+    } catch {
+      throw new PinFailure("pinned_source_unreadable");
+    }
     if (!validPinnedSource(pinned))
-      throw new Error("Pinned source identity is invalid");
+      throw new PinFailure("pinned_source_invalid");
     const targetPath = `.obsidian-publish/hosted/${namespace}/pinned.json`;
     await saveProtectedReport(targetPath, pinned, targetWorkspace);
     if (process.env.GITHUB_OUTPUT)
@@ -128,7 +186,7 @@ export async function pinWorkflowSource({
       pinnedSource: targetPath,
     };
   } finally {
-    transport.close();
+    transport?.close();
   }
 }
 
@@ -154,7 +212,8 @@ if (
   process.argv[1] &&
   resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 )
-  await main().catch(() => {
+  await main().catch((error) => {
     console.error("Trusted private source pin failed");
+    console.error(JSON.stringify(pinFailureSummary(error)));
     process.exitCode = 1;
   });
