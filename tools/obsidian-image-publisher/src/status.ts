@@ -139,7 +139,13 @@ export function trackUnresolved(
   }
   if (report.status === "failed")
     for (const [key, issue] of prior)
-      if (!entries.has(key)) entries.set(key, issue);
+      if (
+        !entries.has(key) &&
+        ![...entries.values()].some(
+          (entry) => entry.path === issue.path && entry.reason === issue.reason,
+        )
+      )
+        entries.set(key, issue);
   const paths = new Map<string, number>();
   for (const issue of entries.values())
     paths.set(issue.path, (paths.get(issue.path) ?? 0) + 1);
@@ -159,7 +165,7 @@ export function mergedIssues(state: IssueState): MergedIssue[] {
       const id = JSON.stringify([issue.path, issue.reason]),
         found = merged.get(id);
       if (found) {
-        found.targets.push(target);
+        if (!found.targets.includes(target)) found.targets.push(target);
         found.all &&= issue.dismissed;
       } else
         merged.set(id, {

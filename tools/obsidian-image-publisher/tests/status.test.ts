@@ -699,4 +699,22 @@ test("a failed report keeps earlier notices and never announces recovery", () =>
     failed.notices.includes("staging: publication recovered"),
     false,
   );
+  const again = observePublication(
+    {
+      version: 1,
+      target: "staging",
+      source,
+      status: "failed",
+      issues: [
+        { ...metadata("9", "Blog/a.md", invalid) },
+        { key: fingerprint("d"), category: "deployment_failed" },
+      ],
+    },
+    source,
+    failed.status,
+    failed.issues,
+    failed.unresolved,
+  );
+  assert.equal(again.unresolved.staging?.length, 1);
+  assert.deepEqual(mergedIssues(again.unresolved)[0].targets, ["staging"]);
 });
