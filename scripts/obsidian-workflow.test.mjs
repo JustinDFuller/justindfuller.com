@@ -467,7 +467,7 @@ function concludes(block, context) {
     match = /^\$\{\{ (.*) \}\}$/.exec(condition);
   assert.ok(match, "conclude condition must be a single expression");
   const source = match[1]
-    .replace(/always\(\)/g, "true")
+    .replace(/!cancelled\(\)/g, "true")
     .replace(/!=/g, "!==")
     .replace(/(?<![!=])==(?!=)/g, "===")
     .replace(/inputs\.mode/g, "context.mode")
@@ -482,7 +482,7 @@ test("the final job needs prepare, build and deploy and runs even when build and
   assert.ok(block);
   assert.equal(field(block, "needs"), "[prepare, build, deploy]");
   const condition = field(block, "if");
-  assert.match(condition, /^\$\{\{ always\(\) && /);
+  assert.match(condition, /^\$\{\{ !cancelled\(\) && /);
   assert.ok(condition.includes("needs.prepare.result == 'success'"));
   assert.ok(condition.includes("needs.prepare.outputs.blocking != '0'"));
   assert.equal(condition.includes("needs.build.result"), false);

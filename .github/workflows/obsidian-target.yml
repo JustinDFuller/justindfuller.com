@@ -399,7 +399,7 @@ jobs:
           node control/scripts/deploy-obsidian-target.mjs "${args[@]}"
   conclude:
     needs: [prepare, build, deploy]
-    if: ${{ always() && inputs.mode != 'preview' && needs.prepare.result == 'success' && needs.prepare.outputs.blocking != '' && needs.prepare.outputs.blocking != '0' }}
+    if: ${{ !cancelled() && inputs.mode != 'preview' && needs.prepare.result == 'success' && needs.prepare.outputs.blocking != '' && needs.prepare.outputs.blocking != '0' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

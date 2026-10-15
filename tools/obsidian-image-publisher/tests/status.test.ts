@@ -526,7 +526,7 @@ test("report reads reject unbounded or control-character reasons and paths", () 
     { ...metadata("1", "Blog/a.md"), reason: "x".repeat(501) },
     { ...metadata("1", "Blog/a.md"), reason: "line\nbreak" },
     { ...metadata("1", "Blog/a.md"), reason: "" },
-    { ...metadata("1", "Blog/a.md"), path: "bad\u0000path" },
+    { ...metadata("1", "Blog/a.md"), path: "x".repeat(1025) },
   ])
     assert.throws(
       () => publicationNotices(rejected("staging", [issue]), {}),
@@ -637,12 +637,66 @@ test("notes whose names contain invisible formatting characters still report sta
     ),
     [path],
   );
-  assert.throws(
-    () =>
-      publicationNotices(
-        rejected("staging", [metadata("1", "Blog/a\nb.md", invalid)]),
-        {},
-      ),
-    /protected issue/,
+  const odd = observePublication(
+    rejected("staging", [metadata("1", "Blog/a\tb\nc.md", invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  assert.equal(odd.unresolved.staging?.[0].path, "Blog/a b c.md");
+  assert.equal(odd.status.staging?.status, "degraded");
+});
+
+test("a dismissal carries to another target that reports the same issue later", () => {
+  const first = observePublication(
+      rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+      source,
+      {},
+      {},
+      {},
+    ),
+    dismissed = dismissIssue(
+      first.unresolved,
+      mergedIssues(first.unresolved)[0].id,
+    ),
+    second = observePublication(
+      rejected("production", [metadata("1", "Blog/a.md", invalid)]),
+      source,
+      first.status,
+      first.issues,
+      dismissed,
+    ),
+    merged = mergedIssues(second.unresolved);
+  assert.equal(merged.length, 1);
+  assert.deepEqual(merged[0].targets, ["staging", "production"]);
+  assert.equal(merged[0].dismissed, true);
+});
+
+test("a failed report keeps earlier notices and never announces recovery", () => {
+  const first = observePublication(
+      rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+      source,
+      {},
+      {},
+      {},
+    ),
+    failed = observePublication(
+      {
+        version: 1,
+        target: "staging",
+        source,
+        status: "failed",
+        issues: [{ key: fingerprint("d"), category: "deployment_failed" }],
+      },
+      source,
+      first.status,
+      first.issues,
+      first.unresolved,
+    );
+  assert.equal(failed.unresolved.staging?.length, 1);
+  assert.equal(
+    failed.notices.includes("staging: publication recovered"),
+    false,
   );
 });

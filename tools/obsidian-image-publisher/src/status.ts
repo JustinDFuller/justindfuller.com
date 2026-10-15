@@ -47,10 +47,10 @@ const validText = (value: unknown, limit: number): value is string =>
   !controlCharacters.test(value);
 
 const validPath = (value: unknown): value is string =>
-  typeof value === "string" &&
-  value.length > 0 &&
-  value.length <= maxPath &&
-  !/\p{Cc}/u.test(value);
+  typeof value === "string" && value.length > 0 && value.length <= maxPath;
+
+const displayPath = (value: string): string =>
+  value.replace(/\p{Cc}+/gu, " ").trim() || "an unknown note";
 
 const replacesIssues = (report: PublicationReport): boolean =>
   report.status === "verified" ||
@@ -111,19 +111,35 @@ export function trackUnresolved(
   const prior = new Map(
       (previous[report.target] ?? []).map((issue) => [issue.key, issue]),
     ),
-    entries = new Map<string, UnresolvedIssue>();
+    entries = new Map<string, UnresolvedIssue>(),
+    elsewhere = targets
+      .filter((target) => target !== report.target)
+      .flatMap((target) => previous[target] ?? [])
+      .filter((issue) => issue.dismissed);
   for (const issue of report.issues) {
     if (!isBlockingCategory(issue.category) || entries.has(issue.key)) continue;
     const reason = issue.reason ?? issue.category.replaceAll("_", " "),
+      path = displayPath(issue.path ?? ""),
       before = prior.get(issue.key);
     entries.set(issue.key, {
       key: issue.key,
       category: issue.category,
-      path: issue.path ?? "an unknown note",
+      path,
       reason,
-      dismissed: before?.dismissed === true && before.reason === reason,
+      dismissed:
+        before !== undefined
+          ? before.dismissed && before.reason === reason
+          : elsewhere.some(
+              (other) =>
+                other.key === issue.key &&
+                other.path === path &&
+                other.reason === reason,
+            ),
     });
   }
+  if (report.status === "failed")
+    for (const [key, issue] of prior)
+      if (!entries.has(key)) entries.set(key, issue);
   const paths = new Map<string, number>();
   for (const issue of entries.values())
     paths.set(issue.path, (paths.get(issue.path) ?? 0) + 1);
