@@ -54,7 +54,9 @@ async function loadPublisher(t: TestContext) {
                     this.duration = duration;
                     this.hidden = false;
                     this.listeners = [];
-                    this.containerEl = { addEventListener: (type, listener) => this.listeners.push(listener) };
+                    const element = { addEventListener: (type, listener) => this.listeners.push(listener) };
+                    if (globalThis.__publisherTestLegacyNotice) this.noticeEl = element;
+                    else this.containerEl = element;
                     globalThis.__publisherTestNotices.push(message);
                     globalThis.__publisherTestNoticeObjects?.push(this);
                   }
@@ -551,4 +553,22 @@ test("unresolved issues saved before a restart show their notices again and unlo
   assert.equal(h.noticeObjects.length, 1);
   h.plugin.onunload();
   assert.equal(h.open().length, 0);
+});
+
+test("older Obsidian versions without a notice container still dismiss through the notice element", async (t) => {
+  (
+    globalThis as { __publisherTestLegacyNotice?: boolean }
+  ).__publisherTestLegacyNotice = true;
+  t.after(() => {
+    delete (globalThis as { __publisherTestLegacyNotice?: boolean })
+      .__publisherTestLegacyNotice;
+  });
+  const h = await issueHarness(t);
+  h.publish("staging", [h.rejection("a")]);
+  h.publish("production", []);
+  await h.plugin.readReports();
+  assert.equal(h.open().length, 1);
+  h.open()[0].click();
+  assert.equal(h.open().length, 0);
+  assert.equal(h.plugin.runtime.unresolved?.staging?.[0].dismissed, true);
 });

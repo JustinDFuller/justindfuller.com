@@ -413,5 +413,5 @@ jobs:
             echo "::error title=Obsidian content rejected::${OBSIDIAN_TARGET}: rejected content count is unavailable"
             exit 1
           fi
-          echo "::error title=Obsidian content rejected::${OBSIDIAN_TARGET}: ${OBSIDIAN_BLOCKING} rejected file(s) are still serving a previous version or are unpublished. Valid content was published first. Categories: ${OBSIDIAN_CATEGORIES}"
+          echo "::error title=Obsidian content rejected::${OBSIDIAN_TARGET}: ${OBSIDIAN_BLOCKING} rejected file(s) are still serving a previous version or are unpublished. Categories: ${OBSIDIAN_CATEGORIES}"
           exit 1

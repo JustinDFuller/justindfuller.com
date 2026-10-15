@@ -46,6 +46,12 @@ const validText = (value: unknown, limit: number): value is string =>
   value.length <= limit &&
   !controlCharacters.test(value);
 
+const validPath = (value: unknown): value is string =>
+  typeof value === "string" &&
+  value.length > 0 &&
+  value.length <= maxPath &&
+  !/\p{Cc}/u.test(value);
+
 const replacesIssues = (report: PublicationReport): boolean =>
   report.status === "verified" ||
   ((report.status === "degraded" || report.status === "failed") &&
@@ -69,7 +75,7 @@ export function publicationNotices(
       if (
         !/^[a-f0-9]{64}$/.test(issue.key) ||
         !/^[a-z_]+$/.test(issue.category) ||
-        (issue.path !== undefined && !validText(issue.path, maxPath)) ||
+        (issue.path !== undefined && !validPath(issue.path)) ||
         (issue.reason !== undefined && !validText(issue.reason, maxReason))
       )
         throw new Error("Invalid protected issue");
@@ -100,6 +106,8 @@ export function trackUnresolved(
   previous: IssueState,
 ): IssueState {
   if (!replacesIssues(report)) return previous;
+  if (report.issues.some((issue) => issue.category === "source_degraded"))
+    return previous;
   const prior = new Map(
       (previous[report.target] ?? []).map((issue) => [issue.key, issue]),
     ),
@@ -116,7 +124,16 @@ export function trackUnresolved(
       dismissed: before?.dismissed === true && before.reason === reason,
     });
   }
-  return { ...previous, [report.target]: [...entries.values()] };
+  const paths = new Map<string, number>();
+  for (const issue of entries.values())
+    paths.set(issue.path, (paths.get(issue.path) ?? 0) + 1);
+  return {
+    ...previous,
+    [report.target]: [...entries.values()].filter(
+      (issue) =>
+        issue.category !== "last_known_good" || paths.get(issue.path) === 1,
+    ),
+  };
 }
 
 export function mergedIssues(state: IssueState): MergedIssue[] {
@@ -167,7 +184,7 @@ export function readStoredIssues(value: unknown): IssueState {
         issue !== null &&
         /^[a-f0-9]{64}$/.test(issue.key) &&
         /^[a-z_]+$/.test(issue.category) &&
-        validText(issue.path, maxPath) &&
+        validPath(issue.path) &&
         validText(issue.reason, maxReason) &&
         typeof issue.dismissed === "boolean",
     );
@@ -204,7 +221,14 @@ export function observePublication(
   notices: string[];
 } {
   const observed = publicationNotices(report, issues),
-    tracked = trackUnresolved(report, unresolved);
+    tracked = trackUnresolved(report, unresolved),
+    recovered = [...observed.notices];
+  if (
+    (unresolved[report.target]?.length ?? 0) > 0 &&
+    tracked[report.target]?.length === 0 &&
+    !recovered.includes(`${report.target}: publication recovered`)
+  )
+    recovered.push(`${report.target}: publication recovered`);
   if (revision && report.source !== revision)
     return (report.status === "failed" || report.status === "degraded") &&
       report.issues.length > 0
@@ -212,7 +236,7 @@ export function observePublication(
           status: previous,
           issues: observed.state,
           unresolved: tracked,
-          notices: observed.notices,
+          notices: recovered,
         }
       : { status: previous, issues, unresolved, notices: [] };
   const old = previous[report.target],
@@ -220,7 +244,7 @@ export function observePublication(
       ...previous,
       [report.target]: { source: report.source, status: report.status },
     };
-  const notices = [...observed.notices];
+  const notices = [...recovered];
   if (old?.source !== report.source || old?.status !== report.status)
     notices.push(`${report.target}: publication ${report.status}`);
   return { status, issues: observed.state, unresolved: tracked, notices };

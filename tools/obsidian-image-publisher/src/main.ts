@@ -396,7 +396,7 @@ export default class CloudflarePublisher extends Plugin {
       if (shown?.shown === message) continue;
       shown?.notice.hide();
       const notice = new Notice(`Publication issue: ${message}`, 0);
-      notice.containerEl.addEventListener("click", () =>
+      (notice.containerEl ?? notice.noticeEl).addEventListener("click", () =>
         this.dismissIssue(issue.id),
       );
       this.issueNotices.set(issue.id, { notice, shown: message });

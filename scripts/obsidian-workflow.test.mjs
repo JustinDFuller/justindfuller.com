@@ -462,15 +462,19 @@ function stepScript(block, name) {
   return body.join("\n");
 }
 
-function concludes(block, outputs) {
-  const condition = field(block, "if");
-  return (
-    condition.includes("always()") &&
-    outputs.mode !== "preview" &&
-    outputs.prepare === "success" &&
-    outputs.blocking !== "" &&
-    outputs.blocking !== "0"
-  );
+function concludes(block, context) {
+  const condition = field(block, "if"),
+    match = /^\$\{\{ (.*) \}\}$/.exec(condition);
+  assert.ok(match, "conclude condition must be a single expression");
+  const source = match[1]
+    .replace(/always\(\)/g, "true")
+    .replace(/!=/g, "!==")
+    .replace(/(?<![!=])==(?!=)/g, "===")
+    .replace(/inputs\.mode/g, "context.mode")
+    .replace(/needs\.prepare\.result/g, "context.prepare")
+    .replace(/needs\.prepare\.outputs\.blocking/g, "context.blocking");
+  assert.equal(/needs\.|inputs\.|github\.|secrets\./.test(source), false);
+  return new Function("context", `return (${source});`)(context);
 }
 
 test("the final job needs prepare, build and deploy and runs even when build and deploy are skipped or fail", () => {
@@ -601,6 +605,18 @@ test("a run whose only issue is an image that is not ready passes", () => {
   assert.equal(
     concludes(block, { mode: "staging", prepare: "success", blocking: "" }),
     false,
+  );
+  assert.equal(
+    concludes(block, { mode: "staging", prepare: "success", blocking: "3" }),
+    true,
+  );
+  assert.equal(
+    concludes(block, {
+      mode: "production",
+      prepare: "success",
+      blocking: "3",
+    }),
+    true,
   );
   assert.equal(
     concludes(block, { mode: "staging", prepare: "failure", blocking: "1" }),

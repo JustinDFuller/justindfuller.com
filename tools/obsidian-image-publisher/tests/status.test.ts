@@ -306,7 +306,7 @@ test("non-blocking issues keep their transient notice and create no unresolved e
     {},
     {},
   );
-  assert.deepEqual(observed.unresolved.staging, []);
+  assert.deepEqual(mergedIssues(observed.unresolved), []);
   assert.ok(observed.notices.includes("staging: image_not_ready"));
 });
 
@@ -537,5 +537,112 @@ test("report reads reject unbounded or control-character reasons and paths", () 
       rejected("staging", [metadata("1", "Blog/a.md", "x".repeat(500))]),
       {},
     ),
+  );
+});
+
+test("a source outage report leaves unresolved issues and dismissals in place", () => {
+  let state = trackUnresolved(
+    rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+    {},
+  );
+  state = dismissIssue(state, mergedIssues(state)[0].id);
+  for (const category of ["source_degraded"]) {
+    const outage = observePublication(
+      rejected("staging", [{ key: fingerprint("9"), category }]),
+      source,
+      {},
+      {},
+      state,
+    );
+    assert.deepEqual(outage.unresolved, state);
+    assert.equal(
+      outage.notices.includes("staging: publication recovered"),
+      false,
+    );
+  }
+  const back = trackUnresolved(
+    rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+    state,
+  );
+  assert.equal(mergedIssues(back)[0].dismissed, true);
+});
+
+test("publication recovered is reported when the last blocking issue clears even if other issues remain", () => {
+  const rejectedNote = observePublication(
+    rejected("staging", [metadata("1", "Blog/a.md", invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  const fixed = observePublication(
+    rejected("staging", [
+      { key: fingerprint("2"), category: "image_not_ready", path: "Blog/b.md" },
+    ]),
+    source,
+    rejectedNote.status,
+    rejectedNote.issues,
+    rejectedNote.unresolved,
+  );
+  assert.deepEqual(mergedIssues(fixed.unresolved), []);
+  assert.equal(
+    fixed.notices.filter(
+      (notice) => notice === "staging: publication recovered",
+    ).length,
+    1,
+  );
+});
+
+test("a rejected note with a retained previous version is one issue, but a lone fallback still counts", () => {
+  const both = trackUnresolved(
+    rejected("staging", [
+      metadata("1", "Blog/a.md", invalid),
+      {
+        key: fingerprint("2"),
+        category: "last_known_good",
+        path: "Blog/a.md",
+        reason: "retaining eligible accepted revision",
+      },
+      {
+        key: fingerprint("3"),
+        category: "last_known_good",
+        path: "Blog/b.md",
+        reason: "retaining eligible accepted revision",
+      },
+    ]),
+    {},
+  );
+  assert.deepEqual(
+    both.staging?.map((issue) => [issue.path, issue.category]),
+    [
+      ["Blog/a.md", "markdown_metadata"],
+      ["Blog/b.md", "last_known_good"],
+    ],
+  );
+});
+
+test("notes whose names contain invisible formatting characters still report status", () => {
+  const path = "Blog/\u{1F468}\u200D\u{1F4BB} notes\u00AD.md";
+  const observed = observePublication(
+    rejected("staging", [metadata("1", path, invalid)]),
+    source,
+    {},
+    {},
+    {},
+  );
+  assert.equal(observed.unresolved.staging?.[0].path, path);
+  assert.deepEqual(
+    readStoredIssues({ staging: observed.unresolved.staging }).staging?.map(
+      (issue) => issue.path,
+    ),
+    [path],
+  );
+  assert.throws(
+    () =>
+      publicationNotices(
+        rejected("staging", [metadata("1", "Blog/a\nb.md", invalid)]),
+        {},
+      ),
+    /protected issue/,
   );
 });
