@@ -24,8 +24,11 @@
 
 ## 5. End-to-end proof
 
-- [ ] 5.1 With a throwaway nonprod note holding an invalid `environment` beside a valid edit, verify the valid edit deploys to staging, the run is red, the public summary shows only counts and categories, and Obsidian shows the persistent notice; record screenshots in the PR description
-- [ ] 5.2 Fix the throwaway note and verify the next run is green, the notice clears with "publication recovered", and the status bar item disappears; confirm public logs contain no filename, slug or reason from the throwaway note
+Proof is gathered by driving the real Obsidian app with Claude Code computer use and is recorded in `qa.md` in this change folder. Screenshots are saved as files under `qa/` in this change folder, referenced from `qa.md`, and repeated in the PR description. Screenshots are cropped to the notice, status bar item and details view so that no vault content other than the throwaway note appears. Before a screenshot is committed or added to the PR description, it is inspected to confirm it shows nothing private, such as other note names, vault paths, account details or other apps; any screenshot that does is recaptured, not redacted. Run conclusions and public log checks are gathered with the `gh` CLI and recorded as text with their run IDs.
+
+- [ ] 5.1 With a throwaway nonprod note holding an invalid `environment` beside a valid edit, verify the valid edit deploys to staging, the run is red, and the public summary shows only counts and categories; use computer use in Obsidian to verify the persistent notice names the note, reason and target, survives a later poll without repeating, and that the status bar item shows the count and reopens the details; record each result with screenshots and run IDs in `qa.md`
+- [ ] 5.2 Fix the throwaway note and verify the next run is green; use computer use in Obsidian to verify the notice clears with "publication recovered" and the status bar item disappears; confirm public logs contain no filename, slug or reason from the throwaway note; record each result with screenshots and run IDs in `qa.md`
+- [ ] 5.3 Complete `qa.md` with the commit, run IDs, timestamps, each check's outcome including any failed attempt, and what the evidence does not prove, then copy its screenshots and summary into the PR description
 
 ## Workflow follow-up
 
