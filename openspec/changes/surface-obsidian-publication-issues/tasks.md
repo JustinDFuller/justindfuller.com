@@ -2,9 +2,9 @@
 
 ## 1. Retain readable reasons in the protected report
 
-- [ ] 1.1 Add the issue message to the fields kept by `protectedPublicationReport` in `scripts/record-obsidian-publication.mjs`, capped in length, and verify with a test in `scripts/record-obsidian-publication.test.mjs` that the report contains the reason and stays under the size limit
-- [ ] 1.2 Validate the reason as bounded plain text in `scripts/obsidian-reports.mjs`, accepting older reports that lack it, and verify in `scripts/obsidian-reports.test.mjs` that oversize or control-character reasons are rejected and old reports still load
-- [ ] 1.3 Verify in `scripts/obsidian-publication-privacy.test.mjs` that the reason never reaches any public output path (logs, summaries, artifacts, comments)
+- [x] 1.1 Add the issue message to the fields kept by `protectedPublicationReport` in `scripts/record-obsidian-publication.mjs`, capped in length, and verify with a test in `scripts/record-obsidian-publication.test.mjs` that the report contains the reason and stays under the size limit
+- [x] 1.2 Validate the reason as bounded plain text in `scripts/obsidian-reports.mjs`, accepting older reports that lack it, and verify in `scripts/obsidian-reports.test.mjs` that oversize or control-character reasons are rejected and old reports still load
+- [x] 1.3 Verify in `scripts/obsidian-publication-privacy.test.mjs` that the reason never reaches any public output path (logs, summaries, artifacts, comments)
 
 ## 2. Sanitized public run output
 

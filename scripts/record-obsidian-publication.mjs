@@ -17,6 +17,23 @@ import {
 import { runPublicationCommand } from "./obsidian-process.mjs";
 
 const fingerprint = /^[a-f0-9]{64}$/;
+export const maxIssueReason = 500;
+const controlCharacters = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u;
+export const validIssueReason = (reason) =>
+  typeof reason === "string" &&
+  reason.length > 0 &&
+  reason.length <= maxIssueReason &&
+  !controlCharacters.test(reason);
+const issueReason = (message) => {
+  if (typeof message !== "string") return undefined;
+  const reason = message
+    .replace(/[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]+/gu, " ")
+    .replace(/ {2,}/g, " ")
+    .trim()
+    .slice(0, maxIssueReason)
+    .trim();
+  return reason || undefined;
+};
 export function publicPublicationReceipt(
   candidate,
   result,
@@ -152,6 +169,7 @@ export function protectedPublicationReport(
         !/^[a-z_]+$/.test(item.category ?? "")
       )
         throw new Error("Invalid protected issue identity");
+      const reason = issueReason(item.message ?? item.reason);
       return {
         ...select(item, [
           "key",
@@ -163,6 +181,7 @@ export function protectedPublicationReport(
           "fallback",
           "observed_at",
         ]),
+        ...(reason ? { reason } : {}),
         key: fingerprint.test(item.key)
           ? item.key
           : createHash("sha256").update(item.key).digest("hex"),
