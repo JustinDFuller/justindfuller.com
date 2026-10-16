@@ -8,7 +8,7 @@
 
 ## 2. Proof
 
-- [ ] 2.1 After the change is merged to the default branch, re-run the `private-preview / prepare` job on an open pull request, read the reason from the public log, and record it in `qa.md` with the run ID
+- [x] 2.1 After the change is merged to the default branch, re-run the `private-preview / prepare` job on an open pull request, read the reason from the public log, and record it in `qa.md` with the run ID
 
 ## Workflow follow-up
 
