@@ -6,11 +6,11 @@ No page on the site declares an `og:image`. The shared head template (`meta.temp
 
 ## What Changes
 
-- Every page gets an `og:image` tag.
-- A programming post picks its image in this order: the post's `image:` frontmatter, then the first image in the post body, then the site icon `/image/icon.png`. Every other page uses the site icon.
+- A page that has a preview image declares it with an `og:image` tag.
+- A programming post picks its image in this order: the post's `image:` frontmatter, then the first image in the post body. A post with neither, and every other page, declares no preview image and keeps its current head tags.
 - Relative image paths are written as absolute `https://www.justindfuller.com/...` URLs, because crawlers require absolute URLs. Media URLs from `media.justindfuller.com` are already absolute and are used as-is.
 - `og:image:alt` is written when the chosen image has alt text in the post body.
-- `twitter:card` is `summary_large_image` when a post image is used and `summary` when the 180×180 site icon is the fallback.
+- `twitter:card` is `summary_large_image` when a post image is declared. A page with no preview image gets no `twitter:card`.
 - Programming posts accept an optional `image:` frontmatter field.
   - Obsidian posts write it like body image references (for example `image: image/1-high-level-workflow.png`). It is resolved to the same public media URL as a body image.
   - Git-backed posts write a site path (for example `/image/programming/example.png`).
@@ -41,3 +41,4 @@ No page on the site declares an `og:image`. The shared head template (`meta.temp
 - `og:description`, `og:url`, and `og:type`. LinkedIn and X do not need them for a cover image, and `og:url` would have to pick between the apex and `www` hosts, which are both served today.
 - Per-section `image:` support for poems, stories, and other content types.
 - Generating images automatically.
+- A default preview image for pages without one. The 180×180 site icon is likely too small for some platforms, so those pages keep today's text-only preview.

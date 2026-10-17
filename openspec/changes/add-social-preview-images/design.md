@@ -11,7 +11,6 @@ See proposal.md for why. Current state:
 - Body images are rendered by `renderer/image.go` as `<figure><img src alt></figure>`. Obsidian image URLs are `https://media.justindfuller.com/<key>` in production and the origin-relative `/__obsidian/media/<key>` in staging, PR previews, and local builds.
 - Every Obsidian image lookup goes through a `resolve` callback that records which images a post uses. Public promotion (`ValidateImagePromotion`) only authorizes images recorded this way.
 - `Entry` is serialized into the prepared Obsidian document, whose digest is verified on load.
-- `/image/icon.png` is 180×180 and already served by the site.
 
 ## Goals / Non-Goals
 
@@ -52,7 +51,7 @@ See proposal.md for why. Current state:
 
 ### Absolute URLs and cards are decided in Go, not the template
 
-`site/site.go` gains a small helper used wherever it builds `data[T]` for a programming post. It picks the image in spec order and returns the absolute URL, the alt text, and whether the icon fallback was used. `data[T]` gains `Image` and `ImageAlt` strings plus an `ImageIsIcon` flag (an empty `Image` means the site icon), and `meta.template.html` renders `og:image`, `og:image:alt` (only when non-empty), and `twitter:card` from them. All other pages leave the fields empty and get the icon.
+`site/site.go` gains a small helper used wherever it builds `data[T]` for a programming post. It picks the image in spec order and returns the absolute URL and the alt text. `data[T]` gains `Image` and `ImageAlt` strings, and `meta.template.html` renders `og:image`, `og:image:alt` (only when non-empty), and `twitter:card` from them. An empty `Image` means no preview tags are rendered. All other pages leave the fields empty, so their heads do not change.
 
 - Why: the template stays declarative, and URL handling is unit-testable in Go.
 - Absolutizing: a value starting with `/` is prefixed with `https://www.justindfuller.com`; a value starting with `https://` is used as-is; anything else is ignored. The `www` host is the one the author shares, and it serves every path.
@@ -66,6 +65,7 @@ See the proposal's Non-Goals. Existing tags are unchanged, which a spec scenario
 
 - [Private builds advertise a non-crawlable image URL] In staging, PR previews, and local builds, Obsidian image paths are `/__obsidian/media/...`, so the absolutized `og:image` points at the production host where that path does not exist. → Acceptable: those environments are behind access control and are not crawled, and production is the only environment whose tags matter. Proof for production is taken from the deployed page.
 - [Wide images may be cropped] The example post's image is about 2.56:1 and LinkedIn prefers about 1.91:1. → Out of scope; the author chooses the image.
+- [A page without an image gets a text-only preview] Image-less posts and all non-programming pages declare nothing, so a crawler may still guess from page markup. → Accepted: the 180×180 site icon is likely too small for some platforms. Add `image:` to any post that should have a cover.
 - [Cached previews] Platforms cache previews for days. → The proof step runs LinkedIn Post Inspector against the live URL to force a re-scrape; a post that was already shared may still need a new share.
 - [A Git-backed `image:` typo yields a broken preview] No existence check is made for Git-backed values. → Mitigated by PR review and by the rendered-tag proof step.
 - [Entry JSON shape changes] → `omitempty` keeps existing digests stable; tests cover a post with and without `image`.

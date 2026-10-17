@@ -2,18 +2,18 @@
 
 ## Purpose
 
-Defines how every page of the site declares a social preview image, so link previews on LinkedIn, X, Slack, and similar sites show a cover image instead of relying on the crawler's guess.
+Defines how a page of the site declares a social preview image when it has one, so link previews on LinkedIn, X, Slack, and similar sites show a cover image instead of relying on the crawler's guess.
 
 ## ADDED Requirements
 
-### Requirement: Every page declares a social preview image
+### Requirement: A page with an image declares it as its social preview image
 
-Every rendered page SHALL include exactly one `og:image` tag whose value is an absolute `https` URL. A relative image path SHALL be written as an absolute URL on `https://www.justindfuller.com`. An image already served from `https://media.justindfuller.com` SHALL be used unchanged.
+A programming post that has a chosen preview image SHALL include exactly one `og:image` tag whose value is an absolute `https` URL. A relative image path SHALL be written as an absolute URL on `https://www.justindfuller.com`. An image already served from `https://media.justindfuller.com` SHALL be used unchanged. A page with no chosen preview image SHALL NOT include an `og:image` tag.
 
-#### Scenario: A page has no post image
+#### Scenario: A page is not a programming post
 
 - **WHEN** a page that is not a programming post is rendered
-- **THEN** it SHALL declare `https://www.justindfuller.com/image/icon.png` as its `og:image`
+- **THEN** it SHALL NOT declare an `og:image`
 
 #### Scenario: A relative path is declared
 
@@ -27,7 +27,7 @@ Every rendered page SHALL include exactly one `og:image` tag whose value is an a
 
 ### Requirement: A programming post chooses its preview image in a fixed order
 
-A programming post SHALL use the first available of: its valid `image` metadata value, then the first image in its rendered body, then the site icon. The same choice SHALL be made in every environment that renders the post.
+A programming post SHALL use the first available of: its valid `image` metadata value, then the first image in its rendered body. A post with neither SHALL have no preview image. The same choice SHALL be made in every environment that renders the post.
 
 #### Scenario: The post sets an image
 
@@ -42,7 +42,7 @@ A programming post SHALL use the first available of: its valid `image` metadata 
 #### Scenario: The post has no images
 
 - **WHEN** a post has no `image` metadata value and no body images
-- **THEN** the site icon SHALL be its `og:image`
+- **THEN** the post SHALL NOT declare an `og:image`
 
 #### Scenario: Image-like text is only code
 
@@ -52,11 +52,11 @@ A programming post SHALL use the first available of: its valid `image` metadata 
 #### Scenario: The `image` value is unusable
 
 - **WHEN** a post's `image` value cannot be resolved to a usable image
-- **THEN** the post SHALL fall back to its first body image, or to the site icon if it has none, and SHALL remain published
+- **THEN** the post SHALL fall back to its first body image, or SHALL NOT declare an `og:image` if it has none, and SHALL remain published
 
 ### Requirement: Companion tags describe the preview image
 
-When the chosen image has alt text in the post body, the page SHALL declare it as `og:image:alt`. Each page SHALL declare `twitter:card` as `summary_large_image` when a post image is used, and as `summary` when the site icon is used.
+When the chosen image has alt text in the post body, the page SHALL declare it as `og:image:alt`. A page that declares an `og:image` SHALL declare `twitter:card` as `summary_large_image`. A page that declares no `og:image` SHALL NOT declare `og:image:alt` or `twitter:card`.
 
 #### Scenario: A body image with alt text is chosen
 
@@ -65,13 +65,18 @@ When the chosen image has alt text in the post body, the page SHALL declare it a
 
 #### Scenario: The chosen image has no alt text
 
-- **WHEN** the chosen image has no alt text, such as an `image` value not used in the body or the site icon
+- **WHEN** the chosen image has no alt text, such as an `image` value not used in the body
 - **THEN** the page SHALL NOT declare `og:image:alt`
 
-#### Scenario: The site icon is used
+#### Scenario: A preview image is declared
 
-- **WHEN** the site icon is the chosen image
-- **THEN** the page SHALL declare `twitter:card` as `summary`
+- **WHEN** a page declares an `og:image`
+- **THEN** the page SHALL declare `twitter:card` as `summary_large_image`
+
+#### Scenario: No preview image is declared
+
+- **WHEN** a page has no chosen preview image
+- **THEN** the page SHALL NOT declare `og:image`, `og:image:alt`, or `twitter:card`
 
 ### Requirement: Existing page metadata is unchanged
 
