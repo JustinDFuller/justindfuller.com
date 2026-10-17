@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -240,5 +241,216 @@ func TestSnapshotPinnedIntegrityAndMetadataOnlyImages(t *testing.T) {
 		if DecodeStrict([]byte(body), &snapshot) == nil {
 			t.Fatal("ambiguous control document accepted")
 		}
+	}
+}
+
+func imagePost(environment, slug string, draft bool, image, body string) []byte {
+	return fmt.Appendf(nil, "---\nenvironment: %s\nsection: programming\nslug: %s\ntitle: Example\ndate: 2026-09-20\ndraft: %t\nsync: add\ntags: [programming]\nimage: %s\n---\n%s", environment, slug, draft, image, body)
+}
+
+func testImage(seed string) ImageRecord {
+	hash := strings.Repeat(seed, 64)
+	return ImageRecord{SHA256: hash, MD5: strings.Repeat("b", 32), Size: 17, ContentType: "image/png", Key: "v1/" + hash + ".png"}
+}
+
+func mediaPrefix(mode Mode) string {
+	if mode == ModeProduction {
+		return "https://media.justindfuller.com/"
+	}
+	return "/__obsidian/media/"
+}
+
+func TestMetadataImageResolvesLikeBodyImage(t *testing.T) {
+	record := testImage("a")
+	images := map[string]ImageRecord{"image/cover.png": record, "image/nested/deep.png": testImage("c")}
+	for _, reference := range []string{"image/cover.png", "cover.png", "./image/cover.png"} {
+		for _, mode := range []Mode{ModeProduction, ModeStaging, ModePreview, ModeLocal} {
+			t.Run(string(mode)+"/"+reference, func(t *testing.T) {
+				result := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, reference, "Body only")}, images), State{}, nil, mode)
+				if len(result.Entries) != 1 || len(result.Issues) != 0 {
+					t.Fatalf("entries=%d issues=%v", len(result.Entries), result.Issues)
+				}
+				if want := mediaPrefix(mode) + record.Key; result.Entries[0].Image != want {
+					t.Fatalf("Image=%q want %q", result.Entries[0].Image, want)
+				}
+				if strings.Contains(string(result.Entries[0].Content), "<img") {
+					t.Fatal("metadata image leaked into the body")
+				}
+			})
+		}
+	}
+	nested := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, "image/nested/deep.png", "Body")}, images), State{}, nil, ModeProduction)
+	if len(nested.Entries) != 1 || nested.Entries[0].Image != mediaPrefix(ModeProduction)+images["image/nested/deep.png"].Key {
+		t.Fatalf("nested path not resolved: %v", nested.Issues)
+	}
+}
+
+func TestMetadataImageSharedWithBodyUsesOneRecord(t *testing.T) {
+	record := testImage("a")
+	images := map[string]ImageRecord{"image/cover.png": record}
+	result := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, "image/cover.png", "![Cover alt](image/cover.png)")}, images), State{}, nil, ModeProduction)
+	if len(result.Entries) != 1 || len(result.Images) != 1 || result.Entries[0].Image != mediaPrefix(ModeProduction)+record.Key {
+		t.Fatalf("entries=%d images=%d issues=%v", len(result.Entries), len(result.Images), result.Issues)
+	}
+	if !strings.Contains(string(result.Entries[0].Content), `src="`+result.Entries[0].Image+`"`) {
+		t.Fatal("body image and metadata image resolved to different URLs")
+	}
+}
+
+func TestMetadataImageWithoutValueLeavesImageEmpty(t *testing.T) {
+	for _, value := range []string{`""`, `"   "`} {
+		result := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, value, "Body")}, nil), State{}, nil, ModeProduction)
+		if len(result.Entries) != 1 || result.Entries[0].Image != "" || len(result.Issues) != 0 {
+			t.Fatalf("blank %s: entries=%d issues=%v", value, len(result.Entries), result.Issues)
+		}
+	}
+	result := prepare(t, loaded(map[string][]byte{"p.md": post("production", "post", "add", "Body", false)}, nil), State{}, nil, ModeProduction)
+	if len(result.Entries) != 1 || result.Entries[0].Image != "" {
+		t.Fatal("a post without image gained one")
+	}
+}
+
+func TestMetadataImageMustBeTextAndFailsOnlyThatFile(t *testing.T) {
+	record := testImage("a")
+	images := map[string]ImageRecord{"image/cover.png": record}
+	for _, value := range []string{"[image/cover.png]", "5", "true", "{path: image/cover.png}", "null"} {
+		t.Run(value, func(t *testing.T) {
+			source := loaded(map[string][]byte{"bad.md": imagePost("production", "bad", false, value, "Bad body"), "good.md": imagePost("production", "good", false, "image/cover.png", "Good body")}, images)
+			result := prepare(t, source, State{}, nil, ModeProduction)
+			if len(result.Entries) != 1 || result.Entries[0].Slug != "good" {
+				t.Fatalf("entries=%v", result.Entries)
+			}
+			if len(result.Issues) != 1 || result.Issues[0].Category != "markdown_metadata" || result.Issues[0].Path != "bad.md" {
+				t.Fatalf("issues=%v", result.Issues)
+			}
+		})
+	}
+}
+
+func TestOtherUnknownMetadataKeysAreStillRejected(t *testing.T) {
+	for _, key := range []string{"cover", "images", "og_image", "Image"} {
+		raw := fmt.Appendf(nil, "---\nenvironment: production\nsection: programming\nslug: post\ntitle: Example\ndate: 2026-09-20\ndraft: false\nsync: add\ntags: [programming]\n%s: image/cover.png\n---\nBody", key)
+		result := prepare(t, loaded(map[string][]byte{"p.md": raw}, map[string]ImageRecord{"image/cover.png": testImage("a")}), State{}, nil, ModeProduction)
+		if len(result.Entries) != 0 || len(result.Issues) != 1 || result.Issues[0].Category != "markdown_metadata" {
+			t.Fatalf("key %q: entries=%d issues=%v", key, len(result.Entries), result.Issues)
+		}
+	}
+}
+
+func TestMetadataImageProblemsDropOnlyTheImage(t *testing.T) {
+	record := testImage("a")
+	tests := []struct {
+		name      string
+		reference string
+		images    map[string]ImageRecord
+		notReady  bool
+		category  string
+	}{
+		{name: "missing", reference: "image/nope.png", images: map[string]ImageRecord{"image/cover.png": record}, category: "image_not_found"},
+		{name: "missing bare name", reference: "nope.png", images: map[string]ImageRecord{"image/cover.png": record}, category: "image_not_found"},
+		{name: "ambiguous", reference: "cover.png", images: map[string]ImageRecord{"image/one/cover.png": record, "image/two/cover.png": record}, category: "image_ambiguous"},
+		{name: "unsupported type", reference: "image/cover.gif", images: map[string]ImageRecord{"image/cover.png": record}, category: "image_validation"},
+		{name: "absolute url", reference: "https://example.com/cover.png", images: map[string]ImageRecord{"image/cover.png": record}, category: "image_reference_outside_source"},
+		{name: "absolute path", reference: "/image/cover.png", images: map[string]ImageRecord{"image/cover.png": record}, category: "image_reference_outside_source"},
+		{name: "traversal", reference: "../cover.png", images: map[string]ImageRecord{"image/cover.png": record}, category: "image_reference_outside_source"},
+		{name: "not ready", reference: "image/cover.png", images: map[string]ImageRecord{"image/cover.png": record}, notReady: true, category: "image_not_ready"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			source := loaded(map[string][]byte{"p.md": imagePost("production", "post", false, test.reference, "Body text")}, test.images)
+			if test.notReady {
+				source.Ready[record.Key] = false
+			}
+			result := prepare(t, source, State{}, nil, ModeProduction)
+			if len(result.Entries) != 1 || result.Entries[0].Slug != "post" {
+				t.Fatalf("post was not published: %v", result.Issues)
+			}
+			if result.Entries[0].Image != "" {
+				t.Fatalf("Image=%q want empty", result.Entries[0].Image)
+			}
+			if !strings.Contains(string(result.Entries[0].Content), "Body text") {
+				t.Fatal("post body lost")
+			}
+			if len(result.Issues) != 1 {
+				t.Fatalf("issues=%v", result.Issues)
+			}
+			issue := result.Issues[0]
+			if issue.Category != test.category || issue.Route != "post" || issue.Reference != test.reference || issue.Path != "p.md" {
+				t.Fatalf("issue=%+v", issue)
+			}
+			if len(result.Images) != 0 {
+				t.Fatal("an unusable image was recorded as used")
+			}
+		})
+	}
+}
+
+func TestBadMetadataImageKeepsBodyImages(t *testing.T) {
+	record := testImage("a")
+	images := map[string]ImageRecord{"image/body.png": record}
+	result := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, "image/nope.png", "![Body alt](image/body.png)")}, images), State{}, nil, ModeProduction)
+	if len(result.Entries) != 1 || result.Entries[0].Image != "" || len(result.Images) != 1 || len(result.Issues) != 1 {
+		t.Fatalf("entries=%v images=%d issues=%v", result.Entries, len(result.Images), result.Issues)
+	}
+	if !strings.Contains(string(result.Entries[0].Content), mediaPrefix(ModeProduction)+record.Key) {
+		t.Fatal("body image dropped with the bad metadata image")
+	}
+}
+
+func TestMetadataImageSurvivesAcceptedFallback(t *testing.T) {
+	record := testImage("a")
+	images := map[string]ImageRecord{"image/cover.png": record}
+	accepted := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, "image/cover.png", "Body")}, images), State{}, nil, ModeProduction)
+	if len(accepted.Entries) != 1 || accepted.Entries[0].Image != mediaPrefix(ModeProduction)+record.Key {
+		t.Fatalf("setup failed: %v", accepted.Issues)
+	}
+	fallback, err := PrepareAccepted(accepted.State, nil, ModeProduction, nil, time.Unix(0, 0))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(fallback.Entries) != 1 || fallback.Entries[0].Image != accepted.Entries[0].Image || fallback.Digest != accepted.Digest {
+		t.Fatalf("fallback Image=%q digest match=%t", fallback.Entries[0].Image, fallback.Digest == accepted.Digest)
+	}
+	if len(fallback.Images) != 1 {
+		t.Fatal("fallback lost the metadata image record")
+	}
+	unavailable, err := PrepareAccepted(accepted.State, nil, ModeProduction, map[string]bool{record.Key: true}, time.Unix(0, 0))
+	if err != nil || len(unavailable.Entries) != 1 || unavailable.Entries[0].Image != "" || len(unavailable.Images) != 0 {
+		t.Fatalf("an unavailable metadata image stayed in the entry: %v", err)
+	}
+}
+
+func TestEntryWithoutImageKeepsPriorDigest(t *testing.T) {
+	result := prepare(t, loaded(map[string][]byte{"p.md": post("production", "post", "add", "Body", false)}, nil), State{}, nil, ModeProduction)
+	encoded, err := json.Marshal(result.Entries[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(encoded), `"Image"`) {
+		t.Fatalf("an entry without an image serialized the field: %s", encoded)
+	}
+}
+
+func TestDocumentedImageExampleValidates(t *testing.T) {
+	documentation, err := os.ReadFile("../docs/obsidian-cloudflare.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, after, found := strings.Cut(string(documentation), "### Social preview image\n")
+	if !found {
+		t.Fatal("documentation section missing")
+	}
+	_, block, found := strings.Cut(after, "```markdown\n")
+	if !found {
+		t.Fatal("documented example missing")
+	}
+	example, _, found := strings.Cut(block, "```")
+	if !found {
+		t.Fatal("documented example unterminated")
+	}
+	record := testImage("a")
+	result := prepare(t, loaded(map[string][]byte{"p.md": []byte(example)}, map[string]ImageRecord{"image/1-high-level-workflow.png": record}), State{}, nil, ModeProduction)
+	if len(result.Issues) != 0 || len(result.Entries) != 1 || result.Entries[0].Image != mediaPrefix(ModeProduction)+record.Key {
+		t.Fatalf("documented example did not validate: entries=%d issues=%v", len(result.Entries), result.Issues)
 	}
 }

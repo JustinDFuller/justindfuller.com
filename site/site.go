@@ -31,6 +31,8 @@ type data[T any] struct {
 	Title    string
 	SubTitle string
 	Meta     string
+	Image    string
+	ImageAlt string
 	Entries  []T
 	Entry    T
 }
@@ -443,9 +445,12 @@ func newWithEntries(programmingEntries []programming.Entry) (http.Handler, error
 			return
 		}
 
+		image, imageAlt := previewImage(entry)
 		if err := renderTemplate(templates, w, "/programming/entry.template.html", data[programming.Entry]{
 			Title:    entry.Title,
 			SubTitle: entry.SubTitle,
+			Image:    image,
+			ImageAlt: imageAlt,
 			Entry:    entry,
 		}); err != nil {
 			log.Printf("template execution error=%s template=%s", err, "/programming/entry.template.html")

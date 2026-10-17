@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"io/fs"
 	"net/http"
 	"net/http/httptest"
@@ -14,6 +15,7 @@ import (
 	"time"
 
 	"github.com/justindfuller/justindfuller.com/obsidian"
+	"github.com/justindfuller/justindfuller.com/programming"
 	"github.com/justindfuller/justindfuller.com/site"
 )
 
@@ -257,5 +259,200 @@ func TestPreparedProgrammingCollectionAndPrivateExportBoundary(t *testing.T) {
 				t.Fatal(err)
 			}
 		})
+	}
+}
+
+func previewHead(t *testing.T, handler http.Handler, route string) string {
+	t.Helper()
+	response := httptest.NewRecorder()
+	handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, route, nil))
+	if response.Code != http.StatusOK {
+		t.Fatalf("%s: %d", route, response.Code)
+	}
+	body := response.Body.String()
+	end := strings.Index(body, "</head>")
+	if end < 0 {
+		t.Fatalf("%s has no head", route)
+	}
+	return body[:end]
+}
+
+func TestProgrammingPreviewTags(t *testing.T) {
+	git, err := site.LoadProgramming()
+	if err != nil || len(git) == 0 {
+		t.Fatalf("Git source unavailable: %v", err)
+	}
+	handler, err := site.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	withImage, withoutImage := -1, -1
+	for index, entry := range git {
+		if _, found := programming.FirstImage(entry.Content); found && withImage < 0 {
+			withImage = index
+		}
+		if _, found := programming.FirstImage(entry.Content); !found && withoutImage < 0 {
+			withoutImage = index
+		}
+	}
+	if withImage < 0 || withoutImage < 0 {
+		t.Fatal("expected Git posts with and without images")
+	}
+
+	first, _ := programming.FirstImage(git[withImage].Content)
+	head := previewHead(t, handler, "/programming/"+git[withImage].Slug)
+	if strings.Count(head, `property="og:image"`) != 1 || strings.Count(head, `name="twitter:card" content="summary_large_image"`) != 1 {
+		t.Fatalf("expected one og:image and one twitter:card:\n%s", head)
+	}
+	if !strings.Contains(head, `property="og:image" content="`+html.EscapeString(absolute(first.Src))+`"`) {
+		t.Fatalf("og:image does not match the first body image %q:\n%s", first.Src, head)
+	}
+	if first.Alt != "" && !strings.Contains(head, `property="og:image:alt" content="`+html.EscapeString(first.Alt)+`"`) {
+		t.Fatalf("og:image:alt missing:\n%s", head)
+	}
+
+	noImage := "/programming/" + git[withoutImage].Slug
+	for _, route := range []string{"/", "/programming", "/about", "/poem/", noImage} {
+		head := previewHead(t, handler, route)
+		for _, tag := range []string{"og:image", "twitter:card"} {
+			if strings.Contains(head, tag) {
+				t.Errorf("%s declares %s:\n%s", route, tag, head)
+			}
+		}
+	}
+}
+
+func TestPreviewDoesNotChangeExistingTitleTags(t *testing.T) {
+	git, err := site.LoadProgramming()
+	if err != nil || len(git) == 0 {
+		t.Fatalf("Git source unavailable: %v", err)
+	}
+	handler, err := site.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := func(title string) []string {
+		return []string{
+			"<title>" + title + "</title>",
+			`<meta name="description" content="` + title + `" />`,
+			`<meta property="og:title" content="` + title + `" />`,
+		}
+	}
+	check := func(route string, title string) {
+		head := previewHead(t, handler, route)
+		for _, want := range expected(title) {
+			if strings.Count(head, want) != 1 {
+				t.Errorf("%s: expected exactly one %q:\n%s", route, want, head)
+			}
+		}
+	}
+	check("/", "Justin D Fuller")
+	withImage, withoutImage := false, false
+	for _, entry := range git {
+		_, hasImage := programming.FirstImage(entry.Content)
+		if hasImage && withImage || !hasImage && withoutImage {
+			continue
+		}
+		withImage = withImage || hasImage
+		withoutImage = withoutImage || !hasImage
+		title := entry.Title
+		if entry.SubTitle != "" {
+			title += ": " + entry.SubTitle
+		}
+		check("/programming/"+entry.Slug, title+" | Justin D Fuller")
+	}
+	if !withImage || !withoutImage {
+		t.Fatal("expected Git posts with and without images")
+	}
+}
+
+func absolute(src string) string {
+	if strings.HasPrefix(src, "/") {
+		return "https://www.justindfuller.com" + src
+	}
+	return src
+}
+
+func TestObsidianPreviewImageValue(t *testing.T) {
+	git, err := site.LoadProgramming()
+	if err != nil || len(git) == 0 {
+		t.Fatalf("Git source unavailable: %v", err)
+	}
+	record := obsidian.ImageRecord{SHA256: strings.Repeat("a", 64), MD5: strings.Repeat("b", 32), Size: 17, ContentType: "image/png", Key: "v1/" + strings.Repeat("a", 64) + ".png"}
+	other := obsidian.ImageRecord{SHA256: strings.Repeat("c", 64), MD5: strings.Repeat("d", 32), Size: 17, ContentType: "image/png", Key: "v1/" + strings.Repeat("c", 64) + ".png"}
+	fixture := func(slug, image, body string) []byte {
+		line := ""
+		if image != "" {
+			line = "image: " + image + "\n"
+		}
+		return fmt.Appendf(nil, "---\nenvironment: production\nsection: programming\nslug: %s\ntitle: Fixture\ndate: 2026-09-20\ndraft: false\nsync: add\ntags: [programming]\n%s---\n%s", slug, line, body)
+	}
+	files := map[string][]byte{
+		"cover.md":    fixture("cover-post", "image/cover.png", "![Body \"alt\" & more](image/body.png)"),
+		"fallback.md": fixture("fallback-post", "image/missing.png", "![Body alt](image/body.png)"),
+		"nobody.md":   fixture("cover-only-post", "image/cover.png", "No images in this body"),
+	}
+	source := obsidian.LoadedSource{Snapshot: obsidian.SourceSnapshot{Version: 1, Files: map[string]obsidian.FileRecord{}, Images: map[string]obsidian.ImageRecord{"image/cover.png": record, "image/body.png": other}}, Bodies: files, Ready: map[string]bool{record.Key: true, other.Key: true}}
+	for name, raw := range files {
+		hash := obsidian.SHA256(raw)
+		source.Snapshot.Files[name] = obsidian.FileRecord{SHA256: hash, Size: int64(len(raw)), Key: "markdown/v1/" + hash + ".md"}
+	}
+	canonical, err := obsidian.CanonicalSnapshot(source.Snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	source.Revision = obsidian.SHA256(canonical)
+	prepared, err := obsidian.Prepare(source, obsidian.State{}, git, obsidian.ModeProduction, time.Unix(0, 0))
+	if err != nil {
+		t.Fatal(err)
+	}
+	handler, err := site.NewWithPrepared(prepared, obsidian.ModeProduction)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cover := "https://media.justindfuller.com/" + record.Key
+	body := "https://media.justindfuller.com/" + other.Key
+
+	head := previewHead(t, handler, "/programming/cover-post")
+	if strings.Count(head, `property="og:image"`) != 1 || !strings.Contains(head, `property="og:image" content="`+cover+`"`) {
+		t.Fatalf("image value not declared:\n%s", head)
+	}
+	if strings.Contains(head, "og:image:alt") || strings.Count(head, `name="twitter:card" content="summary_large_image"`) != 1 {
+		t.Fatalf("companion tags wrong for an image not used in the body:\n%s", head)
+	}
+
+	head = previewHead(t, handler, "/programming/fallback-post")
+	if !strings.Contains(head, `property="og:image" content="`+body+`"`) || !strings.Contains(head, `property="og:image:alt" content="Body alt"`) {
+		t.Fatalf("bad image value did not fall back to the first body image:\n%s", head)
+	}
+
+	head = previewHead(t, handler, "/programming/cover-only-post")
+	if !strings.Contains(head, `property="og:image" content="`+cover+`"`) {
+		t.Fatalf("image value not declared for a post with no body images:\n%s", head)
+	}
+}
+
+func TestPreviewAltTextIsEscaped(t *testing.T) {
+	record := obsidian.ImageRecord{SHA256: strings.Repeat("a", 64), MD5: strings.Repeat("b", 32), Size: 17, ContentType: "image/png", Key: "v1/" + strings.Repeat("a", 64) + ".png"}
+	raw := []byte("---\nenvironment: production\nsection: programming\nslug: escaped-post\ntitle: Fixture\ndate: 2026-09-20\ndraft: false\nsync: add\ntags: [programming]\n---\n![Say \"hi\" & 'bye'](image/body.png)")
+	source := obsidian.LoadedSource{Snapshot: obsidian.SourceSnapshot{Version: 1, Files: map[string]obsidian.FileRecord{}, Images: map[string]obsidian.ImageRecord{"image/body.png": record}}, Bodies: map[string][]byte{"p.md": raw}, Ready: map[string]bool{record.Key: true}}
+	hash := obsidian.SHA256(raw)
+	source.Snapshot.Files["p.md"] = obsidian.FileRecord{SHA256: hash, Size: int64(len(raw)), Key: "markdown/v1/" + hash + ".md"}
+	canonical, err := obsidian.CanonicalSnapshot(source.Snapshot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	source.Revision = obsidian.SHA256(canonical)
+	prepared, err := obsidian.Prepare(source, obsidian.State{}, nil, obsidian.ModeProduction, time.Unix(0, 0))
+	if err != nil {
+		t.Fatal(err)
+	}
+	handler, err := site.NewWithPrepared(prepared, obsidian.ModeProduction)
+	if err != nil {
+		t.Fatal(err)
+	}
+	head := previewHead(t, handler, "/programming/escaped-post")
+	if !strings.Contains(head, `property="og:image:alt" content="Say &#34;hi&#34; &amp; &#39;bye&#39;"`) {
+		t.Fatalf("alt text not escaped as an attribute:\n%s", head)
 	}
 }

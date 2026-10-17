@@ -12,7 +12,13 @@ $subTitle -}} {{- end -}} {{- if eq $pageTitle "" -}}
 <title>{{ $fullTitle }} | {{ $siteTitle }}</title>
 <meta name="description" content="{{ $fullTitle }} | {{ $siteTitle }}" />
 <meta property="og:title" content="{{ $fullTitle }} | {{ $siteTitle }}" />
-{{- end -}} {{ if eq .Meta "grass" -}}
+{{- end -}} {{ if .Image -}}
+<meta property="og:image" content="{{ .Image | html }}" />
+{{ if .ImageAlt -}}
+<meta property="og:image:alt" content="{{ .ImageAlt | html }}" />
+{{ end -}}
+<meta name="twitter:card" content="summary_large_image" />
+{{ end -}} {{ if eq .Meta "grass" -}}
 <link rel="icon" href="/image/grass.ico" sizes="any" />
 <link rel="icon" href="/image/grass.svg" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="/image/grass-apple-touch-icon.png" />

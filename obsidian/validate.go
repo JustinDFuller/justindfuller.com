@@ -29,6 +29,7 @@ var (
 		"tags":        true,
 		"subtitle":    true,
 		"description": true,
+		"image":       true,
 	}
 	slugPattern      = regexp.MustCompile(`^[a-z0-9]+(?:-[a-z0-9]+)*$`)
 	obsidianImage    = regexp.MustCompile(`!\[\[([^\]\n]+)\]\]`)
@@ -44,6 +45,7 @@ type metadata struct {
 	Title       string
 	Subtitle    string
 	Description string
+	Image       string
 	Date        time.Time
 	Draft       bool
 	Sync        string
@@ -159,6 +161,18 @@ func validateMarkdown(
 		return candidate{}, append(issues, fileIssue(file, "markdown_safety", "rendered content contains prohibited executable or traversal content", now))
 	}
 
+	imageURL := ""
+	if metadata.Image != "" {
+		resolved, category := resolveMetadataImage(metadata.Image, index, resolve)
+		if category == "" {
+			imageURL = resolved
+		} else {
+			issue := imageIssue(file, metadata.Image, category, now)
+			issue.Route = metadata.Slug
+			issues = append(issues, issue)
+		}
+	}
+
 	firstParagraph := htmlstd.EscapeString(programming.ExtractFirstParagraph("---\n" + frontMatter + "\n---\n" + body))
 	description := htmlstd.EscapeString(metadata.Description)
 	if description == "" {
@@ -173,6 +187,7 @@ func validateMarkdown(
 		Content:        rendered,
 		Date:           metadata.Date,
 		IsDraft:        metadata.Draft,
+		Image:          imageURL,
 	}
 	return candidate{
 		File:        file,
@@ -441,6 +456,10 @@ func parseMetadata(frontMatter string) (metadata, error) {
 	if err != nil {
 		return metadata{}, err
 	}
+	image, err := stringValue(values, "image", false)
+	if err != nil {
+		return metadata{}, err
+	}
 
 	return metadata{
 		Environment: Environment(environment),
@@ -449,6 +468,7 @@ func parseMetadata(frontMatter string) (metadata, error) {
 		Title:       title,
 		Subtitle:    subtitle,
 		Description: description,
+		Image:       strings.TrimSpace(image),
 		Date:        date,
 		Draft:       draft,
 		Sync:        syncMode,
@@ -544,21 +564,12 @@ func rewriteImages(body string, index assetIndex, resolve func(RemoteFile) (Asse
 
 		token := imageToken(remote)
 		if _, loaded := assetURLs[token]; !loaded {
-			asset, err := resolve(remote)
-			if err != nil {
-				category := "image_not_ready"
-				var resolutionError imageResolveError
-				if errors.As(err, &resolutionError) {
-					category = resolutionError.category
-				}
+			resolved, category := resolveAssetURL(remote, resolve)
+			if category != "" {
 				issues = append(issues, imageIssue(file, reference, category, now))
 				return ""
 			}
-			if asset.URL == "" {
-				issues = append(issues, imageIssue(file, reference, "image_not_ready", now))
-				return ""
-			}
-			assetURLs[token] = asset.URL
+			assetURLs[token] = resolved
 		}
 
 		return fmt.Sprintf("![%s](%s)", alt, assetURLs[token])
@@ -582,6 +593,30 @@ func rewriteImages(body string, index assetIndex, resolve func(RemoteFile) (Asse
 	}
 
 	return result, issues
+}
+
+func resolveAssetURL(remote RemoteFile, resolve func(RemoteFile) (Asset, error)) (string, string) {
+	asset, err := resolve(remote)
+	if err != nil {
+		category := "image_not_ready"
+		var resolutionError imageResolveError
+		if errors.As(err, &resolutionError) {
+			category = resolutionError.category
+		}
+		return "", category
+	}
+	if asset.URL == "" {
+		return "", "image_not_ready"
+	}
+	return asset.URL, ""
+}
+
+func resolveMetadataImage(reference string, index assetIndex, resolve func(RemoteFile) (Asset, error)) (string, string) {
+	remote, ok, category := resolveAsset(reference, index)
+	if !ok {
+		return "", category
+	}
+	return resolveAssetURL(remote, resolve)
 }
 
 func rewriteMarkdownImages(markdown string, matches []markdownImageMatch, rewrite func(string, string, string) string) string {
