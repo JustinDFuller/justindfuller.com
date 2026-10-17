@@ -53,6 +53,27 @@ node scripts/migrate-obsidian-targets.mjs /absolute/path/post.md --target nonpro
 
 The default command is a dry run. It preserves body bytes and reports a body hash. Demotion or removal restores the Git source for an overwrite and removes an additive external route. Previously downloaded public copies and previously promoted public image bytes cannot become retrospectively secret.
 
+### Social preview image
+
+A post may set an optional `image` to choose the cover shown when its link is shared. Write it like a body image reference, either the file name or the path under `image/`. It must be text. The file must be an uploaded, supported image, and it does not need to appear in the post body.
+
+```markdown
+---
+environment: production
+section: programming
+slug: agentic-spec-driven-workflow
+title: Agentic Spec-Driven Workflow
+date: 2026-09-20
+draft: false
+sync: add
+tags: [programming]
+image: image/1-high-level-workflow.png
+---
+Post body.
+```
+
+A post chooses its preview image in this order: `image`, then the first image in the body, then none. The page declares an absolute `og:image` plus `twitter:card` `summary_large_image`, and `og:image:alt` when the chosen image has alt text in the body. A post with no image, and every other page, declares none of these. A missing, ambiguous, unsupported, or not ready `image` value does not block the post: it is dropped, the next choice is used, and the same private image diagnostic as a bad body image is recorded. An image named only by `image` is promoted for public use under the same rules as a body image: only when an accepted nondraft production post uses it. Do not add `image` to a note before the site that understands it has deployed, because earlier builds reject it as an unknown key.
+
 ## Local preview
 
 Local private output stays in ignored `.obsidian-publish/` files with restricted permissions. Prepare a vault snapshot on demand and launch the loopback gateway:

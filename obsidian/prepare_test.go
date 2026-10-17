@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -427,5 +428,29 @@ func TestEntryWithoutImageKeepsPriorDigest(t *testing.T) {
 	}
 	if strings.Contains(string(encoded), `"Image"`) {
 		t.Fatalf("an entry without an image serialized the field: %s", encoded)
+	}
+}
+
+func TestDocumentedImageExampleValidates(t *testing.T) {
+	documentation, err := os.ReadFile("../docs/obsidian-cloudflare.md")
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, after, found := strings.Cut(string(documentation), "### Social preview image\n")
+	if !found {
+		t.Fatal("documentation section missing")
+	}
+	_, block, found := strings.Cut(after, "```markdown\n")
+	if !found {
+		t.Fatal("documented example missing")
+	}
+	example, _, found := strings.Cut(block, "```")
+	if !found {
+		t.Fatal("documented example unterminated")
+	}
+	record := testImage("a", ".png")
+	result := prepare(t, loaded(map[string][]byte{"p.md": []byte(example)}, map[string]ImageRecord{"image/1-high-level-workflow.png": record}), State{}, nil, ModeProduction)
+	if len(result.Issues) != 0 || len(result.Entries) != 1 || result.Entries[0].Image != mediaPrefix(ModeProduction)+record.Key {
+		t.Fatalf("documented example did not validate: entries=%d issues=%v", len(result.Entries), result.Issues)
 	}
 }
