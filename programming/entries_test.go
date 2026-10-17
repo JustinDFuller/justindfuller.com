@@ -20,6 +20,10 @@ func TestParseEntryImage(t *testing.T) {
 		{name: "http value", frontMatter: "image: http://example.com/a.png", want: ""},
 		{name: "non text value", frontMatter: "image: [/image/a.png]", want: ""},
 		{name: "empty value", frontMatter: "image:", want: ""},
+		{name: "protocol relative value", frontMatter: "image: //cdn.example.com/a.png", want: ""},
+		{name: "backslash value", frontMatter: `image: "/\\cdn.example.com/a.png"`, want: ""},
+		{name: "https without host", frontMatter: "image: https://", want: ""},
+		{name: "https with path only", frontMatter: "image: https:///a.png", want: ""},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

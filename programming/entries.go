@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"net/url"
 	"os"
 	"regexp"
 	"sort"
@@ -262,7 +263,7 @@ func parseEntry(name string, file []byte) (Entry, error) {
 
 	image := ""
 	if i, ok := metaData["image"]; ok {
-		if imageStr, ok := i.(string); ok && validImageReference(imageStr) {
+		if imageStr, ok := i.(string); ok && ValidImageReference(imageStr) {
 			image = imageStr
 		}
 	}
@@ -303,8 +304,18 @@ func parseEntry(name string, file []byte) (Entry, error) {
 	}, nil
 }
 
-func validImageReference(value string) bool {
-	return strings.HasPrefix(value, "/") || strings.HasPrefix(value, "https://")
+func ValidImageReference(value string) bool {
+	if strings.HasPrefix(value, "//") || strings.HasPrefix(value, `/\`) {
+		return false
+	}
+	if strings.HasPrefix(value, "/") {
+		return true
+	}
+	if !strings.HasPrefix(value, "https://") {
+		return false
+	}
+	parsed, err := url.Parse(value)
+	return err == nil && parsed.Host != ""
 }
 
 func FirstImage(content template.HTML) (Image, bool) {

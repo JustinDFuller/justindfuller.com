@@ -18,6 +18,9 @@ func TestAbsoluteImageURL(t *testing.T) {
 		{value: "http://example.com/a.png", want: ""},
 		{value: "image/example.png", want: ""},
 		{value: "", want: ""},
+		{value: "//cdn.example.com/a.png", want: ""},
+		{value: "https://", want: ""},
+		{value: "https:///a.png", want: ""},
 	}
 	for _, test := range tests {
 		t.Run(test.value, func(t *testing.T) {
@@ -46,6 +49,8 @@ func TestPreviewImage(t *testing.T) {
 		{name: "unusable image value and no body image", entry: programming.Entry{Image: "image/relative.png", Content: "<p>Text</p>"}},
 		{name: "no images at all", entry: programming.Entry{Content: "<p>Text</p>"}},
 		{name: "image-like text in code is ignored", entry: programming.Entry{Content: `<pre><code>&lt;img src=&#34;/image/code.png&#34;&gt;</code></pre>`}},
+		{name: "image value with non ascii characters matches the escaped body image", entry: programming.Entry{Image: "/image/é.png", Content: `<img src="/image/%C3%A9.png" alt="Accent">`}, wantSrc: "https://www.justindfuller.com/image/%C3%A9.png", wantAlt: "Accent"},
+		{name: "protocol relative image value falls back to the first body image", entry: programming.Entry{Image: "//cdn.example.com/a.png", Content: body}, wantSrc: "https://media.justindfuller.com/v1/first.png", wantAlt: "First alt"},
 		{name: "unusable first body image", entry: programming.Entry{Content: `<img src="http://example.com/a.png" alt="A">`}},
 	}
 	for _, test := range tests {
