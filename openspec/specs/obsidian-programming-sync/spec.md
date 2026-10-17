@@ -22,7 +22,7 @@ The system SHALL accept root Markdown files from the configured vault `Blog/` fo
 
 ### Requirement: Programming metadata defines nonprod and production targets
 
-Each Markdown post SHALL require exactly `environment`, `section`, `slug`, `title`, `date`, `draft`, `sync`, and `tags`, with optional `subtitle` and `description`. Unknown keys SHALL be invalid. The section SHALL be `programming`; the slug SHALL match `^[a-z0-9]+(?:-[a-z0-9]+)*$`; tags SHALL be a nonempty list of nonempty strings; sync SHALL be `add` or `overwrite`. Types, dates, and text values SHALL retain PR #390's validation contract except for the environment enum. Missing descriptions SHALL use the existing programming excerpt behavior. Environment SHALL be exactly `nonprod` or `production`. Production builds SHALL include only production-target posts; staging, PR previews, and local builds SHALL include both targets, subject to draft and validation rules. Migration SHALL explicitly map legacy `prd` to `production` and legacy `pr`/`local` to `nonprod`; the new parser SHALL reject legacy aliases.
+Each Markdown post SHALL require exactly `environment`, `section`, `slug`, `title`, `date`, `draft`, `sync`, and `tags`, with optional `subtitle`, `description`, and `image`. Unknown keys SHALL be invalid. The section SHALL be `programming`; the slug SHALL match `^[a-z0-9]+(?:-[a-z0-9]+)*$`; tags SHALL be a nonempty list of nonempty strings; sync SHALL be `add` or `overwrite`. Types, dates, and text values SHALL retain PR #390's validation contract except for the environment enum. Missing descriptions SHALL use the existing programming excerpt behavior. An `image` value SHALL be text and SHALL use the same reference forms and resolution rules as a body image. Environment SHALL be exactly `nonprod` or `production`. Production builds SHALL include only production-target posts; staging, PR previews, and local builds SHALL include both targets, subject to draft and validation rules. Migration SHALL explicitly map legacy `prd` to `production` and legacy `pr`/`local` to `nonprod`; the new parser SHALL reject legacy aliases.
 
 #### Scenario: A nonprod post is uploaded
 
@@ -43,6 +43,16 @@ Each Markdown post SHALL require exactly `environment`, `section`, `slug`, `titl
 
 - **WHEN** one file omits a required field or uses an unknown field or invalid value
 - **THEN** only that file revision SHALL fail validation and unrelated valid files SHALL remain publishable
+
+#### Scenario: A post sets an image
+
+- **WHEN** a post's metadata includes `image: image/1-high-level-workflow.png` and that image exists below `image/`
+- **THEN** the post SHALL be valid and that image SHALL be its social preview image
+
+#### Scenario: An image value is not text
+
+- **WHEN** a post's `image` value is a list or other non-text value
+- **THEN** only that file revision SHALL fail validation as invalid metadata
 
 ### Requirement: External entries preserve Git content and route ownership
 
@@ -78,7 +88,7 @@ Markdown validation SHALL be limited to valid UTF-8, present and parseable suppo
 
 ### Requirement: Image delivery preserves publication privacy and production caching
 
-The publisher SHALL accept lowercase `.jpg`, `.png`, and safe `.svg` images below `image/`, validate file signatures and static SVG content, and enforce the existing 20 MiB per-image limit. Standard relative Markdown images and supported Obsidian image embeds SHALL resolve within that tree. Images SHALL use immutable SHA-256 object keys and verified size, content type, and hash metadata before becoming available to publication. Source image uploads SHALL remain private. Only image objects referenced by the effective accepted nondraft production collection SHALL be eligible for public promotion; invalid, nonprod, draft, and unused source references SHALL not independently authorize promotion.
+The publisher SHALL accept lowercase `.jpg`, `.png`, and safe `.svg` images below `image/`, validate file signatures and static SVG content, and enforce the existing 20 MiB per-image limit. Standard relative Markdown images, supported Obsidian image embeds, and the `image` metadata value SHALL resolve within that tree. Images SHALL use immutable SHA-256 object keys and verified size, content type, and hash metadata before becoming available to publication. Source image uploads SHALL remain private. Only image objects referenced by the effective accepted nondraft production collection SHALL be eligible for public promotion; invalid, nonprod, draft, and unused source references SHALL not independently authorize promotion.
 
 Production browsers SHALL fetch promoted image bodies directly from `https://media.justindfuller.com/v1/<sha256>.<extension>` with long-lived immutable caching independently of HTML publication. Staging and PR browsers SHALL use same-origin authenticated private image URLs; local preview SHALL use a loopback private image gateway. Private image delivery SHALL not expose raw Markdown, manifests, or arbitrary source objects. Go builds and Go serving SHALL read image metadata only and SHALL never download or proxy image bodies. Changing a previously published post to nonprod SHALL not be described as revoking copies already public or downloaded; identical bytes shared with an already published image are already public.
 
@@ -99,8 +109,18 @@ Production browsers SHALL fetch promoted image bodies directly from `https://med
 
 #### Scenario: An image record is missing or inconsistent
 
-- **WHEN** a reference lacks a usable manifest entry or verified destination metadata
+- **WHEN** a reference, including an `image` metadata value, lacks a usable manifest entry or verified destination metadata
 - **THEN** the build SHALL omit only that reference, report its issue privately, and retain the post body and other valid references
+
+#### Scenario: An image is referenced only by metadata
+
+- **WHEN** a valid accepted nondraft production post names a verified private image in `image` and does not use it in the body
+- **THEN** that image SHALL be eligible for public promotion and the production workflow SHALL verify its public destination before deploying the page
+
+#### Scenario: A nonprod or draft post names an image in metadata
+
+- **WHEN** an image is named only by the `image` value of a nonprod or draft post and has never been published
+- **THEN** it SHALL remain absent from public media storage and public artifacts
 
 ### Requirement: GitHub Actions publishes batched revisions without content commits
 
