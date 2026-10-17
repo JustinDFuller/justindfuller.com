@@ -19,6 +19,7 @@ import (
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
+	nethtml "golang.org/x/net/html"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -33,6 +34,12 @@ type Entry struct {
 	Content        template.HTML
 	Date           time.Time
 	IsDraft        bool
+	Image          string `json:",omitempty"`
+}
+
+type Image struct {
+	Src string
+	Alt string
 }
 
 // parseEntryMetadata parses only the metadata from a markdown file without rendering content
@@ -253,6 +260,13 @@ func parseEntry(name string, file []byte) (Entry, error) {
 		}
 	}
 
+	image := ""
+	if i, ok := metaData["image"]; ok {
+		if imageStr, ok := i.(string); ok && validImageReference(imageStr) {
+			image = imageStr
+		}
+	}
+
 	// Generate slug from filename (remove .md extension and date prefix)
 	slug := strings.TrimSuffix(name, ".md")
 	// Remove date prefix if present (YYYY-MM-DD_ or YYYY-MM-DD-)
@@ -285,7 +299,52 @@ func parseEntry(name string, file []byte) (Entry, error) {
 		Content:        template.HTML(buf.String()), //nolint:gosec // Content is from trusted markdown files
 		Date:           date,
 		IsDraft:        isDraft,
+		Image:          image,
 	}, nil
+}
+
+func validImageReference(value string) bool {
+	return strings.HasPrefix(value, "/") || strings.HasPrefix(value, "https://")
+}
+
+func FirstImage(content template.HTML) (Image, bool) {
+	return findImage(content, "")
+}
+
+func FindImage(content template.HTML, src string) (Image, bool) {
+	if src == "" {
+		return Image{}, false
+	}
+	return findImage(content, src)
+}
+
+func findImage(content template.HTML, src string) (Image, bool) {
+	tokenizer := nethtml.NewTokenizer(strings.NewReader(string(content)))
+	for {
+		switch tokenizer.Next() {
+		case nethtml.ErrorToken:
+			return Image{}, false
+		case nethtml.StartTagToken, nethtml.SelfClosingTagToken:
+			name, hasAttr := tokenizer.TagName()
+			if string(name) != "img" {
+				continue
+			}
+			var image Image
+			for hasAttr {
+				var key, value []byte
+				key, value, hasAttr = tokenizer.TagAttr()
+				switch string(key) {
+				case "src":
+					image.Src = string(value)
+				case "alt":
+					image.Alt = string(value)
+				}
+			}
+			if image.Src != "" && (src == "" || image.Src == src) {
+				return image, true
+			}
+		}
+	}
 }
 
 func extractFirstParagraph(markdown string) string {

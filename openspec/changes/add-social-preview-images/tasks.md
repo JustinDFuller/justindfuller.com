@@ -2,15 +2,15 @@
 
 ## 1. Choose the preview image for a post
 
-- [ ] 1.1 Add `Image string` (tagged `json:",omitempty"`) to `programming.Entry` and read an `image` front matter value in `parseEntry` for Git-backed posts, keeping only values that start with `/` or `https://`; verify with a test in `programming/entries_test.go` that a valid value is kept, an invalid or missing value leaves it empty, and the list-view parser is unaffected
-- [ ] 1.2 Add a helper in `programming` that returns the `src` and `alt` of the first `<img>` in rendered content, or of the `<img>` matching a given `src`, using the `golang.org/x/net/html` tokenizer; verify with tests in `programming/entries_test.go` covering no image, several images, a matching `src`, a raw HTML image, and image-like text inside a code block and inline code (not matched)
-- [ ] 1.3 Verify with a test that marshaling an `Entry` without `Image` produces the same JSON as before this change, so existing prepared-document digests still verify
+- [x] 1.1 Add `Image string` (tagged `json:",omitempty"`) to `programming.Entry` and read an `image` front matter value in `parseEntry` for Git-backed posts, keeping only values that start with `/` or `https://`; verify with a test in `programming/entries_test.go` that a valid value is kept, an invalid or missing value leaves it empty, and the list-view parser is unaffected
+- [x] 1.2 Add a helper in `programming` that returns the `src` and `alt` of the first `<img>` in rendered content, or of the `<img>` matching a given `src`, using the `golang.org/x/net/html` tokenizer; verify with tests in `programming/entries_test.go` covering no image, several images, a matching `src`, a raw HTML image, and image-like text inside a code block and inline code (not matched)
+- [x] 1.3 Verify with a test that marshaling an `Entry` without `Image` produces the same JSON as before this change, so existing prepared-document digests still verify
 
 ## 2. Accept `image:` on Obsidian posts
 
-- [ ] 2.1 Add `image` to `allowedMetadataKeys` and `metadata`, require it to be text, and resolve it in `validateMarkdown` with `resolveAsset` and the same `resolve` callback as body images, setting `Entry.Image` to the returned URL; verify with tests in `obsidian/prepare_test.go` that a valid `image:` is accepted in production and in private modes (`/__obsidian/media/...` URL), that a non-text value fails only that file, and that other unknown keys are still rejected
-- [ ] 2.2 Record an image issue scoped to the post's route when `image:` is missing, ambiguous, unsupported, or not ready, leave `Entry.Image` empty, and keep the post; verify with tests in `obsidian/prepare_test.go` for each category and that the post still publishes
-- [ ] 2.3 Verify with tests in `obsidian/promotion_test.go` and `obsidian/prepare_test.go` that an image named only by `image:` of an accepted production nondraft post is promoted, and that one named only by a nonprod or draft post is not, and that `PrepareAccepted` fallback revalidation reproduces the same `Entry.Image`
+- [x] 2.1 Add `image` to `allowedMetadataKeys` and `metadata`, require it to be text, and resolve it in `validateMarkdown` with `resolveAsset` and the same `resolve` callback as body images, setting `Entry.Image` to the returned URL; verify with tests in `obsidian/prepare_test.go` that a valid `image:` is accepted in production and in private modes (`/__obsidian/media/...` URL), that a non-text value fails only that file, and that other unknown keys are still rejected
+- [x] 2.2 Record an image issue scoped to the post's route when `image:` is missing, ambiguous, unsupported, or not ready, leave `Entry.Image` empty, and keep the post; verify with tests in `obsidian/prepare_test.go` for each category and that the post still publishes
+- [x] 2.3 Verify with tests in `obsidian/promotion_test.go` and `obsidian/prepare_test.go` that an image named only by `image:` of an accepted production nondraft post is promoted, and that one named only by a nonprod or draft post is not, and that `PrepareAccepted` fallback revalidation reproduces the same `Entry.Image`
 
 ## 3. Render the tags
 
