@@ -23,8 +23,8 @@
 
 Proof is gathered by running the real site and recorded in `qa.md` in this change folder, with screenshots saved under `qa/` and repeated in the PR description. Screenshots must show nothing private; any that do are recaptured, not redacted. Pre-merge checks use the local server and the protected PR preview; the production and LinkedIn checks happen after merge (see Workflow follow-up).
 
-- [ ] 4.1 Run `make server` and verify with `curl` that the head of an image-less post, a Git-backed post with body images, a Git-backed post with `image:`, and the home page each contain the expected tags; record the commands and output in `qa.md`
-- [ ] 4.2 With a throwaway nonprod Obsidian-format fixture post that sets `image:` to an image not used in the body, verify with the local Obsidian overlay (`OBSIDIAN_OVERLAY`) that the rendered `og:image` is the private media URL made absolute, and that a second fixture with a bad `image:` falls back to its first body image with a private diagnostic; record results in `qa.md`
+- [x] 4.1 Run `make server` and verify with `curl` that the head of an image-less post, a Git-backed post with body images, a Git-backed post with `image:`, and the home page each contain the expected tags; record the commands and output in `qa.md`
+- [x] 4.2 With a throwaway nonprod Obsidian-format fixture post that sets `image:` to an image not used in the body, verify with the local Obsidian overlay (`OBSIDIAN_OVERLAY`) that the rendered `og:image` is the private media URL made absolute, and that a second fixture with a bad `image:` falls back to its first body image with a private diagnostic; record results in `qa.md`
 - [ ] 4.3 Use Claude Code computer use to open the post locally in a browser and screenshot the page; verify the page itself is visually unchanged (the tags are not visible), and record the screenshot in `qa/`
 - [ ] 4.4 Complete `qa.md` with the commit, timestamps, each check's outcome including failed attempts, and what the evidence does not prove (no production crawl yet), then copy its summary and screenshots into the PR description
 
