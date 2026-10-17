@@ -29,9 +29,9 @@ The private media URL is made absolute on the production host, which does not se
 
 ## 4.3 Screenshot
 
-`post-branch.png` shows `/programming/three-reasons-i-avoid-anonymous-js-functions-like-the-plague` rendered from this branch. The page looks like it did before, since the new tags are in the head and are not visible. The post's HTML differs from `main` only by the three new head tags (see 4.1).
+At 2026-10-17 9:47 AM the post `/programming/three-reasons-i-avoid-anonymous-js-functions-like-the-plague` was opened in Google Chrome from the branch at commit `5802986`, served locally on `127.0.0.1:9100`. Claude Code computer use took the screenshot, and `screencapture` was cropped to the page itself so the browser's tabs, profile, and bookmarks are not in the file. `qa/post-computer-use.png` shows the page rendering normally: header, title, date, and body text. The new tags live in the head and are not visible, so the page looks the way it did before, and its HTML differs from `main` only by the three new head tags (see 4.1).
 
-Claude Code computer use was not available for this check: another Claude session held the computer-use lock when it was requested (twice), and I did not try to work around that. The screenshot was taken instead with headless Chrome (`--headless=new --screenshot`) against the local server. It is a real browser render of the running site, but it is not the computer-use proof the task named. A same-size capture of `main` was not kept as evidence: the page has an entrance fade-in animation, and a headless capture of the baseline caught it partway through, so the two images differ in brightness even though their HTML matches.
+Computer use was locked by another Claude session (2ad51934…) for the first five attempts. I did not work around it, and the lock cleared later. While it was locked I took `qa/post-branch.png` with headless Chrome (`--headless=new --screenshot`) against the same local server at commit `383b254`. It shows the same page. It is kept as a second capture, but the computer-use screenshot is the proof for this task. A same-size capture of `main` was not kept: the page has an entrance fade-in animation, and a headless capture of the baseline caught it partway through, so the two images differed in brightness even though their HTML matched.
 
 ## Adversarial and scope reviews
 
