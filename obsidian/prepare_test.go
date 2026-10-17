@@ -248,9 +248,9 @@ func imagePost(environment, slug string, draft bool, image, body string) []byte 
 	return fmt.Appendf(nil, "---\nenvironment: %s\nsection: programming\nslug: %s\ntitle: Example\ndate: 2026-09-20\ndraft: %t\nsync: add\ntags: [programming]\nimage: %s\n---\n%s", environment, slug, draft, image, body)
 }
 
-func testImage(seed, extension string) ImageRecord {
+func testImage(seed string) ImageRecord {
 	hash := strings.Repeat(seed, 64)
-	return ImageRecord{SHA256: hash, MD5: strings.Repeat("b", 32), Size: 17, ContentType: imageContentType("x" + extension), Key: "v1/" + hash + extension}
+	return ImageRecord{SHA256: hash, MD5: strings.Repeat("b", 32), Size: 17, ContentType: "image/png", Key: "v1/" + hash + ".png"}
 }
 
 func mediaPrefix(mode Mode) string {
@@ -261,8 +261,8 @@ func mediaPrefix(mode Mode) string {
 }
 
 func TestMetadataImageResolvesLikeBodyImage(t *testing.T) {
-	record := testImage("a", ".png")
-	images := map[string]ImageRecord{"image/cover.png": record, "image/nested/deep.png": testImage("c", ".png")}
+	record := testImage("a")
+	images := map[string]ImageRecord{"image/cover.png": record, "image/nested/deep.png": testImage("c")}
 	for _, reference := range []string{"image/cover.png", "cover.png", "./image/cover.png"} {
 		for _, mode := range []Mode{ModeProduction, ModeStaging, ModePreview, ModeLocal} {
 			t.Run(string(mode)+"/"+reference, func(t *testing.T) {
@@ -286,7 +286,7 @@ func TestMetadataImageResolvesLikeBodyImage(t *testing.T) {
 }
 
 func TestMetadataImageSharedWithBodyUsesOneRecord(t *testing.T) {
-	record := testImage("a", ".png")
+	record := testImage("a")
 	images := map[string]ImageRecord{"image/cover.png": record}
 	result := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, "image/cover.png", "![Cover alt](image/cover.png)")}, images), State{}, nil, ModeProduction)
 	if len(result.Entries) != 1 || len(result.Images) != 1 || result.Entries[0].Image != mediaPrefix(ModeProduction)+record.Key {
@@ -311,7 +311,7 @@ func TestMetadataImageWithoutValueLeavesImageEmpty(t *testing.T) {
 }
 
 func TestMetadataImageMustBeTextAndFailsOnlyThatFile(t *testing.T) {
-	record := testImage("a", ".png")
+	record := testImage("a")
 	images := map[string]ImageRecord{"image/cover.png": record}
 	for _, value := range []string{"[image/cover.png]", "5", "true", "{path: image/cover.png}", "null"} {
 		t.Run(value, func(t *testing.T) {
@@ -330,7 +330,7 @@ func TestMetadataImageMustBeTextAndFailsOnlyThatFile(t *testing.T) {
 func TestOtherUnknownMetadataKeysAreStillRejected(t *testing.T) {
 	for _, key := range []string{"cover", "images", "og_image", "Image"} {
 		raw := fmt.Appendf(nil, "---\nenvironment: production\nsection: programming\nslug: post\ntitle: Example\ndate: 2026-09-20\ndraft: false\nsync: add\ntags: [programming]\n%s: image/cover.png\n---\nBody", key)
-		result := prepare(t, loaded(map[string][]byte{"p.md": raw}, map[string]ImageRecord{"image/cover.png": testImage("a", ".png")}), State{}, nil, ModeProduction)
+		result := prepare(t, loaded(map[string][]byte{"p.md": raw}, map[string]ImageRecord{"image/cover.png": testImage("a")}), State{}, nil, ModeProduction)
 		if len(result.Entries) != 0 || len(result.Issues) != 1 || result.Issues[0].Category != "markdown_metadata" {
 			t.Fatalf("key %q: entries=%d issues=%v", key, len(result.Entries), result.Issues)
 		}
@@ -338,7 +338,7 @@ func TestOtherUnknownMetadataKeysAreStillRejected(t *testing.T) {
 }
 
 func TestMetadataImageProblemsDropOnlyTheImage(t *testing.T) {
-	record := testImage("a", ".png")
+	record := testImage("a")
 	tests := []struct {
 		name      string
 		reference string
@@ -386,7 +386,7 @@ func TestMetadataImageProblemsDropOnlyTheImage(t *testing.T) {
 }
 
 func TestBadMetadataImageKeepsBodyImages(t *testing.T) {
-	record := testImage("a", ".png")
+	record := testImage("a")
 	images := map[string]ImageRecord{"image/body.png": record}
 	result := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, "image/nope.png", "![Body alt](image/body.png)")}, images), State{}, nil, ModeProduction)
 	if len(result.Entries) != 1 || result.Entries[0].Image != "" || len(result.Images) != 1 || len(result.Issues) != 1 {
@@ -398,7 +398,7 @@ func TestBadMetadataImageKeepsBodyImages(t *testing.T) {
 }
 
 func TestMetadataImageSurvivesAcceptedFallback(t *testing.T) {
-	record := testImage("a", ".png")
+	record := testImage("a")
 	images := map[string]ImageRecord{"image/cover.png": record}
 	accepted := prepare(t, loaded(map[string][]byte{"p.md": imagePost("production", "post", false, "image/cover.png", "Body")}, images), State{}, nil, ModeProduction)
 	if len(accepted.Entries) != 1 || accepted.Entries[0].Image != mediaPrefix(ModeProduction)+record.Key {
@@ -448,7 +448,7 @@ func TestDocumentedImageExampleValidates(t *testing.T) {
 	if !found {
 		t.Fatal("documented example unterminated")
 	}
-	record := testImage("a", ".png")
+	record := testImage("a")
 	result := prepare(t, loaded(map[string][]byte{"p.md": []byte(example)}, map[string]ImageRecord{"image/1-high-level-workflow.png": record}), State{}, nil, ModeProduction)
 	if len(result.Issues) != 0 || len(result.Entries) != 1 || result.Entries[0].Image != mediaPrefix(ModeProduction)+record.Key {
 		t.Fatalf("documented example did not validate: entries=%d issues=%v", len(result.Entries), result.Issues)
