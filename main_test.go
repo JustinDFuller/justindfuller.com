@@ -322,6 +322,50 @@ func TestProgrammingPreviewTags(t *testing.T) {
 	}
 }
 
+func TestPreviewDoesNotChangeExistingTitleTags(t *testing.T) {
+	git, err := site.LoadProgramming()
+	if err != nil || len(git) == 0 {
+		t.Fatalf("Git source unavailable: %v", err)
+	}
+	handler, err := site.New()
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := func(title string) []string {
+		return []string{
+			"<title>" + title + "</title>",
+			`<meta name="description" content="` + title + `" />`,
+			`<meta property="og:title" content="` + title + `" />`,
+		}
+	}
+	check := func(route string, title string) {
+		head := previewHead(t, handler, route)
+		for _, want := range expected(title) {
+			if strings.Count(head, want) != 1 {
+				t.Errorf("%s: expected exactly one %q:\n%s", route, want, head)
+			}
+		}
+	}
+	check("/", "Justin D Fuller")
+	withImage, withoutImage := false, false
+	for _, entry := range git {
+		_, hasImage := programming.FirstImage(entry.Content)
+		if hasImage && withImage || !hasImage && withoutImage {
+			continue
+		}
+		withImage = withImage || hasImage
+		withoutImage = withoutImage || !hasImage
+		title := entry.Title
+		if entry.SubTitle != "" {
+			title += ": " + entry.SubTitle
+		}
+		check("/programming/"+entry.Slug, title+" | Justin D Fuller")
+	}
+	if !withImage || !withoutImage {
+		t.Fatal("expected Git posts with and without images")
+	}
+}
+
 func absolute(src string) string {
 	if strings.HasPrefix(src, "/") {
 		return "https://www.justindfuller.com" + src
