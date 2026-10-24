@@ -4,7 +4,7 @@
 
 The publishing pipeline in `obsidian/` was written for one section. A candidate note carries a `programming.Entry`, and route identity is the bare slug in the publication policy, preparation, fallback revalidation, and image promotion. `Prepared` holds one list of programming entries (the merged Git and Obsidian list) and one list of masked slugs. The server and static export read thought posts from disk on every request, with no overlay. See `proposal.md` for motivation and `specs/obsidian-programming-sync/spec.md` for the requirements.
 
-Thought posts are close to programming posts. Both are single Markdown files with `title`, `subtitle`, `date`, `draft`, and `tags` front matter and a slug taken from the filename. The differences that matter are that `thought.Entry` has no draft flag, no image, and no first-paragraph field, and that the thought handler resolves a request by filename suffix.
+Thought posts are close to programming posts. Both are single Markdown files with `title`, `subtitle`, `date`, `draft`, and `tags` front matter and a slug taken from the filename. The differences that matter are that `thought.Entry` has no draft flag, no image field, and no first-paragraph field, and that the thought handler resolves a request by filename suffix.
 
 Accepted state stores raw note bytes keyed by file, and revalidation re-derives everything from them. That is what lets old accepted programming state keep working with no migration.
 
@@ -19,7 +19,7 @@ Accepted state stores raw note bytes keyed by file, and revalidation re-derives 
 **Non-Goals:**
 
 - Other sections, or a generic section registry. Adding the next section should be a separate, small change that follows this one's pattern.
-- Preview images for thought posts, or any change to the existing thought page appearance.
+- Any change to the visible thought page layout. Only meta tags are added.
 - Changing how Git-backed thought posts are loaded when no overlay is in use.
 
 ## Decisions
@@ -32,7 +32,7 @@ Alternatives: keep bare slugs and refuse a slug used in both sections. Rejected 
 
 ### The rendered entry keeps the programming shape inside the pipeline
 
-`validateMarkdown` keeps producing a `programming.Entry` for both sections, since rendering, escaping, excerpts, and image rewriting are identical. The conversion to `thought.Entry` (title, subtitle, slug, description, content, date) happens only when an accepted candidate is added to the prepared result. Draft candidates never become entries, which is why `thought.Entry` needs no draft flag.
+`validateMarkdown` keeps producing a `programming.Entry` for both sections, since rendering, escaping, excerpts, and image rewriting are identical. The conversion to `thought.Entry` (title, subtitle, slug, description, content, date, image) happens only when an accepted candidate is added to the prepared result. Draft candidates never become entries, which is why `thought.Entry` needs no draft flag.
 
 Alternatives: a common entry interface across packages, or a thought-specific validator. Both add surface area for no behavior gain.
 
@@ -52,11 +52,13 @@ Static exports have only ever produced exact-slug pages, so deployed behavior do
 
 Alternatives: keep suffix matching in overlay mode by consulting the overlay after resolving the Git post. Rejected because it adds a second resolution path to guard against masked or overwritten posts, for an address style that is never published.
 
-### Thought notes reject `image`
+### Thought pages choose a preview image like programming pages
 
-Social preview images are specified for programming posts only, and the thought templates and `thought.Entry` have no image. Accepting `image` on a thought note would store it, resolve it, and promote its file for no visible effect. `parseMetadata` therefore treats `image` as an invalid key for `section: thought`, which uses the existing isolated-failure path.
+`thought.Entry` gains an `Image` field, filled from a thought note's resolved `image` value and left empty for Git-backed thought posts. `validateMarkdown` already resolves and validates `image` for both sections, so `parseMetadata` needs no section-specific rule. The preview choice in `site/preview.go` takes the image value and rendered content instead of a `programming.Entry`, and the thought entry handler passes the result to the shared meta template, which already emits `og:image`, `og:image:alt`, and `twitter:card` when an image is set.
 
-Alternatives: accept and ignore it, or extend preview images to thought posts. The first promotes unused images publicly, and the second is a separate user-visible feature.
+The order is the one programming uses (the `image` value, then the first body image) and applies to every thought post in every environment. Four Git-backed thought posts contain images, so they begin declaring a preview image. Image promotion treats a thought note's `image` value like a programming one: it is authorized only for accepted production thought notes.
+
+Alternatives: preview images only for Obsidian thought notes with an explicit `image`, which leaves Git posts unchanged but needs a second rule and a flag to tell the two apart. Or accept `image` and ignore it, which promotes files publicly for no effect.
 
 ### A section change is a route change
 
@@ -71,6 +73,7 @@ The policy messages ("…the same programming route") are produced from the cand
 - [A missed spot still keys by bare slug and lets a programming and a thought note interfere] → The spec has a same-slug scenario, and the tasks add tests for the shared slug through preparation, fallback, and promotion.
 - [Thought Git posts are loaded in more places, and a load failure now affects preparation] → Treat a failure to load Git thought posts like a failure to load Git programming posts: stop with an error, never silently publish an empty list.
 - [`thought.Entry` descriptions are built differently from programming excerpts] → Obsidian thought notes use the same excerpt behavior as programming notes, so the list excerpt can differ slightly from Git-backed thought posts. This is accepted for consistency with the single validator.
+- [Four existing Git-backed thought pages gain `og:image` and `twitter:card` tags] → Intended, for one rule across sections; invisible on the page itself, and checked in the proof.
 - [Local overlay server stops resolving partial thought filenames] → Accepted and documented; the published site never served them.
 
 ## Migration Plan

@@ -36,14 +36,19 @@ A note whose section is `thought` SHALL be validated, targeted, drafted, synchro
 - **WHEN** a thought note's new revision fails Markdown validation while an earlier revision was accepted
 - **THEN** the previous accepted revision SHALL remain published and the failure SHALL be reported as a blocking issue
 
-### Requirement: Thought notes do not set a preview image
+### Requirement: Thought notes may set a preview image
 
-A `thought` note that sets `image` SHALL fail validation as invalid metadata, and only that note revision SHALL be affected. Images in a thought note's body SHALL resolve, publish, and be eligible for promotion by the same rules as programming body images. A thought page SHALL NOT declare an `og:image`.
+A `thought` note MAY set `image` with the same value forms, validation, and resolution rules as a programming note. A valid accepted production thought note's `image` file and body images SHALL be eligible for public promotion by the same rules as programming images. The thought page SHALL choose its social preview image as the `social-preview-images` specification describes.
 
 #### Scenario: A thought note sets image
 
-- **WHEN** a thought note's metadata includes an `image` value
-- **THEN** only that file revision SHALL fail validation as invalid metadata and unrelated valid notes SHALL remain publishable
+- **WHEN** a valid nondraft thought note sets `image` to an existing file below `image/`
+- **THEN** the note SHALL be valid and that image SHALL be its social preview image
+
+#### Scenario: A thought note sets an unusable image
+
+- **WHEN** a thought note's `image` value is not text, or does not resolve to a file below `image/`
+- **THEN** the failure SHALL be handled exactly as it is for a programming note, affecting only that file revision
 
 #### Scenario: A thought note has a body image
 
