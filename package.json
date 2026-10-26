@@ -31,16 +31,16 @@
   "private": true,
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
-    "cf": "1.0.0-beta.17",
+    "cf": "1.0.0-beta.18",
     "chalk": "^6.0.1",
     "chalk-cli": "^6.0.0",
-    "eslint": "^10.12.0",
+    "eslint": "^10.13.0",
     "globals": "17.13.0",
     "markdownlint-cli2": "^0.24.0",
     "prettier": "^3.9.10",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
-    "wrangler": "4.151.0"
+    "wrangler": "4.151.1"
   },
   "type": "module"
 }
