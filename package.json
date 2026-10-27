@@ -40,7 +40,7 @@
     "prettier": "^3.9.10",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
-    "wrangler": "4.151.1"
+    "wrangler": "4.151.2"
   },
   "type": "module"
 }
