@@ -14,8 +14,8 @@
 
 ## 3. Proof
 
-- [ ] 3.1 With Bot Fight Mode on, start a fresh `content` run of the Cloudflare workflow on the default branch after this change is merged, and verify with the Cloudflare API and the Actions run page that production and staging both have a new deployment whose version message is the run's artifact checksum
-- [ ] 3.2 Record in `qa.md` the run ID, commit, timestamps, Bot Fight Mode state, deployment IDs, screenshots of the green deploy jobs and of the live and staging sites, any failed attempts, and what was not proven
+- [x] 3.1 With Bot Fight Mode on, start a fresh `content` run of the Cloudflare workflow on the default branch after this change is merged, and verify with the Cloudflare API and the Actions run page that production and staging both have a new deployment whose version message is the run's artifact checksum
+- [x] 3.2 Record in `qa.md` the run ID, commit, timestamps, Bot Fight Mode state, deployment IDs, screenshots of the green deploy jobs and of the live and staging sites, any failed attempts, and what was not proven
 
 ## Workflow follow-up
 
