@@ -1,5 +1,5 @@
 import { execFile as execFileCallback } from "node:child_process";
-import { mkdir, readFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile } from "node:fs/promises";
 import { promisify } from "node:util";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,6 +15,9 @@ import {
 
 const execFile = promisify(execFileCallback);
 const accountDefault = "9dce34804a27754a4ea66a5789827dfa";
+
+export const noPreviewNotice =
+  "::notice title=No private preview yet::No private preview exists for this pull request yet. Run the workflow manually with publish kind preview, this pull request number and bootstrap to create one.";
 
 export const pinFailureReasons = [
   "invalid_target",
@@ -86,6 +89,7 @@ export async function pinWorkflowSource({
   mode,
   pr,
   bootstrap = false,
+  skipIfMissing = false,
   account = accountDefault,
   cwd = process.cwd(),
   targetWorkspace = process.env.GITHUB_WORKSPACE ?? resolve(cwd, ".."),
@@ -98,7 +102,11 @@ export async function pinWorkflowSource({
   } catch {
     throw new PinFailure("invalid_target");
   }
-  if (namespace === "local" || !/^[a-f0-9]{32}$/.test(account))
+  if (
+    namespace === "local" ||
+    !/^[a-f0-9]{32}$/.test(account) ||
+    (skipIfMissing && mode !== "preview")
+  )
     throw new PinFailure("invalid_target");
   let transport;
   try {
@@ -127,6 +135,12 @@ export async function pinWorkflowSource({
         : undefined;
     } catch {
       throw new PinFailure("accepted_state_invalid");
+    }
+    if (!accepted && skipIfMissing && !bootstrap) {
+      console.log(noPreviewNotice);
+      if (process.env.GITHUB_OUTPUT)
+        await appendFile(process.env.GITHUB_OUTPUT, "no_preview=true\n");
+      return { version: 1, target: namespace, noPreview: true };
     }
     const state = acceptedStateForPin(accepted, namespace, mode, bootstrap),
       directory = `.obsidian-publish/hosted/${namespace}`,
@@ -202,6 +216,7 @@ async function main() {
       mode: { type: "string" },
       pr: { type: "string" },
       bootstrap: { type: "boolean", default: false },
+      "skip-if-missing": { type: "boolean", default: false },
       account: { type: "string", default: accountDefault },
     },
   });
@@ -209,6 +224,7 @@ async function main() {
     mode: values.mode,
     pr: values.pr ? Number(values.pr) : undefined,
     bootstrap: values.bootstrap,
+    skipIfMissing: values["skip-if-missing"],
     account: values.account,
   });
   console.log(JSON.stringify(result));

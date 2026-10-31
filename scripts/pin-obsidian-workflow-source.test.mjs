@@ -145,6 +145,119 @@ test("missing accepted state without bootstrap is reported as unavailable", asyn
   });
 });
 
+test("missing staging state is unavailable even when a skip is requested", async () => {
+  const error = await failure({
+    mode: "staging",
+    transportFactory: () => transportFor(undefined),
+  });
+  assert.deepEqual(pinFailureSummary(error), {
+    reason: "accepted_state_unavailable",
+  });
+});
+
+test("a skip is refused for a target that is not a preview", async () => {
+  for (const mode of ["production", "staging"]) {
+    const error = await failure({
+      mode,
+      skipIfMissing: true,
+      transportFactory: () => transportFor(undefined),
+    });
+    assert.deepEqual(pinFailureSummary(error), { reason: "invalid_target" });
+  }
+});
+
+test("a preview with no accepted state is skipped with a notice when requested", async () => {
+  const printed = [],
+    log = console.log;
+  console.log = (...args) => printed.push(args.join(" "));
+  let pinned = false;
+  try {
+    const result = await run({
+      mode: "preview",
+      pr: 7,
+      skipIfMissing: true,
+      transportFactory: () => transportFor(undefined),
+      execute: async () => {
+        pinned = true;
+      },
+    });
+    assert.deepEqual(result, { version: 1, target: "pr/7", noPreview: true });
+  } finally {
+    console.log = log;
+  }
+  assert.equal(pinned, false);
+  assert.equal(lastOutput, "no_preview=true\n");
+  assert.equal(printed.length, 1);
+  assert.match(printed[0], /^::notice /);
+  assert.match(printed[0], /No private preview exists for this pull request/);
+  for (const part of [...privateText.split(" "), account, revision, "pr/7"])
+    assert.ok(!printed[0].includes(part), printed[0]);
+});
+
+test("a preview with accepted state is still pinned when a skip is requested", async () => {
+  const result = await run({
+    mode: "preview",
+    pr: 7,
+    skipIfMissing: true,
+    transportFactory: () =>
+      transportFor(
+        Buffer.from(
+          JSON.stringify({
+            ...acceptedState,
+            namespace: "pr/7",
+            state: { version: 1, mode: "preview", revision },
+          }),
+        ),
+      ),
+  });
+  assert.equal(result.noPreview, undefined);
+  assert.equal(result.sourceUnavailable, false);
+  assert.match(lastOutput, /^source_unavailable=false\n/);
+});
+
+test("bootstrap takes precedence over a requested skip", async () => {
+  let pinned = false;
+  const result = await run({
+    mode: "preview",
+    pr: 7,
+    bootstrap: true,
+    skipIfMissing: true,
+    transportFactory: () => transportFor(undefined),
+    execute: async (_binary, args) => {
+      pinned = true;
+      await writeFile(
+        join(process.cwd(), args[args.indexOf("--out") + 1]),
+        JSON.stringify(pinnedSource),
+      );
+    },
+  });
+  assert.equal(pinned, true);
+  assert.equal(result.noPreview, undefined);
+});
+
+test("a requested skip does not hide an unreadable or unusable state", async () => {
+  const cases = [
+    [() => transportFor(accepted, true), "state_store_unreachable"],
+    [() => transportFor(Buffer.from("{not json")), "accepted_state_invalid"],
+    [
+      () =>
+        transportFor(
+          Buffer.from(JSON.stringify({ ...acceptedState, namespace: "other" })),
+        ),
+      "accepted_state_incompatible",
+    ],
+  ];
+  for (const [transportFactory, reason] of cases) {
+    const error = await failure({
+      mode: "preview",
+      pr: 7,
+      skipIfMissing: true,
+      transportFactory,
+    });
+    assert.equal(pinFailureSummary(error).reason, reason);
+  }
+});
+
 test("unparseable accepted state is reported as invalid", async () => {
   const error = await failure({
     transportFactory: () => transportFor(Buffer.from("{not json")),
