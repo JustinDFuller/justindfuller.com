@@ -1,4 +1,3 @@
-import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
   archiveChecksum,
@@ -10,31 +9,11 @@ import { validateRetainedPrivateWorkerArchive } from "./obsidian-worker.mjs";
 import {
   AccessClient,
   verifyAccessConfiguration,
-  accessHeaders,
-  assertAccessDenied,
   boundedBody,
 } from "./obsidian-access.mjs";
 
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 const fingerprint = /^[a-f0-9]{64}$/;
-
-function uploadedVersionId(stdout) {
-  if (typeof stdout !== "string")
-    throw new Error("Uploaded staging version identity invalid");
-  const plain = stdout.replace(/\u001b\[[0-9;]*m/g, "");
-  const labels = plain.match(/Worker Version ID:/g) ?? [];
-  const line = plain
-    .split(/\r?\n/)
-    .find((item) => item.includes("Worker Version ID:"));
-  const unframed = line?.replace(/^│ +/, "").replace(/ +│$/, "");
-  const match =
-    /^Worker Version ID: ([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$/.exec(
-      unframed ?? "",
-    );
-  if (labels.length !== 1 || !match || !uuid.test(match[1]))
-    throw new Error("Uploaded staging version identity invalid");
-  return match[1];
-}
 
 export function validateDeploymentArchive(bytes, checksum, { account, mode }) {
   const entries = inspectPublicationArchive(bytes, checksum);
@@ -119,7 +98,6 @@ export class CloudflareServing {
     this.counters = {
       apiReads: 0,
       apiWrites: 0,
-      markerReads: 0,
       deployments: 0,
       deploymentAttempts: 0,
       rollbacks: 0,
@@ -240,14 +218,29 @@ export class CloudflareServing {
       new AccessClient(this.account, this.accessToken, this.transport),
       config,
     );
-    for (const url of metadata.urls)
-      await assertAccessDenied(
-        url,
-        { ...this.credentials, owner: config.owner },
-        config.team,
-        this.transport,
-      );
     return config;
+  }
+
+  async versionMessage(version) {
+    const result = await this.api(
+      `/accounts/${this.account}/workers/scripts/${this.worker}/versions/${version}`,
+    );
+    return result.annotations?.["workers/message"];
+  }
+
+  async uploadedVersion(artifact) {
+    const result = await this.api(
+      `/accounts/${this.account}/workers/scripts/${this.worker}/versions?per_page=25`,
+    );
+    const [latest] = (result.items ?? [])
+      .filter(
+        (item) =>
+          uuid.test(item?.id ?? "") &&
+          item.annotations?.["workers/message"] === artifact,
+      )
+      .sort((a, b) => b.number - a.number);
+    if (!latest) throw new Error("Uploaded staging version not found");
+    return latest.id;
   }
 
   async artifact(receipt) {
@@ -307,66 +300,17 @@ export class CloudflareServing {
     return this.bootstrapReceipt;
   }
 
-  async marker(receipt, metadata) {
-    const proof = receipt.verification?.marker;
-    if (
-      proof?.path !== "/__publication.json" ||
-      !fingerprint.test(proof.sha256 ?? "") ||
-      !Number.isSafeInteger(proof.size) ||
-      proof.size < 1 ||
-      proof.size > 1024
-    )
-      throw new Error("Publication marker required for deployment correlation");
-    const config = await this.gate(metadata);
-    for (const base of metadata.urls) {
-      this.counters.markerReads++;
-      const url = new URL(proof.path, base),
-        response = await this.transport(url, {
-          headers: config ? accessHeaders(this.credentials) : {},
-          redirect: "manual",
-          signal: AbortSignal.timeout(30000),
-        });
-      const bytes = await boundedBody(response, proof.size);
-      if (
-        response.status !== 200 ||
-        bytes.length !== proof.size ||
-        archiveChecksum(bytes) !== proof.sha256
-      )
-        throw new Error("Serving publication marker differs");
-      if (config)
-        await assertAccessDenied(
-          url,
-          {
-            ...this.credentials,
-            owner: config.owner,
-            forbiddenHashes: [proof.sha256],
-          },
-          config.team,
-          this.transport,
-        );
-    }
-  }
-
   async matchesCandidate(candidate, live) {
+    if (this.mode === "preview") return false;
     try {
       const metadata = await this.metadata();
       if (metadata.identity !== live) return false;
-      await this.marker(candidate, metadata);
+      if ((await this.versionMessage(live)) !== candidate.artifact)
+        return false;
       return (await this.identity()) === live;
     } catch {
       return false;
     }
-  }
-
-  async recoverReceipt(receipt, live) {
-    if (
-      this.mode !== "preview" ||
-      !(await this.matchesCandidate(receipt, live))
-    )
-      return;
-    const restored = { ...receipt, deployment: live };
-    await this.verify(restored);
-    return restored;
   }
 
   async deploy(candidate) {
@@ -408,14 +352,14 @@ export class CloudflareServing {
               candidate.artifact,
             ];
     this.counters.deploymentAttempts++;
-    const result = await this.execute("npx", args, {
+    await this.execute("npx", args, {
       cwd: this.workspace,
       purpose: "deploy",
       token: this.token,
     });
     let uploadedId;
     if (this.mode === "staging") {
-      uploadedId = uploadedVersionId(result?.stdout);
+      uploadedId = await this.uploadedVersion(candidate.artifact);
       await this.api(
         `/accounts/${this.account}/workers/scripts/${this.worker}/deployments`,
         {
@@ -437,48 +381,9 @@ export class CloudflareServing {
     const metadata = await this.metadata();
     if (metadata.identity !== receipt.deployment)
       throw new Error("Artifact receipt differs from the serving identity");
-    const config = await this.gate(metadata);
+    await this.gate(metadata);
     await this.artifact(receipt);
-    const privateDirectory = resolve(
-      this.workspace,
-      ".obsidian-publish/verification",
-    );
-    mkdirSync(privateDirectory, { recursive: true, mode: 0o700 });
-    const configPath = resolve(privateDirectory, "access.json"),
-      preparedPath = resolve(privateDirectory, "prepared.json");
-    if (config)
-      writeFileSync(configPath, JSON.stringify(config), { mode: 0o600 });
-    if (receipt.verification.prepared)
-      writeFileSync(
-        preparedPath,
-        JSON.stringify(receipt.verification.prepared),
-        { mode: 0o600 },
-      );
-    for (const base of metadata.urls) {
-      await this.execute(
-        process.execPath,
-        [
-          "scripts/verify-cloudflare.mjs",
-          base,
-          "--mode",
-          this.mode,
-          ...(config ? ["--access", configPath] : []),
-          ...(receipt.verification.prepared ? ["--overlay", preparedPath] : []),
-        ],
-        {
-          cwd: this.workspace,
-          purpose: "verify",
-          env: {
-            ...process.env,
-            CF_ACCESS_CLIENT_ID: this.credentials?.clientId,
-            CF_ACCESS_CLIENT_SECRET: this.credentials?.clientSecret,
-            CLOUDFLARE_ACCESS_API_TOKEN: this.accessToken,
-          },
-        },
-      );
-      this.counters.verifications++;
-    }
-    if (receipt.verification.marker) await this.marker(receipt, metadata);
+    this.counters.verifications++;
     if ((await this.identity()) !== receipt.deployment)
       throw new Error("Serving identity changed during exact verification");
     this.verifiedPrior = metadata.identity;

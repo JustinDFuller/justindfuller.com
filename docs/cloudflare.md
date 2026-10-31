@@ -11,7 +11,6 @@ Use Go 1.26 and Node 22. Install pinned tooling with `npm ci`, then run `go test
 ```sh
 npm run build:cloudflare -- --mode preview
 npm run dev:cloudflare
-node scripts/verify-cloudflare.mjs http://localhost:8787 --mode preview
 ```
 
 `preview` is the safe default build mode. It adds `X-Robots-Tag: noindex`, excludes production domain assignments, and creates native Preview Build Output. Production builds use `npm run build:cloudflare -- --mode production`, omit the indexing restriction, and configure exactly the apex and www custom domains. Invalid or unspecified Cloudflare configuration modes fail before deployment. The exporter rejects duplicate paths, unresolved LFS assets, rendering errors, and broken internal HTML links. The build replaces `dist`; direct exporter runs require an absent output directory.

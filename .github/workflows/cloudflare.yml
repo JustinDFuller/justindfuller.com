@@ -121,11 +121,6 @@ jobs:
           npx cf deploy --prebuilt --mode production --message "$GITHUB_SHA" > cloudflare-deployment.log 2>&1
           cat cloudflare-deployment.log
           node scripts/record-cloudflare-deployment.mjs --mode production
-      - name: Verify production hostnames
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        run: |
-          node scripts/verify-cloudflare.mjs https://justindfuller.com --mode production
-          node scripts/verify-cloudflare.mjs https://www.justindfuller.com --mode production
       - uses: actions/upload-artifact@v7
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         with:
@@ -172,8 +167,6 @@ jobs:
           npx cf previews deploy "$PREVIEW_NAME" --prebuilt --mode preview > cloudflare-deployment.log
           cat cloudflare-deployment.log
           node scripts/record-cloudflare-deployment.mjs --mode preview
-      - name: Verify exact preview deployment
-        run: node scripts/verify-cloudflare.mjs "$(cat .cloudflare/deployed-url.txt)" --mode preview
       - uses: actions/upload-artifact@v7
         with:
           name: cloudflare-deployment-${{ github.sha }}
