@@ -85,7 +85,7 @@ export function publicationEnvironment(
   purpose = "build",
   token,
 ) {
-  if (!["build", "deploy", "verify", "prepare"].includes(purpose))
+  if (!["build", "deploy", "prepare"].includes(purpose))
     throw new Error("Unknown publication subprocess purpose");
   const env = {};
   for (const key of [
@@ -121,13 +121,6 @@ export function publicationEnvironment(
     for (const key of [
       "OBSIDIAN_SOURCE_ACCESS_KEY_ID",
       "OBSIDIAN_SOURCE_SECRET_ACCESS_KEY",
-    ])
-      if (input[key]) env[key] = input[key];
-  if (purpose === "verify")
-    for (const key of [
-      "CF_ACCESS_CLIENT_ID",
-      "CF_ACCESS_CLIENT_SECRET",
-      "CLOUDFLARE_ACCESS_API_TOKEN",
     ])
       if (input[key]) env[key] = input[key];
   if (purpose === "deploy") {

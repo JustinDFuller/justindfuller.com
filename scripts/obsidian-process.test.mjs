@@ -42,9 +42,7 @@ test("publication subprocesses receive only purpose-specific credentials", () =>
   const deploy = publicationEnvironment(env, "deploy", "staging-secret");
   assert.equal(deploy.CLOUDFLARE_API_TOKEN, "staging-secret");
   assert.equal(deploy.CF_ACCESS_CLIENT_SECRET, undefined);
-  const verify = publicationEnvironment(env, "verify");
-  assert.equal(verify.CF_ACCESS_CLIENT_SECRET, "access-secret");
-  assert.equal(verify.CLOUDFLARE_API_TOKEN, undefined);
+  assert.throws(() => publicationEnvironment(env, "verify"));
   assert.throws(() => publicationEnvironment(env, "deploy"));
 });
 
