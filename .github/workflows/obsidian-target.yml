@@ -227,9 +227,11 @@ jobs:
           args=(--mode "${{ inputs.mode }}" --account 9dce34804a27754a4ea66a5789827dfa)
           if [[ "${{ inputs.mode }}" == preview ]]; then args+=(--pr "${{ inputs.pr }}"); fi
           if [[ "${{ inputs.bootstrap }}" == true ]]; then args+=(--bootstrap); fi
+          if [[ "${{ inputs.mode }}" == preview && "${{ github.event_name }}" == pull_request_target ]]; then args+=(--skip-if-missing); fi
           node control/scripts/pin-obsidian-workflow-source.mjs "${args[@]}"
       - name: Prepare the target with pinned input and trusted verification code
         id: prepare
+        if: steps.source.outputs.no_preview != 'true'
         env:
           OBSIDIAN_STATE_ACCESS_KEY_ID: ${{ secrets.OBSIDIAN_STATE_ACCESS_KEY_ID }}
           OBSIDIAN_STATE_SECRET_ACCESS_KEY: ${{ secrets.OBSIDIAN_STATE_SECRET_ACCESS_KEY }}
