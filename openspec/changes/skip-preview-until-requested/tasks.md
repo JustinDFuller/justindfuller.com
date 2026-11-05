@@ -11,5 +11,5 @@
 
 ## 3. Proof
 
-- [ ] 3.1 After merge, read a later pull request run: the preview prepare job passes with the notice and build and deploy are skipped. Capture screenshots and record them in `qa.md`.
-- [ ] 3.2 Show that a manual preview refresh without state still fails with `accepted_state_unavailable`, if a safe way exists, and record what was not proven.
+- [x] 3.1 After merge, read a later pull request run: the preview prepare job passes with the notice and build and deploy are skipped. Capture screenshots and record them in `qa.md`.
+- [x] 3.2 Show that a manual preview refresh without state still fails with `accepted_state_unavailable`, if a safe way exists, and record what was not proven.
