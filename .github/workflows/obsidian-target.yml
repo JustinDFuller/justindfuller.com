@@ -111,7 +111,7 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
-      - uses: actions/setup-go@v7.0.0
+      - uses: actions/setup-go@v7.1.0
         with:
           go-version-file: control/go.mod
           cache-dependency-path: go.sum
@@ -172,7 +172,7 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
-      - uses: actions/setup-go@v7.0.0
+      - uses: actions/setup-go@v7.1.0
         with:
           go-version-file: control/go.mod
           cache-dependency-path: control/go.sum
@@ -285,7 +285,7 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         with:
           node-version: "22.x"
-      - uses: actions/setup-go@v7.0.0
+      - uses: actions/setup-go@v7.1.0
         with:
           go-version-file: control/go.mod
           cache-dependency-path: go.sum
