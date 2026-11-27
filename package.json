@@ -31,7 +31,7 @@
   "private": true,
   "homepage": "https://github.com/JustinDFuller/justindfuller.com#readme",
   "devDependencies": {
-    "cf": "1.0.0-rc.1",
+    "cf": "1.0.0-rc.2",
     "chalk": "^6.0.1",
     "chalk-cli": "^6.0.0",
     "eslint": "^10.15.0",
